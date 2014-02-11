@@ -1,0 +1,29 @@
+safe: true
+lsi: false
+pygments: true
+markdown: redcarpet
+redcarpet:
+  extensions:
+    - no_intra_emphasis
+    - fenced_code_blocks
+    - autolink
+    - tables
+    - with_toc_data
+
+sections:
+  - name: Introduction
+    link: /index.html
+    links:
+      - name: Github Projects
+        link: https://github.com/taskcluster
+  - name: Queue
+    link: /queue/index.html
+    links:
+    - name: API Documentation
+      link: /queue/api-docs.html
+    - name: AMQP Exchanges
+      link: /queue/events.html
+    - name: Queue Web Interface
+      link: http://queue.taskcluster.net
+    - name: Source Repository
+      link: https://github.com/taskcluster/taskcluster-queue

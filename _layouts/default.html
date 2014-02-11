@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TaskCluster - Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap and Awesome Font styles-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css">
+
+    <!-- Custom styling-->
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/highlight.css">
+    <link rel="stylesheet" href="/assets/markdown.css">
+
+    {% if page.docson %}
+    <!-- JSON Schema Documentation -->
+    <link rel="stylesheet" href="/assets/docson.css">
+    <link rel="stylesheet" href="/assets/docson/css/docson.css">
+    <script src="/assets/docson/lib/require.js"></script>
+    <script>
+    require.config({baseUrl: "/assets/docson/"});
+    require(["docson", "lib/jquery"], function(docson) {
+      // Wait for document to load
+      $(function() {
+        docson.templateBaseUrl = "/assets/docson/templates";
+        $('[data-render-schema]').each(function() {
+          var el = $(this);
+          var schema = el.data('render-schema');
+          $.get(schema, function(data) {
+            docson.doc(el, data);
+          });
+        });
+      });
+    });
+    </script>
+    {% endif %}
+
+    <!-- jQuery and Bootstrap Javascript-->
+    <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav role="navigation" class="navbar navbar-default">
+      <div class="navbar-header"><a href="/" class="navbar-brand">Task Cluster - Documentation</a></div>
+      <ul class="nav navbar-nav">
+        {% for section in site.sections %}
+          {% if section.link == page.url %}
+            <li class="active">
+          {% else %}
+            <li>
+          {% endif %}
+            <a href="{{ section.link }}">{{ section.name }}</a>
+          </li>
+        {% endfor %}
+    </nav>
+    <div class="container">
+      <div class="row">
+        <section class="col-md-8 {{page.class}} content">
+          {{ content }}
+        </section>
+        <aside class="col-md-4">
+          {% for section in site.sections %}
+            {% comment %}
+            Below we have crazy hack that sets sec = section if page.url is
+            referenced in section...
+            {% endcomment %}
+            {% assign sec = nil %}
+            {% if section.link == page.url %}
+              {% assign sec = section %}
+            {% endif %}
+            {% for entry in section.links %}
+              {% if entry.link == page.url %}
+                {% assign sec = section %}
+              {% endif %}
+            {% endfor %}
+
+            {% comment %}
+            Now if sec is set, we go crazy and output links from it
+            {% endcomment %}
+            {% if sec %}
+              <h2>{{ sec.name }}</h2>
+              <ul class="nav nav-pills nav-stacked">
+              {% for entry in sec.links %}
+                {% if entry.link == page.url %}
+                  <li class="active">
+                {% else %}
+                  <li>
+                {% endif %}
+                  <a href="{{ entry.link }}">{{ entry.name }}</a>
+                </li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endfor %}
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
