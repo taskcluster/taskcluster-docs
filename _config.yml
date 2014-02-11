@@ -10,6 +10,11 @@ redcarpet:
     - tables
     - with_toc_data
 
+exclude:
+  - 'README.md'
+  - 'Gemfile'
+  - 'CNAME'
+
 sections:
   - name: Introduction
     link: /index.html
