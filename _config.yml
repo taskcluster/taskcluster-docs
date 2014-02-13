@@ -32,3 +32,8 @@ sections:
       link: http://queue.taskcluster.net
     - name: Source Repository
       link: https://github.com/taskcluster/taskcluster-queue
+  - name: Provisioners
+    link: /provisioners/index.html
+    links:
+      - name: AWS Provisioners
+        link: /provisioners/aws-provisioner.html
