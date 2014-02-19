@@ -28,6 +28,8 @@ sections:
       link: /queue/api-docs.html
     - name: AMQP Exchanges
       link: /queue/events.html
+    - name: Task Storage
+      link: /queue/task-storage.html
     - name: Queue Web Interface
       link: http://queue.taskcluster.net
     - name: Source Repository

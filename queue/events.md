@@ -10,7 +10,7 @@ RabbitMQ Exchanges
 We have the following **topic exchanges**:
 
   Exchange                  | Message Occur When
-  -------------------------:|---------------------------------------------------------
+  -------------------------:|-------------------------------------------------
   `v1/queue:task-pending`   | A task becomes pending, by creation or timeout
   `v1/queue:task-running`   | A task is scheduled on a worker
   `v1/queue:task-completed` | A task is resolved a completed by a worker
@@ -77,6 +77,10 @@ format below.
 
 <div data-render-schema="http://schemas.taskcluster.net/v1/queue:task-completed.json">
 </div>
+
+Upon task completion a result structure is made available, you'll find the url
+as `resultURL` above. This should be equivalent the `result.json` file as stored
+on S3, see task result on [task storage](task-storage.html) for more details.
 
 ### Task Failure Messages
 Whenever a task is concluded to be failed a message is posted to the
