@@ -15,27 +15,44 @@ exclude:
   - 'Gemfile'
   - 'CNAME'
 
+# We can only have two levels of menu, this **** is hardcoded into the menu in
+# the template. Entries have the following properties:
+#  * `name`, link display name,
+#  * `url`, URL for the page relative to root, must equal `page.url`,
+#  * `href`, optional overrides `url`, used when linking to an `index.html` page
+#    and  you don't want the URL to feature `index.html`. But `url` property
+#   still needs to match `page.url` to set active tags correctly.
 sections:
   - name: Introduction
-    link: /index.html
+    url:  /index.html
+    href: /
     links:
       - name: Github Projects
-        link: https://github.com/taskcluster
+        url:  https://github.com/taskcluster
   - name: Queue
-    link: /queue/index.html
+    url:  /queue/index.html
+    href: /queue/
     links:
     - name: API Documentation
-      link: /queue/api-docs.html
+      url:  /queue/api-docs.html
     - name: AMQP Exchanges
-      link: /queue/events.html
+      url:  /queue/events.html
     - name: Task Storage
-      link: /queue/task-storage.html
+      url:  /queue/task-storage.html
     - name: Queue Web Interface
-      link: http://queue.taskcluster.net
+      url:  http://queue.taskcluster.net
     - name: Source Repository
-      link: https://github.com/taskcluster/taskcluster-queue
+      url:  https://github.com/taskcluster/taskcluster-queue
   - name: Provisioners
-    link: /provisioners/index.html
+    url:  /provisioners/index.html
+    href: /provisioners/
     links:
       - name: AWS Provisioners
-        link: /provisioners/aws-provisioner.html
+        url:  /provisioners/aws-provisioner.html
+  - name: Tools
+    url:  /tools/index.html
+    href: /tools/
+    links:
+      - name: Task Inspector
+        url:  /tools/task-inspector/index.html
+        href: /tools/task-inspector/

@@ -37,6 +37,11 @@
     </script>
     {% endif %}
 
+    {% if page.prism %}
+    <link rel="stylesheet" href="/assets/prism.css">
+    <script src="/assets/prism.js"></script>
+    {% endif %}
+
     <!-- jQuery and Bootstrap Javascript-->
     <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
@@ -46,12 +51,16 @@
       <div class="navbar-header"><a href="/" class="navbar-brand">Task Cluster - Documentation</a></div>
       <ul class="nav navbar-nav">
         {% for section in site.sections %}
-          {% if section.link == page.url %}
+          {% if section.url == page.url %}
             <li class="active">
           {% else %}
             <li>
           {% endif %}
-            <a href="{{ section.link }}">{{ section.name }}</a>
+            {% if section.href %}
+              <a href="{{ section.href }}">{{ section.name }}</a>
+            {% else %}
+              <a href="{{ section.url }}">{{ section.name }}</a>
+            {% endif %}
           </li>
         {% endfor %}
     </nav>
@@ -67,11 +76,11 @@
             referenced in section...
             {% endcomment %}
             {% assign sec = nil %}
-            {% if section.link == page.url %}
+            {% if section.url == page.url %}
               {% assign sec = section %}
             {% endif %}
             {% for entry in section.links %}
-              {% if entry.link == page.url %}
+              {% if entry.url == page.url %}
                 {% assign sec = section %}
               {% endif %}
             {% endfor %}
@@ -83,12 +92,16 @@
               <h2>{{ sec.name }}</h2>
               <ul class="nav nav-pills nav-stacked">
               {% for entry in sec.links %}
-                {% if entry.link == page.url %}
+                {% if entry.url == page.url %}
                   <li class="active">
                 {% else %}
                   <li>
                 {% endif %}
-                  <a href="{{ entry.link }}">{{ entry.name }}</a>
+                  {% if entry.href %}
+                    <a href="{{ entry.href }}">{{ entry.name }}</a>
+                  {% else %}
+                    <a href="{{ entry.url }}">{{ entry.name }}</a>
+                  {% endif %}
                 </li>
               {% endfor %}
               </ul>

@@ -1,0 +1,71 @@
+---
+layout:   default
+class:    html
+prism:    true
+---
+
+<h1>Task Inspector</h1>
+<p>This tool lets you inspect a task given the <code>taskId</code></p>
+
+
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="taskId" class="col-sm-2 control-label">
+      Enter <code>taskId</code>
+    </label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="taskId" placeholder="taskId">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="inspect-task" class="btn btn-primary">Inspect task</button>
+    </div>
+  </div>
+</div>
+
+<b>This tool is still just an early hack, currently it displays task definition</b>
+
+<pre><code id="task-definition" class="language-javascript"></code></pre>
+
+<script>
+<!-- For testing use d70dd764-c9e4-49cd-bdb7-d37613bae15e -->
+
+/** Get current taskId from window hash */
+var getTaskId = function() {
+  return window.location.hash.substr(1);
+};
+
+/** Set current taskId when 'Inspect Task' button is clicked */
+$('#inspect-task').click(function() {
+  window.location.hash = '#' + $('#taskId').val();
+});
+
+/** Inspect a given taskId */
+var inspectTask = function(taskId) {
+  var taskId  = getTaskId();
+  var baseUrl = "http://tasks.taskcluster.net/" + taskId;
+  $.get(baseUrl + '/task.json', function(task) {
+    // Check this is still the current task
+    if (taskId != getTaskId()) {
+      return;
+    }
+    $('#task-definition').text(JSON.stringify(task, undefined, 4));
+    Prism.highlightAll(false);
+  }).fail(function() {
+    $('#task-definition').text("Task not found");
+  });
+};
+
+/** On loaded, load taskId as given by window.hash */
+$(function() {
+  var taskId = getTaskId();
+  $('#taskId').val(taskId);
+  inspectTask(taskId);
+});
+
+/** When hash changes inspect the given task */
+$(window).bind("hashchange", function() {
+  inspectTask(getTaskId());
+});
+</script>
