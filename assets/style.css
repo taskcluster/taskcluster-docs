@@ -1,3 +1,6 @@
 .content {
   margin-bottom: 50px;
 }
+.sequence-diagram-hand, .sequence-diagram-simple {
+  text-align: center;
+}

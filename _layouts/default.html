@@ -44,7 +44,20 @@
 
     <!-- jQuery and Bootstrap Javascript-->
     <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js">
+    </script>
+
+    {% if page.sequence_diagrams %}
+    <script src="/assets/raphael-min.js"></script>
+    <script src="/assets/underscore-min.js"></script>
+    <script src="/assets/sequence-diagram-min.js"></script>
+    <script>
+    $(function() {
+      $(".sequence-diagram-hand").sequenceDiagram({theme: 'hand'});
+      $(".sequence-diagram-simple").sequenceDiagram({theme: 'simple'});
+    });
+    </script>
+    {% endif %}
   </head>
   <body>
     <nav role="navigation" class="navbar navbar-default">
