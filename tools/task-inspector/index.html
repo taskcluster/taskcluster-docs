@@ -4,16 +4,24 @@ class:    html
 prism:    true
 ---
 
-<h1>Task Inspector</h1>
-<p>This tool lets you inspect a task given the <code>taskId</code></p>
+<style>
+#task-not-found {display: none;}
+#task-info {display: none;}
+.nav.nav-tabs a.tab {
+  cursor:         pointer;
+}
+#taskId {font: normal 10pt 'Courier New';}
+</style>
 
+<h1>Task Inspector</h1>
+<p>This tool lets yo inspect a task given the <code>taskId</code></p>
 
 <div class="form-horizontal">
   <div class="form-group">
-    <label for="taskId" class="col-sm-2 control-label">
+    <label for="taskId" class="col-sm-4 control-label">
       Enter <code>taskId</code>
     </label>
-    <div class="col-sm-10">
+    <div class="col-sm-8">
       <input type="text" class="form-control" id="taskId" placeholder="taskId">
     </div>
   </div>
@@ -24,12 +32,47 @@ prism:    true
   </div>
 </div>
 
-<b>This tool is still just an early hack, currently it displays task definition</b>
 
-<pre><code id="task-definition" class="language-javascript"></code></pre>
+<div id="task-not-found" class="alert alert-warning">
+  <strong>Task Not Found!</strong> Task definition couldn't be loaded...
+</div>
+
+<div id="task-info">
+  <ul class="nav nav-tabs">
+    <li class="active"><a class="tab" data-target="#task">Task</a></li>
+    <li><a class="tab" data-target="#resolution">Resolution</a></li>
+    <li><a class="tab" data-target="#status">Status</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="task">
+      <pre><code id="task-definition" class="language-javascript"></code></pre>
+    </div>
+    <div class="tab-pane" id="resolution">
+      <pre><code id="task-resolution" class="language-javascript"></code></pre>
+    </div>
+    <div class="tab-pane" id="status">
+      <pre><code id="task-status" class="language-javascript"></code></pre>
+    </div>
+  </div>
+</div>
 
 <script>
-<!-- For testing use d70dd764-c9e4-49cd-bdb7-d37613bae15e -->
+/* For testing use:
+    d70dd764-c9e4-49cd-bdb7-d37613bae15e
+    184663c5-d403-4dc5-9f31-ea7b973f82b1
+*/
+
+/** Simple hack implementing a tab with support disabled tabs */
+$('.nav.nav-tabs li a.tab').click(function() {
+  var target = $(this).data('target');
+  if ($(this).parent().hasClass('active') ||
+      $(this).parent().hasClass('disabled')) {
+    return;
+  }
+  $(this).parent().parent().parent().find('.active').removeClass('active');
+  $(this).parent().addClass('active');
+  $(target).addClass('active');
+});
 
 /** Get current taskId from window hash */
 var getTaskId = function() {
@@ -45,15 +88,47 @@ $('#inspect-task').click(function() {
 var inspectTask = function(taskId) {
   var taskId  = getTaskId();
   var baseUrl = "http://tasks.taskcluster.net/" + taskId;
+
+  // Load task definition
   $.get(baseUrl + '/task.json', function(task) {
     // Check this is still the current task
     if (taskId != getTaskId()) {
       return;
     }
-    $('#task-definition').text(JSON.stringify(task, undefined, 4));
+    $('#task-definition').text(JSON.stringify(task, undefined, 2));
     Prism.highlightAll(false);
+    $('#task-not-found').hide();
+    $('#task-info').show();
   }).fail(function() {
-    $('#task-definition').text("Task not found");
+    $('#task-not-found').show();
+    $('#task-info').hide();
+  });
+
+  // Load task resolution
+  $.get(baseUrl + '/resolution.json', function(resolution) {
+    // Check this is still the current task
+    if (taskId != getTaskId()) {
+      return;
+    }
+    $('#task-resolution').text(JSON.stringify(resolution, undefined, 2));
+    Prism.highlightAll(false);
+    $('.tab[data-target=#resolution]').parent().removeClass('disabled');
+  }).fail(function() {
+    $('.tab[data-target=#resolution]').parent().addClass('disabled');
+  });
+
+  // Load task status
+  var statusUrl = 'http://queue.taskcluster.net/v1/task/' + taskId + '/status';
+  $.get(statusUrl, function(status) {
+    // Check this is still the current task
+    if (taskId != getTaskId()) {
+      return;
+    }
+    $('#task-status').text(JSON.stringify(status, undefined, 2));
+    Prism.highlightAll(false);
+    $('.tab[data-target=#status]').parent().removeClass('disabled');
+  }).fail(function() {
+    $('.tab[data-target=#status]').parent().addClass('disabled');
   });
 };
 
