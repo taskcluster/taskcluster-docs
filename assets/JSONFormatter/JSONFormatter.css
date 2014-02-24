@@ -1,0 +1,5 @@
+.PropertyName {}
+.ObjectBrace, .ArrayBrace, .Comma {color: gray;}
+.Null {font-weight: bold;}
+.String {color: brown;}
+.Number {color: blue;}

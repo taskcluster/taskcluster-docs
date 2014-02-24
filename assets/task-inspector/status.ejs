@@ -1,0 +1,58 @@
+<dl class="dl-horizontal">
+  <dt>Task-id</dt>
+  <dd><code><%= taskId %></code></dd>
+
+  <%
+  var stateLabelMap = {
+    pending:    'default',
+    running:    'primary',
+    completed:  'success',
+    failed:     'danger'
+  };
+  %>
+  <dt>State</dt>
+  <dd>
+    <span class="label label-<%= stateLabelMap[state] %>">
+      <%= state %>
+    </span>
+  </dd>
+
+  <dt>Reason</dt>
+  <dd><code><%= reason %></code></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Created</dt>
+  <dd><%= moment(created).fromNow() %></dd>
+
+  <dt>Deadline</dt>
+  <dd>
+      <%= moment(deadline).fromNow() %>
+      (<%= moment(deadline).from(created, true) %> later)
+  </dd>
+  <dt>Taken Until</dt>
+  <dd>
+      <%= moment(takenUntil).fromNow() %>
+  </dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Provisioner-id</dt>
+  <dd><code><%= provisionerId %></code></dd>
+  <dt>Worker-type</dt>
+  <dd><code><%= workerType %></code></dd>
+</dl>
+
+<% runs.forEach(function(run) { %>
+<dl class="dl-horizontal">
+  <dt>Run-id</dt>
+  <dd>
+      <b><code><%= run.runId %></code></b>
+      (<a class="link" onclick="inspectRun(<%= run.runId%>)">inspect</a>)
+  </dd>
+  <dt>Worker-group</dt>
+  <dd><code><%= run.workerGroup %></code></dd>
+  <dt>Worker-id</dt>
+  <dd><code><%= run.workerId %></code></dd>
+</dl>
+<% }); %>

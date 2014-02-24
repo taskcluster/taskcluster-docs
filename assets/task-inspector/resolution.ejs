@@ -1,0 +1,49 @@
+<dl class="dl-horizontal">
+  <dt>Task-id</dt>
+  <dd><code><%= status.taskId %></code></dd>
+
+  <%
+  var stateLabelMap = {
+    pending:    'default',
+    running:    'primary',
+    completed:  'success',
+    failed:     'danger'
+  };
+  %>
+  <dt>State</dt>
+  <dd>
+    <span class="label label-<%= stateLabelMap[status.state] %>">
+      <%= status.state %>
+    </span>
+  </dd>
+
+  <dt>Reason</dt>
+  <dd><code><%= status.reason %></code></dd>
+</dl>
+
+<% if (runId !== undefined) { %>
+<dl class="dl-horizontal">
+  <dt>Resolving run-id</dt>
+  <dd>
+      <b><code><%= runId %></code></b>
+      (<a class="link" onclick="inspectRun(<%= runId%>)">inspect</a>)
+  </dd>
+  <dt>Worker-group</dt>
+  <dd><code><%= workerGroup %></code></dd>
+  <dt>Worker-id</dt>
+  <dd><code><%= workerId %></code></dd>
+
+  <dt>Logs link</dt>
+  <dd>
+    <a href="http://<%= logsUrl %>" download="logs.json">.../logs.json
+    <i class="glyphicon glyphicon-cloud-download"></i>
+    </a>
+  </dd>
+  <dt>Result link</dt>
+  <dd>
+    <a href="http://<%= resultUrl %>" download="result.json">.../result.json
+    <i class="glyphicon glyphicon-cloud-download"></i>
+    </a>
+  </dd>
+</dl>
+<% } %>

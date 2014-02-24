@@ -58,6 +58,19 @@
     });
     </script>
     {% endif %}
+
+    {% if page.JSONFormatter %}
+    <link rel="stylesheet" href="/assets/JSONFormatter/JSONFormatter.css">
+    <script src="/assets/JSONFormatter/JSONFormatter.js"></script>
+    {% endif %}
+
+    {% if page.ejs %}
+    <script src="/assets/ejs_production.js"></script>
+    {% endif %}
+
+    {% if page.moment %}
+    <script src="/assets/moment.min.js"></script>
+    {% endif %}
   </head>
   <body>
     <nav role="navigation" class="navbar navbar-default">

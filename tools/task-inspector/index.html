@@ -1,7 +1,10 @@
 ---
-layout:   default
-class:    html
-prism:    true
+layout:           default
+class:            html
+prism:            true
+JSONFormatter:    true
+ejs:              true
+moment:           true
 ---
 
 <style>
@@ -11,6 +14,47 @@ prism:    true
   cursor:         pointer;
 }
 #taskId {font: normal 10pt 'Courier New';}
+
+.toggle-json {
+  cursor: pointer;
+}
+.toggle-json:hover span.json-label {
+  text-decoration: underline;
+}
+.toggle-json span.label {
+  font-size: 50%;
+  position: relative;
+  top: -5px;
+  margin-left: 5px;
+}
+.toggle-json i.glyphicon {
+  font-size: 20px;
+}
+.toggle-json i.glyphicon:before {
+  display:    inline-block;
+  -webkit-transition: linear 200ms;
+     -moz-transition: linear 200ms;
+       -o-transition: linear 200ms;
+          transition: linear 200ms;
+  -webkit-transform: rotate(-90deg);
+     -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+       -o-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+.toggle-json i.glyphicon.right:before {
+  -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+       -o-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+.toggle-target {
+  display:      none;
+}
+.link {
+  cursor:       pointer;
+}
 </style>
 
 <h1>Task Inspector</h1>
@@ -45,13 +89,34 @@ prism:    true
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="task">
-      <pre><code id="task-definition" class="language-javascript"></code></pre>
+      <h3>Task Summary</h3>
+      <div id="task-summary"></div>
+      <h3 class="toggle-json">
+          <i class="glyphicon glyphicon-chevron-down"></i>
+          <span class="json-label">Task Definition</span>
+          <span class="label label-warning">json</span>
+      </h3>
+      <pre class="toggle-target"><code id="task-definition"></code></pre>
     </div>
     <div class="tab-pane" id="resolution">
-      <pre><code id="task-resolution" class="language-javascript"></code></pre>
+      <h3>Resolution Summary</h3>
+      <div id="resolution-summary"></div>
+      <h3 class="toggle-json">
+          <i class="glyphicon glyphicon-chevron-down"></i>
+          <span class="json-label">Task Resolution</span>
+          <span class="label label-warning">json</span>
+      </h3>
+      <pre class="toggle-target"><code id="task-resolution"></code></pre>
     </div>
     <div class="tab-pane" id="status">
-      <pre><code id="task-status" class="language-javascript"></code></pre>
+      <h3>Status Summary</h3>
+      <div id="status-summary"></div>
+      <h3 class="toggle-json">
+          <i class="glyphicon glyphicon-chevron-down"></i>
+          <span class="json-label">Task Status</span>
+          <span class="label label-warning">json</span>
+      </h3>
+      <pre class="toggle-target"><code id="task-status"></code></pre>
     </div>
   </div>
 </div>
@@ -61,6 +126,12 @@ prism:    true
     d70dd764-c9e4-49cd-bdb7-d37613bae15e
     184663c5-d403-4dc5-9f31-ea7b973f82b1
 */
+
+/** Simple hack allowing us to toggle the raw JSON */
+$('.toggle-json').click(function() {
+    $('.toggle-json').next().slideToggle(200);
+    $('.toggle-json').find('i').toggleClass('right');
+});
 
 /** Simple hack implementing a tab with support disabled tabs */
 $('.nav.nav-tabs li a.tab').click(function() {
@@ -74,6 +145,11 @@ $('.nav.nav-tabs li a.tab').click(function() {
   $(target).addClass('active');
 });
 
+/** Inspect a run of the current task */
+var inspectRun = function(runId) {
+  alert("TODO: Inspect runId " + runId + " of the current task!");
+};
+
 /** Get current taskId from window hash */
 var getTaskId = function() {
   return window.location.hash.substr(1);
@@ -83,6 +159,30 @@ var getTaskId = function() {
 $('#inspect-task').click(function() {
   window.location.hash = '#' + $('#taskId').val();
 });
+
+/** Render a task to #definition */
+var _renderTaskSummary = new EJS({url: '/assets/task-inspector/task.ejs'});
+var renderTask = function(task) {
+  $('#task-definition').jsonFormat(JSON.stringify(task));
+  $('#task-summary').html(_renderTaskSummary.render(task));
+  Prism.highlightAll(false);
+};
+
+/** Render resolution in #resolution */
+var _renderResolutionSummary = new EJS({
+  url: '/assets/task-inspector/resolution.ejs'
+});
+var renderResolution = function(resolution) {
+  $('#task-resolution').jsonFormat(JSON.stringify(resolution));
+  $('#resolution-summary').html(_renderResolutionSummary.render(resolution));
+};
+
+/** Render status in #status */
+var _renderStatusSummary = new EJS({url: '/assets/task-inspector/status.ejs'});
+var renderStatus = function(status) {
+  $('#task-status').jsonFormat(JSON.stringify(status));
+  $('#status-summary').html(_renderStatusSummary.render(status));
+};
 
 /** Inspect a given taskId */
 var inspectTask = function(taskId) {
@@ -95,8 +195,7 @@ var inspectTask = function(taskId) {
     if (taskId != getTaskId()) {
       return;
     }
-    $('#task-definition').text(JSON.stringify(task, undefined, 2));
-    Prism.highlightAll(false);
+    renderTask(task);
     $('#task-not-found').hide();
     $('#task-info').show();
   }).fail(function() {
@@ -110,26 +209,26 @@ var inspectTask = function(taskId) {
     if (taskId != getTaskId()) {
       return;
     }
-    $('#task-resolution').text(JSON.stringify(resolution, undefined, 2));
-    Prism.highlightAll(false);
+    renderResolution(resolution);
+    renderStatus(resolution.status);
     $('.tab[data-target=#resolution]').parent().removeClass('disabled');
-  }).fail(function() {
-    $('.tab[data-target=#resolution]').parent().addClass('disabled');
-  });
-
-  // Load task status
-  var statusUrl = 'http://queue.taskcluster.net/v1/task/' + taskId + '/status';
-  $.get(statusUrl, function(status) {
-    // Check this is still the current task
-    if (taskId != getTaskId()) {
-      return;
-    }
-    $('#task-status').text(JSON.stringify(status, undefined, 2));
-    Prism.highlightAll(false);
     $('.tab[data-target=#status]').parent().removeClass('disabled');
   }).fail(function() {
-    $('.tab[data-target=#status]').parent().addClass('disabled');
+    $('.tab[data-target=#resolution]').parent().addClass('disabled');
+    // Load task status, from queue if resolution.json is missing
+    var statusUrl = 'http://queue.taskcluster.net/v1/task/' + taskId + '/status';
+    $.get(statusUrl, function(status) {
+      // Check this is still the current task
+      if (taskId != getTaskId()) {
+        return;
+      }
+      renderStatus(status.status);
+      $('.tab[data-target=#status]').parent().removeClass('disabled');
+    }).fail(function() {
+      $('.tab[data-target=#status]').parent().addClass('disabled');
+    });
   });
+
 };
 
 /** On loaded, load taskId as given by window.hash */
