@@ -1,0 +1,74 @@
+<% if (result) { %>
+<h3>Result Summary</h3>
+<dl class="dl-horizontal">
+  <dt>Worker-group</dt>
+  <dd><code><%= result.metadata.workerGroup %></code></dd>
+  <dt>Worker-id</dt>
+  <dd><code><%= result.metadata.workerId %></code></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <%
+  // Let's do statistics
+  var started = result.statistics.started;
+  var finished = result.statistics.finished;
+  %>
+  <dt>Started</dt>
+  <dd><%= moment(started).fromNow() %></dd>
+
+  <dt>Finished</dt>
+  <dd>
+      <%= moment(finished).fromNow() %>
+      (<%= moment(finished).from(started, true) %> later)
+  </dd>
+</dl>
+
+<dl class="dl-horizontal">
+<% for (name in result.artifacts) {
+     var url = result.artifacts[name]; %>
+  <dt>Artifact</dt>
+  <dd>
+    <a href="http://<%= url %>" download="<%= name %>">.../<%= name %>
+    <i class="glyphicon glyphicon-cloud-download"></i>
+    </a>
+  </dd>
+<% } %>
+  <dt>Result</dt>
+  <dd>
+    <pre class="language-javascript"><code><%=
+      JSON.stringify(result.result, undefined, 2)
+    %></code></pre>
+  </dd>
+</dl>
+
+<h3 class="toggle-json">
+    <i class="glyphicon glyphicon-chevron-down"></i>
+    <span class="json-label">Task Run Result</span>
+    <span class="label label-warning">json</span>
+</h3>
+<pre class="toggle-target"><code id="run-<%= runId %>-result"></code></pre>
+<% } %>
+
+<% if (logs) { %>
+<h3>Log Inspection</h3>
+<dl class="dl-horizontal" style="margin-bottom: 10px;">
+  <dt>Select log</dt>
+  <dd>
+    <select id="run-<%= runId%>-log-selector">
+      <% for (name in logs.logs) {
+         var url = logs.logs[name]; %>
+        <option value="<%= url %>"><%= name%></option>
+        <option value="<%= url %>"><%= name%></option>
+      <% } %>
+    </select>
+  </dd>
+</dl>
+<div id="run-<%= runId%>-term"></div>
+
+<h3 class="toggle-json">
+    <i class="glyphicon glyphicon-chevron-down"></i>
+    <span class="json-label">Task Run Logs</span>
+    <span class="label label-warning">json</span>
+</h3>
+<pre class="toggle-target"><code id="run-<%= runId %>-logs"></code></pre>
+<% } %>

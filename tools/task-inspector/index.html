@@ -5,6 +5,8 @@ prism:            true
 JSONFormatter:    true
 ejs:              true
 moment:           true
+BootstrapSelect:  true
+TermJS:           true
 ---
 
 <style>
@@ -55,6 +57,15 @@ moment:           true
 .link {
   cursor:       pointer;
 }
+.terminal {
+  float: none;
+}
+h3 {
+  margin-left: 30px;
+}
+h3.toggle-json {
+  margin-left: 0px;
+}
 </style>
 
 <h1>Task Inspector</h1>
@@ -83,9 +94,15 @@ moment:           true
 
 <div id="task-info">
   <ul class="nav nav-tabs">
-    <li class="active"><a class="tab" data-target="#task">Task</a></li>
-    <li><a class="tab" data-target="#resolution">Resolution</a></li>
-    <li><a class="tab" data-target="#status">Status</a></li>
+    <li class="active" data-order="-2">
+      <a class="tab" data-target="#task">Task</a>
+    </li>
+    <li data-order="-1">
+      <a class="tab" data-target="#resolution">Resolution</a>
+    </li>
+    <li data-order="0">
+      <a class="tab" data-target="#status">Status</a>
+    </li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="task">
@@ -125,16 +142,20 @@ moment:           true
 /* For testing use:
     d70dd764-c9e4-49cd-bdb7-d37613bae15e
     184663c5-d403-4dc5-9f31-ea7b973f82b1
+    b5c77505-237b-4fa1-b393-1ff4bc6185f6
 */
 
 /** Simple hack allowing us to toggle the raw JSON */
-$('.toggle-json').click(function() {
-    $('.toggle-json').next().slideToggle(200);
-    $('.toggle-json').find('i').toggleClass('right');
-});
+var toggleClickHandler = function() {
+    $(this).next().slideToggle(200);
+    $(this).find('i').toggleClass('right');
+};
+
+// Use the toggle click handler for all .toggle-json's
+$('.toggle-json').click(toggleClickHandler);
 
 /** Simple hack implementing a tab with support disabled tabs */
-$('.nav.nav-tabs li a.tab').click(function() {
+var tabClickHandler = function() {
   var target = $(this).data('target');
   if ($(this).parent().hasClass('active') ||
       $(this).parent().hasClass('disabled')) {
@@ -143,11 +164,15 @@ $('.nav.nav-tabs li a.tab').click(function() {
   $(this).parent().parent().parent().find('.active').removeClass('active');
   $(this).parent().addClass('active');
   $(target).addClass('active');
-});
+};
+
+// Enable tabClickHandler for default tabs
+$('.nav.nav-tabs li a.tab').click(tabClickHandler);
 
 /** Inspect a run of the current task */
 var inspectRun = function(runId) {
-  alert("TODO: Inspect runId " + runId + " of the current task!");
+  // What a lovely abuse of CSS classes and event handlers :)
+  $('.hit-this-show-run-' + runId).click();
 };
 
 /** Get current taskId from window hash */
@@ -184,10 +209,103 @@ var renderStatus = function(status) {
   $('#status-summary').html(_renderStatusSummary.render(status));
 };
 
+/** Render a log from a url to a terminal */
+var renderLogInto = function(logUrl, el) {
+  var term = $(el).data('term');
+  if (term) {
+    term.destroy();
+  }
+  term = new Terminal({
+    cols: 80,
+    rows: 24,
+    useStyle: true,
+    screenKeys: true
+  });
+  term.open(el);
+  $(el).data('logUrl', logUrl);
+  $(el).data('term', term);
+  $.get(logUrl, function(data) {
+    // Abort if we started loading another log
+    if ($(el).data('logUrl') != logUrl) {
+      return;
+    }
+    term.write(data);
+  }).fail(function() {
+    term.write("Failed to load log from\n");
+  });
+};
+
+/** Create a tab for a new run and render it */
+var _renderRunTab = new EJS({url: '/assets/task-inspector/run.ejs'});
+var renderRunTab = function(taskId, runId, logs, result) {
+  // Configure a tab
+  var tab = $('<li>').append($('<a>').addClass('tab').text('Run ' + runId));
+  var tabpane = $('<div>').addClass('tab-pane');
+  tab.find('a').data('target', '#run-id-' + runId);
+  tab.find('a').click(tabClickHandler);
+  tab.find('a').addClass('hit-this-show-run-' + runId);
+  tabpane.attr('id','run-id-' + runId);
+  tab.data('order', runId);
+
+  // Make it easy to clean-up
+  tab.addClass('run-tab-related');
+  tabpane.addClass('run-tab-related');
+
+  // Time to populate the tabpane
+  tabpane.html(_renderRunTab.render({
+    taskId:   taskId,
+    runId:    runId,
+    logs:     logs,
+    result:   result
+  }));
+
+  // Add tab and tabpane
+  $('#task-info .nav.nav-tabs').append(tab);
+  $('#task-info .tab-content').append(tabpane);
+
+  // Now let sort the tabs, so there is order in this
+  var tablist = $('#task-info .nav.nav-tabs');
+  var tabs = tablist.children('li').get();
+  tabs.sort(function(a, b) {
+    return parseInt($(a).data('order')) > parseInt($(b).data('order'));
+  });
+  tabs.forEach(function(tab) {
+    tablist.append(tab);
+  });
+
+  // Render JSON inside tabpane, if we have JSON to render
+  if (result) {
+    $('#run-' + runId + '-result').jsonFormat(JSON.stringify(result));
+  }
+  if (logs) {
+    $('#run-' + runId + '-logs').jsonFormat(JSON.stringify(logs));
+    $('#run-' + runId + '-log-selector').selectpicker();
+    $('#run-' + runId + '-log-selector').change(function() {
+      var logUrl = $('#run-' + runId + '-log-selector').val();
+      renderLogInto(logUrl, $('#run-' + runId + '-term')[0]);
+    });
+    $('#run-' + runId + '-log-selector').change();
+  }
+
+  // Now activate click handlers and stuff
+  tabpane.find('.toggle-json').click(toggleClickHandler);
+  Prism.highlightAll(false);
+};
+
 /** Inspect a given taskId */
 var inspectTask = function(taskId) {
   var taskId  = getTaskId();
   var baseUrl = "http://tasks.taskcluster.net/" + taskId;
+
+  // Hide task-info while loading
+  $('#task-info').hide();
+
+  // Disable tabs until they are loaded, if they load
+  $('.tab[data-target=#status]').parent().addClass('disabled');
+  $('.tab[data-target=#resolution]').parent().addClass('disabled');
+
+  // Remove all tabs and content from runs as this is regenerated
+  $('.run-tab-related').remove();
 
   // Load task definition
   $.get(baseUrl + '/task.json', function(task) {
@@ -198,6 +316,8 @@ var inspectTask = function(taskId) {
     renderTask(task);
     $('#task-not-found').hide();
     $('#task-info').show();
+    // Always show the task definition tab first, other may load lazily
+    $('.nav.nav-tabs li a.tab[data-target="#task"]').click();
   }).fail(function() {
     $('#task-not-found').show();
     $('#task-info').hide();
@@ -214,7 +334,6 @@ var inspectTask = function(taskId) {
     $('.tab[data-target=#resolution]').parent().removeClass('disabled');
     $('.tab[data-target=#status]').parent().removeClass('disabled');
   }).fail(function() {
-    $('.tab[data-target=#resolution]').parent().addClass('disabled');
     // Load task status, from queue if resolution.json is missing
     var statusUrl = 'http://queue.taskcluster.net/v1/task/' + taskId + '/status';
     $.get(statusUrl, function(status) {
@@ -224,11 +343,50 @@ var inspectTask = function(taskId) {
       }
       renderStatus(status.status);
       $('.tab[data-target=#status]').parent().removeClass('disabled');
-    }).fail(function() {
-      $('.tab[data-target=#status]').parent().addClass('disabled');
     });
   });
 
+  // Try to fetch runs
+  [1, 2, 3, 4, 5].forEach(function(runId) {
+    // Here we do a custom promise implementation because jQuery apparently
+    // can't handle errors... and suffers from poor documentation.
+    var unresolved = 2;
+    var logs = null, result = null;
+    var resolved = function() {
+      if (taskId != getTaskId()) {
+        return;
+      }
+      // If either logs or result was fetch we have something to show
+      if (logs || result) {
+        renderRunTab(taskId, runId, logs, result);
+      }
+    };
+    // Do the actual requests
+    $.get(baseUrl + '/runs/' + runId + '/logs.json', function(data) {
+      logs = data;
+      unresolved--;
+      if (unresolved == 0) {
+        resolved();
+      }
+    }).fail(function() {
+      unresolved--;
+      if (unresolved == 0) {
+        resolved();
+      }
+    });
+    $.get(baseUrl + '/runs/' + runId + '/result.json', function(data) {
+      result = data;
+      unresolved--;
+      if (unresolved == 0) {
+        resolved();
+      }
+    }).fail(function() {
+      unresolved--;
+      if (unresolved == 0) {
+        resolved();
+      }
+    });
+  });
 };
 
 /** On loaded, load taskId as given by window.hash */
