@@ -72,9 +72,26 @@
     <script src="/assets/moment.min.js"></script>
     {% endif %}
 
-    {% if page.moment %}
+    {% if page.TermJS %}
     <script src="/assets/term.js"></script>
     {% endif %}
+
+    {% if page.JSONForm %}
+    <script src="/assets/underscore-min.js"></script>
+    <script src="/assets/ace/ace.js"></script>
+    <script src="/assets/ace/mode-javascript.js"></script>
+    <script src="/assets/ace/mode-json.js"></script>
+    <script src="/assets/ace/mode-markdown.js"></script>
+    <script src="/assets/ace/mode-sh.js "></script>
+    <script src="/assets/ace/theme-twilight.js"></script>
+    <script src="/assets/marked.js"></script>
+    <script src="/assets/jsonform.js"></script>
+    {% endif %}
+
+    {% if page.marked %}
+    <script src="/assets/marked.js"></script>
+    {% endif %}
+
 
     {% if page.BootstrapSelect %}
     <link rel="stylesheet" href="/assets/bootstrap-select/bootstrap-select.min.css">

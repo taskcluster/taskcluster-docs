@@ -2,13 +2,13 @@
 layout:   default
 class:    html
 docson:   true
+marked:   true
 ---
 
 <h1>Queue API Documentation</h1>
 <i>Documentation of the API end-points offered by the queue.</i>
 <div id="docs"></div>
 
-<script src="/assets/marked.js"></script>
 <script>
 $.get('http://queue.taskcluster.net/v1/reference', function(ref) {
   ref.forEach(function(entry) {

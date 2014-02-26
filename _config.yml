@@ -56,3 +56,6 @@ sections:
       - name: Task Inspector
         url:  /tools/task-inspector/index.html
         href: /tools/task-inspector/
+      - name: Task Creator
+        url:  /tools/task-creator/index.html
+        href: /tools/task-creator/

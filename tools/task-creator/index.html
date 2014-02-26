@@ -1,0 +1,119 @@
+---
+layout:           default
+class:            html
+JSONForm:         true
+prism:            true
+---
+<style>
+#schema-not-found {
+  display:      none;
+}
+#failed-to-post {
+  margin-top: 80px;
+  display:      none;
+}
+</style>
+
+<h1>Create New Task</h2>
+<p>
+Fill out the form below to create a new task.
+</p><br>
+
+<form id="post-task-form" class="form-horizontal" role="form">
+</form>
+<div id="schema-not-found" class="alert alert-warning">
+  <strong>Schema Not Found!</strong> Task definition schema couldn't be loaded...
+</div>
+
+<div id="failed-to-post" class="alert alert-warning">
+  <strong>Failed to Post Task!</strong> Server gave the following reason:
+  <pre><code id="error-reason" class="language-javascript"></code></pre>
+</div>
+
+<script>
+$('#post-task-form').submit(function(e) {
+  e.preventDefault();
+  var task = $('#post-task-form').jsonFormValue();
+  $.ajax({
+    type:         'POST',
+    url:          'http://queue.taskcluster.net/v1/task/new',
+    data:         JSON.stringify(task),
+    contentType:  'application/json',
+    success: function(data) {
+      var taskId = data.status.taskId;
+      window.location = 'http://docs.taskcluster.net/tools/task-inspector/#' + taskId;
+    }
+  }).fail(function(jqXHR) {
+    $('#error-reason').text(JSON.stringify(jqXHR.responseJSON, null, 2));
+    $('#failed-to-post').show();
+    Prism.highlightAll(false);
+  });
+})
+
+$.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
+  var created = new Date();
+  var deadline = new Date();
+  var payload = {
+    image:      'ubuntu',
+    command:    ['/bin/bash', '-c', "'Hello World'"],
+    features: {
+      azureLivelog: true,
+      bufferLog:    false
+    }
+  };
+  var tags = {
+    kind:       'one-time-task'
+  }
+  deadline.setHours(deadline.getHours() + 24);
+  $('#post-task-form').jsonForm({
+    schema: schema,
+    form: [
+      {
+        key:          'version'
+      }, {
+        key:          'provisionerId',
+        placeholder:  "aws-provisioner"
+      }, {
+        key:          'workerType',
+        placeholder:  "AMI image-id"
+      }, {
+        key:          'routing',
+        placeholder:  "jonasfj.special.tests"
+      }, {
+        key:          'retries',
+        placeholder:  "3"
+      }, {
+        key:          'priority',
+        placeholder:  "5"
+      }, {
+        key:          'created',
+        value:        created.toJSON()
+      }, {
+        key:          'deadline',
+        value:        deadline.toJSON()
+      }, {
+        key:          'payload',
+        type:         'ace',
+        aceMode:      'json',
+        aceTheme:     'twilight',
+        value:        JSON.stringify(payload, null, 2)
+      }, {
+        key:          'metadata'
+      }, {
+        key:          'tags',
+        type:         'ace',
+        aceMode:      'json',
+        aceTheme:     'twilight',
+        value:        JSON.stringify(tags, null, 2)
+      }, {
+        type:         'submit',
+        title:        "Post task",
+        htmlClass:    'pull-right'
+      }
+    ]
+  });
+}).fail(function() {
+  $('#schema-not-found').show();
+  $('post-task-form').hide();
+})
+</script>
