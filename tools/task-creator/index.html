@@ -55,7 +55,7 @@ $.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
   var deadline = new Date();
   var payload = {
     image:      'ubuntu',
-    command:    ['/bin/bash', '-c', "'Hello World'"],
+    command:    ['/bin/bash', '-c', "echo 'Hello World'"],
     features: {
       azureLivelog: true,
       bufferLog:    false
@@ -72,19 +72,20 @@ $.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
         key:          'version'
       }, {
         key:          'provisionerId',
-        placeholder:  "aws-provisioner"
+        value:        'aws-provisioner'
       }, {
         key:          'workerType',
-        placeholder:  "AMI image-id"
+        placeholder:  "AMI image-id",
+        value:        'ami-cc5c30fc'
       }, {
         key:          'routing',
-        placeholder:  "jonasfj.special.tests"
+        value:        "task-testing.task-creator"
       }, {
         key:          'retries',
-        placeholder:  "3"
+        value:        5
       }, {
         key:          'priority',
-        placeholder:  "5"
+        value:        5
       }, {
         key:          'created',
         value:        created.toJSON()
@@ -98,13 +99,40 @@ $.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
         aceTheme:     'twilight',
         value:        JSON.stringify(payload, null, 2)
       }, {
-        key:          'metadata'
+        type:         'fieldset',
+        title:        "Meta-data",
+        items: [
+          {
+            key:          'metadata.name',
+            value:        "A _custom_ task"
+          }, {
+            key:          'metadata.description',
+            type:         'ace',
+            aceMode:      'markdown',
+            aceTheme:     'twilight',
+            height:       '10ex',
+            value:        "A **super** quick test task from task creator tool."
+          }, {
+            key:          'metadata.owner',
+            placeholder:  "somebody@mozilla.com"
+          }, {
+            key:          'metadata.source',
+            value:        "http://docs.taskcluster.net/tools/task-creator/"
+          }
+        ]
       }, {
-        key:          'tags',
-        type:         'ace',
-        aceMode:      'json',
-        aceTheme:     'twilight',
-        value:        JSON.stringify(tags, null, 2)
+        type:         'fieldset',
+        title:        "Tags",
+        items: [
+          {
+            key:          'tags',
+            type:         'ace',
+            aceMode:      'json',
+            aceTheme:     'twilight',
+            height:       '20ex',
+            value:        JSON.stringify(tags, null, 2)
+          }
+        ]
       }, {
         type:         'submit',
         title:        "Post task",
