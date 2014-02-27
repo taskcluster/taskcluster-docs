@@ -67,6 +67,9 @@ h3 {
 h3.toggle-json {
   margin-left: 0px;
 }
+#fullscreen-log-viewer .modal-dialog {
+  width:        121ex;
+}
 </style>
 
 <h1>Task Inspector</h1>
@@ -91,6 +94,23 @@ h3.toggle-json {
 
 <div id="task-not-found" class="alert alert-warning">
   <strong>Task Not Found!</strong> Task definition couldn't be loaded...
+</div>
+
+<div class="modal fade" id="fullscreen-log-viewer" tabindex="-1"
+     role="dialog" aria-labelledby="fullscreen-log-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <h4 class="modal-title" id="fullscreen-log-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div id="fullscreen-log"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="task-info">
@@ -211,16 +231,17 @@ var renderStatus = function(status) {
 };
 
 /** Render a log from a url to a terminal */
-var renderLogInto = function(logUrl, el) {
+var renderLogInto = function(logUrl, el, options) {
+  options = options ? options : {};
   var term = $(el).data('term');
   if (term) {
     term.destroy();
   }
   term = new Terminal({
-    cols: 80,
-    rows: 24,
-    useStyle: true,
-    screenKeys: true
+    cols:         options.cols || 80,
+    rows:         options.rows || 24,
+    useStyle:     true,
+    screenKeys:   false
   });
   term.open(el);
   $(el).data('logUrl', logUrl);
@@ -234,6 +255,16 @@ var renderLogInto = function(logUrl, el) {
   }).fail(function() {
     term.write("Failed to load log from\n");
   });
+};
+
+/** Show fullscreen log */
+var showFullscreenLog = function(logFile, logUrl) {
+  $('#fullscreen-log-label').html("Log File: <code>" + logFile + "</code>");
+  renderLogInto(logUrl, $('#fullscreen-log')[0], {
+    cols:     120,
+    rows:     45
+  });
+  $('#fullscreen-log-viewer').modal();
 };
 
 /** Create a tab for a new run and render it */
@@ -279,6 +310,7 @@ var renderRunTab = function(taskId, runId, logs, result) {
     $('#run-' + runId + '-result').jsonFormat(JSON.stringify(result));
   }
   if (logs) {
+    // Setup various Javascript things from the template, lovely hacks :)
     $('#run-' + runId + '-logs').jsonFormat(JSON.stringify(logs));
     $('#run-' + runId + '-log-selector').selectpicker();
     $('#run-' + runId + '-log-selector').change(function() {
@@ -288,6 +320,11 @@ var renderRunTab = function(taskId, runId, logs, result) {
     $('#run-' + runId + '-log-selector').change();
     $('#refresh-run-' + runId + '-log').click(function() {
       $('#run-' + runId + '-log-selector').change();
+    });
+    $('#fullscreen-run-' + runId + '-log').click(function() {
+      var logUrl = $('#run-' + runId + '-log-selector').val();
+      var label = $('#run-' + runId + '-log-selector option:selected').text();
+      showFullscreenLog(label, logUrl);
     });
   }
 
