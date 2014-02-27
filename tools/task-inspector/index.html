@@ -286,6 +286,9 @@ var renderRunTab = function(taskId, runId, logs, result) {
       renderLogInto(logUrl, $('#run-' + runId + '-term')[0]);
     });
     $('#run-' + runId + '-log-selector').change();
+    $('#refresh-run-' + runId + '-log').click(function() {
+      $('#run-' + runId + '-log-selector').change();
+    });
   }
 
   // Now activate click handlers and stuff
