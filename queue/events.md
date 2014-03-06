@@ -11,10 +11,10 @@ We have the following **topic exchanges**:
 
   Exchange                  | Message Occur When
   -------------------------:|-------------------------------------------------
-  `v1/queue:task-pending`   | A task becomes pending, by creation or timeout
-  `v1/queue:task-running`   | A task is scheduled on a worker
-  `v1/queue:task-completed` | A task is resolved a completed by a worker
-  `v1/queue:task-failed`    | A task has failed (or is canceled)
+  `queue/v1/task-pending`   | A task becomes pending, by creation or timeout
+  `queue/v1/task-running`   | A task is scheduled on a worker
+  `queue/v1/task-completed` | A task is resolved a completed by a worker
+  `queue/v1/task-failed`    | A task has failed (or is canceled)
 
 
 Message Routing Key
@@ -37,7 +37,7 @@ separated list of identifiers, defined as follows:
   </div>
   <div style="display: table-cell;">
     The special key `_` will be used for keys not available, for example
-    `runId` for messages to `v1/queue:task-pending` which obviously haven't started running yet.
+    `runId` for messages to `queue/v1/task-pending` which obviously haven't started running yet.
   </div>
 </div>
 
@@ -47,19 +47,19 @@ This section features automatically generated documentation based on the JSON
 schemas that messages are validated against, before they are posted.
 
 ### Pending Task Messages
-Whenever a task becomes pending a message is posted to the `v1/queue:task-pending`
+Whenever a task becomes pending a message is posted to the `queue/v1/task-pending`
 exchange. The message is guaranteed to have the following format.
 
-<div data-render-schema="http://schemas.taskcluster.net/v1/queue:task-pending.json">
+<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-pending-message.json">
 </div>
 
 
 ### Task Run Started Messages
 Whenever a task is claimed by a worker, hence, a run is started on a worker,
-a message is posted to the `v1/queue:task-running` exchange. The message is
+a message is posted to the `queue/v1/task-running` exchange. The message is
 guaranteed to have the following format.
 
-<div data-render-schema="http://schemas.taskcluster.net/v1/queue:task-running.json">
+<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-running-message.json">
 </div>
 
 **Notice**, that the `logsUrl` may return `404`, by the end of the run the
@@ -70,12 +70,12 @@ is useful if the worker supports live logging.
 
 ### Task Completion Messages
 When a task is completed by a worker a message is posted to the
-`v1/queue:task-completed` exchange. This message is routed using the `run-id`,
+`queue/v1/task-completed` exchange. This message is routed using the `run-id`,
 `worker-group` and `worker-id` that completed the task. But information about
 additional runs is also available from the task status structure. See message
 format below.
 
-<div data-render-schema="http://schemas.taskcluster.net/v1/queue:task-completed.json">
+<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-completed-message.json">
 </div>
 
 Upon task completion a result structure is made available, you'll find the url
@@ -84,12 +84,12 @@ on S3, see task result on [task storage](task-storage.html) for more details.
 
 ### Task Failure Messages
 Whenever a task is concluded to be failed a message is posted to the
-`v1/queue:task-failed` exchange. This happens if the task isn't completed before
+`queue/v1/task-failed` exchange. This happens if the task isn't completed before
 its `deadlìne`, all retries failed (i.e. workers stopped responding) or
 the task was canceled.
 
 The specific _reason_ is evident from that task status structure, refer to the
 `reason` property.
 
-<div data-render-schema="http://schemas.taskcluster.net/v1/queue:task-failed.json">
+<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-failed-message.json">
 </div>
