@@ -50,7 +50,7 @@ $('#post-task-form').submit(function(e) {
   });
 })
 
-$.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
+$.get('http://schemas.taskcluster.net/queue/v1/task.json', function(schema) {
   var created = new Date();
   var deadline = new Date();
   var payload = {
@@ -71,33 +71,54 @@ $.get('http://schemas.taskcluster.net/v1/task.json', function(schema) {
       {
         key:          'version'
       }, {
-        key:          'provisionerId',
-        value:        'aws-provisioner'
+        type:         'fieldset',
+        title:        "Run-time",
+        items: [
+          {
+            key:          'provisionerId',
+            value:        'aws-provisioner'
+          }, {
+            key:          'workerType',
+            placeholder:  "AMI image-id",
+            value:        'ami-cc5c30fc'
+          }
+        ]
       }, {
-        key:          'workerType',
-        placeholder:  "AMI image-id",
-        value:        'ami-cc5c30fc'
+        type:         'fieldset',
+        title:        "Preferences",
+        items: [
+          {
+            key:          'routing',
+            value:        "task-testing.task-creator"
+          }, {
+            key:          'timeout',
+            value:        60 * 20
+          }, {
+            key:          'retries',
+            value:        5
+          }, {
+            key:          'priority',
+            value:        5
+          }, {
+            key:          'created',
+            value:        created.toJSON()
+          }, {
+            key:          'deadline',
+            value:        deadline.toJSON()
+          }
+        ]
       }, {
-        key:          'routing',
-        value:        "task-testing.task-creator"
-      }, {
-        key:          'retries',
-        value:        5
-      }, {
-        key:          'priority',
-        value:        5
-      }, {
-        key:          'created',
-        value:        created.toJSON()
-      }, {
-        key:          'deadline',
-        value:        deadline.toJSON()
-      }, {
-        key:          'payload',
-        type:         'ace',
-        aceMode:      'json',
-        aceTheme:     'twilight',
-        value:        JSON.stringify(payload, null, 2)
+        type:         'fieldset',
+        title:        "Definition",
+        items: [
+          {
+            key:          'payload',
+            type:         'ace',
+            aceMode:      'json',
+            aceTheme:     'twilight',
+            value:        JSON.stringify(payload, null, 2)
+          }
+        ]
       }, {
         type:         'fieldset',
         title:        "Meta-data",
