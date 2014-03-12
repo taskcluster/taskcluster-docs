@@ -76,6 +76,10 @@
     <script src="/assets/term.js"></script>
     {% endif %}
 
+    {% if page.underscore %}
+    <script src="/assets/underscore-min.js"></script>
+    {% endif %}
+
     {% if page.JSONForm %}
     <script src="/assets/underscore-min.js"></script>
     <script src="/assets/ace/ace.js"></script>
@@ -92,6 +96,14 @@
     <script src="/assets/marked.js"></script>
     {% endif %}
 
+    {% if page.superagent %}
+    <script src="/assets/superagent-promise.js"></script>
+    {% endif %}
+
+    {% if page.dagred3 %}
+    <script src="/assets/d3.v3.min.js"></script>
+    <script src="/assets/dagre-d3.min.js"></script>
+    {% endif %}
 
     {% if page.BootstrapSelect %}
     <link rel="stylesheet" href="/assets/bootstrap-select/bootstrap-select.min.css">

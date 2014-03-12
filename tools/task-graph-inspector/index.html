@@ -1,0 +1,208 @@
+---
+layout:           default
+class:            html
+prism:            true
+JSONFormatter:    true
+ejs:              true
+moment:           true
+marked:           true
+superagent:       true
+underscore:       true
+dagred3:          true
+---
+<style>
+#task-graph-not-found {display: none;}
+#task-graph-info {display: none;}
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+
+.node rect {
+  stroke:         #000;
+  stroke-width:   1.5px;
+  fill:           #fff;
+}
+
+.edgeLabel rect {
+  fill:           #fff;
+}
+
+.edgePath path {
+  stroke:         #333;
+  stroke-width:   1.5px;
+  fill:           none;
+}
+
+div.node {
+  padding:        10px;
+  text-align:     center;
+}
+span.node-label {
+  font-weight:    bold;
+}
+code.node-task-id {
+  font-size:      10px;
+}
+</style>
+
+<h1>Task-Graph Inspector</h1>
+<p>This tool lets you inspect a task-graph given the <code>taskGraphId</code></p>
+
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="task-graph-id" class="col-sm-4 control-label">
+      Enter <code>taskGraphId</code>
+    </label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="task-graph-id"
+             placeholder="taskGraphId">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="inspect-task-graph" class="btn btn-primary">
+        Inspect task-graph
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div id="task-graph-not-found" class="alert alert-warning">
+  <strong>Task-Graph Not Found!</strong> Task-graph couldn't be loaded...
+</div>
+
+<div id="task-graph-info">
+<svg>
+    <g transform="translate(20,20)"/>
+</svg>
+</div>
+
+<script>
+// Test with: sKjg19g3QJKiUalFu-Sweg
+
+/** Render a task graph */
+var _renderTaskNode = new EJS({
+  url: '/assets/task-graph-inspector/task-node.ejs'
+});
+var renderTaskGraph = function(taskGraph) {
+  console.log(taskGraph);
+  var g = new dagreD3.Digraph();
+  taskGraph.tasks.forEach(function(task) {
+    g.addNode(task.taskId, {
+      label:        _renderTaskNode.render({task: task}),
+      nodeclass:    'task-node'
+    });
+  });
+  taskGraph.tasks.forEach(function(task) {
+    task.dependents.forEach(function(dependent) {
+      g.addEdge(null, task.taskId, dependent);
+    });
+  });
+
+  var layout = dagreD3.layout().nodeSep(30).rankDir("LR");
+  var renderer = new dagreD3.Renderer();
+  renderer.layout(layout).run(g, d3.select("svg g"));
+};
+
+/** Get current taskGraphId from window hash */
+var getTaskGraphId = function() {
+  return window.location.hash.substr(1);
+};
+
+/** Set current taskGraphId when 'Inspect Task Graph' button is clicked */
+$('#inspect-task-graph').click(function() {
+  window.location.hash = '#' + $('#task-graph-id').val();
+});
+
+// Variables used by inspectTaskGraph and initialized using data from scheduler
+var schedulerBaseUrl  = 'http://localhost:3030';
+var azureAccess       = null;
+var azureBaseUrl      = null;
+
+/** Load task-graph by id */
+var inspectTaskGraph = function(taskGraphId) {
+  // Hide task-info while loading
+  $('#task-graph-info').hide();
+  var req = request
+                .get(azureBaseUrl)
+                .query(_.defaults({
+                  '$filter':  "PartitionKey eq '" + taskGraphId + "'"
+                }, azureAccess.sharedSignature))
+                .accept('application/json;odata=nometadata')
+                .end();
+  req.then(function(res) {
+    if (taskGraphId != getTaskGraphId()) {
+      return;
+    }
+
+    // Check status code
+    if (!res.ok) {
+      throw new Error("Fetch task-graph gave status code: " + res.status);
+    }
+
+    $('#task-graph-info').show();
+    var data = res.body.value;
+
+    var taskGraph = null;
+    data.forEach(function(entity) {
+      if(entity.RowKey == 'task-graph') {
+        taskGraph = _.defaults({
+          taskGraphId:      taskGraphId,
+          requires:         JSON.parse(entity.requires),
+          requiresLeft:     JSON.parse(entity.requiresLeft),
+          tasks:            []
+        }, entity);
+      }
+    });
+
+    taskGraph.tasks = data.filter(function(entity) {
+      return entity.RowKey != 'task-graph';
+    }).map(function(entity) {
+      return _.defaults({
+        taskId:             entity.RowKey,
+        requires:           JSON.parse(entity.requires),
+        requiresLeft:       JSON.parse(entity.requiresLeft),
+        dependents:         JSON.parse(entity.dependents),
+        resolution:         JSON.parse(entity.resolution)
+      }, entity);
+    });
+
+    renderTaskGraph(taskGraph);
+  }).catch(function(err) {
+    console.log("Failed to fetch task-graph, err. " + err, err.stack);
+    if (taskGraphId != getTaskGraphId()) {
+      return;
+    }
+    // Handle case where the request fails for some reason
+    $('#task-graph-not-found').show();
+    $('#task-graph-info').hide();
+  });
+};
+
+/** On loaded, load taskGraphId as given by window.hash */
+$(function() {
+  // Request access to azure table
+  request
+    .get(schedulerBaseUrl + '/v1/table-access')
+    .end()
+    .then(function(res) {
+    azureAccess = res.body;
+    azureBaseUrl = 'http://' + azureAccess.accountName +
+                   '.table.core.windows.net/' + azureAccess.taskGraphTable;
+  }).then(function() {
+    var taskGraphId = getTaskGraphId();
+    $('#task-graph-id').val(taskGraphId);
+    inspectTaskGraph(taskGraphId);
+  });
+});
+
+/** When hash changes inspect the given task-graph */
+$(window).bind("hashchange", function() {
+  inspectTaskGraph(getTaskGraphId());
+});
+
+</script>

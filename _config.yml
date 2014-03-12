@@ -49,6 +49,23 @@ sections:
     links:
       - name: AWS Provisioners
         url:  /provisioners/aws-provisioner.html
+  - name: Scheduler
+    url:  /scheduler/index.html
+    href: /scheduler/
+    links:
+    - name: API Documentation
+      url:  /scheduler/api-docs/index.html
+      href: /scheduler/api-docs/
+    - name: AMQP Exchanges
+      url:  /scheduler/events/index.html
+      href: /scheduler/events/
+    - name: Task-Graph Storage
+      url:  /scheduler/task-graph-storage/index.html
+      href: /scheduler/task-graph-storage/
+    - name: Task-Graph Scheduler Web Interface
+      url:  http://scheduler.taskcluster.net
+    - name: Source Repository
+      url:  https://github.com/taskcluster/task-graph-scheduler
   - name: Tools
     url:  /tools/index.html
     href: /tools/
@@ -56,6 +73,9 @@ sections:
       - name: Task Inspector
         url:  /tools/task-inspector/index.html
         href: /tools/task-inspector/
+      - name: Task-Graph Inspector
+        url:  /tools/task-graph-inspector/index.html
+        href: /tools/task-graph-inspector/
       - name: Task Creator
         url:  /tools/task-creator/index.html
         href: /tools/task-creator/
