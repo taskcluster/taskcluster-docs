@@ -8,9 +8,9 @@ Task-Graph Scheduling
 =====================
 The task-graph scheduler, hosted at **`scheduler.taskcluster.net`**, is
 responsible for scheduling dependent tasks with the queue. In this framework
-the queue ensures execution, but it does handle dependencies, nor is the queue
-aware of task specific results. The queue only cares about task completion,
-specifically that a task completed in a predictable manner.
+the queue ensures execution, but it does not handle dependencies, nor is the
+queue aware of task specific results. The queue only cares about task
+completion, specifically that a task completed in a predictable manner.
 
 The task-graph scheduler on the other hand, doesn't care about which tasks are
 pending, whether or not machines crashes, etc. It cares about the result of
