@@ -58,9 +58,6 @@ marked:           true
 .link {
   cursor:       pointer;
 }
-.terminal {
-  float: none;
-}
 h3 {
   margin-left: 30px;
 }
@@ -108,6 +105,7 @@ h3.toggle-json {
       </div>
       <div class="modal-body">
         <div id="fullscreen-log"></div>
+        <div style="clear: both;"></div>
       </div>
     </div>
   </div>
@@ -238,7 +236,7 @@ var renderLogInto = function(logUrl, el, options) {
     term.destroy();
   }
   term = new Terminal({
-    cols:         options.cols || 80,
+    cols:         options.cols || 105,
     rows:         options.rows || 24,
     useStyle:     true,
     screenKeys:   false
