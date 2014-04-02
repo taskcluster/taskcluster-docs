@@ -4,22 +4,14 @@ class:    markdown
 ---
 AWS Provisioner
 ===============
-The AWS provisioner identified with `aws-provisioner` as the `provisioner-id`,
-and AMI image identifier as `worker-type`.
+The AWS provisioner is identified with `aws-provisioner` as the `provisionerId`,
+provisions EC2 spot instances. Its administrative interface is hosted at
+[aws-provisioner.taskcluster.net](http://aws-provisioner.taskcluster.net), use
+this interface to configure and register new `workerType`s.
 
-| `provisioner-id`  | `worker-type`      |
-|-------------------|--------------------|
-| `aws-provisioner` | Any AMI identifier |
-
-When a task with this `provisioner-id` is pending a spot-request for an instance
-with AMI identifier given as `worker-type` will be requested. It is your
-responsibility to ensure that a worker starts on the AMI when the AMI boots
-that this worker understand they task payload and shutsdown when no more tasks
-is available from the queue, **enjoy!**
-
-As be we formalize things later, this will become less dynamic, and new AMIs
-will have to be registered with the provisioner by an authorized user. This will
-also allow us to associated JSON schemas for task payloads with `worker-type`s.
+It is your responsibility to ensure that a worker starts on the AMI when the AMI
+boots that this worker understand the task payload and shutsdown when no more
+tasks is available from the queue, **enjoy!**
 
 External Links
 --------------
