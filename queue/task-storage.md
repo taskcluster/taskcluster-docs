@@ -17,7 +17,6 @@ and results. These are uploaded to S3 and publicly accessible at
   `/<taskId>/task.json`                 | Task definition as posted
   `/<taskId>/runs/<runId>/logs.json`    | Mapping from log name to URL
   `/<taskId>/runs/<runId>/result.json`  | Task result from a completed run
-  `/<taskId>/runs/<runId>/artifacts/`   | Build artifact storage
   `/<taskId>/resolution.json`           | Task resolution for resolved tasks
 
 **Note**, a task may have more than one run, but `runId`s always starts from
@@ -25,11 +24,17 @@ and results. These are uploaded to S3 and publicly accessible at
 However, if your task is resolved as completed, `resolution.json` will have the
 `runId` for the run that completed the task.
 
-
 **Expiration policy**, there is currently no expiration policy for the task
 storage bucket. But as we move into production it is expected that one will
 be applied. Hence, objects may become unavailable after a certain amount of
 time, probably a few years or something.
+
+**Redirects**, the HTTP client used to access `tasks.taskcluster.net`
+**must support redirects**. In the future we may choose to let
+`tasks.taskcluster.net` be a proxy in front of S3 and Azure Table Storage, as
+we will be storing many small files this may improve performance for certain
+operations. In this event, `tasks.taskcluster.net` may choose to redirect you
+to the resource you seeks. Thus, your HTTP client **must** support redirects.
 
 
 Task Definition
@@ -106,12 +111,7 @@ Task Artifacts
 --------------
 A map from artifact name to URL for artifact is present in the `result.json`
 file documented above. This is always the references of artifacts from a given
-run. Artifacts may be stored anywhere, but artifact put URLs signed by the queue
-will always put the artifacts at
-**`tasks.taskcluster.net/<taskId>/runs/<runId>/artifacts/<artifact-name>`**.
-
-This is useful to know, because these artifacts will have the same expiration
-policy as the rest of the objects described here. But **you should not rely on
-this**, artifacts may be stored anywhere.
-
+run. Artifacts may be stored anywhere you should always access artifacts
+through the provided download URL. Please, ensure that your HTTP client supports
+redirects, as this URL may be redirected.
 
