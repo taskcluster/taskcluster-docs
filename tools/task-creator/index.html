@@ -56,10 +56,14 @@ $.get('http://schemas.taskcluster.net/queue/v1/task.json', function(schema) {
   var payload = {
     image:      'ubuntu',
     command:    ['/bin/bash', '-c', "echo 'Hello World'"],
+    env: {
+      MY_ENV_VARIABLE: "Environment variable value"
+    },
     features: {
       azureLivelog: true,
       bufferLog:    false
-    }
+    },
+    maxRunTime:     600
   };
   var tags = {
     kind:       'one-time-task'
@@ -79,8 +83,8 @@ $.get('http://schemas.taskcluster.net/queue/v1/task.json', function(schema) {
             value:        'aws-provisioner'
           }, {
             key:          'workerType',
-            placeholder:  "AMI image-id",
-            value:        'ami-ca7917fa'
+            placeholder:  "worker type",
+            value:        'test-worker'
           }
         ]
       }, {
