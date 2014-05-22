@@ -1,0 +1,92 @@
+<style>
+  .method-properties > dt,
+  .method-properties > dd {
+    padding-top: 5px;
+  }
+</style>
+<h1><%= marked(title) %></h1>
+<dl class='dl-horizontal'>
+  <dt>BaseUrl</dt>
+  <dd><code><%= baseUrl %></code></dd>
+</dl>
+
+<%= marked(description) %>
+
+<h3>Entires</h3>
+
+<table class='table  table-bordered' style="width: auto;">
+  <thead>
+    <tr>
+      <th>Signature</th>
+      <th>Summary</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% for (var i = 0; i < entries.length; i++) {
+     var entry = entries[i]; %>
+     <%
+      var args = entry.args.slice();
+      if (entry.input) {
+        args.push('payload');
+      }
+      var retval = 'void';
+      if (entry.output) {
+        retval = 'result';
+      }
+      var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
+    %>
+     <tr>
+      <td><code><a
+                  href='#<%= entry.name %>'
+                  title='<%= entry.title%>'><%= signature %></a></code></td>
+      <td><%= entry.title %></td>
+     </tr>
+  <% } %>
+  </tbody>
+<table>
+
+<% for (var i = 0; i < entries.length; i++) {
+   var entry = entries[i]; %>
+  <hr>
+  <a name='<%= entry.name %>'></a>
+  <h2><%= marked(entry.title) %></h2>
+  <dl class='dl-horizontal method-properties'>
+    <dt>Method</dt>
+    <dd><div class='label label-default'><%= entry.method %></div></dd>
+    <dt>Route</dt>
+    <dd><code><%= entry.route
+      .replace(/[<]/g, '&lt;')
+      .replace(/[>]/g, '&gt;')
+      .replace(/&lt;/g, '<b>&lt;')
+      .replace(/&gt;/g, '&gt;</b>') %></code></dd>
+    <dt>Scopes</dt>
+    <dd>
+      <% for (var j = 0; j < entry.scopes.length; j++) {
+         var scope = entry.scopes[j]; %>
+         <div class='label label-success'><%= scope%></div>
+      <% } %></dd>
+    <dt>Signature</dt>
+    <%
+      var args = entry.args.slice();
+      if (entry.input) {
+        args.push('payload');
+      }
+      var retval = 'void';
+      if (entry.output) {
+        retval = 'result';
+      }
+
+      var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
+    %>
+    <dd><code><%= signature%></code></dd>
+  </dl>
+  <%= marked(entry.description) %>
+  <% if (entry.input) { %>
+    <h3>Request Payload</h3>
+    <div data-render-schema="<%= entry.input %>"></div>
+  <% } %>
+  <% if (entry.output) { %>
+    <h3>Request Result</h3>
+    <div data-render-schema="<%= entry.output %>"></div>
+  <% } %>
+<% } %>

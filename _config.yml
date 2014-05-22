@@ -66,6 +66,17 @@ sections:
       url:  http://scheduler.taskcluster.net
     - name: Source Repository
       url:  https://github.com/taskcluster/task-graph-scheduler
+  - name: Auth
+    url:  /auth/index.html
+    href: /auth/
+    links:
+      - name: API Documentation
+        url:  /auth/api-docs/index.html
+        href: /auth/api-docs/
+      - name: Authentication Management Web Interface
+        url:  http://auth.taskcluster.net
+      - name: Source Repository
+        url:  https://github.com/taskcluster/taskcluster-auth
   - name: Tools
     url:  /tools/index.html
     href: /tools/

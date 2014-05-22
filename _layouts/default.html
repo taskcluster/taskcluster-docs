@@ -22,16 +22,24 @@
     <script>
     require.config({baseUrl: "/assets/docson/"});
     require(["docson", "lib/jquery"], function(docson) {
-      // Wait for document to load
-      $(function() {
-        docson.templateBaseUrl = "/assets/docson/templates";
+      docson.templateBaseUrl = "/assets/docson/templates";
+      window.renderSchemas = function() {
         $('[data-render-schema]').each(function() {
           var el = $(this);
+          if (el.data('has-rendered')) {
+            return;
+          }
+          el.data('has-rendered', true);
           var schema = el.data('render-schema');
           $.get(schema, function(data) {
             docson.doc(el, data);
           });
         });
+      };
+
+      // Wait for document to load
+      $(function() {
+        window.renderSchemas();
       });
     });
     </script>
@@ -98,6 +106,10 @@
 
     {% if page.superagent %}
     <script src="/assets/superagent-promise.js"></script>
+    {% endif %}
+
+    {% if page.docref %}
+    <script src="/assets/docref/docref.js"></script>
     {% endif %}
 
     {% if page.dagred3 %}
