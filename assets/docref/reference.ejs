@@ -60,11 +60,14 @@
       .replace(/&lt;/g, '<b>&lt;')
       .replace(/&gt;/g, '&gt;</b>') %></code></dd>
     <dt>Scopes</dt>
-    <dd>
-      <% for (var j = 0; j < entry.scopes.length; j++) {
-         var scope = entry.scopes[j]; %>
-         <div class='label label-success'><%= scope%></div>
-      <% } %></dd>
+    <% if (entry.scopes) { %>
+      <dd>
+        <% for (var j = 0; j < entry.scopes.length; j++) {
+           var scope = entry.scopes[j]; %>
+           <div class='label label-success'><%= scope%></div>
+        <% } %>
+      </dd>
+    <% } %>
     <dt>Signature</dt>
     <%
       var args = entry.args.slice();
