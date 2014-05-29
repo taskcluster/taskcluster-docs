@@ -51,7 +51,7 @@ AMQP Exchange References
 All of our AMQP exchanges are `topic` exchanges, and the messages are always in
 JSON. Which makes it easy to validate all messages against a declared JSON
 schema prior to publication. Note, we do **not** recommend validation of
-messages upon consumption, as publishers may choose to upgrade the schema in
+messages upon consumption, as publishers may upgrade the schema in a
 backwards compatible way in the future.
 
 Usually, we prefix all exchanges from the same component with a common
