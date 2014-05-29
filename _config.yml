@@ -90,3 +90,6 @@ sections:
       - name: Task Creator
         url:  /tools/task-creator/index.html
         href: /tools/task-creator/
+      - name: Reference Formats
+        url:  /tools/references/
+        href: /tools/references/index.html
