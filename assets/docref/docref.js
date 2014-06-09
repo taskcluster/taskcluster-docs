@@ -13,9 +13,19 @@ $(function() {
     var container = $(this);
     var reference = container.data('doc-ref');
     request.get(reference).end().then(function(res) {
-      console.log(res.body);
       container.html(_renderReference.render(res.body));
       renderSchemas();
+      // Wait 250ms and scroll to anchor after loading
+      setTimeout(function() {
+        var hash = (window.location.hash || "").substr(1);
+        if(hash && hash !== "") {
+          var anchor = $("a[name='"+ hash +"']");
+          console.log(anchor);
+          if (anchor.size() != 0) {
+            $('html,body').scrollTop(anchor.offset().top);
+          }
+        }
+      }, 250);
     }, function() {
       container.html(_renderLoadError.render({reference: reference}));
     });

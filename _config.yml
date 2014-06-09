@@ -34,7 +34,8 @@ sections:
     href: /queue/
     links:
     - name: API Documentation
-      url:  /queue/api-docs.html
+      url:  /queue/api-docs/index.html
+      href: /queue/api-docs/
     - name: AMQP Exchanges
       url:  /queue/events.html
     - name: Task Storage
