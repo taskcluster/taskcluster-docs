@@ -347,7 +347,7 @@
     background: rgba(231, 231, 231, 50);
 }
 
-.docson .desc table,th,td
+.docson .desc table, .docson th, .docson td
 {
     border: 1px solid lightgrey;
 }

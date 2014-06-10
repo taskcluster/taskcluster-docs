@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="/assets/highlight.css">
     <link rel="stylesheet" href="/assets/markdown.css">
 
+    <!-- jQuery and Bootstrap Javascript-->
+    <script src="/assets/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js">
+    </script>
+
     {% if page.docson %}
     <!-- JSON Schema Documentation -->
     <link rel="stylesheet" href="/assets/docson.css">
@@ -21,7 +26,7 @@
     <script src="/assets/docson/lib/require.js"></script>
     <script>
     require.config({baseUrl: "/assets/docson/"});
-    require(["docson", "lib/jquery"], function(docson) {
+    require(["docson"], function(docson) {
       docson.templateBaseUrl = "/assets/docson/templates";
       window.renderSchemas = function() {
         $('[data-render-schema]').each(function() {
@@ -49,11 +54,6 @@
     <link rel="stylesheet" href="/assets/prism.css">
     <script src="/assets/prism.js"></script>
     {% endif %}
-
-    <!-- jQuery and Bootstrap Javascript-->
-    <script src="/assets/jquery.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.min.js">
-    </script>
 
     {% if page.sequence_diagrams %}
     <script src="/assets/raphael-min.js"></script>

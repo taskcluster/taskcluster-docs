@@ -3,18 +3,30 @@
   .method-properties > dd {
     padding-top: 5px;
   }
+  .sub-table {
+    margin-left: 6px;
+  }
 </style>
+
+<% /************ Title, meta-data and description ************/ %>
+
 <h1><%= marked(title) %></h1>
+
 <dl class='dl-horizontal'>
-  <dt>BaseUrl</dt>
-  <dd><code><%= baseUrl %></code></dd>
+  <% if (typeof(baseUrl) != 'undefined') { %>
+    <dt>BaseUrl</dt>
+    <dd><code><%= baseUrl %></code></dd>
+  <% } %>
 </dl>
 
 <%= marked(description) %>
 
-<h3>Entries</h3>
+<% /************ Functions Table ************/ %>
 
-<table class='table  table-bordered' style="width: auto;">
+<% // Check if we have any function entries
+   if (entries.some(function(entry) {return entry.type == 'function';})) { %>
+<h3>Functions</h3>
+<table class='table table-bordered' style="width: auto;">
   <thead>
     <tr>
       <th>Signature</th>
@@ -22,9 +34,9 @@
     </tr>
   </thead>
   <tbody>
-  <% for (var i = 0; i < entries.length; i++) {
-     var entry = entries[i]; %>
-     <%
+  <% entries.filter(function(entry) {
+      return entry.type == 'function';
+    }).forEach(function(entry) {
       var args = entry.args.slice();
       if (entry.input) {
         args.push('payload');
@@ -41,13 +53,45 @@
                   title='<%= entry.title%>'><%= signature %></a></code></td>
       <td><%= entry.title %></td>
      </tr>
-  <% } %>
+  <% }); %>
   </tbody>
-<table>
+</table>
+<% } %>
 
-<% for (var i = 0; i < entries.length; i++) {
-   var entry = entries[i]; %>
-  <br>
+<% /************ Exchanges Table ************/ %>
+
+<% // Check if we have any topic-exchanges entries
+   if (entries.some(function(entry) {return entry.type == 'topic-exchange';})) { %>
+<h3>Exchanges</h3>
+<table class='table table-bordered' style="width: auto;">
+  <thead>
+    <tr>
+      <th>Exchange</th>
+      <th>Summary</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% entries.filter(function(entry) {
+      return entry.type == 'topic-exchange';
+    }).forEach(function(entry) {
+      var exchange = exchangePrefix + entry.exchange;
+    %>
+     <tr>
+      <td><code><a
+                  href='#<%= entry.name %>'
+                  title='<%= entry.title%>'><%= exchange %></a></code></td>
+      <td><%= entry.title %></td>
+     </tr>
+  <% }); %>
+  </tbody>
+</table>
+<% } %>
+
+<% /************ Function Entries ************/ %>
+
+<% entries.filter(function(entry) {
+    return entry.type == 'function';
+  }).forEach(function(entry) { %>
   <a name='<%= entry.name %>'></a>
   <hr>
   <h2><%= marked(entry.title) %></h2>
@@ -93,4 +137,65 @@
     <h3>Request Result</h3>
     <div data-render-schema="<%= entry.output %>"></div>
   <% } %>
-<% } %>
+  <br>
+<% }); %>
+
+<% /************ Exchange Entries ************/ %>
+
+<% entries.filter(function(entry) {
+    return entry.type == 'topic-exchange';
+  }).forEach(function(entry) { %>
+  <a name='<%= entry.name %>'></a>
+  <hr>
+  <h2><%= marked(entry.title) %></h2>
+  <dl class='dl-horizontal method-properties'>
+    <dt>Exchange</dt>
+    <dd>
+      <code><%= exchangePrefix + entry.exchange %></code>
+    </dd>
+    <dt>Signature</dt>
+    <dd>
+      <code><%= entry.name %>(routingKeyPattern)</code>
+    </dd>
+  </dl>
+  <%= marked(entry.description) %>
+  <h3>Routing Key</h3>
+  <table class='table sub-table' style="width: auto;">
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Name</th>
+      <th>Summary</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% entry.routingKey.forEach(function(key, index) { %>
+     <tr>
+      <td><div class='badge badge-default'><%= index %></div></td>
+      <td><code><%= key.name %></code></td>
+      <td><%= marked(key.summary) %></td>
+      <td>
+        <% if(!key.required) { %>
+        <div class="label label-info"
+             data-toggle="tooltip"
+             data-placement="left"
+             title="This key takes the value of `_`, if it does not make sense for the event reported">option-key</div>
+        <% } %>
+        <% if(key.multipleWords) { %>
+        <div class="label label-danger"
+             data-toggle="tooltip"
+             data-placement="left"
+             title="This key may container dots `.`, creating multiple sub-keys, match it with `#`">multi-key</div>
+        <% } %>
+      </td>
+     </tr>
+  <% }); %>
+  </tbody>
+  </table>
+  <% if (entry.schema) { %>
+    <h3>Message Payload</h3>
+    <div data-render-schema="<%= entry.schema %>"></div>
+  <% } %>
+  <br>
+<% }); %>
