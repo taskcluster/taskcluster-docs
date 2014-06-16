@@ -82,22 +82,26 @@ code.node-task-id {
 </div>
 
 <script>
-// Test with: sKjg19g3QJKiUalFu-Sweg
+// Test with: G7Ce7rN7TlKIGXKSRIKyeQ
 
 /** Render a task graph */
 var _renderTaskNode = new EJS({
   url: '/assets/task-graph-inspector/task-node.ejs'
 });
 var renderTaskGraph = function(taskGraph) {
-  console.log(taskGraph);
   var g = new dagreD3.Digraph();
-  taskGraph.tasks.forEach(function(task) {
+  Object.keys(taskGraph.tasks).forEach(function(taskLabel) {
+    var task = taskGraph.tasks[taskLabel];
     g.addNode(task.taskId, {
-      label:        _renderTaskNode.render({task: task}),
+      label:        _renderTaskNode.render({
+        taskLabel:  taskLabel,
+        task:       task
+      }),
       nodeclass:    'task-node'
     });
   });
-  taskGraph.tasks.forEach(function(task) {
+  Object.keys(taskGraph.tasks).forEach(function(taskLabel) {
+    var task = taskGraph.tasks[taskLabel];
     task.dependents.forEach(function(dependent) {
       g.addEdge(null, task.taskId, dependent);
     });
@@ -127,14 +131,11 @@ var azureBaseUrl      = null;
 var inspectTaskGraph = function(taskGraphId) {
   // Hide task-info while loading
   $('#task-graph-info').hide();
-  var req = request
-                .get(azureBaseUrl)
-                .query(_.defaults({
-                  '$filter':  "PartitionKey eq '" + taskGraphId + "'"
-                }, azureAccess.sharedSignature))
-                .accept('application/json;odata=nometadata')
-                .end();
-  req.then(function(res) {
+
+  request
+  .get(schedulerBaseUrl + "/v1/task-graph/" + taskGraphId + "/inspect")
+  .end()
+  .then(function(res) {
     if (taskGraphId != getTaskGraphId()) {
       return;
     }
@@ -145,33 +146,7 @@ var inspectTaskGraph = function(taskGraphId) {
     }
 
     $('#task-graph-info').show();
-    var data = res.body.value;
-
-    var taskGraph = null;
-    data.forEach(function(entity) {
-      if(entity.RowKey == 'task-graph') {
-        taskGraph = _.defaults({
-          taskGraphId:      taskGraphId,
-          requires:         JSON.parse(entity.requires),
-          requiresLeft:     JSON.parse(entity.requiresLeft),
-          tasks:            []
-        }, entity);
-      }
-    });
-
-    taskGraph.tasks = data.filter(function(entity) {
-      return entity.RowKey != 'task-graph';
-    }).map(function(entity) {
-      return _.defaults({
-        taskId:             entity.RowKey,
-        requires:           JSON.parse(entity.requires),
-        requiresLeft:       JSON.parse(entity.requiresLeft),
-        dependents:         JSON.parse(entity.dependents),
-        resolution:         JSON.parse(entity.resolution)
-      }, entity);
-    });
-
-    renderTaskGraph(taskGraph);
+    renderTaskGraph(res.body);
   }).catch(function(err) {
     console.log("Failed to fetch task-graph, err. " + err, err.stack);
     if (taskGraphId != getTaskGraphId()) {
@@ -186,18 +161,9 @@ var inspectTaskGraph = function(taskGraphId) {
 /** On loaded, load taskGraphId as given by window.hash */
 $(function() {
   // Request access to azure table
-  request
-    .get(schedulerBaseUrl + '/v1/table-access')
-    .end()
-    .then(function(res) {
-    azureAccess = res.body;
-    azureBaseUrl = 'http://' + azureAccess.accountName +
-                   '.table.core.windows.net/' + azureAccess.taskGraphTable;
-  }).then(function() {
-    var taskGraphId = getTaskGraphId();
-    $('#task-graph-id').val(taskGraphId);
-    inspectTaskGraph(taskGraphId);
-  });
+  var taskGraphId = getTaskGraphId();
+  $('#task-graph-id').val(taskGraphId);
+  inspectTaskGraph(taskGraphId);
 });
 
 /** When hash changes inspect the given task-graph */
