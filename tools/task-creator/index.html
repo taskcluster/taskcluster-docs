@@ -54,10 +54,13 @@ $.get('http://schemas.taskcluster.net/queue/v1/task.json', function(schema) {
   var created = new Date();
   var deadline = new Date();
   var payload = {
-    image:      'ubuntu',
+    image:      'ubuntu:14.04',
     command:    ['/bin/bash', '-c', "echo 'Hello World'"],
     env: {
       MY_ENV_VARIABLE: "Environment variable value"
+    },
+    artifacts: {
+      passwd:       '/etc/passwd'
     },
     features: {
       azureLiveLog: true,
