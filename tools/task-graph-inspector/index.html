@@ -124,8 +124,6 @@ $('#inspect-task-graph').click(function() {
 
 // Variables used by inspectTaskGraph and initialized using data from scheduler
 var schedulerBaseUrl  = 'http://scheduler.taskcluster.net';
-var azureAccess       = null;
-var azureBaseUrl      = null;
 
 /** Load task-graph by id */
 var inspectTaskGraph = function(taskGraphId) {
@@ -160,7 +158,6 @@ var inspectTaskGraph = function(taskGraphId) {
 
 /** On loaded, load taskGraphId as given by window.hash */
 $(function() {
-  // Request access to azure table
   var taskGraphId = getTaskGraphId();
   $('#task-graph-id').val(taskGraphId);
   inspectTaskGraph(taskGraphId);
