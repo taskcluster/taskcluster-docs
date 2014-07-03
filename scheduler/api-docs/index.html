@@ -1,52 +1,11 @@
 ---
-layout:   default
-class:    html
-docson:   true
-marked:   true
+layout:       default
+class:        html
+docson:       true
+marked:       true
+ejs:          true
+superagent:   true
+docref:       true
 ---
 
-<h1>Task-Graph Scheduler API Documentation</h1>
-<i>Documentation of the API end-points offered by the task-graph scheduler.</i>
-<div id="docs"></div>
-
-<script>
-$.get('http://scheduler.taskcluster.net/v1/reference', function(ref) {
-  ref.forEach(function(entry) {
-    $('#docs')
-      .append($('<h2>').text(entry.title))
-      .append(
-        $('<dl>').addClass('dl-horizontal')
-          .append($('<dt>').text('Method'))
-          .append($('<dd>')
-            .append($('<div>').text(entry.method).addClass('label label-default')))
-          .append($('<dt>').text('Route'))
-          .append($('<dd>').append($('<code>').text(entry.route)))
-      )
-      .append($('<p>').addClass('markdown').html(marked(entry.description)));
-    // If there is a request schema
-    if (entry.requestSchema) {
-      var requestDoc = $('<div>');
-      $('#docs')
-        .append($('<h3>').text('Request'))
-        .append(requestDoc);
-      require(["docson", "lib/jquery"], function(docson) {
-        $.get(entry.requestSchema, function(schema) {
-          docson.doc(requestDoc, schema);
-        });
-      });
-    }
-    // If there is a response schema
-    if (entry.responseSchema) {
-      var responseDoc = $('<div>');
-      $('#docs')
-        .append($('<h3>').text('Response'))
-        .append(responseDoc);
-      require(["docson", "lib/jquery"], function(docson) {
-        $.get(entry.responseSchema, function(schema) {
-          docson.doc(responseDoc, schema);
-        });
-      });
-    }
-  });
-});
-</script>
+<div data-doc-ref='http://references.taskcluster.net/scheduler/v1/api.json'></div>
