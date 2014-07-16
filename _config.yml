@@ -79,6 +79,8 @@ sections:
         url:  http://auth.taskcluster.net
       - name: Source Repository
         url:  https://github.com/taskcluster/taskcluster-auth
+  - name: Docker Worker
+    url:  /docker-worker/index.html
   - name: Tools
     url:  /tools/index.html
     href: /tools/

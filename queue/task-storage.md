@@ -43,7 +43,9 @@ When a task is submitted the queue, the task definition is validated and
 uploaded to **`tasks.taskcluster.net/<taskId>/task.json`**. It is therefore
 safe to assume that this file is always present and have the following format:
 
-<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task.json">
+<div
+  id="task-definition"
+  data-render-schema="http://schemas.taskcluster.net/queue/v1/task.json">
 </div>
 
 Task Resolution
@@ -52,7 +54,9 @@ When a task is resolved, either completed or failed, a task resolution is
 uploaded to **`tasks.taskcluster.net/<taskId>/resolution.json`**. This file
 have the following format:
 
-<div data-render-schema="http://schemas.taskcluster.net/queue/v1/resolution.json">
+<div
+  id="task-resolution"
+  data-render-schema="http://schemas.taskcluster.net/queue/v1/resolution.json">
 </div>
 
 **Notice** that this file is not available before the task have been resolved.
@@ -71,7 +75,9 @@ mapping from log names to URLs to
 validate against the following format, but validation is the responsibility of
 the worker.
 
-<div data-render-schema="http://schemas.taskcluster.net/queue/v1/logs.json">
+<div
+  id="task-logs"
+  data-render-schema="http://schemas.taskcluster.net/queue/v1/logs.json">
 </div>
 
 Notice, that **the worker may upload this file immediately**. For workers that
@@ -95,7 +101,9 @@ When a task run is completed the worker must upload a `result.json` file to
 `logs.json` this file should have the following format, but validation is the
 responsibility of the worker.
 
-<div data-render-schema="http://schemas.taskcluster.net/queue/v1/result.json">
+<div
+  id="task-run-result"
+  data-render-schema="http://schemas.taskcluster.net/queue/v1/result.json">
 </div>
 
 This file is first uploaded when a run is completed, once uploaded the worker
