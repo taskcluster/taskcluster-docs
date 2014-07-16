@@ -15,8 +15,8 @@ system, etc...) with none to minimal taskcluster specifics built into your image
 
 ## Queue `.payload` schema
 
-<div data-render-schema="http://localhost:8080/payload.json"></div>
+<div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
 
 ## Queue `result` schema
 
-<div data-render-schema="http://localhost:8080/result.json"></div>
+<div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/result.json"></div>
