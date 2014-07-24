@@ -107,10 +107,23 @@
     <% if (entry.scopes) { %>
     <dt>Scopes</dt>
       <dd>
-        <% for (var j = 0; j < entry.scopes.length; j++) {
-           var scope = entry.scopes[j]; %>
-           <div class='label label-success'><%= scope%></div>
-        <% } %>
+        <%
+        entry.scopes.forEach(function(scopeset, index) {
+          scopeset.forEach(function(scope, index) {
+            %>
+            <div class='label label-success'><%=
+              scope.replace(/[<]/g, '&lt;')
+                   .replace(/[>]/g, '&gt;')
+            %></div><%
+            if (index != scopeset.length - 1) {
+              %>, <%
+            }
+          });
+          if (index != entry.scopes.length - 1) {
+            %>, or <br><%
+          }
+        });
+        %>
       </dd>
     <% } %>
     <dt>Signature</dt>
