@@ -50,7 +50,7 @@
     </script>
     {% endif %}
 
-    {% if page.prism %}
+    {% if page.prism or page.inspector %}
     <link rel="stylesheet" href="/assets/prism.css">
     <script src="/assets/prism.js"></script>
     {% endif %}
@@ -67,7 +67,7 @@
     </script>
     {% endif %}
 
-    {% if page.JSONFormatter %}
+    {% if page.JSONFormatter or page.inspector %}
     <link rel="stylesheet" href="/assets/JSONFormatter/JSONFormatter.css">
     <script src="/assets/JSONFormatter/JSONFormatter.js"></script>
     {% endif %}
@@ -76,11 +76,11 @@
     <script src="/assets/ejs_production.js"></script>
     {% endif %}
 
-    {% if page.moment %}
+    {% if page.moment or page.inspector %}
     <script src="/assets/moment.min.js"></script>
     {% endif %}
 
-    {% if page.TermJS %}
+    {% if page.TermJS or page.inspector %}
     <script src="/assets/term.js"></script>
     {% endif %}
 
@@ -100,7 +100,7 @@
     <script src="/assets/jsonform.js"></script>
     {% endif %}
 
-    {% if page.marked %}
+    {% if page.marked or page.inspector %}
     <script src="/assets/marked.js"></script>
     {% endif %}
 
@@ -117,9 +117,24 @@
     <script src="/assets/dagre-d3.min.js"></script>
     {% endif %}
 
-    {% if page.BootstrapSelect %}
+    {% if page.BootstrapSelect or page.inspector %}
     <link rel="stylesheet" href="/assets/bootstrap-select/bootstrap-select.min.css">
     <script src="/assets/bootstrap-select/bootstrap-select.min.js"></script>
+    {% endif %}
+
+    {% if page.inspector %}
+    <link rel="stylesheet" href="/assets/inspector/inspector.css">
+    <script src="/assets/inspector/react.js"></script>
+    <script src="/assets/inspector/JSXTransformer.js"></script>
+    <script src="/assets/inspector/taskcluster-client.js"></script>
+    <script src="https://events.taskcluster.net/assets/v1/sock.js"></script>
+    <script src="https://events.taskcluster.net/assets/v1/listener.js"></script>
+    <script type="text/jsx" src="/assets/inspector/utils.jsx"></script>
+    <script type="text/jsx" src="/assets/inspector/format.jsx"></script>
+    <script type="text/jsx" src="/assets/inspector/runinfo.jsx"></script>
+    <script type="text/jsx" src="/assets/inspector/taskinfo.jsx"></script>
+    <script type="text/jsx" src="/assets/inspector/taskview.jsx"></script>
+    <script type="text/jsx" src="/assets/inspector/inspector.jsx"></script>
     {% endif %}
   </head>
   <body>

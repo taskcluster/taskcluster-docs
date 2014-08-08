@@ -1,0 +1,12 @@
+#task-info .nav-tabs li {
+  cursor:    pointer;
+}
+
+#task-info > .tab-content > .tab-pane {
+  padding-top: 20px;
+}
+
+/** Set margin of last <p> to zero (used for markdown blocks) */
+.markdown-view > p:last-of-type {
+  margin: 0px;
+}
