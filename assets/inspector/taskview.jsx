@@ -6,13 +6,14 @@ exports.TaskView = React.createClass({
   // Get initial state
   getInitialState: function() {
     return {
-      currentTab:   ''      // Empty string is the task view
+      currentTab:   this.props.initialTab    // Empty string is the task view
     };
   },
 
   // Create default properties
   getDefaultProps: function() {
     return {
+      initialTab:   '',         // Initial tab to show
       onTabChange:  function() {},
       status:       {runs: []},
       queue:        new taskcluster.Queue()
@@ -41,9 +42,10 @@ exports.TaskView = React.createClass({
 
     // Show tabs for the first 6 runs
     var tabs = this.props.status.runs.slice(0, 6).map(function(run) {
+      var currentTab = this.state.currentTab;
       return (
         <li key={run.runId}
-            className={this.state.currentTab === run.runId ? 'active' : ''}>
+            className={currentTab + '' === run.runId + '' ? 'active' : ''}>
           <a className="tab"
              onClick={this.setCurrentTab.bind(this, run.runId)}>
              Run {run.runId}

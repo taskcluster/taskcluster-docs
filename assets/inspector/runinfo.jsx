@@ -7,7 +7,7 @@ var Else = Utils.Else;
 
 /** Displays information about a run in a tab page */
 exports.RunInfo = React.createClass({
-  mixins: [Utils.LoadState],
+  mixins: [Utils.LoadStateMixin],
 
   // Get initial state
   getInitialState: function() {
@@ -33,10 +33,13 @@ exports.RunInfo = React.createClass({
 
   // Handle property changes
   componentWillReceiveProps: function(props) {
-    this.loadState('artifactsResult', props.queue.getArtifactsFromRun(
-      props.status.taskId,
-      props.run.runId
-    ));
+    if (this.props.status.taskId !== props.status.taskId ||
+        this.props.run.runId     !== props.run.runId) {
+      this.loadState('artifactsResult', props.queue.getArtifactsFromRun(
+        props.status.taskId,
+        props.run.runId
+      ));
+    }
   },
 
   // Render run

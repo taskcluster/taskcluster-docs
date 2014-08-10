@@ -7,7 +7,7 @@ var Else = Utils.Else;
 
 /** Displays information about a task in a tab page */
 exports.TaskInfo = React.createClass({
-  mixins: [Utils.LoadState],
+  mixins: [Utils.LoadStateMixin],
 
   getInitialState: function() {
     return {
@@ -35,7 +35,9 @@ exports.TaskInfo = React.createClass({
 
   // Handle property changes
   componentWillReceiveProps: function(props) {
-    this.loadState('task', props.queue.getTask(props.status.taskId));
+    if (this.props.status.taskId !== props.status.taskId) {
+      this.loadState('task', props.queue.getTask(props.status.taskId));
+    }
   },
 
   render: function() {

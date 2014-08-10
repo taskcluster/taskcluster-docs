@@ -94,7 +94,7 @@ Utils.Tooltip = React.createClass({
 });
 
 /** Mixing for loading state from a promise */
-Utils.LoadState = {
+Utils.LoadStateMixin = {
   /// Load state for `key` using promise
   loadState: function(key, promise) {
     // Store promise so that we can check to ensure we're loading from it
@@ -126,6 +126,70 @@ Utils.LoadState = {
     });
   }
 };
+
+
+/** Create a window.location.hash mixing
+ *
+ * options: {
+ *   keys:    [...] // List of keys from string to use in hash
+ * }
+ */
+Utils.LocationHashMixin = function(options) {
+  return {
+    // Restore initial state from hash
+    componentWillMount: function() {
+      this.setState(this.parseHash());
+    },
+
+    // Listen for hash changes
+    componentDidMount: function() {
+      window.addEventListener('hashchange', this.onHashChange);
+    },
+
+    // Stop listening for hash changes
+    componentWillUnmount: function() {
+      window.removeEventListener('hashchange', this.onHashChange);
+    },
+
+    // Parse state from hash string
+    parseHash: function() {
+      var state = {};
+      var parts = window.location.hash.substr(1).split('/');
+      for(var i = 0; i < options.keys.length; i++) {
+        var key = options.keys[i];
+        if (i + 1 < options.keys.length) {
+          state[key] = (parts[i] !== undefined ? parts[i] : '');
+        } else {
+          state[key] = parts.slice(i).join('/');
+        }
+      }
+      return state;
+    },
+
+    // Update state when the hash changes
+    onHashChange: function() {
+      var state = this.parseHash();
+      this.onHashChangedState(state); // And notify parent
+      this.setState(state);
+    },
+
+    // Render hash-based state to window.location.hash
+    renderHash: function() {
+      // Make the hash string
+      var hash = options.keys.map(function(key) {
+        return (this.state[key] !== undefined ? this.state[key] : '');
+      }, this).join('/').replace(/\/+$/, '');
+      // Check if it's equal
+      if (window.location.hash.substr(1) !== hash) {
+        // Update it
+        window.removeEventListener('hashchange', this.onHashChange);
+        window.location.hash = hash;
+        window.addEventListener('hashchange', this.onHashChange);
+      }
+    }
+  };
+};
+
 
 
 // End of module

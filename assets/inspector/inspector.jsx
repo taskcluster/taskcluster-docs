@@ -44,8 +44,12 @@ var renderWidgets = function() {
 
 /** Renders task-inspector with a control to enter `taskId` into */
 var TaskInspectorWidget = React.createClass({
-  mixins: [Utils.LoadState],
-
+  mixins: [
+    Utils.LoadStateMixin,
+    Utils.LocationHashMixin({
+      keys:     ['taskId', 'currentTab']
+    })
+  ],
 
   // Create initial state, basically nothing is loading and task doesn't exist
   getInitialState: function() {
@@ -65,50 +69,28 @@ var TaskInspectorWidget = React.createClass({
     }
   },
 
-  // Parse window location hash
-  parseHash: function() {
-    var hash = window.location.hash.substr(1).split('/')
-    return {
-      taskId:     hash[0],
-      currentTab: hash[1] || ''
-    };
-  },
-
-  // Render window location hash
-  renderHash: function() {
-    if (this.state.currentTab === '') {
-      return this.state.taskId;
-    }
-    return [this.state.taskId, this.state.currentTab].join('/');
-  },
-
-  // Load state from window.location.hash
-  componentWillMount: function() {
-    this.setState(this.parseHash());
-  },
-
-  // When hash changes update state if there is a new taskId
-  onHashChange: function() {
-    var state = this.parseHash();
-    if (this.state.taskId != state.taskId) {
+  // When hash changes update state
+  onHashChangedState: function(state) {
+    // Reload status structure of hash changed the taskId
+    if (this.state.taskId !== state.taskId) {
       this.loadState('statusResult', this.props.queue.status(state.taskId));
+      if (this.refs.taskId) {
+        // Set taskId to what was provided on hash change
+        this.refs.taskId.getDOMNode().value = state.taskId;
+      }
     }
-    this.setState(state);
+    if (this.refs.taskView) {
+      this.refs.taskView.setCurrentTab(state.currentTab);
+    }
   },
 
-  // Listen for changes to window.location.hash
+  // Load status and update UI to what was fetched from
   componentDidMount: function() {
-    window.addEventListener('hashchange', this.onHashChange);
     this.loadState('statusResult', this.props.queue.status(
       this.state.taskId
     ));
     // Set initial taskId
     this.refs.taskId.getDOMNode().value = this.state.taskId;
-  },
-
-  // Stop listening for changes to window.location.hash
-  componentWillUnmount: function() {
-    window.removeEventListener('hashchange', this.onHashChange);
   },
 
   // Handle form submission
@@ -125,23 +107,18 @@ var TaskInspectorWidget = React.createClass({
 
   // Render a task-inspector
   render: function() {
-    // Update hash if not matching current state
-    var hash = window.location.hash.substr(1);
-    if (hash !== this.renderHash()) {
-      window.removeEventListener('hashchange', this.onHashChange);
-      window.location.hash = this.renderHash();
-      window.addEventListener('hashchange', this.onHashChange);
-    }
+    this.renderHash();
 
     var display;
     if (!this.state.statusResult) {
       display = <Format.Loading subject="task status"
                                 state={this.state.statusResult}/>;
     } else {
-      display = <TaskView onTabChange={this.onTabChange}
+      display = <TaskView ref="taskView"
+                          onTabChange={this.onTabChange}
                           status={this.state.statusResult.status}
                           queue={this.props.queue}
-                          currentTab={this.state.currentTab}/>;
+                          initialTab={this.state.currentTab}/>;
     }
 
     // Render
