@@ -8,12 +8,12 @@ var Format = exports.Format = {};
 Format.Markdown = React.createClass({
   // Validate properties
   propTypes: {
-    children:   React.PropTypes.string.isRequired
+    children:   React.PropTypes.string
   },
 
   // Render Markdown
   render: function() {
-    var html = marked(this.props.children);
+    var html = marked(this.props.children || '-');
     return <span className="markdown-view"
                  dangerouslySetInnerHTML={{__html: html}}></span>
   }

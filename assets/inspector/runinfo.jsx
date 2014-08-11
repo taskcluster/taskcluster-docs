@@ -55,25 +55,30 @@ exports.RunInfo = React.createClass({
     } else if (artifactsResult.artifacts.length === 0) {
       artifactView = '-';
     } else {
-      artifactView = artifactsResult.artifacts.map(function(artifact) {
-        var url = [
-          "https://queue.taskcluster.net/v1",
-          this.state.taskId,
-          "runs",
-          this.state.runId,
-          "artifacts",
-          artifact.name
-        ].join('/');
-        return (
-          <ul>
-            <li>
-              <a href={url} target="_blank">
-                {artifact.name}
-              </a>
-            </li>
-          </ul>
-        );
-      });
+      artifactView = (
+        <ul>
+        {
+          artifactsResult.artifacts.map(function(artifact) {
+            var url = [
+              "https://queue.taskcluster.net/v1",
+              "task",
+              this.props.status.taskId,
+              "runs",
+              this.props.run.runId,
+              "artifacts",
+              artifact.name
+            ].join('/');
+            return (
+                <li key={artifact.name}>
+                  <a href={url} target="_blank">
+                    {artifact.name}
+                  </a>
+                </li>
+            );
+          }, this)
+        }
+        </ul>
+      );
     }
 
     var stateLabelMap = {
@@ -101,14 +106,14 @@ exports.RunInfo = React.createClass({
           </dd>
           <dt>Successful</dt>
           <dd>
-            <If condition={run.success !== undefined || run.success !== null}>
-              <If codntion={run.success}>
+            <If condition={run.success === undefined || run.success === null}>
+              -
+            <Else/>
+              <If condition={run.success}>
                 <span className="label label-primary">yes</span>
               <Else/>
                 <span className="label label-primary">no</span>
               </If>
-            <Else/>
-              -
             </If>
           </dd>
         </dl>
