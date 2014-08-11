@@ -96,6 +96,7 @@ var TaskInspectorWidget = React.createClass({
   // Handle form submission
   onSubmit: function() {
     var taskId = this.refs.taskId.getDOMNode().value.trim();
+    this.setState({taskId: taskId});
     this.loadState('statusResult', this.props.queue.status(taskId));
     return false;
   },
