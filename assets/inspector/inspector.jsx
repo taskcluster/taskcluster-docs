@@ -1,10 +1,6 @@
 /** @jsx React.DOM */
 (function(exports) {
 
-// Import If and Else from Utils
-var If = Utils.If;
-var Else = Utils.Else;
-
 // Create namespace
 var Inspector = exports.Inspector = {};
 
