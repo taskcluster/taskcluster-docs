@@ -69,7 +69,7 @@ var TaskInspectorWidget = React.createClass({
   onHashChangedState: function(state) {
     // Reload status structure of hash changed the taskId
     if (this.state.taskId !== state.taskId) {
-      this.loadState('statusResult', this.props.queue.status(state.taskId));
+      this.loadTaskId(state.taskId);
       if (this.refs.taskId) {
         // Set taskId to what was provided on hash change
         this.refs.taskId.getDOMNode().value = state.taskId;
@@ -82,9 +82,7 @@ var TaskInspectorWidget = React.createClass({
 
   // Load status and update UI to what was fetched from
   componentDidMount: function() {
-    this.loadState('statusResult', this.props.queue.status(
-      this.state.taskId
-    ));
+    this.loadTaskId(this.state.taskId);
     // Set initial taskId
     this.refs.taskId.getDOMNode().value = this.state.taskId;
   },
@@ -93,8 +91,55 @@ var TaskInspectorWidget = React.createClass({
   onSubmit: function() {
     var taskId = this.refs.taskId.getDOMNode().value.trim();
     this.setState({taskId: taskId});
-    this.loadState('statusResult', this.props.queue.status(taskId));
+    this.loadTaskId(taskId);
     return false;
+  },
+
+  // Create new listener and load statusResult
+  loadTaskId: function(taskId) {
+    console.log("loadTaskId: " + taskId);
+
+    // Load new task status structure
+    this.loadState('statusResult', this.props.queue.status(taskId));
+
+    if (this.listener) {
+      this.listener.close();
+      this.listener = null;
+    }
+
+    // Create new listener
+    this.listener = new Listener();
+    // Bind to exchanges when ready
+    this.listener.addEventListener('ready', function() {
+      // Create common routing key
+      var rkey = {taskId: taskId};
+      this.listener.bind(this.props.queueEvents.taskDefined(rkey));
+      this.listener.bind(this.props.queueEvents.taskPending(rkey));
+      this.listener.bind(this.props.queueEvents.taskRunning(rkey));
+      this.listener.bind(this.props.queueEvents.taskFailed(rkey));
+      this.listener.bind(this.props.queueEvents.taskCompleted(rkey));
+    }.bind(this));
+    this.listener.addEventListener('error', function(err) {
+      console.log("Listener error:");
+      console.log(JSON.stringify(err, null, 2));
+    });
+    this.listener.addEventListener('bound', function(msg) {
+      console.log("Listener bound: " + msg.binding.exchange);
+    });
+    // listen for messages
+    this.listener.addEventListener('message', function(data) {
+      // Update state with new status structure upon getting a message
+      this.setState({statusResult: data.message.payload});
+      console.log("Listener message:");
+      console.log(JSON.stringify(data, null, 2));
+    }.bind(this));
+  },
+
+  componentWillUnmount: function() {
+    if (this.listener) {
+      this.listener.close();
+      this.listener = null;
+    }
   },
 
   // Handle tab changes from child
