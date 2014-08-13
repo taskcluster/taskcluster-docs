@@ -10,3 +10,7 @@
 .markdown-view > p:last-of-type {
   margin: 0px;
 }
+
+.log-viewer {
+  margin-bottom:  10px;
+}

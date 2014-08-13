@@ -723,19 +723,20 @@ Terminal.prototype.open = function(parent) {
   this.initGlobal();
 
   // Ensure there is a Terminal.focus.
-  this.focus();
+  Terminal.focus = null;
+  //this.focus();
 
   // Start blinking the cursor.
   this.startBlink();
 
   // Bind to DOM events related
   // to focus and paste behavior.
-  on(this.element, 'focus', function() {
+  /*on(this.element, 'focus', function() {
     self.focus();
     if (self.isIpad || self.isIphone) {
       Terminal._textarea.focus();
     }
-  });
+  });*/
 
   // This causes slightly funky behavior.
   // on(this.element, 'blur', function() {
@@ -784,9 +785,9 @@ Terminal.prototype.open = function(parent) {
 
   // This can be useful for pasting,
   // as well as the iPad fix.
-  setTimeout(function() {
+  /*setTimeout(function() {
     self.element.focus();
-  }, 100);
+  }, 100);*/
 };
 
 // XTerm mouse events

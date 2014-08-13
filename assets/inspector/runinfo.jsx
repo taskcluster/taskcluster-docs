@@ -1,10 +1,6 @@
 /** @jsx React.DOM */
 (function(exports) {
 
-// Import If and Else from Utils
-var If = Utils.If;
-var Else = Utils.Else;
-
 /** Displays information about a run in a tab page */
 exports.RunInfo = React.createClass({
   mixins: [Utils.LoadStateMixin],
@@ -25,7 +21,7 @@ exports.RunInfo = React.createClass({
 
   // Load artifacts when loading
   componentDidMount: function() {
-    this.loadState('artifactsResult', this.props.queue.getArtifactsFromRun(
+    this.loadState('artifactsResult', this.props.queue.listArtifacts(
       this.props.status.taskId,
       this.props.run.runId
     ));
@@ -35,7 +31,7 @@ exports.RunInfo = React.createClass({
   componentWillReceiveProps: function(props) {
     if (this.props.status.taskId !== props.status.taskId ||
         this.props.run.runId     !== props.run.runId) {
-      this.loadState('artifactsResult', props.queue.getArtifactsFromRun(
+      this.loadState('artifactsResult', props.queue.listArtifacts(
         props.status.taskId,
         props.run.runId
       ));
@@ -44,10 +40,12 @@ exports.RunInfo = React.createClass({
 
   // Render run
   render: function() {
+    var queue           = this.props.queue;
     var run             = this.props.run;
     var status          = this.props.status;
     var artifactsResult = this.state.artifactsResult;
 
+    // Construct artifact view
     var artifactView;
     if (!artifactsResult) {
       artifactView = <Format.Loading subject="artifacts"
@@ -59,15 +57,12 @@ exports.RunInfo = React.createClass({
         <ul>
         {
           artifactsResult.artifacts.map(function(artifact) {
-            var url = [
-              "https://queue.taskcluster.net/v1",
-              "task",
-              this.props.status.taskId,
-              "runs",
-              this.props.run.runId,
-              "artifacts",
+            var url = queue.buildUrl(
+              queue.getArtifact,
+              status.taskId,
+              run.runId,
               artifact.name
-            ].join('/');
+            );
             return (
                 <li key={artifact.name}>
                   <a href={url} target="_blank">
@@ -79,6 +74,22 @@ exports.RunInfo = React.createClass({
         }
         </ul>
       );
+    }
+
+    // Create log view
+    var logView;
+    if (!artifactsResult) {
+      logView = <Format.Loading subject="logs" state={artifactsResult}/>;
+    } else {
+      var logs = artifactsResult.artifacts.filter(function(artifact) {
+        return /^public\/logs\//.test(artifact.name);
+      });
+      if (logs.length !== 0) {
+        logView = <LogView logs={logs}
+                           taskId={status.taskId}
+                           runId={run.runId}
+                           queue={queue}/>;
+      }
     }
 
     var stateLabelMap = {
@@ -106,15 +117,15 @@ exports.RunInfo = React.createClass({
           </dd>
           <dt>Successful</dt>
           <dd>
-            <If condition={run.success === undefined || run.success === null}>
-              -
-            <Else/>
-              <If condition={run.success}>
-                <span className="label label-primary">yes</span>
-              <Else/>
-                <span className="label label-primary">no</span>
-              </If>
-            </If>
+            {
+              run.success === undefined || run.success === null
+              ? '-'
+              : (
+                  run.success
+                  ? <span className="label label-primary">yes</span>
+                  : <span className="label label-primary">no</span>
+                )
+            }
           </dd>
         </dl>
         <dl className="dl-horizontal">
@@ -128,19 +139,19 @@ exports.RunInfo = React.createClass({
           </dd>
           <dt>Started</dt>
           <dd>
-            <If condition={run.resolved}>
-                <Format.Date date={run.started} since={run.scheduled}/>
-              <Else/>
-                -
-            </If>
+            {
+              run.started
+              ? <Format.Date date={run.started} since={run.scheduled}/>
+              : '-'
+            }
           </dd>
           <dt>Resolved</dt>
           <dd>
-            <If condition={run.resolved}>
-                <Format.Date date={run.resolved} since={run.started}/>
-              <Else/>
-                -
-            </If>
+            {
+              run.resolved
+              ? <Format.Date date={run.resolved} since={run.started}/>
+              : '-'
+            }
           </dd>
         </dl>
         <dl className="dl-horizontal">
@@ -154,13 +165,10 @@ exports.RunInfo = React.createClass({
           </dd>
           <dt>TakenUntil</dt>
           <dd>
-            <If condition={run.takenUntil}>
-                <Format.Date date={run.takenUntil}/>
-              <Else/>
-                -
-            </If>
+            {run.takenUntil ? <Format.Date date={run.takenUntil}/> : '-'}
           </dd>
         </dl>
+        {logView}
       </span>
     );
   }

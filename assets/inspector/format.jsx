@@ -134,5 +134,42 @@ Format.Loading = React.createClass({
   }
 });
 
+/** Render bootstrap-select */
+Format.Select = React.createClass({
+  // Validate properties
+  propTypes: {
+    entries:  React.PropTypes.arrayOf(React.PropTypes.shape({
+      text:   React.PropTypes.string.isRequired,
+      value:  React.PropTypes.string.isRequired
+    })).isRequired,
+    onChange: React.PropTypes.func.isRequired
+  },
+
+  // Construct selector
+  componentDidMount: function() {
+    $(this.refs.select.getDOMNode()).selectpicker();
+    $(this.refs.select.getDOMNode()).change(function() {
+      var value = $(this.refs.select.getDOMNode()).val();
+      this.props.onChange(value);
+    }.bind(this));
+    $(this.refs.select.getDOMNode()).change();
+  },
+
+  // Destroy selector
+  componentWillUnmount: function() {
+    $(this.refs.select.getDOMNode()).selectpicker('destroy');
+  },
+
+  // Render selector
+  render: function() {
+    var options = this.props.entries.map(function(entry) {
+      return <option key={entry.value}
+                     value={entry.value}>{entry.text}</option>;
+    }, this)
+    return <select ref="select">{options}</select>;
+  }
+});
+
+
 // End of module
 })(this);
