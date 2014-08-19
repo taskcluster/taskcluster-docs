@@ -88,16 +88,13 @@
     <script src="/assets/underscore-min.js"></script>
     {% endif %}
 
-    {% if page.JSONForm %}
-    <script src="/assets/underscore-min.js"></script>
+    {% if page.ACE %}
     <script src="/assets/ace/ace.js"></script>
     <script src="/assets/ace/mode-javascript.js"></script>
     <script src="/assets/ace/mode-json.js"></script>
     <script src="/assets/ace/mode-markdown.js"></script>
     <script src="/assets/ace/mode-sh.js "></script>
     <script src="/assets/ace/theme-twilight.js"></script>
-    <script src="/assets/marked.js"></script>
-    <script src="/assets/jsonform.js"></script>
     {% endif %}
 
     {% if page.marked or page.inspector %}
@@ -122,11 +119,18 @@
     <script src="/assets/bootstrap-select/bootstrap-select.min.js"></script>
     {% endif %}
 
+    {% if page.slugid %}
+    <script src="/assets/slugid-browserify.js"></script>
+    {% endif %}
+
+    {% if page.taskclusterclient or page.inspector %}
+    <script src="/assets/taskcluster-client.js"></script>
+    {% endif %}
+
     {% if page.inspector %}
     <link rel="stylesheet" href="/assets/inspector/inspector.css">
     <script src="/assets/inspector/react.js"></script>
     <script src="/assets/inspector/JSXTransformer.js"></script>
-    <script src="/assets/inspector/taskcluster-client.js"></script>
     <script src="https://events.taskcluster.net/assets/v1/sock.js"></script>
     <script src="https://events.taskcluster.net/assets/v1/listener.js"></script>
     <script type="text/jsx" src="/assets/inspector/utils.jsx"></script>
