@@ -15,8 +15,8 @@ general authentication topics as well as API end-points from this component.
 Authentication
 --------------
 All clients are issued a `clientId` and an `accessToken` these are used to
-authenticate against TaskCluster with
-[Hawk](https://github.com/hueniverse/hawk) using HMAC-sha256.
+authenticate against TaskCluster using
+[Hawk](https://github.com/hueniverse/hawk) with HMAC-sha256.
 
 Authorization
 -------------
@@ -29,39 +29,47 @@ is often clearly listed in the API documentation for the end-point.
 the payload of the request. Read API end-point to documentation to discover
 these.
 
-Delegated Authentication
-------------------------
-If you have a trusted entity that knows what scopes you are authorized for,
-then this entity can perform requests on your behalf. For example this allows
-the scheduler to perform requests on behalf of your task-graph with the scopes
-your task-graph is authorized to use. This is also the mechanism that allows
-trusted worker processes to carry out requests on behalf of a running task.
+Restricting Authorized Scopes
+-----------------------------
+If you are authorizing requests on behalf of a less trusted entity that you only
+know to posses a subset of your scopes. You can specify which of the scopes you
+have that a given request is authorized to rely on. If the request cannot be
+authorized with the restricted set of scopes you specified, it will fail, even
+though you may in fact have the scopes required to conduct the request.
 
-The trusted entity needs the scope `auth:can-delegate`, it then makes a request
-with Hawks `ext` attribute set to a base64 encoded JSON object on the following
-format:
+**Example**, imagine that Alice have the following scopes `scopeA`, `scopeB` and
+`scopeC`, and Alice wishes to conduct a request on behalf of Bob. Alice knows
+that Bob has `scopeA` and `scopeC`, but she doesn't know if Bob has `scopeB`.
+In this case Alice can avoid escalating Bobs permissions by executing requests
+on behalf of Bob with a limited set of scopes.
+Specifically, Alice will specify the `authorizedScopes` key as specified below.
 
 ```js
 {
-  delegating:   true,
-  scopes:       ['component:action:resource-prefix*', ...]
+  authorizedScopes:  ['scopeA', 'scopeC']
 }
 ```
 
-When the request arrives the server will check that requesting entity has the
-`auth:can-delegate` scope, but will then otherwise evaluate the authorization
-based on the set of scopes listed in the request.
+Then Alice will base64 encode the JSON object above and include as the `ext`
+attribute in Hawk. When the server receives the request from Alice it will
+first validate that Alice have all the scopes specified in `authorizedScopes`,
+and then use the restricted set of scopes `scopeA` and `scopeB` to evaluate
+if the request is authorized.
 
-The main purpose is that the trusted entity can safely authenticate your
-request with evaluating whether or not you actually have the scopes to perform
-the request. This evaluation is handled on the target server.
-
-The alternative would be to create a `clientId` and `accessToken` for each task,
-with the set of scopes the task is allowed to use, and then have to task call
-various components directly. But since the worker knows what scopes the task has
-it can authenticate requests on behalf of the task.
+This technique is used in the task-graph scheduler to ensure that tasks created
+are only created with the set of scopes that the task-graph has. Similarly it's
+used in the docker-workers authentication proxy, to only authorize requests with
+the set of scopes that the current task has available.
 
 **Note** the way hawk works, the `ext` property is covered by the HMAC
-signature. So it's not possible to modify this property on-the-fly. But
-obviously any trusted entity with the scope `auth:can-delegate` can fake any
-scope it wishes. We may mitigate that in the future.
+signature. So it's not possible to modify this property on-the-fly.
+
+
+Pre-signed Urls
+---------------
+Hawk allows you to generate a _bewit_ signature for any `GET` request. Including
+this _bewit_ signature in your request will then authenticate and authorize the
+request. All taskcluster APIs supports authentication of `GET` requests using
+these bewit signatures. And you'll find that the official
+[taskcluster-client](https://github.com/taskcluster/taskcluster-client)
+offers an API for generating these signatures.
