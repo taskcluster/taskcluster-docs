@@ -79,6 +79,7 @@ sections:
         url:  https://github.com/taskcluster/taskcluster-auth
   - name: Docker Worker
     url:  /docker-worker/index.html
+    href: /docker-worker/
   - name: Tools
     url:  /tools/index.html
     href: /tools/
