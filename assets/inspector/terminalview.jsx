@@ -31,6 +31,11 @@ exports.TerminalView = React.createClass({
     }
   },
 
+  // Refresh the currently displayed file
+  refresh: function() {
+    this.reopen(this.props.url);
+  },
+
   componentDidMount: function() {
     if (!this.props.url) {
       this.term = new Terminal(this.props.options);
@@ -105,7 +110,7 @@ exports.TerminalView = React.createClass({
   },
 
   render: function() {
-    return <div className="terminal" ref="term"></div>
+    return <div className="terminal" ref="term"></div>;
   }
 });
 

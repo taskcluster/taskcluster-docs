@@ -37,6 +37,13 @@ exports.TaskView = React.createClass({
     this.props.onTabChange(tab);
   },
 
+  // Tell child to reload artifacts
+  reloadArtifacts: function() {
+    if (this.refs.runInfo) {
+      this.refs.runInfo.reloadArtifacts();
+    }
+  },
+
   // Render tabs and current tab
   render: function() {
 
@@ -89,7 +96,8 @@ exports.TaskView = React.createClass({
       if (run) {
         currentTab = <RunInfo queue={this.props.queue}
                               status={this.props.status}
-                              run={run}/>
+                              run={run}
+                              ref="runInfo"/>
       } else {
         currentTab = (
           <div className="alert alert-danger">

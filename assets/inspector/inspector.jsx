@@ -116,6 +116,7 @@ var TaskInspectorWidget = React.createClass({
       this.listener.bind(this.props.queueEvents.taskDefined(rkey));
       this.listener.bind(this.props.queueEvents.taskPending(rkey));
       this.listener.bind(this.props.queueEvents.taskRunning(rkey));
+      this.listener.bind(this.props.queueEvents.artifactCreated(rkey));
       this.listener.bind(this.props.queueEvents.taskFailed(rkey));
       this.listener.bind(this.props.queueEvents.taskCompleted(rkey));
     }.bind(this));
@@ -126,10 +127,20 @@ var TaskInspectorWidget = React.createClass({
     this.listener.addEventListener('bound', function(msg) {
       console.log("Listener bound: " + msg.binding.exchange);
     });
+    // Find artifact exchange
+    var artifactCreatedExchange = this.props.queueEvents
+                                            .artifactCreated()
+                                            .exchange;
     // listen for messages
     this.listener.addEventListener('message', function(data) {
       // Update state with new status structure upon getting a message
       this.setState({statusResult: data.message.payload});
+      // Tell taskView to reload list of artifacts
+      if (data.message.exchange === artifactCreatedExchange) {
+        if (this.refs.taskView) {
+          this.refs.taskView.reloadArtifacts();
+        }
+      }
       console.log("Listener message:");
       console.log(JSON.stringify(data, null, 2));
     }.bind(this));

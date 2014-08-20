@@ -19,12 +19,19 @@ exports.RunInfo = React.createClass({
     queue:    React.PropTypes.instanceOf(taskcluster.Queue).isRequired
   },
 
-  // Load artifacts when loading
-  componentDidMount: function() {
+  // Reload artifacts
+  reloadArtifacts: function() {
+    console.log("Reloading artifacts:");
     this.loadState('artifactsResult', this.props.queue.listArtifacts(
       this.props.status.taskId,
       this.props.run.runId
     ));
+  },
+
+  // Load artifacts when loading
+  componentDidMount: function() {
+    console.log("Loading first time:");
+    this.reloadArtifacts();
   },
 
   // Handle property changes

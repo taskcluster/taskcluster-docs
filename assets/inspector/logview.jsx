@@ -25,6 +25,11 @@ exports.LogView = React.createClass({
     this.setState({url: url});
   },
 
+  // Fresh the log at request of the user
+  refreshLog: function() {
+    this.refs.termView.refresh();
+  },
+
   render: function() {
     var entries = this.props.logs.map(function(log) {
       // Create URL for the artifact
@@ -49,9 +54,14 @@ exports.LogView = React.createClass({
         <dd>
           <Format.Select onChange={this.logChanged}
                          entries={entries}/>
+          <button type="button"
+                  className="btn btn-default btn-refresh-log"
+                  onClick={this.refreshLog}>
+            <i className="glyphicon glyphicon-refresh"></i>
+          </button>
         </dd>
       </dl>
-      <TerminalView url={this.state.url}/>
+      <TerminalView url={this.state.url} ref="termView"/>
       </span>
     );
   }
