@@ -189,6 +189,12 @@
       <td><code><%= key.name %></code></td>
       <td><%= marked(key.summary) %></td>
       <td>
+        <% if(key.constant) { %>
+        <div class="label label-default"
+             data-toggle="tooltip"
+             data-placement="left"
+             title="This key always assume the value `<%= key.constant%>`, used to allow additional routing key formats.">constant-key</div>
+        <% } %>
         <% if(!key.required) { %>
         <div class="label label-info"
              data-toggle="tooltip"
