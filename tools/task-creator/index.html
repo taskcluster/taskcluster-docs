@@ -86,7 +86,14 @@ and docker-worker for details on
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button class="btn btn-primary" id="create-button">Create Task</button>
+      <button type="button" class="btn btn-primary" id="create-button">
+        <i class="glyphicon glyphicon-ok"></i>
+        Create Task
+      </button>
+      <button type="button" class="btn btn-danger" id="reset-button">
+        <i class="glyphicon glyphicon-remove"></i>
+        Reset Editor
+      </button>
     </div>
   </div>
 </form>
@@ -122,18 +129,15 @@ $(function() {
     }
   });
 
-
   // Create new taskId
   $('#task-id').val(slugid.v4());
 
-  // Create initial task
-  var deadline = new Date();
-  deadline.setMinutes(deadline.getMinutes() + 30);
-  var initialTaskDef = {
+  // Create default task
+  cleanTaskDef = {
     provisionerId:      'aws-provisioner',
     workerType:         'v2',
-    created:            new Date().toJSON(),
-    deadline:           deadline.toJSON(),
+    created:            null, // later
+    deadline:           null, // later
     payload: {
       image:            'ubuntu:13.10',
       command:          ['/bin/bash', '-c', 'echo "hello World"'],
@@ -146,6 +150,22 @@ $(function() {
       source:           "http://docs.taskcluster.net/tools/task-creator/"
     }
   };
+
+  // Create initial task (load from localstorage)
+  var initialTaskDef;
+  try {
+    initialTaskDef = JSON.parse(localStorage.getItem("taskDefinition"));
+  }
+  catch (someErr) {
+    initialTaskDef = null;
+  }
+  if (!initialTaskDef) {
+    initialTaskDef = cleanTaskDef;
+  }
+  var deadline = new Date();
+  deadline.setMinutes(deadline.getMinutes() + 30);
+  initialTaskDef.created = new Date().toJSON();
+  initialTaskDef.deadline = deadline.toJSON();
 
   // Create ace editor
   var textarea = $('#task-definition');
@@ -160,6 +180,20 @@ $(function() {
   editor.getSession().setValue(JSON.stringify(initialTaskDef, null, '\t'));
   editor.getSession().setMode("ace/mode/json");
   editor.setTheme("ace/theme/twilight");
+
+  $("#reset-button").click(function(e) {
+    e.preventDefault();
+
+    // Create new taskId
+    $('#task-id').val(slugid.v4());
+
+    // Create new default task
+    var deadline = new Date();
+    deadline.setMinutes(deadline.getMinutes() + 30);
+    cleanTaskDef.created = new Date().toJSON();
+    cleanTaskDef.deadline = deadline.toJSON();
+    editor.getSession().setValue(JSON.stringify(cleanTaskDef, null, '\t'));
+  });
 
   $("#create-button").click(function(e) {
     e.preventDefault();
@@ -176,6 +210,8 @@ $(function() {
       $('#json-parse-failed').show();
       return;
     }
+    // Store task definition for later use
+    localStorage.setItem("taskDefinition", JSON.stringify(taskDef));
 
     // Send to server
     var queue = new taskcluster.Queue({
