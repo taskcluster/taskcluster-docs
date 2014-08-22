@@ -268,7 +268,7 @@ var TaskGraphInspectorWidget = React.createClass({
   onSubmit: function() {
     var taskGraphId = this.refs.taskGraphId.getDOMNode().value.trim();
     this.setState({taskGraphId: taskGraphId, taskId: ''});
-    this.loadGraphTask(taskGraphId);
+    this.loadTaskGraph(taskGraphId);
     return false;
   },
 
@@ -355,12 +355,12 @@ var TaskGraphInspectorWidget = React.createClass({
       // If the message is from the queue
       if (queueExchanges.indexOf(message.exchange) !== -1) {
         // Then we must find the taskId
-        var taskId = message.status.taskId;
+        var taskId = message.payload.status.taskId;
         var result = _.cloneDeep(this.state.graphResult);
         // Update status for task that was affected
         result.tasks.forEach(function(task) {
           if (task.taskId === taskId) {
-            task.status = message.status;
+            task.status = message.payload.status;
           }
         });
         // Update state
@@ -378,7 +378,7 @@ var TaskGraphInspectorWidget = React.createClass({
       if (queueExchanges.indexOf(message.exchange) === -1) {
         var result = _.cloneDeep(this.state.graphResult);
         // Update task-graph status
-        result.status = message.status;
+        result.status = message.payload.status;
         // Update state
         this.setState({graphResult: result});
       }
@@ -459,7 +459,7 @@ var TaskGraphInspectorWidget = React.createClass({
                 <td><code>{task.taskId}</code></td>
                 <td>
                   <Format.Markdown>
-                    {task.status.name || '-'}
+                    {task.name}
                   </Format.Markdown>
                 </td>
                 <td>

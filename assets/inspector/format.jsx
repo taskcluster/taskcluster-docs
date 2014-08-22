@@ -117,7 +117,14 @@ Format.Loading = React.createClass({
     } else if (this.props.state === null) {
       style = 'info';
       title = 'Loading,';
-      text  = "Currently loading " + this.props.subject + "...";
+      text  = "Loading " + this.props.subject + "...";
+      return (
+        <span>
+          <i className="glyphicon glyphicon-refresh loading"></i>
+          &nbsp;
+          {text}
+        </span>
+      );
     } else {
       style = 'success';
       title = 'Loaded,';
