@@ -65,7 +65,9 @@ without these amazing libraries and tools, upon which it is built.
  * Files in `JSONFormatter/` by [Redsandro and Vladimir Bodurov]
    (https://gist.github.com/Redsandro/5473335) is licensed under the MIT
    license.
-
+ * `promise.js` is from [es6-promises by Jake Archibald]
+   (https://github.com/jakearchibald/es6-promise) is licensed under the MIT
+   license.
 
 **Tools**,
  * [Jekyll](https://github.com/jekyll/jekyll), content generator on github pages.

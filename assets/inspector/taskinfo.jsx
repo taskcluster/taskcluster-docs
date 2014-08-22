@@ -50,6 +50,14 @@ exports.TaskInfo = React.createClass({
       return <Format.Loading subject="task definition" state={task}/>;
     }
 
+    var taskStateLabel = {
+      unscheduled:      'label label-default',
+      pending:          'label label-info',
+      running:          'label label-primary',
+      completed:        'label label-success',
+      failed:           'label label-danger'
+    };
+
     return (
       <span>
       <dl className="dl-horizontal">
@@ -79,6 +87,12 @@ exports.TaskInfo = React.createClass({
         </dd>
       </dl>
       <dl className="dl-horizontal">
+        <dt>State</dt>
+        <dd>
+          <span className={taskStateLabel[status.state]}>
+            {status.state}
+          </span>
+        </dd>
         <dt>Created</dt>
         <dd>
           <Format.Date date={task.created}/>

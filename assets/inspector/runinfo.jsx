@@ -100,7 +100,7 @@ exports.RunInfo = React.createClass({
     }
 
     var stateLabelMap = {
-      pending:    'default',
+      pending:    'info',
       running:    'primary',
       completed:  'success',
       failed:     'danger'
