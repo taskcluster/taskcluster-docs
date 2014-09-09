@@ -45,12 +45,6 @@ sections:
       url:  http://queue.taskcluster.net
     - name: Source Repository
       url:  https://github.com/taskcluster/taskcluster-queue
-  - name: Provisioners
-    url:  /provisioners/index.html
-    href: /provisioners/
-    links:
-      - name: AWS Provisioners
-        url:  /provisioners/aws-provisioner.html
   - name: Scheduler
     url:  /scheduler/index.html
     href: /scheduler/
@@ -66,6 +60,16 @@ sections:
       href: /scheduler/task-graph-storage/
     - name: Source Repository
       url:  https://github.com/taskcluster/task-graph-scheduler
+  - name: Services
+    url:  /services/index.html
+    href: /services/
+    links:
+      - name: AWS Provisioner
+        url:  /services/aws-provisioner/index.html
+        href: /services/aws-provisioner/
+      - name: Task Indexing
+        url:  /services/index/index.html
+        href: /services/index/
   - name: Auth
     url:  /auth/index.html
     href: /auth/
