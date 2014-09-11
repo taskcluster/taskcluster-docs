@@ -74,6 +74,15 @@ sections:
     url:  /auth/index.html
     href: /auth/
     links:
+      - name: Restricting Scopes
+        url:  /auth/authorized-scopes/index.html
+        href: /auth/authorized-scopes/
+      - name: Temporary Credentials
+        url:  /auth/temporary-credentials/index.html
+        href: /auth/temporary-credentials/
+      - name: Signed Urls
+        url:  /auth/signed-urls/index.html
+        href: /auth/signed-urls/
       - name: API Documentation
         url:  /auth/api-docs/index.html
         href: /auth/api-docs/
