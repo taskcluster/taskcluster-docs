@@ -93,6 +93,10 @@ exports.TaskInfo = React.createClass({
             {status.state}
           </span>
         </dd>
+        <dt>Retries Left</dt>
+        <dd>{status.retriesLeft} of {task.retries}</dd>
+      </dl>
+      <dl className="dl-horizontal">
         <dt>Created</dt>
         <dd>
           <Format.Date date={task.created}/>
@@ -151,12 +155,6 @@ exports.TaskInfo = React.createClass({
             {status.taskId}
           </a>
         </dd>
-      </dl>
-      <dl className="dl-horizontal">
-        <dt>Task Priority</dt>
-        <dd><span className="badge">{task.priority}</span></dd>
-        <dt>Retries Left</dt>
-        <dd>{status.retriesLeft} of {task.retries}</dd>
       </dl>
       <dl className="dl-horizontal">
         <dt>Tags</dt>

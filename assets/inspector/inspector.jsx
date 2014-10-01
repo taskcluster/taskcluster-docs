@@ -279,7 +279,8 @@ var TaskGraphInspectorWidget = React.createClass({
 
     // Inspect graph and fetch status structure for all tasks
     var getGraphResult = scheduler.inspect(taskGraphId).then(function(result) {
-      // For each task
+      return result;
+      /*// For each task
       return Promise.all(result.tasks.map(function(task) {
         // Fetch task status
         return queue.status(task.taskId).then(function(result) {
@@ -289,7 +290,7 @@ var TaskGraphInspectorWidget = React.createClass({
       })).then(function() {
         // return result as we've modified to feature task status structures
         return result;
-      });
+      });*/
     });
     // Load state form promise created above
     this.loadState('graphResult', getGraphResult);
@@ -368,8 +369,11 @@ var TaskGraphInspectorWidget = React.createClass({
 
         // Tell taskView to reload list of artifacts
         if (message.exchange === queueEvents.artifactCreated().exchange) {
-          if (this.refs.taskView) {
-            this.refs.taskView.reloadArtifacts();
+          // If taskId is the current taskId we reload list of artifacts
+          if (taskId === this.currentTaskId()) {
+            if (this.refs.taskView) {
+              this.refs.taskView.reloadArtifacts();
+            }
           }
         }
       }
@@ -412,7 +416,7 @@ var TaskGraphInspectorWidget = React.createClass({
       failed:           'label label-danger'
     };
 
-    var currentTaskId = this.currentTaskStatus().taskId;
+    var currentTaskId = this.currentTaskId();
     var requiredTasks = [];
     var dependentTasks = [];
     this.state.graphResult.tasks.forEach(function(task) {
@@ -432,6 +436,7 @@ var TaskGraphInspectorWidget = React.createClass({
             <th>TaskId</th>
             <th>Name</th>
             <th>State</th>
+            <th>Satisfied</th>
             <th>Reruns</th>
             <th>Relation</th>
           </tr>
@@ -441,7 +446,7 @@ var TaskGraphInspectorWidget = React.createClass({
           this.state.graphResult.tasks.map(function(task) {
             var href = '#' + this.state.graphResult.status.taskGraphId + '/' +
                        task.taskId;
-            var stateLabel = taskStateLabel[task.status.state];
+            var stateLabel = taskStateLabel[task.state];
             var relation = null;
             if (requiredTasks.indexOf(task.taskId) !== -1) {
               relation = <span className={stateLabel}>required</span>;
@@ -464,8 +469,20 @@ var TaskGraphInspectorWidget = React.createClass({
                 </td>
                 <td>
                   <span className={stateLabel}>
-                    {task.status.state}
+                    {task.state}
                   </span>
+                </td>
+                <td>
+                  {
+                    task.satisfied ?
+                      <span className="label label-success">
+                      Yes
+                      </span>
+                    :
+                      <span className="label label-warning">
+                      No
+                      </span>
+                  }
                 </td>
                 <td>
                   {task.reruns - task.rerunsLeft} of {task.reruns}
@@ -480,6 +497,12 @@ var TaskGraphInspectorWidget = React.createClass({
     );
   },
 
+  // Get taskId of selected task
+  currentTaskId: function() {
+    var taskId = this.state.taskId || this.state.graphResult.tasks[0].taskId;
+    return taskId;
+  },
+
   // Get status structure for current task
   currentTaskStatus: function() {
     var taskId = this.state.taskId;
@@ -490,6 +513,55 @@ var TaskGraphInspectorWidget = React.createClass({
       }
     });
     return status;
+  },
+
+  renderTaskView: function() {
+    // Find status if cached/loaded
+    var taskId = this.currentTaskId();
+    var status = undefined;
+    this.state.graphResult.tasks.forEach(function(task) {
+      if (task.taskId == taskId) {
+        status = task.status;
+      }
+    });
+
+    // Create view if we have status
+    if (status) {
+      return (
+        <TaskView ref="taskView"
+              onTabChange={this.onTabChange}
+              status={status}
+              queue={this.props.queue}
+              initialTab={this.state.currentTab}/>
+      );
+    }
+
+    // Set status so it works for state in Format.Loading
+    if (status === undefined) {
+      status = null;
+    }
+
+    // Fetch task status, if not already failed
+    if (status !== false) {
+      this.props.queue.status(taskId).then(undefined, function(err) {
+        // Failed to load status
+        return {status: false};
+      }).then(function(result) {
+        // Update the entry in graphResult to have this result
+        var graphResult = _.cloneDeep(this.state.graphResult);
+        // Update status for taskId we loaded for
+        graphResult.tasks.forEach(function(task) {
+          if (task.taskId === taskId) {
+            task.status = result.status;
+          }
+        });
+        // Update state
+        this.setState({graphResult: graphResult});
+      }.bind(this));
+    }
+
+    // Load status if we don't have it
+    return <Format.Loading subject="task status" state={status}/>;
   },
 
   // Render a task-graph-inspector
@@ -549,11 +621,7 @@ var TaskGraphInspectorWidget = React.createClass({
         </dl>
         {this.renderTaskTable()}
         <hr/>
-        <TaskView ref="taskView"
-                  onTabChange={this.onTabChange}
-                  status={this.currentTaskStatus()}
-                  queue={this.props.queue}
-                  initialTab={this.state.currentTab}/>
+        {this.renderTaskView()}
         </span>
       );
     }
