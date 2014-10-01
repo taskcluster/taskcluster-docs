@@ -362,6 +362,11 @@ var TaskGraphInspectorWidget = React.createClass({
         result.tasks.forEach(function(task) {
           if (task.taskId === taskId) {
             task.status = message.payload.status;
+            var lastRun = _.last(message.payload.status.runs);
+            if (lastRun) {
+              task.state      = lastRun.state;
+              task.satisfied  = lastRun.success;
+            }
           }
         });
         // Update state
