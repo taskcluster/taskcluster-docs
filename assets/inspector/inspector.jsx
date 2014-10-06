@@ -106,41 +106,43 @@ var TaskInspectorWidget = React.createClass({
     }
 
     // Create new listener
-    this.listener = new Listener();
-    // Bind to exchanges when ready
-    this.listener.addEventListener('ready', function() {
-      // Create common routing key
-      var rkey = {taskId: taskId};
-      this.listener.bind(this.props.queueEvents.taskDefined(rkey));
-      this.listener.bind(this.props.queueEvents.taskPending(rkey));
-      this.listener.bind(this.props.queueEvents.taskRunning(rkey));
-      this.listener.bind(this.props.queueEvents.artifactCreated(rkey));
-      this.listener.bind(this.props.queueEvents.taskFailed(rkey));
-      this.listener.bind(this.props.queueEvents.taskCompleted(rkey));
-    }.bind(this));
-    this.listener.addEventListener('error', function(err) {
+    this.listener = new taskcluster.WebListener();
+    // Bind to exchanges with common routing key
+    var rkey = {taskId: taskId};
+    this.listener.bind(this.props.queueEvents.taskDefined(rkey));
+    this.listener.bind(this.props.queueEvents.taskPending(rkey));
+    this.listener.bind(this.props.queueEvents.taskRunning(rkey));
+    this.listener.bind(this.props.queueEvents.artifactCreated(rkey));
+    this.listener.bind(this.props.queueEvents.taskFailed(rkey));
+    this.listener.bind(this.props.queueEvents.taskCompleted(rkey));
+
+    this.listener.connect().then(function() {
+      console.log("Listening for events...");
+    }, function(err) {
+      console.log("Failed to listen for events!");
+      console.log(err.stack);
+    });
+
+    this.listener.on('error', function(err) {
       console.log("Listener error:");
       console.log(JSON.stringify(err, null, 2));
-    });
-    this.listener.addEventListener('bound', function(msg) {
-      console.log("Listener bound: " + msg.binding.exchange);
     });
     // Find artifact exchange
     var artifactCreatedExchange = this.props.queueEvents
                                             .artifactCreated()
                                             .exchange;
     // listen for messages
-    this.listener.addEventListener('message', function(data) {
+    this.listener.on('message', function(message) {
       // Update state with new status structure upon getting a message
-      this.setState({statusResult: data.message.payload});
+      this.setState({statusResult: message.payload});
       // Tell taskView to reload list of artifacts
-      if (data.message.exchange === artifactCreatedExchange) {
+      if (message.exchange === artifactCreatedExchange) {
         if (this.refs.taskView) {
           this.refs.taskView.reloadArtifacts();
         }
       }
       console.log("Listener message:");
-      console.log(JSON.stringify(data, null, 2));
+      console.log(JSON.stringify(message, null, 2));
     }.bind(this));
   },
 
@@ -302,34 +304,38 @@ var TaskGraphInspectorWidget = React.createClass({
     }
 
     // Create new listener
-    this.listener = new Listener();
+    this.listener = new taskcluster.WebListener();
 
     var queueEvents     = this.props.queueEvents;
     var schedulerEvents = this.props.schedulerEvents;
 
-    // Bind to exchanges when ready
-    this.listener.addEventListener('ready', function() {
-      // Create common routing key for queue events
-      var qkey = {taskGroupId: taskGraphId};
-      this.listener.bind(queueEvents.taskDefined(qkey));
-      this.listener.bind(queueEvents.taskPending(qkey));
-      this.listener.bind(queueEvents.taskRunning(qkey));
-      this.listener.bind(queueEvents.artifactCreated(qkey));
-      this.listener.bind(queueEvents.taskFailed(qkey));
-      this.listener.bind(queueEvents.taskCompleted(qkey));
-      // Create common routing key for task-graph events
-      var skey = {taskGraphId: taskGraphId};
-      this.listener.bind(schedulerEvents.taskGraphRunning(skey));
-      this.listener.bind(schedulerEvents.taskGraphExtended(skey));
-      this.listener.bind(schedulerEvents.taskGraphBlocked(skey));
-      this.listener.bind(schedulerEvents.taskGraphFinished(skey));
-    }.bind(this));
-    this.listener.addEventListener('error', function(err) {
+    // Bind to exchanges
+    // Create common routing key for queue events
+    var qkey = {taskGroupId: taskGraphId};
+    this.listener.bind(queueEvents.taskDefined(qkey));
+    this.listener.bind(queueEvents.taskPending(qkey));
+    this.listener.bind(queueEvents.taskRunning(qkey));
+    this.listener.bind(queueEvents.artifactCreated(qkey));
+    this.listener.bind(queueEvents.taskFailed(qkey));
+    this.listener.bind(queueEvents.taskCompleted(qkey));
+    // Create common routing key for task-graph events
+    var skey = {taskGraphId: taskGraphId};
+    this.listener.bind(schedulerEvents.taskGraphRunning(skey));
+    this.listener.bind(schedulerEvents.taskGraphExtended(skey));
+    this.listener.bind(schedulerEvents.taskGraphBlocked(skey));
+    this.listener.bind(schedulerEvents.taskGraphFinished(skey));
+
+
+    this.listener.connect().then(function() {
+      console.log("Listening for events...");
+    }, function(err) {
+      console.log("Failed to listen for events!");
+      console.log(err.stack);
+    });
+
+    this.listener.on('error', function(err) {
       console.log("Listener error:");
       console.log(JSON.stringify(err, null, 2));
-    });
-    this.listener.addEventListener('bound', function(msg) {
-      console.log("Listener bound: " + msg.binding.exchange);
     });
     // Find queue exchanges
     var queueExchanges = [
@@ -341,11 +347,9 @@ var TaskGraphInspectorWidget = React.createClass({
       queueEvents.taskCompleted().exchange
     ];
     // listen for messages
-    this.listener.addEventListener('message', function(data) {
+    this.listener.on('message', function(message) {
       console.log("Listener message:");
-      console.log(JSON.stringify(data, null, 2));
-
-      var message = data.message;
+      console.log(JSON.stringify(message, null, 2));
 
       // Check that we have a result to update before we try to update it
       if (!this.state.graphResult) {
