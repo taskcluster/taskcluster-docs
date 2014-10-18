@@ -18,7 +18,7 @@ taskcluster.WebListener.SockJS = SockJS;
 
 // Export taskcluster
 module.exports = taskcluster;
-},{"./lib/client":3,"./lib/sockjs":4,"./lib/weblistener":5,"lodash":59}],2:[function(require,module,exports){
+},{"./lib/client":3,"./lib/sockjs":4,"./lib/weblistener":5,"lodash":60}],2:[function(require,module,exports){
 module.exports = {
   "Auth": {
     "referenceUrl": "http://references.taskcluster.net/auth/v1/api.json",
@@ -35,7 +35,7 @@ module.exports = {
           "args": [
             "clientId"
           ],
-          "name": "inspect",
+          "name": "scopes",
           "title": "Get Client Authorized Scopes",
           "description": "Returns the scopes the client is authorized to access and the date-time\nwhere the clients authorization is set to expire.\n\nThis API end-point allows you inspect clients without getting access to\ncredentials, as provide by the `getCredentials` request below.",
           "scopes": [
@@ -64,6 +64,114 @@ module.exports = {
             ]
           ],
           "output": "http://schemas.taskcluster.net/auth/v1/client-credentials-response.json#"
+        },
+        {
+          "type": "function",
+          "method": "get",
+          "route": "/client/<clientId>",
+          "args": [
+            "clientId"
+          ],
+          "name": "client",
+          "title": "Get Client Information",
+          "description": "Returns all information about a given client. This end-point is mostly\nbuilding tools to administrate clients. Do not use if you only want to\nauthenticate a request, see `getCredentials` for this purpose.",
+          "scopes": [
+            [
+              "auth:credentials"
+            ]
+          ]
+        },
+        {
+          "type": "function",
+          "method": "put",
+          "route": "/client/<clientId>",
+          "args": [
+            "clientId"
+          ],
+          "name": "createClient",
+          "title": "Create Client",
+          "description": "Create client with given `clientId`, `name`, `expires`, `scopes` and\n`description`. The `accessToken` will always be generated server-side,\nand will be returned from this request.\n\n**Required scopes**, in addition the scopes listed\nabove, the caller must also posses the all the scopes that is given to\nthe client that is created.",
+          "scopes": [
+            [
+              "auth:create-client",
+              "auth:credentials"
+            ]
+          ],
+          "input": "http://schemas.taskcluster.net/auth/v1/create-client-request.json#"
+        },
+        {
+          "type": "function",
+          "method": "post",
+          "route": "/client/<clientId>/modify",
+          "args": [
+            "clientId"
+          ],
+          "name": "modifyClient",
+          "title": "Modify Client",
+          "description": "Modify client `name`, `expires`, `scopes` and\n`description`.\n\n**Required scopes**, in addition the scopes listed\nabove, the caller must also posses the all the scopes that is given to\nthe client that is updated.",
+          "scopes": [
+            [
+              "auth:modify-client",
+              "auth:credentials"
+            ]
+          ],
+          "input": "http://schemas.taskcluster.net/auth/v1/create-client-request.json#"
+        },
+        {
+          "type": "function",
+          "method": "delete",
+          "route": "/client/<clientId>",
+          "args": [
+            "clientId"
+          ],
+          "name": "removeClient",
+          "title": "Remove Client",
+          "description": "Delete a client with given `clientId`.",
+          "scopes": [
+            [
+              "auth:remove-client"
+            ]
+          ]
+        },
+        {
+          "type": "function",
+          "method": "post",
+          "route": "/client/<clientId>/reset-credentials",
+          "args": [
+            "clientId"
+          ],
+          "name": "resetCredentials",
+          "title": "Reset Client Credentials",
+          "description": "Reset credentials for a client. This will generate a new `accessToken`.\nas always the `accessToken` will be generated server-side and returned.",
+          "scopes": [
+            [
+              "auth:reset-credentials",
+              "auth:credentials"
+            ]
+          ]
+        },
+        {
+          "type": "function",
+          "method": "get",
+          "route": "/list-clients",
+          "args": [],
+          "name": "listClients",
+          "title": "List Clients",
+          "description": "Return list with all clients",
+          "scopes": [
+            [
+              "auth:client-clients"
+            ]
+          ]
+        },
+        {
+          "type": "function",
+          "method": "get",
+          "route": "/ping",
+          "args": [],
+          "name": "ping",
+          "title": "Ping Server",
+          "description": "Documented later...\n\n**Warning** this api end-point is **not stable**."
         }
       ]
     }
@@ -351,16 +459,6 @@ module.exports = {
         {
           "type": "function",
           "method": "get",
-          "route": "/settings/amqp-connection-string",
-          "args": [],
-          "name": "getAMQPConnectionString",
-          "title": "Fetch AMQP Connection String",
-          "description": "Most hosted AMQP services requires us to specify a virtual host, \nso hardcoding the AMQP connection string into various services would be \na bad solution. Hence, we offer all authorized queue consumers to fetch \nan AMQP connection string using the API end-point.\n\n**Warning**, this API end-point is not stable, and may change in the \nfuture the strategy of not hardcoding AMQP connection details into \nvarious components obviously makes sense. But as we have no method of \nnotifying consumers that the connection string have moved. This \napproach may not be optimal either. Thus, we may be choose to remove \nthis API end-point when `pulse.mozilla.org` is a stable AMQP service \nwe can rely on.",
-          "output": "http://schemas.taskcluster.net/queue/v1/amqp-connection-string-response.json#"
-        },
-        {
-          "type": "function",
-          "method": "get",
           "route": "/ping",
           "args": [],
           "name": "ping",
@@ -376,7 +474,7 @@ module.exports = {
       "version": "0.2.0",
       "title": "Queue AMQP Exchanges",
       "description": "The queue, typically available at `queue.taskcluster.net`, is responsible\nfor accepting tasks and track their state as they are executed by\nworkers. In order ensure they are eventually resolved.\n\nThis document describes AMQP exchanges offered by the queue, which allows\nthird-party listeners to monitor tasks as they progress to resolution.\nThese exchanges targets the following audience:\n * Schedulers, who takes action after tasks are completed,\n * Workers, who wants to listen for new or canceled tasks (optional),\n * Tools, that wants to update their view as task progress.\n\nYou'll notice that all the exchanges in the document shares the same\nrouting key pattern. This makes it very easy to bind to all messages\nabout a certain kind tasks.\n\n**Task-graphs**, if the task-graph scheduler, documented elsewhere, is\nused to schedule a task-graph, the task submitted will have their\n`schedulerId` set to `'task-graph-scheduler'`, and their `taskGroupId` to\nthe `taskGraphId` as given to the task-graph scheduler. This is useful if\nyou wish to listen for all messages in a specific task-graph.\n\n**Task specific routes**, a task can define a task specific route using\nthe `task.routes` property. See task creation documentation for details\non permissions required to provide task specific routes. If a task has\nthe entry `'notify.by-email'` in as task specific route defined in\n`task.routes` all messages about this task will be CC'ed with the\nrouting-key `'route.notify.by-email'`.\n\nThese routes will always be prefixed `route.`, so that cannot interfere\nwith the _primary_ routing key as documented here. Notice that the\n_primary_ routing key is alwasys prefixed `primary.`. This is ensured\nin the routing key reference, so API clients will do this automatically.\n\nPlease, note that the way RabbitMQ works, the message will only arrive\nin your queue once, even though you may have bound to the exchange with\nmultiple routing key patterns that matches more of the CC'ed routing\nrouting keys.\n\n**Delivery guarantees**, most operations on the queue are idempotent,\nwhich means that if repeated with the same arguments then the requests\nwill ensure completion of the operation and return the same response.\nThis is useful if the server crashes or the TCP connection breaks, but\nwhen re-executing an idempotent operation, the queue will also resend\nany related AMQP messages. Hence, messages may be repeated.\n\nThis shouldn't be much of a problem, as the best you can achieve using\nconfirm messages with AMQP is at-least-once delivery semantics. Hence,\nthis only prevents you from obtaining at-most-once delivery semantics.\n\n**Remark**, some message generated by timeouts maybe dropped if the\nserver crashes at wrong time. Ideally, we'll address this in the\nfuture. For now we suggest you ignore this corner case, and notify us\nif this corner case is of concern to you.",
-      "exchangePrefix": "queue/v1/",
+      "exchangePrefix": "exchange/taskcluster-queue/v1/",
       "entries": [
         {
           "type": "topic-exchange",
@@ -389,71 +487,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -470,71 +558,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -551,71 +629,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -632,71 +700,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -713,71 +771,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -794,71 +842,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "`taskId` for the task this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "runId",
               "summary": "`runId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "`workerGroup` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "`workerId` of latest run for the task, `_` if no run is exists for the task.",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "`provisionerId` this task is targeted at.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "workerType",
               "summary": "`workerType` this task must run on.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "schedulerId",
               "summary": "`schedulerId` this task was created by.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGroupId",
               "summary": "`taskGroupId` this task was created in.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -965,7 +1003,7 @@ module.exports = {
       "version": "0.2.0",
       "title": "Scheduler AMQP Exchanges",
       "description": "The scheduler, typically available at `scheduler.taskcluster.net` is\nresponsible for accepting task-graphs and schedule tasks on the queue as\ntheir dependencies are completed successfully.\n\nThis document describes the AMQP exchanges offered by the scheduler,\nwhich allows third-party listeners to monitor task-graph submission and\nresolution. These exchanges targets the following audience:\n * Reporters, who displays the state of task-graphs or emails people on\n   failures, and\n * End-users, who wants notification of completed task-graphs\n\n**Remark**, the task-graph scheduler will require that the `schedulerId`\nfor tasks is set to the `schedulerId` for the task-graph scheduler. In\nproduction the `schedulerId` is typically `\"task-graph-scheduler\"`.\nFurthermore, the task-graph scheduler will also require that\n`taskGroupId` is equal to the `taskGraphId`.\n\nCombined these requirements ensures that `schedulerId` and `taskGroupId`\nhave the same position in the routing keys for the queue exchanges.\nSee queue documentation for details on queue exchanges. Hence, making\nit easy to listen for all tasks in a given task-graph.\n\nNote that routing key entries 2 through 7 used for exchanges on the\ntask-graph scheduler is hardcoded to `_`. This is done to preserve\npositional equivalence with exchanges offered by the queue.",
-      "exchangePrefix": "scheduler/v1/",
+      "exchangePrefix": "exchange/taskcluster-scheduler/scheduler/v1/",
       "entries": [
         {
           "type": "topic-exchange",
@@ -978,71 +1016,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "runId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerType",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "schedulerId",
               "summary": "Identifier for the task-graphs scheduler managing the task-graph this message concerns. Usually `task-graph-scheduler` in production.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGraphId",
               "summary": "Identifier for the task-graph this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -1059,71 +1087,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "runId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerType",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "schedulerId",
               "summary": "Identifier for the task-graphs scheduler managing the task-graph this message concerns. Usually `task-graph-scheduler` in production.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGraphId",
               "summary": "Identifier for the task-graph this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -1140,71 +1158,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "runId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerType",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "schedulerId",
               "summary": "Identifier for the task-graphs scheduler managing the task-graph this message concerns. Usually `task-graph-scheduler` in production.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGraphId",
               "summary": "Identifier for the task-graph this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -1221,71 +1229,61 @@ module.exports = {
               "name": "routingKeyKind",
               "summary": "Identifier for the routing-key kind. This is always `'primary'` for the formalized routing key.",
               "constant": "primary",
-              "required": true,
               "multipleWords": false,
-              "maxSize": 7
+              "required": true
             },
             {
               "name": "taskId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "runId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 3,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerGroup",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "provisionerId",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "workerType",
               "summary": "Always takes the value `_`",
-              "required": false,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": false
             },
             {
               "name": "schedulerId",
               "summary": "Identifier for the task-graphs scheduler managing the task-graph this message concerns. Usually `task-graph-scheduler` in production.",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "taskGraphId",
               "summary": "Identifier for the task-graph this message concerns",
-              "required": true,
-              "maxSize": 22,
-              "multipleWords": false
+              "multipleWords": false,
+              "required": true
             },
             {
               "name": "reserved",
               "summary": "Space reserved for future routing-key entries, you should always match this entry with `#`. As automatically done by our tooling, if not specified.",
               "multipleWords": true,
-              "maxSize": 1,
               "required": false
             }
           ],
@@ -1388,6 +1386,7 @@ var hawk        = require('hawk');
 var url         = require('url');
 var crypto      = require('crypto');
 var slugid      = require('slugid');
+var Promise     = require('promise');
 
 // Default options stored globally for convenience
 var _defaultOptions = {
@@ -1400,8 +1399,40 @@ var _defaultOptions = {
   authorization: {
     delegating: false,
     scopes: []
-  }
+  },
+
+  maxRetries:     5
 };
+
+
+/** Make a request for a Client instance */
+var makeRequest = function(client, method, url, payload) {
+  // Construct request object
+  var req = request(method.toUpperCase(), url);
+
+  // Send payload if defined
+  if (payload !== undefined) {
+    req.send(payload);
+  }
+
+  // Authenticate, if credentials are provided
+  if (client._options.credentials &&
+      client._options.credentials.clientId &&
+      client._options.credentials.accessToken) {
+    // Write hawk authentication header
+    req.hawk({
+      id:         client._options.credentials.clientId,
+      key:        client._options.credentials.accessToken,
+      algorithm:  'sha256'
+    }, {
+      ext:        client._extData
+    });
+  }
+
+  // Return request
+  return req;
+};
+
 
 /**
  * Create a client class from a JSON reference.
@@ -1417,12 +1448,14 @@ var _defaultOptions = {
  *   credentials: {
  *     clientId:    '...', // ClientId
  *     accessToken: '...', // AccessToken for clientId
+ *     certificate: {...}  // Certificate, if temporary credentials
  *   },
  *   // Limit the set of scopes requests with this client may make.
  *   // Note, that your clientId must have a superset of the these scopes.
  *   authorizedScopes:  ['scope1', 'scope2', ...]
  *   baseUrl:         'http://.../v1'   // baseUrl for API requests
  *   exchangePrefix:  'queue/v1/'       // exchangePrefix prefix
+ *   maxRetries:      5,                // Maximum number of attempts
  * }
  *
  * `baseUrl` and `exchangePrefix` defaults to values from reference.
@@ -1435,11 +1468,39 @@ exports.createClient = function(reference) {
       exchangePrefix:   reference.exchangePrefix || ''
     }, _defaultOptions);
 
-    // Parse certificate if provided and parsing is necessary
-    if (this._options.credentials && this._options.credentials.certificate) {
-      this._options.certificate = this._options.credentials.certificate;
-      if (typeof(this._options.certificate) === 'string') {
-        this._options.certificate = JSON.parse(this._options.certificate);
+    // Build ext for hawk requests
+    this._extData = undefined;
+    if (this._options.credentials &&
+        this._options.credentials.clientId &&
+        this._options.credentials.accessToken) {
+      var ext = {};
+
+      // If there is a certificate we have temporary credentials, and we
+      // must provide the certificate
+      if (this._options.credentials.certificate) {
+        ext.certificate = this._options.credentials.certificate;
+        // Parse as JSON if it's a string
+        if (typeof(ext.certificate) === 'string') {
+          try {
+            ext.certificate = JSON.parse(ext.certificate);
+          }
+          catch(err) {
+            debug("Failed to parse credentials.certificate, err: %s, JSON: %j",
+                  err, err);
+            throw new Error("JSON.parse(): Failed for configured certificate");
+          }
+        }
+      }
+
+      // If set of authorized scopes is provided, we'll restrict the request
+      // to only use these scopes
+      if (this._options.authorizedScopes instanceof Array) {
+        ext.authorizedScopes = this._options.authorizedScopes;
+      }
+
+      // ext has any keys we better base64 encode it, and set ext on extra
+      if (_.keys(ext).length > 0) {
+        this._extData = new Buffer(JSON.stringify(ext)).toString('base64');
       }
     }
   };
@@ -1456,7 +1517,6 @@ exports.createClient = function(reference) {
 
     // Create method on prototype
     Client.prototype[entry.name] = function() {
-      debug("Calling: " + entry.name);
       // Convert arguments to actual array
       var args = Array.prototype.slice.call(arguments);
       // Validate number of arguments
@@ -1475,64 +1535,89 @@ exports.createClient = function(reference) {
         }
         endpoint = endpoint.replace('<' + arg + '>', value);
       });
-      // Create request
-      var req = request[entry.method](this._options.baseUrl + endpoint);
+      // Create url for the request
+      var url = this._options.baseUrl + endpoint;
       // Add payload if one is given
+      var payload = undefined;
       if (entry.input) {
-        req.send(args.pop());
+        payload = args.pop();
       }
-      // Authenticate, if credentials are provided
-      if (this._options.credentials &&
-          this._options.credentials.clientId &&
-          this._options.credentials.accessToken) {
-        // Construct ext property
-        var ext = {};
 
-        // If there is a certificate we have temporary credentials, and we
-        // must provide the certificate
-        if (this._options.certificate) {
-          ext.certificate = this._options.certificate;
-        }
+      // Count request attempts
+      var attempts = 0;
+      var that = this;
 
-        // If set of authorized scopes is provided, we'll restrict the request
-        // to only use these scopes
-        if (this._options.authorizedScopes instanceof Array) {
-          ext.authorizedScopes = this._options.authorizedScopes;
-        }
-
-        // Extra paramters to hand hawk
-        var extra = {};
-
-        // ext has any keys we better base64 encode it, and set ext on extra
-        if (_.keys(ext).length > 0) {
-          extra.ext = new Buffer(JSON.stringify(ext)).toString('base64');
-        }
-
-        // Write hawk authentication header
-        req.hawk({
-          id:         this._options.credentials.clientId,
-          key:        this._options.credentials.accessToken,
-          algorithm:  'sha256'
-        }, extra);
-      }
-      // Send request and handle response
-      return req.end().then(function(res) {
-        if (!res.ok) {
-          debug("Error calling: %s, info: %j", entry.name, res.body);
-          var message = "Unknown Server Error";
-          if (res.status === 401) {
-            message = "Authentication Error";
+      // Return promise that we've used all retries
+      return new Promise(function(accept, reject) {
+        // Retry the request, after a delay depending on number of retries
+        var retryRequest = function() {
+          // Send request
+          var sendRequest = function() {
+            debug("Calling: %s, retry: %s", entry.name, attempts - 1);
+            // Make request and handle response or error
+            makeRequest(
+              that,
+              entry.method,
+              url,
+              payload
+            ).end().then(function(res) {
+              // If the response is not 200 OK (or 2xx)
+              if (!res.ok) {
+                // Decide if we should retry
+                if (attempts < that._options.maxRetries &&
+                    500 <= res.status &&  // Check if it's a 5xx error
+                    res.status < 600) {
+                  debug("Error calling: %s now retrying, info: %j",
+                        entry.name, res.body);
+                  return retryRequest();
+                }
+                // If not retrying, construct error object and reject
+                debug("Error calling: %s NOT retrying!, info: %j",
+                      entry.name, res.body);
+                var message = "Unknown Server Error";
+                if (res.status === 401) {
+                  message = "Authentication Error";
+                }
+                if (res.status === 500) {
+                  message = "Internal Server Error";
+                }
+                err = new Error(res.body.message || message);
+                err.body = res.body;
+                err.statusCode = res.status;
+                return reject(err);
+              }
+              // If request was successful, accept the result
+              debug("Success calling: %s, (%s retries)",
+                    entry.name, attempts - 1);
+              return accept(res.body);
+            }, function(err) {
+              // Decide if we should retry
+              if (attempts < that._options.maxRetries) {
+                debug("Request error calling %s (retrying), err: %s, JSON: %s",
+                      entry.name, err, err);
+                return retryRequest();
+              }
+              debug("Request error calling %s NOT retrying!, err: %s, JSON: %s",
+                    entry.name, err, err);
+              return reject(err);
+            });
           }
-          if (res.status === 500) {
-            message = "Internal Server Error";
+
+          // Increment attempt count, but track how many we had before
+          var retries = attempts;
+          attempts += 1;
+
+          // If this is the first retry, ie we haven't retried yet, we make the
+          // request immediately
+          if (retries === 0) {
+            sendRequest();
+          } else {
+            setTimeout(sendRequest, retries * retries * 100);
           }
-          err = new Error(res.body.message || message);
-          err.body = res.body;
-          err.statusCode = res.status;
-          throw err
-        }
-        debug("Success calling: " + entry.name);
-        return res.body;
+        };
+
+        // Start the retry request loop
+        retryRequest();
       });
     };
     // Add reference for buildUrl and signUrl
@@ -1675,16 +1760,6 @@ exports.createClient = function(reference) {
         throw new Error("accessToken must be given");
       }
 
-      // Generate meta-data to include
-      var ext = undefined;
-      // If set of authorized scopes is provided, we'll restrict the request
-      // to only use these scopes
-      if (this._options.authorizedScopes instanceof Array) {
-        ext = new Buffer(JSON.stringify({
-          authorizedScopes: this._options.authorizedScopes
-        })).toString('base64');
-      }
-
       // Create bewit
       var bewit = hawk.uri.getBewit(requestUrl, {
         credentials:    {
@@ -1693,7 +1768,7 @@ exports.createClient = function(reference) {
           algorithm:  'sha256'
         },
         ttlSec:         expiration,
-        ext:            ext
+        ext:            this._extData
       });
 
       // Add bewit to requestUrl
@@ -1821,7 +1896,7 @@ exports.createTemporaryCredentials = function(options) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./apis":2,"_process":34,"assert":7,"buffer":8,"crypto":15,"debug":55,"hawk":58,"lodash":59,"slugid":63,"superagent":85,"superagent-hawk":67,"superagent-promise":84,"url":52}],4:[function(require,module,exports){
+},{"./apis":2,"_process":35,"assert":7,"buffer":9,"crypto":16,"debug":56,"hawk":59,"lodash":60,"promise":61,"slugid":67,"superagent":89,"superagent-hawk":71,"superagent-promise":88,"url":53}],4:[function(require,module,exports){
 /* SockJS client, version 0.3.4, http://sockjs.org, MIT License
 
 Copyright (c) 2011-2012 VMware, Inc.
@@ -2111,7 +2186,7 @@ WebListener.prototype.pause = function() {
  */
 WebListener.SockJS = null;
 
-},{"assert":7,"debug":55,"events":27,"lodash":59,"promise":61,"slugid":63,"url-join":88,"util":54}],6:[function(require,module,exports){
+},{"assert":7,"debug":56,"events":28,"lodash":60,"promise":61,"slugid":67,"url-join":92,"util":55}],6:[function(require,module,exports){
 
 },{}],7:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
@@ -2475,7 +2550,9 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":54}],8:[function(require,module,exports){
+},{"util/":55}],8:[function(require,module,exports){
+module.exports=require(6)
+},{"/home/jonasfj/Mozilla/taskcluster-client/node_modules/browserify/lib/_empty.js":6}],9:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -3527,7 +3604,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":9,"ieee754":10,"is-array":11}],9:[function(require,module,exports){
+},{"base64-js":10,"ieee754":11,"is-array":12}],10:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -3649,7 +3726,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -3735,7 +3812,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 
 /**
  * isArray
@@ -3770,7 +3847,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('sha.js')
 
@@ -3804,7 +3881,7 @@ module.exports = function (alg) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./md5":16,"buffer":8,"ripemd160":19,"sha.js":21}],13:[function(require,module,exports){
+},{"./md5":17,"buffer":9,"ripemd160":20,"sha.js":22}],14:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('./create-hash')
 
@@ -3851,7 +3928,7 @@ Hmac.prototype.digest = function (enc) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"./create-hash":12,"buffer":8}],14:[function(require,module,exports){
+},{"./create-hash":13,"buffer":9}],15:[function(require,module,exports){
 (function (Buffer){
 var intSize = 4;
 var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
@@ -3889,7 +3966,7 @@ function hash(buf, fn, hashSize, bigEndian) {
 module.exports = { hash: hash };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":8}],15:[function(require,module,exports){
+},{"buffer":9}],16:[function(require,module,exports){
 (function (Buffer){
 var rng = require('./rng')
 
@@ -3946,7 +4023,7 @@ each(['createCredentials'
 })
 
 }).call(this,require("buffer").Buffer)
-},{"./create-hash":12,"./create-hmac":13,"./pbkdf2":25,"./rng":26,"buffer":8}],16:[function(require,module,exports){
+},{"./create-hash":13,"./create-hmac":14,"./pbkdf2":26,"./rng":27,"buffer":9}],17:[function(require,module,exports){
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -4103,7 +4180,7 @@ module.exports = function md5(buf) {
   return helpers.hash(buf, core_md5, 16);
 };
 
-},{"./helpers":14}],17:[function(require,module,exports){
+},{"./helpers":15}],18:[function(require,module,exports){
 var crypto = require('crypto')
 
 var exportFn = require('./pbkdf2')
@@ -4117,7 +4194,7 @@ module.exports = {
   __pbkdf2Export: exportFn
 }
 
-},{"./pbkdf2":18,"crypto":15}],18:[function(require,module,exports){
+},{"./pbkdf2":19,"crypto":16}],19:[function(require,module,exports){
 (function (Buffer){
 module.exports = function(crypto) {
   function pbkdf2(password, salt, iterations, keylen, digest, callback) {
@@ -4205,7 +4282,7 @@ module.exports = function(crypto) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":8}],19:[function(require,module,exports){
+},{"buffer":9}],20:[function(require,module,exports){
 (function (Buffer){
 
 module.exports = ripemd160
@@ -4414,7 +4491,7 @@ function ripemd160(message) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":8}],20:[function(require,module,exports){
+},{"buffer":9}],21:[function(require,module,exports){
 module.exports = function (Buffer) {
 
   //prototype class for hash functions
@@ -4493,7 +4570,7 @@ module.exports = function (Buffer) {
   return Hash
 }
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var exports = module.exports = function (alg) {
   var Alg = exports[alg]
   if(!Alg) throw new Error(alg + ' is not supported (we accept pull requests)')
@@ -4507,7 +4584,7 @@ exports.sha1 = require('./sha1')(Buffer, Hash)
 exports.sha256 = require('./sha256')(Buffer, Hash)
 exports.sha512 = require('./sha512')(Buffer, Hash)
 
-},{"./hash":20,"./sha1":22,"./sha256":23,"./sha512":24,"buffer":8}],22:[function(require,module,exports){
+},{"./hash":21,"./sha1":23,"./sha256":24,"./sha512":25,"buffer":9}],23:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -4647,7 +4724,7 @@ module.exports = function (Buffer, Hash) {
   return Sha1
 }
 
-},{"util":54}],23:[function(require,module,exports){
+},{"util":55}],24:[function(require,module,exports){
 
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -4796,7 +4873,7 @@ module.exports = function (Buffer, Hash) {
 
 }
 
-},{"util":54}],24:[function(require,module,exports){
+},{"util":55}],25:[function(require,module,exports){
 var inherits = require('util').inherits
 
 module.exports = function (Buffer, Hash) {
@@ -5042,7 +5119,7 @@ module.exports = function (Buffer, Hash) {
 
 }
 
-},{"util":54}],25:[function(require,module,exports){
+},{"util":55}],26:[function(require,module,exports){
 var pbkdf2Export = require('pbkdf2-compat').__pbkdf2Export
 
 module.exports = function (crypto, exports) {
@@ -5056,15 +5133,12 @@ module.exports = function (crypto, exports) {
   return exports
 }
 
-},{"pbkdf2-compat":17}],26:[function(require,module,exports){
+},{"pbkdf2-compat":18}],27:[function(require,module,exports){
 (function (global,Buffer){
 (function() {
   var g = ('undefined' === typeof window ? global : window) || {}
-  var foolBrowserify = function (r) {
-    try { return require(r) } catch (_) { }
-  }
   _crypto = (
-    g.crypto || g.msCrypto || foolBrowserify('crypto') || {}
+    g.crypto || g.msCrypto || require('crypto')
   )
   module.exports = function(size) {
     // Modern Browsers
@@ -5089,7 +5163,7 @@ module.exports = function (crypto, exports) {
 }())
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"buffer":8}],27:[function(require,module,exports){
+},{"buffer":9,"crypto":8}],28:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -5392,7 +5466,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var http = module.exports;
 var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
@@ -5538,7 +5612,7 @@ http.STATUS_CODES = {
     510 : 'Not Extended',               // RFC 2774
     511 : 'Network Authentication Required' // RFC 6585
 };
-},{"./lib/request":29,"events":27,"url":52}],29:[function(require,module,exports){
+},{"./lib/request":30,"events":28,"url":53}],30:[function(require,module,exports){
 var Stream = require('stream');
 var Response = require('./response');
 var Base64 = require('Base64');
@@ -5749,7 +5823,7 @@ var isXHR2Compatible = function (obj) {
     if (typeof FormData !== 'undefined' && obj instanceof FormData) return true;
 };
 
-},{"./response":30,"Base64":31,"inherits":32,"stream":51}],30:[function(require,module,exports){
+},{"./response":31,"Base64":32,"inherits":33,"stream":51}],31:[function(require,module,exports){
 var Stream = require('stream');
 var util = require('util');
 
@@ -5871,7 +5945,7 @@ var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{"stream":51,"util":54}],31:[function(require,module,exports){
+},{"stream":51,"util":55}],32:[function(require,module,exports){
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
@@ -5933,7 +6007,7 @@ var isArray = Array.isArray || function (xs) {
 
 }());
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -5958,12 +6032,12 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5971,6 +6045,8 @@ var process = module.exports = {};
 process.nextTick = (function () {
     var canSetImmediate = typeof window !== 'undefined'
     && window.setImmediate;
+    var canMutationObserver = typeof window !== 'undefined'
+    && window.MutationObserver;
     var canPost = typeof window !== 'undefined'
     && window.postMessage && window.addEventListener
     ;
@@ -5979,8 +6055,29 @@ process.nextTick = (function () {
         return function (f) { return window.setImmediate(f) };
     }
 
+    var queue = [];
+
+    if (canMutationObserver) {
+        var hiddenDiv = document.createElement("div");
+        var observer = new MutationObserver(function () {
+            var queueList = queue.slice();
+            queue.length = 0;
+            queueList.forEach(function (fn) {
+                fn();
+            });
+        });
+
+        observer.observe(hiddenDiv, { attributes: true });
+
+        return function nextTick(fn) {
+            if (!queue.length) {
+                hiddenDiv.setAttribute('yes', 'no');
+            }
+            queue.push(fn);
+        };
+    }
+
     if (canPost) {
-        var queue = [];
         window.addEventListener('message', function (ev) {
             var source = ev.source;
             if ((source === window || source === null) && ev.data === 'process-tick') {
@@ -6020,7 +6117,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
@@ -6028,7 +6125,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6539,7 +6636,7 @@ process.chdir = function (dir) {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6625,7 +6722,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6712,16 +6809,16 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":36,"./encode":37}],39:[function(require,module,exports){
+},{"./decode":37,"./encode":38}],40:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":40}],40:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":41}],41:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6814,7 +6911,7 @@ function forEach (xs, f) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_readable":42,"./_stream_writable":44,"_process":34,"core-util-is":45,"inherits":32}],41:[function(require,module,exports){
+},{"./_stream_readable":43,"./_stream_writable":45,"_process":35,"core-util-is":46,"inherits":33}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6862,7 +6959,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":43,"core-util-is":45,"inherits":32}],42:[function(require,module,exports){
+},{"./_stream_transform":44,"core-util-is":46,"inherits":33}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -7848,7 +7945,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"_process":34,"buffer":8,"core-util-is":45,"events":27,"inherits":32,"isarray":33,"stream":51,"string_decoder/":46}],43:[function(require,module,exports){
+},{"_process":35,"buffer":9,"core-util-is":46,"events":28,"inherits":33,"isarray":34,"stream":51,"string_decoder/":52}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8060,7 +8157,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":40,"core-util-is":45,"inherits":32}],44:[function(require,module,exports){
+},{"./_stream_duplex":41,"core-util-is":46,"inherits":33}],45:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8450,7 +8547,7 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":40,"_process":34,"buffer":8,"core-util-is":45,"inherits":32,"stream":51}],45:[function(require,module,exports){
+},{"./_stream_duplex":41,"_process":35,"buffer":9,"core-util-is":46,"inherits":33,"stream":51}],46:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8560,7 +8657,154 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":8}],46:[function(require,module,exports){
+},{"buffer":9}],47:[function(require,module,exports){
+module.exports = require("./lib/_stream_passthrough.js")
+
+},{"./lib/_stream_passthrough.js":42}],48:[function(require,module,exports){
+require('stream'); // hack to fix a circular dependency issue when used with browserify
+exports = module.exports = require('./lib/_stream_readable.js');
+exports.Readable = exports;
+exports.Writable = require('./lib/_stream_writable.js');
+exports.Duplex = require('./lib/_stream_duplex.js');
+exports.Transform = require('./lib/_stream_transform.js');
+exports.PassThrough = require('./lib/_stream_passthrough.js');
+
+},{"./lib/_stream_duplex.js":41,"./lib/_stream_passthrough.js":42,"./lib/_stream_readable.js":43,"./lib/_stream_transform.js":44,"./lib/_stream_writable.js":45,"stream":51}],49:[function(require,module,exports){
+module.exports = require("./lib/_stream_transform.js")
+
+},{"./lib/_stream_transform.js":44}],50:[function(require,module,exports){
+module.exports = require("./lib/_stream_writable.js")
+
+},{"./lib/_stream_writable.js":45}],51:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+module.exports = Stream;
+
+var EE = require('events').EventEmitter;
+var inherits = require('inherits');
+
+inherits(Stream, EE);
+Stream.Readable = require('readable-stream/readable.js');
+Stream.Writable = require('readable-stream/writable.js');
+Stream.Duplex = require('readable-stream/duplex.js');
+Stream.Transform = require('readable-stream/transform.js');
+Stream.PassThrough = require('readable-stream/passthrough.js');
+
+// Backwards-compat with node 0.4.x
+Stream.Stream = Stream;
+
+
+
+// old-style streams.  Note that the pipe method (the only relevant
+// part of this class) is overridden in the Readable class.
+
+function Stream() {
+  EE.call(this);
+}
+
+Stream.prototype.pipe = function(dest, options) {
+  var source = this;
+
+  function ondata(chunk) {
+    if (dest.writable) {
+      if (false === dest.write(chunk) && source.pause) {
+        source.pause();
+      }
+    }
+  }
+
+  source.on('data', ondata);
+
+  function ondrain() {
+    if (source.readable && source.resume) {
+      source.resume();
+    }
+  }
+
+  dest.on('drain', ondrain);
+
+  // If the 'end' option is not supplied, dest.end() will be called when
+  // source gets the 'end' or 'close' events.  Only dest.end() once.
+  if (!dest._isStdio && (!options || options.end !== false)) {
+    source.on('end', onend);
+    source.on('close', onclose);
+  }
+
+  var didOnEnd = false;
+  function onend() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    dest.end();
+  }
+
+
+  function onclose() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    if (typeof dest.destroy === 'function') dest.destroy();
+  }
+
+  // don't leave dangling pipes when there are errors.
+  function onerror(er) {
+    cleanup();
+    if (EE.listenerCount(this, 'error') === 0) {
+      throw er; // Unhandled stream error in pipe.
+    }
+  }
+
+  source.on('error', onerror);
+  dest.on('error', onerror);
+
+  // remove all the event listeners that were added.
+  function cleanup() {
+    source.removeListener('data', ondata);
+    dest.removeListener('drain', ondrain);
+
+    source.removeListener('end', onend);
+    source.removeListener('close', onclose);
+
+    source.removeListener('error', onerror);
+    dest.removeListener('error', onerror);
+
+    source.removeListener('end', cleanup);
+    source.removeListener('close', cleanup);
+
+    dest.removeListener('close', cleanup);
+  }
+
+  source.on('end', cleanup);
+  source.on('close', cleanup);
+
+  dest.on('close', cleanup);
+
+  dest.emit('pipe', source);
+
+  // Allow for unix-like usage: A.pipe(B).pipe(C)
+  return dest;
+};
+
+},{"events":28,"inherits":33,"readable-stream/duplex.js":40,"readable-stream/passthrough.js":47,"readable-stream/readable.js":48,"readable-stream/transform.js":49,"readable-stream/writable.js":50}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8783,153 +9027,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":8}],47:[function(require,module,exports){
-module.exports = require("./lib/_stream_passthrough.js")
-
-},{"./lib/_stream_passthrough.js":41}],48:[function(require,module,exports){
-exports = module.exports = require('./lib/_stream_readable.js');
-exports.Readable = exports;
-exports.Writable = require('./lib/_stream_writable.js');
-exports.Duplex = require('./lib/_stream_duplex.js');
-exports.Transform = require('./lib/_stream_transform.js');
-exports.PassThrough = require('./lib/_stream_passthrough.js');
-
-},{"./lib/_stream_duplex.js":40,"./lib/_stream_passthrough.js":41,"./lib/_stream_readable.js":42,"./lib/_stream_transform.js":43,"./lib/_stream_writable.js":44}],49:[function(require,module,exports){
-module.exports = require("./lib/_stream_transform.js")
-
-},{"./lib/_stream_transform.js":43}],50:[function(require,module,exports){
-module.exports = require("./lib/_stream_writable.js")
-
-},{"./lib/_stream_writable.js":44}],51:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-module.exports = Stream;
-
-var EE = require('events').EventEmitter;
-var inherits = require('inherits');
-
-inherits(Stream, EE);
-Stream.Readable = require('readable-stream/readable.js');
-Stream.Writable = require('readable-stream/writable.js');
-Stream.Duplex = require('readable-stream/duplex.js');
-Stream.Transform = require('readable-stream/transform.js');
-Stream.PassThrough = require('readable-stream/passthrough.js');
-
-// Backwards-compat with node 0.4.x
-Stream.Stream = Stream;
-
-
-
-// old-style streams.  Note that the pipe method (the only relevant
-// part of this class) is overridden in the Readable class.
-
-function Stream() {
-  EE.call(this);
-}
-
-Stream.prototype.pipe = function(dest, options) {
-  var source = this;
-
-  function ondata(chunk) {
-    if (dest.writable) {
-      if (false === dest.write(chunk) && source.pause) {
-        source.pause();
-      }
-    }
-  }
-
-  source.on('data', ondata);
-
-  function ondrain() {
-    if (source.readable && source.resume) {
-      source.resume();
-    }
-  }
-
-  dest.on('drain', ondrain);
-
-  // If the 'end' option is not supplied, dest.end() will be called when
-  // source gets the 'end' or 'close' events.  Only dest.end() once.
-  if (!dest._isStdio && (!options || options.end !== false)) {
-    source.on('end', onend);
-    source.on('close', onclose);
-  }
-
-  var didOnEnd = false;
-  function onend() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    dest.end();
-  }
-
-
-  function onclose() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    if (typeof dest.destroy === 'function') dest.destroy();
-  }
-
-  // don't leave dangling pipes when there are errors.
-  function onerror(er) {
-    cleanup();
-    if (EE.listenerCount(this, 'error') === 0) {
-      throw er; // Unhandled stream error in pipe.
-    }
-  }
-
-  source.on('error', onerror);
-  dest.on('error', onerror);
-
-  // remove all the event listeners that were added.
-  function cleanup() {
-    source.removeListener('data', ondata);
-    dest.removeListener('drain', ondrain);
-
-    source.removeListener('end', onend);
-    source.removeListener('close', onclose);
-
-    source.removeListener('error', onerror);
-    dest.removeListener('error', onerror);
-
-    source.removeListener('end', cleanup);
-    source.removeListener('close', cleanup);
-
-    dest.removeListener('close', cleanup);
-  }
-
-  source.on('end', cleanup);
-  source.on('close', cleanup);
-
-  dest.on('close', cleanup);
-
-  dest.emit('pipe', source);
-
-  // Allow for unix-like usage: A.pipe(B).pipe(C)
-  return dest;
-};
-
-},{"events":27,"inherits":32,"readable-stream/duplex.js":39,"readable-stream/passthrough.js":47,"readable-stream/readable.js":48,"readable-stream/transform.js":49,"readable-stream/writable.js":50}],52:[function(require,module,exports){
+},{"buffer":9}],53:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9638,14 +9736,14 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":35,"querystring":38}],53:[function(require,module,exports){
+},{"punycode":36,"querystring":39}],54:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10235,7 +10333,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":53,"_process":34,"inherits":32}],55:[function(require,module,exports){
+},{"./support/isBuffer":54,"_process":35,"inherits":33}],56:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -10384,7 +10482,7 @@ function load() {
 
 exports.enable(load());
 
-},{"./debug":56}],56:[function(require,module,exports){
+},{"./debug":57}],57:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -10583,7 +10681,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":57}],57:[function(require,module,exports){
+},{"ms":58}],58:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -10696,7 +10794,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 /*
     HTTP Hawk Authentication Scheme
     Copyright (c) 2012-2014, Eran Hammer <eran@hammer.io>
@@ -10833,6 +10931,84 @@ hawk.client = {
         return result;
     },
 
+    // Generate a bewit value for a given URI
+
+    /*
+        uri: 'http://example.com/resource?a=b'
+        options: {
+
+            // Required
+
+            credentials: {
+            id: 'dh37fgj492je',
+            key: 'aoijedoaijsdlaksjdl',
+            algorithm: 'sha256'                             // 'sha1', 'sha256'
+            },
+            ttlSec: 60 * 60,                                    // TTL in seconds
+
+            // Optional
+
+            ext: 'application-specific',                        // Application specific data sent via the ext attribute
+            localtimeOffsetMsec: 400                            // Time offset to sync with server time
+         };
+    */
+
+    bewit: function (uri, options) {
+
+        // Validate inputs
+
+        if (!uri ||
+            (typeof uri !== 'string') ||
+            !options ||
+            typeof options !== 'object' ||
+            !options.ttlSec) {
+
+            return '';
+        }
+
+        options.ext = (options.ext === null || options.ext === undefined ? '' : options.ext);       // Zero is valid value
+
+        // Application time
+
+        var now = hawk.utils.now(options.localtimeOffsetMsec);
+
+        // Validate credentials
+
+        var credentials = options.credentials;
+        if (!credentials ||
+            !credentials.id ||
+            !credentials.key ||
+            !credentials.algorithm) {
+
+            return '';
+        }
+
+        if (hawk.crypto.algorithms.indexOf(credentials.algorithm) === -1) {
+            return '';
+        }
+
+        // Parse URI
+
+        uri = hawk.utils.parseUri(uri);
+
+        // Calculate signature
+
+        var exp = now + options.ttlSec;
+        var mac = hawk.crypto.calculateMac('bewit', credentials, {
+            ts: exp,
+            nonce: '',
+            method: 'GET',
+            resource: uri.relative,                            // Maintain trailing '?' and query params
+            host: uri.hostname,
+            port: uri.port,
+            ext: options.ext
+        });
+
+        // Construct bewit: id\exp\mac\ext
+
+        var bewit = credentials.id + '\\' + exp + '\\' + mac + '\\' + options.ext;
+        return hawk.utils.base64urlEncode(bewit);
+    },
 
     // Validate server response
 
@@ -11226,6 +11402,13 @@ hawk.utils = {
         }
 
         return uri;
+    },
+
+    base64urlEncode: function (value) {
+
+        var wordArray = CryptoJS.enc.Utf8.parse(value);
+        var encoded = CryptoJS.enc.Base64.stringify(wordArray);
+        return encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
     }
 };
 
@@ -11254,7 +11437,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 // $lab:coverage:on$
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -18043,12 +18226,19 @@ if (typeof module !== 'undefined' && module.exports) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./lib/core.js')
+require('./lib/done.js')
+require('./lib/es6-extensions.js')
+require('./lib/node-extensions.js')
+},{"./lib/core.js":62,"./lib/done.js":63,"./lib/es6-extensions.js":64,"./lib/node-extensions.js":65}],62:[function(require,module,exports){
 'use strict';
 
 var asap = require('asap')
 
-module.exports = Promise
+module.exports = Promise;
 function Promise(fn) {
   if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new')
   if (typeof fn !== 'function') throw new TypeError('not a function')
@@ -18058,7 +18248,7 @@ function Promise(fn) {
   var self = this
 
   this.then = function(onFulfilled, onRejected) {
-    return new Promise(function(resolve, reject) {
+    return new self.constructor(function(resolve, reject) {
       handle(new Handler(onFulfilled, onRejected, resolve, reject))
     })
   }
@@ -18150,10 +18340,25 @@ function doResolve(fn, onFulfilled, onRejected) {
   }
 }
 
-},{"asap":62}],61:[function(require,module,exports){
+},{"asap":66}],63:[function(require,module,exports){
 'use strict';
 
-//This file contains then/promise specific extensions to the core promise API
+var Promise = require('./core.js')
+var asap = require('asap')
+
+module.exports = Promise
+Promise.prototype.done = function (onFulfilled, onRejected) {
+  var self = arguments.length ? this.then.apply(this, arguments) : this
+  self.then(null, function (err) {
+    asap(function () {
+      throw err
+    })
+  })
+}
+},{"./core.js":62,"asap":66}],64:[function(require,module,exports){
+'use strict';
+
+//This file contains the ES6 extensions to the core Promises/A+ API
 
 var Promise = require('./core.js')
 var asap = require('asap')
@@ -18176,7 +18381,7 @@ function ValuePromise(value) {
     })
   }
 }
-ValuePromise.prototype = Object.create(Promise.prototype)
+ValuePromise.prototype = Promise.prototype
 
 var TRUE = new ValuePromise(true)
 var FALSE = new ValuePromise(false)
@@ -18211,57 +18416,8 @@ Promise.resolve = function (value) {
   return new ValuePromise(value)
 }
 
-Promise.from = Promise.cast = function (value) {
-  var err = new Error('Promise.from and Promise.cast are deprecated, use Promise.resolve instead')
-  err.name = 'Warning'
-  console.warn(err.stack)
-  return Promise.resolve(value)
-}
-
-Promise.denodeify = function (fn, argumentCount) {
-  argumentCount = argumentCount || Infinity
-  return function () {
-    var self = this
-    var args = Array.prototype.slice.call(arguments)
-    return new Promise(function (resolve, reject) {
-      while (args.length && args.length > argumentCount) {
-        args.pop()
-      }
-      args.push(function (err, res) {
-        if (err) reject(err)
-        else resolve(res)
-      })
-      fn.apply(self, args)
-    })
-  }
-}
-Promise.nodeify = function (fn) {
-  return function () {
-    var args = Array.prototype.slice.call(arguments)
-    var callback = typeof args[args.length - 1] === 'function' ? args.pop() : null
-    try {
-      return fn.apply(this, arguments).nodeify(callback)
-    } catch (ex) {
-      if (callback === null || typeof callback == 'undefined') {
-        return new Promise(function (resolve, reject) { reject(ex) })
-      } else {
-        asap(function () {
-          callback(ex)
-        })
-      }
-    }
-  }
-}
-
-Promise.all = function () {
-  var calledWithArray = arguments.length === 1 && Array.isArray(arguments[0])
-  var args = Array.prototype.slice.call(calledWithArray ? arguments[0] : arguments)
-
-  if (!calledWithArray) {
-    var err = new Error('Promise.all should be called with a single array, calling it with multiple arguments is deprecated')
-    err.name = 'Warning'
-    console.warn(err.stack)
-  }
+Promise.all = function (arr) {
+  var args = Array.prototype.slice.call(arr)
 
   return new Promise(function (resolve, reject) {
     if (args.length === 0) return resolve([])
@@ -18305,34 +18461,73 @@ Promise.race = function (values) {
 
 /* Prototype Methods */
 
-Promise.prototype.done = function (onFulfilled, onRejected) {
-  var self = arguments.length ? this.then.apply(this, arguments) : this
-  self.then(null, function (err) {
-    asap(function () {
-      throw err
-    })
-  })
-}
-
-Promise.prototype.nodeify = function (callback) {
-  if (typeof callback != 'function') return this
-
-  this.then(function (value) {
-    asap(function () {
-      callback(null, value)
-    })
-  }, function (err) {
-    asap(function () {
-      callback(err)
-    })
-  })
-}
-
 Promise.prototype['catch'] = function (onRejected) {
   return this.then(null, onRejected);
 }
 
-},{"./core.js":60,"asap":62}],62:[function(require,module,exports){
+},{"./core.js":62,"asap":66}],65:[function(require,module,exports){
+'use strict';
+
+//This file contains then/promise specific extensions that are only useful for node.js interop
+
+var Promise = require('./core.js')
+var asap = require('asap')
+
+module.exports = Promise
+
+/* Static Functions */
+
+Promise.denodeify = function (fn, argumentCount) {
+  argumentCount = argumentCount || Infinity
+  return function () {
+    var self = this
+    var args = Array.prototype.slice.call(arguments)
+    return new Promise(function (resolve, reject) {
+      while (args.length && args.length > argumentCount) {
+        args.pop()
+      }
+      args.push(function (err, res) {
+        if (err) reject(err)
+        else resolve(res)
+      })
+      fn.apply(self, args)
+    })
+  }
+}
+Promise.nodeify = function (fn) {
+  return function () {
+    var args = Array.prototype.slice.call(arguments)
+    var callback = typeof args[args.length - 1] === 'function' ? args.pop() : null
+    var ctx = this
+    try {
+      return fn.apply(this, arguments).nodeify(callback, ctx)
+    } catch (ex) {
+      if (callback === null || typeof callback == 'undefined') {
+        return new Promise(function (resolve, reject) { reject(ex) })
+      } else {
+        asap(function () {
+          callback.call(ctx, ex)
+        })
+      }
+    }
+  }
+}
+
+Promise.prototype.nodeify = function (callback, ctx) {
+  if (typeof callback != 'function') return this
+
+  this.then(function (value) {
+    asap(function () {
+      callback.call(ctx, null, value)
+    })
+  }, function (err) {
+    asap(function () {
+      callback.call(ctx, err)
+    })
+  })
+}
+
+},{"./core.js":62,"asap":66}],66:[function(require,module,exports){
 (function (process){
 
 // Use the fastest possible means to execute a task in a future turn
@@ -18449,7 +18644,7 @@ module.exports = asap;
 
 
 }).call(this,require('_process'))
-},{"_process":34}],63:[function(require,module,exports){
+},{"_process":35}],67:[function(require,module,exports){
 // The MIT License (MIT)
 //
 // Copyright (c) 2014 Jonas Finnemann Jensen
@@ -18474,7 +18669,7 @@ module.exports = asap;
 
 module.exports = require('./slugid');
 
-},{"./slugid":66}],64:[function(require,module,exports){
+},{"./slugid":70}],68:[function(require,module,exports){
 (function (global){
 
 var rng;
@@ -18509,7 +18704,7 @@ module.exports = rng;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],65:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 (function (Buffer){
 //     uuid.js
 //
@@ -18700,7 +18895,7 @@ uuid.BufferClass = BufferClass;
 module.exports = uuid;
 
 }).call(this,require("buffer").Buffer)
-},{"./rng":64,"buffer":8}],66:[function(require,module,exports){
+},{"./rng":68,"buffer":9}],70:[function(require,module,exports){
 (function (Buffer){
 // The MIT License (MIT)
 //
@@ -18758,7 +18953,7 @@ exports.v4 = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":8,"uuid":65}],67:[function(require,module,exports){
+},{"buffer":9,"uuid":69}],71:[function(require,module,exports){
 var hawk = require('hawk');
 var extend = require('./lib/extend');
 
@@ -18807,7 +19002,7 @@ module.exports = function addHawk (superagent) {
   return superagent;
 };
 
-},{"./lib/extend":68,"hawk":69}],68:[function(require,module,exports){
+},{"./lib/extend":72,"hawk":73}],72:[function(require,module,exports){
 // shamelessly borrowed from https://github.com/segmentio/extend
 
 module.exports = function extend (object) {
@@ -18824,9 +19019,9 @@ module.exports = function extend (object) {
 
     return object;
 };
-},{}],69:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = require('./lib');
-},{"./lib":72}],70:[function(require,module,exports){
+},{"./lib":76}],74:[function(require,module,exports){
 // Load modules
 
 var Url = require('url');
@@ -19195,7 +19390,7 @@ exports.message = function (host, port, message, options) {
 
 
 
-},{"./crypto":71,"./utils":74,"cryptiles":77,"hoek":79,"url":52}],71:[function(require,module,exports){
+},{"./crypto":75,"./utils":78,"cryptiles":81,"hoek":83,"url":53}],75:[function(require,module,exports){
 // Load modules
 
 var Crypto = require('crypto');
@@ -19308,7 +19503,7 @@ exports.calculateTsMac = function (ts, credentials) {
 };
 
 
-},{"./utils":74,"crypto":15,"url":52}],72:[function(require,module,exports){
+},{"./utils":78,"crypto":16,"url":53}],76:[function(require,module,exports){
 // Export sub-modules
 
 exports.error = exports.Error = require('boom');
@@ -19325,7 +19520,7 @@ exports.uri = {
 
 
 
-},{"./client":70,"./crypto":71,"./server":73,"./utils":74,"boom":75,"sntp":82}],73:[function(require,module,exports){
+},{"./client":74,"./crypto":75,"./server":77,"./utils":78,"boom":79,"sntp":86}],77:[function(require,module,exports){
 // Load modules
 
 var Boom = require('boom');
@@ -19851,7 +20046,7 @@ exports.authenticateMessage = function (host, port, message, authorization, cred
     });
 };
 
-},{"./crypto":71,"./utils":74,"boom":75,"cryptiles":77,"hoek":79}],74:[function(require,module,exports){
+},{"./crypto":75,"./utils":78,"boom":79,"cryptiles":81,"hoek":83}],78:[function(require,module,exports){
 (function (__dirname){
 // Load modules
 
@@ -20038,9 +20233,9 @@ exports.unauthorized = function (message) {
 
 
 }).call(this,"/node_modules/superagent-hawk/node_modules/hawk/lib")
-},{"boom":75,"hoek":79,"sntp":82}],75:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"./lib":76}],76:[function(require,module,exports){
+},{"boom":79,"hoek":83,"sntp":86}],79:[function(require,module,exports){
+arguments[4][73][0].apply(exports,arguments)
+},{"./lib":80,"/home/jonasfj/Mozilla/taskcluster-client/node_modules/superagent-hawk/node_modules/hawk/index.js":73}],80:[function(require,module,exports){
 // Load modules
 
 var Http = require('http');
@@ -20249,9 +20444,9 @@ internals.Boom.passThrough = function (code, payload, contentType, headers) {
 
 
 
-},{"hoek":79,"http":28,"util":54}],77:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"./lib":78}],78:[function(require,module,exports){
+},{"hoek":83,"http":29,"util":55}],81:[function(require,module,exports){
+arguments[4][73][0].apply(exports,arguments)
+},{"./lib":82,"/home/jonasfj/Mozilla/taskcluster-client/node_modules/superagent-hawk/node_modules/hawk/index.js":73}],82:[function(require,module,exports){
 // Load modules
 
 var Crypto = require('crypto');
@@ -20321,9 +20516,9 @@ exports.fixedTimeComparison = function (a, b) {
 
 
 
-},{"boom":75,"crypto":15}],79:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"./lib":81}],80:[function(require,module,exports){
+},{"boom":79,"crypto":16}],83:[function(require,module,exports){
+arguments[4][73][0].apply(exports,arguments)
+},{"./lib":85,"/home/jonasfj/Mozilla/taskcluster-client/node_modules/superagent-hawk/node_modules/hawk/index.js":73}],84:[function(require,module,exports){
 (function (Buffer){
 // Declare internals
 
@@ -20458,7 +20653,7 @@ internals.safeCharCodes = (function () {
     return safe;
 }());
 }).call(this,require("buffer").Buffer)
-},{"buffer":8}],81:[function(require,module,exports){
+},{"buffer":9}],85:[function(require,module,exports){
 (function (process,Buffer){
 // Load modules
 
@@ -21047,9 +21242,9 @@ exports.nextTick = function (callback) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./escape":80,"_process":34,"buffer":8,"fs":6}],82:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"./lib":83}],83:[function(require,module,exports){
+},{"./escape":84,"_process":35,"buffer":9,"fs":6}],86:[function(require,module,exports){
+arguments[4][73][0].apply(exports,arguments)
+},{"./lib":87,"/home/jonasfj/Mozilla/taskcluster-client/node_modules/superagent-hawk/node_modules/hawk/index.js":73}],87:[function(require,module,exports){
 (function (process,Buffer){
 // Load modules
 
@@ -21462,7 +21657,7 @@ exports.now = function () {
 
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":34,"buffer":8,"dgram":6,"dns":6,"hoek":79}],84:[function(require,module,exports){
+},{"_process":35,"buffer":9,"dgram":6,"dns":6,"hoek":83}],88:[function(require,module,exports){
 /**
  * Promise wrapper for superagent
  */
@@ -21567,7 +21762,7 @@ function wrap(superagent) {
 
 module.exports = wrap(require('superagent'));
 
-},{"promise":61,"superagent":85}],85:[function(require,module,exports){
+},{"promise":61,"superagent":89}],89:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -21924,7 +22119,7 @@ Response.prototype.setHeaderProperties = function(header){
 
 Response.prototype.parseBody = function(str){
   var parse = request.parse[this.type];
-  return parse
+  return parse && str && str.length
     ? parse(str)
     : null;
 };
@@ -22020,9 +22215,16 @@ function Request(method, url) {
   this.header = {};
   this._header = {};
   this.on('end', function(){
-    var res = new Response(self);
-    if ('HEAD' == method) res.text = null;
-    self.callback(null, res);
+    try {
+      var res = new Response(self);
+      if ('HEAD' == method) res.text = null;
+      self.callback(null, res);
+    } catch(e) {
+      var err = new Error('Parser is unable to parse the response');
+      err.parse = true;
+      err.original = e;
+      self.callback(err);
+    }
   });
 }
 
@@ -22112,6 +22314,26 @@ Request.prototype.set = function(field, val){
   }
   this._header[field.toLowerCase()] = val;
   this.header[field] = val;
+  return this;
+};
+
+/**
+ * Remove header `field`.
+ *
+ * Example:
+ *
+ *      req.get('/')
+ *        .unset('User-Agent')
+ *        .end(callback);
+ *
+ * @param {String} field
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.unset = function(field){
+  delete this._header[field.toLowerCase()];
+  delete this.header[field];
   return this;
 };
 
@@ -22618,7 +22840,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":86,"reduce":87}],86:[function(require,module,exports){
+},{"emitter":90,"reduce":91}],90:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -22784,7 +23006,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],87:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -22809,7 +23031,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],88:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 function normalize (str) {
   return str
           .replace(/[\/]+/g, '/')
