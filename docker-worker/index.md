@@ -16,3 +16,21 @@ system, etc...) with none to minimal taskcluster specifics built into your image
 ## Queue `.payload` schema
 
 <div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
+
+
+## Environment
+
+In addition to any environment (env) variables given we also provide every
+docker-worker task with the following environment variables these are mandatory
+and override any task provided values.
+
+    - `TASK_ID` : The current task id.
+    - `RUN_ID` : The current run id for the task.
+
+Note that environment variables can also be used in the `command` field.
+
+```json
+{
+  "command": ["/bin/bash", "-c", "curl https://queue.taskcluster.net/v1/task/$TASK_ID"]
+}
+```
