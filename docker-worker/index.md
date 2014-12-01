@@ -34,3 +34,17 @@ Note that environment variables can also be used in the `command` field.
   "command": ["/bin/bash", "-c", "curl https://queue.taskcluster.net/v1/task/$TASK_ID"]
 }
 ```
+
+## Services
+
+Services allow a task to utilize (and "link") with other docker images.
+
+One common use case is mounting a database or other network accessible services
+(rabbitmq, etc...) or mozilla services which have been dockerized for local
+testing (marketplace, etc..).
+
+A more powerful and complex use case is using services to contain sensitive or
+otherwise locked down services behind public apis. For example one could embed
+credentials (be very sure you know what your doing and any baked in credentials
+are minimal) in the docker image then expose an api for an untrusted source
+(like a try job) to interact with the service.
