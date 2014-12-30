@@ -86,8 +86,8 @@ sections:
       - name: API Documentation
         url:  /auth/api-docs/index.html
         href: /auth/api-docs/
-      - name: Authentication Management
-        url:  http://auth.taskcluster.net
+      - name: Authentication Manager
+        url:  https://tools.taskcluster.net/auth/
       - name: Source Repository
         url:  https://github.com/taskcluster/taskcluster-auth
   - name: Docker Worker
