@@ -62,6 +62,7 @@ public key located at [references.taskcluster.net](http://references.taskcluster
 Encrypted environment variables are then base64 encoded and included under encryptedEnv in the task payload.
 
 Raw message example:
+
 ```js
 {
   "messageVersion": "1",
@@ -93,4 +94,50 @@ Once decrypted within docker-worker, the variable can be referenced just like an
 {
   "command": ["/bin/bash", "-c", "echo $SECRET_TOKEN"]
 }
+```
+
+### Features: `taskclusterProxy`
+
+The taskcluster proxy provides an easy and safe way to make authenticated
+taskcluster requests within the scope(s) of a particular task.
+
+For example lets say we have a task like this:
+
+```js
+{
+  "scopes": ["a", "b"],
+  "payload": {
+    "features": {
+      "taskclusterProxy": true
+    }
+  }
+}
+```
+
+A special docker container is linked to your task contained named "taskcluster"
+with this container linked you can make requests to various taskcluster services
+with _only_ the scopes listed in the task (in this case ["a", "b"])
+
+| Host | Service |
+|---------------------------------|-------------------------------|
+| queue.taskcluster.net           | taskcluster/queue/            |
+| scheduler.taskcluster.net       | taskcluster/scheduler/        |
+| index.taskcluster.net           | taskcluster/index/            |
+| aws-provisioner.taskcluster.net | taskcluster/aws-provisioner/  |
+
+For example (using curl) inside a task container.
+
+```sh
+curl taskcluster/queue/v1/<taskId>
+```
+
+You can also use the `baseUrl` parameter in the taskcluster-client
+
+```js
+var taskcluster = require('taskcluster-client');
+var queue = new taskcluster.Queue({
+ baseUrl: 'taskcluster/queue/v1'
+ });
+
+queue.getTask('<taskId>');
 ```
