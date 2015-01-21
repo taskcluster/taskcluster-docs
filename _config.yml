@@ -39,8 +39,6 @@ sections:
     - name: AMQP Exchanges
       url:  /queue/exchanges/index.html
       href: /queue/exchanges/
-    - name: Task Storage
-      url:  /queue/task-storage.html
     - name: Queue Web Interface
       url:  http://queue.taskcluster.net
     - name: Source Repository
@@ -55,9 +53,6 @@ sections:
     - name: AMQP Exchanges
       url:  /scheduler/events/index.html
       href: /scheduler/events/
-    - name: Task-Graph Storage
-      url:  /scheduler/task-graph-storage/index.html
-      href: /scheduler/task-graph-storage/
     - name: Source Repository
       url:  https://github.com/taskcluster/task-graph-scheduler
   - name: Services
@@ -107,5 +102,5 @@ sections:
         url:  /tools/task-creator/index.html
         href: /tools/task-creator/
       - name: Reference Formats
-        url:  /tools/references/
-        href: /tools/references/index.html
+        url:  /tools/references/index.html
+        href: /tools/references/
