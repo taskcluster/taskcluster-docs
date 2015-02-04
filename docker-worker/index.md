@@ -6,7 +6,7 @@ docson:       true
 
 # Docker Worker
 
-This worker is designed to handle tasks on linix via
+This worker is designed to handle tasks on linux via
 [docker](http://www.docker.com/).
 
 The worker being based on docker allows you to execute just about any task that
