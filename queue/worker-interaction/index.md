@@ -4,42 +4,50 @@ class:              markdown
 sequence_diagrams:  true
 ---
 
-Queue - Worker Interaction (draft)
-==================================
-This document outlines a how queue and worker can interact, and how Azure Queue
-Storage queues participates in this interaction. We refer to TaskCluster Queue
-simply as _queue_, where as Azure Queue Storage queues, will be referred to as
-_Azure queues_.
+Queue - Worker Interaction
+==========================
+This document outlines a how queue and worker interacts, through-out the
+life-cycle of a task on its way to resolution. This document serves to ease the
+implementation of workers, and focuses on interaction with Azure queues as most
+other API methods are documented in the API reference.
 
 
-Polling for Tasks from a Worker Perspective
-===========================================
+Polling Azure Queues for Tasks
+------------------------------
 At a high-level the polling process, from the perspective of the worker, can be
 illustrated as follows:
 
 <div class="sequence-diagram-hand" style="margin:auto;">
 participant Queue
 participant Worker
-participant AzureQueue
+participant Azure Queue
 
 Worker      ->  Queue       : pollTaskUrls
 Queue       --> Worker      : signedPollUrls
-Worker      ->  AzureQueue  : get(signedPollUrls[i++ % n])
-Note over Worker : Polling signedPollUrls[i++ % n]
-AzureQueue  --> Worker      : XML message list
+Worker      ->  Azure Queue  : get(signedPollUrls[i++ % n])
+Note over Worker : Polling...
+Azure Queue --> Worker      : &lt;QueueMessagesList/&gt;
 Worker      ->  Queue       : claimTask
-Queue       ->  Worker      : status
+Queue       --> Worker      : status
+Worker      ->  Azure Queue : Delete &lt;PopReceipt/&gt;
 Note over Worker : Executing task...
 Worker      ->  Queue       : reportCompleted
 </div>
 
-When a worker want a task it will call
-`queue.pollTaskUrls(provisionerId, workerType)` which then returns an array of
-URLs we can poll. If we wish to claim multiple message we may append
-the parameter `&numofmessages=N` to the poll URLs returned, and we will get
-up to `N` messages.
-The poll URLs must be polled in the order they are given. When successful the
-response will be XML document on the form:
+When a worker wants to poll for pending tasks it must call
+`queue.pollTaskUrls(provisionerId, workerType)` which then returns
+an array of objects on the form `{signedPollUrl, signedDeleteUrl}`. Each of
+these objects represent an underlying Azure queue, there are multiple of these
+so that we can support priority. For this reason the worker must poll the
+Azure queues in order they are given.
+
+To poll an Azure Queue the worker must do a `GET` request to the `signedPollUrl`
+from the object, representing the Azure queue. To receive multiple messages at
+once the parameter `&numofmessages=N` may be appended to `signedPollUrl`. The
+parameter `N` is the maximum number of messages desired, `N` can be up to 32.
+
+When executing a `GET` request to `signedPollUrl` from an Azure queue object,
+the request will return an XML document on the form:
 
 ```xml
 <QueueMessagesList>
@@ -56,86 +64,104 @@ response will be XML document on the form:
 </QueueMessagesList>
 ```
 
-For each `<QueueMessage>` the worker base64 decodes the `MessageText` and
-parses it as JSON, this will return an object on the form
-`{taskId: ..., runId: ..., signature: ...}`.
-After decode the message text the worker proceeds to claim the task as follows:
+If there is no messages in the `<QueueMessagesList>` tag, the worker should try
+polling using `signedPollUrl` from the next Azure queue object. If at end of
+the array, the worker should sleep a second or so, and start polling from the
+start of the list.
 
-```js
-queue.claimTask(taskId, runId, {
-  workerGroup:  '...',
-  workerId:     '...',
-  messageId:    QueueMessage.MessageId,
-  receipt:      QueueMessage.PopReceipt,
-  signature:    signature // From JSON parse base64 encoded <MessageText>
-});
-```
+If there is one or more messages the worker must claim the tasks referenced in
+the messages, and delete the messages. To find the task referenced in a message
+the worker must base64 decode and JSON parse the contents of the
+`<MessageText>` tag. This would return an object on the form: `{taskId, runId}`.
 
-The worker now has a claim to a given `taskId`/`runId`, and must the start the
-task while calling `queue.reclaimTask(taskId, runId)`, whenever, `takenUntil`
-from the task status structure is about to expire.
+Using the `taskId` and `runId` from the `<MessageText>` tag, the worker must
+call `queue.claimTask()`. If the `queue.claimTask()` operation is successful or
+fails with a 4xx error, the worker must delete the messages from the
+Azure queue.
 
-**Remark**, if the worker received multiple `<QueueMessage>` entries by calling
-`&numofmessages=N`, it must also claim these tasks. This is worker that has
-_capacity_ to run multiple tasks in parallel.
+Messages are deleted from the Azure queue with a `DELETE` request to the
+`signedDeleteUrl` from the Azure queue object returned from
+`queue.pollTaskUrls`. Before using the `signedDeleteUrl` the worker **must**
+replace the placeholder <code>{<span>{messageId}</span>}</code> with the
+contents of the `<MessageId>` tag.
+It is also necessary to replace the placeholder
+<code>{<span>{popReceipt}</span>}</code> with the
+URI encoded contents of the `<PopReceipt>` tag.
 
+Notice, that the worker **must** URI encode the contents of `<PopReceipt>` before
+substituting into the `signedDeleteUrl`. Otherwise, the worker will experience
+intermittent failures. Also remark that the worker **must** delete messages if the
+`queue.claimTask` operations fails with a 4xx error. A 400 hundred range error
+implies that the task wasn't created, not scheduled or already claimed, in
+either case the worker should delete the message as we don't want another
+worker to receive message later.
+
+Notice, that failure to delete messages from Azure queue is serious, as it
+wouldn't manifest itself in an immediate bug. Instead if messages repeatedly
+fails to be deleted, it would result in a lot of unnecessary calls to the
+queue and the Azure queue. The worker will likely continue to work, as the
+messages eventually disappears when their deadline is reached.
+However, the provisioner would over-provision aggressively as it would
+be unable to tell the number of pending tasks. And the worker would spend a lot
+of time attempting to claim faulty messages.
+
+For these reasons outlined above it's strongly advised that workers logs
+failures to delete messages from Azure queues. And that workers reads the
+value of the `<DequeueCount>` and logs messages that alerts the operator if
+a message has been dequeued a significant number of times. For example more
+than 10.
+
+Reclaiming Tasks
+----------------
+When the worker has claimed a task, it's said to have a claim to a given
+`taskId`/`runId`. This claim has an expiration, see the `takenUntil` property
+in the _task status structure_ returned from `queue.claimTask` and
+`queue.reclaimTask`. A worker must call `queue.reclaimTask` before the claim
+denoted in `takenUntil` expires. It's recommended that this attempted a few
+minutes prior to expiration, to allow for clock drift.
+
+
+Dealing with Invalid Task Payloads
+----------------------------------
+If the task payload is malformed or invalid, keep in mind that the queue doesn't
+validate the contents of the `task.payload` property, the worker may resolve the
+current run by reporting an exception. When reporting an exception, using
+`queue.reportException` the worker should give a `reason`. If the worker is
+unable execute the task specific payload/code/logic, it should report
+exception with the reason `malformed-payload`.
+
+This can also be used if an external resource that is referenced in a
+declarative nature doesn't exist. Generally, it should be used if we can be
+certain that another run of the task will have the same result. This differs
+from `queue.reportFailure` in the sense that we report a failure if the task
+specific code failed.
+
+Most tasks includes a lot of declarative steps, such as poll a docker image,
+create cache folder, decrypt encrypted environment variables, set environment
+variables and etc. Clearly, if decryption of environment variables fail, there
+is no reason to retry the task. Nor can it be said that the task failed,
+because the error wasn't cause by execution of Turing complete code.
+
+If however, we run some executable code referenced in `task.payload` and the
+code crashes or exists non-zero, then the task is said to be failed. The
+difference is whether or not the unexpected behavior happened before or after
+the execution of task specific Turing complete code.
+
+
+Terminating the Worker Early
+----------------------------
+If the worker finds itself having to terminate early, for example a spot nodes
+that detects pending termination. Or a physical machine ordered to be
+provisioned for another purpose, the worker should report exception with the
+reason `worker-shutdown`. Upon such report the queue will resolve the run as
+exception and create a new run, if the task has additional retries left.
+
+
+Reporting Task Result
+---------------------
 When the worker has completed the task successfully it should call
-`queue.reportCompleted`. If the task is unsuccessful, ie exits non-zero, the
+`queue.reportCompleted`. If the task is unsuccessful, ie. exits non-zero, the
 worker should resolve it using `queue.reportFailed` (this implies test or
 build failure). If a task is malformed, the input is invalid, configuration
 is wrong, or the worker is told to shutdown by AWS before the the task is
 completed, it should be reported to the queue using `queue.reportException`.
-
-
-Polling for Tasks from a Queue Perspective
-==========================================
-
-When task is _scheduled_ the queue will insert a message
-`{taskId, runId, signature}` into the appropriate Azure queue. The signature is
-a simple `HMAC` over `<taskId>/<runId>` with a secret server side key. It is
-used to validate task claims, and reduces the workers ability to mix-up claimed
-tasks by accident (or as an attack).
-
-When a worker calls `queue.pollTaskUrls`, the queue will return a list of signed
-URLs for the Azure queues for the given `provisionerId` and `workerType`, in
-order of priority (when priority is implemented).
-
-When `queue.claimTask` is called, the queue validates the signature attached,
-then proceeds to update the Azure queue message with an invisibility timeout
-that matches `takenUntil` and a message text on the form
-`{taskId, runId: runId + 1, signature: ...}`. This update operation returns a
-new `receipt` which is then stored with the `messageId` in Azure Table Storage.
-
-As the worker calls `queue.reclaimTask`, the queue updates the invisibility
-timeout of the Azure queue message using the `receipt` and `messageId` stored
-in Azure Table Storage. However, if a worker failed to reclaim a task on time,
-the `receipt` will have expired and it will be impossible to `reclaim` the run.
-Instead the Azure queue message will become visible, and a any worker may now
-poll for it. Remember that we modified the message text to have `runId + 1`.
-
-The practice of updating the message text and using the Azure queue message to
-enforce `takenUntil`, means that we don't need a background process to query
-for expired claims. It is also feasible to have a lower claim expiration
-timeout, and recovery from this timeout will be immediate. However, it does
-complicate the queue implementation as we will have to resolve lower `runId`s
-as `exception` due to `claim-timeout`, whenever, a task is claimed. The queue
-will also be less flexible to future changes in this flow, as we're dependent
-on Azure queue feature.
-
-**Security Concerns**, when returning a signed URL for polling the underlying
-Azure queue in `pollTaskUrls`, we will generate a URL that signed with a SAS
-signature which allows the worker to get and delete messages from the Azure
-queue. Hence, it seems that these permissions allows a single worker to obstruct
-**all tasks** for the given `provisionerId` and `workerType`; this seems like
-an acceptable isolation level. If we one day have workers that are less trusted
-we can implement an API end-point that polls the underlying Azure queue, hence,
-we don't have trust the worker to do this. As always all API end-points will
-be protected by different scopes.
-
-Transitioning to new Implementation
-===================================
-In the future `queue.claimTask` will require options `messageId`, `receipt`,
-and `signature`. However, these will initially be optional, and then when we're
-ready to move away from using postgres they will be come mandatory.
-Giving various `workerType`'s plenty of time to migrate, say at least a week or
-two.
