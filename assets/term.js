@@ -559,20 +559,20 @@ Terminal.bindKeys = function(document) {
 Terminal.bindCopy = function(document) {
   var window = document.defaultView;
 
-  // if (!('onbeforecopy' in document)) {
-  //   // Copies to *only* the clipboard.
-  //   on(window, 'copy', function fn(ev) {
-  //     var term = Terminal.focus;
-  //     if (!term) return;
-  //     if (!term._selected) return;
-  //     var text = term.grabText(
-  //       term._selected.x1, term._selected.x2,
-  //       term._selected.y1, term._selected.y2);
-  //     term.emit('copy', text);
-  //     ev.clipboardData.setData('text/plain', text);
-  //   });
-  //   return;
-  // }
+   //if (!('onbeforecopy' in document)) {
+   //  // Copies to *only* the clipboard.
+   //  on(window, 'copy', function fn(ev) {
+   //    var term = Terminal.focus;
+   //    if (!term) return;
+   //    if (!term._selected) return;
+   //    var text = term.grabText(
+   //      term._selected.x1, term._selected.x2,
+   //      term._selected.y1, term._selected.y2);
+   //    term.emit('copy', text);
+   //    ev.clipboardData.setData('text/plain', text);
+   //  });
+   //  return;
+   //}
 
   // Copies to primary selection *and* clipboard.
   // NOTE: This may work better on capture phase,
@@ -582,9 +582,9 @@ Terminal.bindCopy = function(document) {
     if (!term) return;
     if (!term._selected) return;
     var textarea = term.getCopyTextarea();
-    var text = term.grabText(
+    var text = stripTrailingWhitespace(term.grabText(
       term._selected.x1, term._selected.x2,
-      term._selected.y1, term._selected.y2);
+      term._selected.y1, term._selected.y2));
     term.emit('copy', text);
     textarea.focus();
     textarea.textContent = text;
@@ -2574,7 +2574,7 @@ Terminal.prototype.keyDown = function(ev) {
             return;
           }
           // Ctrl-C
-          if ((this.prefixMode || this.selectMode) && ev.keyCode === 67) {
+          if (true || (this.prefixMode || this.selectMode) && ev.keyCode === 67) {
             if (this.visualMode) {
               setTimeout(function() {
                 self.leaveVisual();
@@ -2646,7 +2646,9 @@ Terminal.prototype.setgCharset = function(g, charset) {
 
 Terminal.prototype.keyPress = function(ev) {
   var key;
-
+  if (ev.key === 'c' && (ev.ctrlKey || ev.altKey || ev.metaKey)) {
+    return;
+  }
   cancel(ev);
 
   if (ev.charCode) {
@@ -4738,7 +4740,7 @@ Terminal.prototype.getCopyTextarea = function(text) {
 Terminal.prototype.copyText = function(text) {
   var self = this
     , textarea = this.getCopyTextarea();
-
+  text = stripTrailingWhitespace(text);
   this.emit('copy', text);
 
   textarea.focus();
@@ -5616,6 +5618,12 @@ function on(el, type, handler, capture) {
 
 function off(el, type, handler, capture) {
   el.removeEventListener(type, handler, capture || false);
+}
+
+function stripTrailingWhitespace(text) {
+  return text.split('\n').map(function(line) {
+    line.replace(/ *$/g, "");
+  }).join('\n');
 }
 
 function cancel(ev) {
