@@ -65,12 +65,12 @@ Raw message example:
 
 ```js
 {
-  "messageVersion": "1",
-  "taskId": "FsG6cmlQQeiQpEHtxhDfhg",
-  "startTime": 1418146006679,
-  "endTime": 1418146036679,
-  "name": "SECRET_TOKEN",
-  "value": "3214508af838345sdgt"
+  "messageVersion":     1,
+  "taskId":             "<taskId>",
+  "startTime":          1418146006679, // As number of ms since epoch
+  "endTime":            1418146036679, // As number of ms since epoch
+  "name":               "SECRET_TOKEN",
+  "value":              "<secret-value>"
 }
 ```
 
