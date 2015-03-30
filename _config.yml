@@ -9,6 +9,7 @@ redcarpet:
     - autolink
     - tables
     - with_toc_data
+    - strikethrough
 
 exclude:
   - 'README.md'

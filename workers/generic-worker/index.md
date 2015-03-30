@@ -21,68 +21,63 @@ linux    | arm
 windows  | 386
 windows  | amd64
 
-The two main purposes of the generic worker are:
+Since it is a _generic_ worker, it offers somewhat the _lowest common
+denominator_ of functionality that a worker can provide. For example it has no
+special handling of registry settings on Windows nor does it provide any
+containerisation on linux. Both of these would be platform-specific,
+non-generic offerings. Generic worker simply executes tasks on a best-effort
+basis, with no containerisation, and cleans up as best it can after each task
+completes.
 
-1. A _catch all_ worker for when a more specific worker is not
-available
+The two main purposes of the generic worker are therefore:
+
+1. A _catch all_ worker for when a more specific worker is not available
 2. A worker for quick/easy prototyping and testing
 
 Please note it is **not** intended that the generic worker will remain the
 worker of choice on any platform, since it does not guarantee a clean execution
-environment, nor execute tasks within a container. Since it is _generic_, it
-offers somewhat the _lowest common denominator_ of functionality that a worker
-can provide. For example it has no special handling of registry settings on
-Windows nor does it provide any containerisation on linux. Both of these would
-be platform-specific, non-generic offerings. Generic worker simply executes
-tasks on a best-effort basis, with no containerisation, and cleans up as best
-it can after each task completes.
+environment, nor execute tasks within a container.
 
 ## Risks
 
-A malicious or poorly implemented task could, for example, corrupt Windows
-registry settings, or change a display resolution, affecting subsequent tasks.
-Since the generic worker offers no isolation or containerisation for task
-execution, **each task is responsible for its own cleanup.**
-
-For this reason the generic worker is intended for running _trusted tasks_
-only.
+A malicious or poorly implemented task could, for example, intentionally or
+accidentally corrupt Windows registry settings, or change a display resolution,
+affecting subsequent tasks.
 
 ### Mitigation strategies
 
-We have discussed various approaches to limit worker contamination between
-tasks.
+Several different implementation strategies were considered for the generic
+worker in order to mitigate the risk of an unclean task leaving the worker
+in a soiled state for a subsequent task.
 
-The options we considered are:
+1. Dismissed: Each task could run from a freshly created environment (e.g.
+ami image).  After a task completes, the generic worker terminates. The
+provisioner handles reprovisioning instances appropriately.
+2. Dismissed: The generic worker executes tasks in a virtual machine, such as
+a VirtualBox or VMware Fusion instance.
+3. Accepted: The generic worker is only used for non-critical, trustworthy or
+experimental purposes.
 
-1. Each task runs from a fresh image. After a task completes, the generic
-worker terminates. The provisioner handles reprovisioning instances
-appropriately.
-2. The generic worker executes tasks in a virtual machine, such as a VirtualBox
-or VMware Fusion instance.
-3. Accept risk of worker contamination, choose carefully what tasks use generic
-worker.
+The following section provides an explanation for this decision.
 
-This section provides a succint summary of these options we considered, and the
-design decision we reached.
-
-### 1. Run tasks from a fresh image
+### 1. Dismissed: Run tasks from a fresh image
 
 Impact:
 
 #### Financial
 
-We provision our instances with amazon web services (aws), where
-instances are billed a full compute hour for any partial hour used. This means
-a minimum 1h fee associated to the creation of any instance, even when it is an
-instance launched for a task that just takes seconds to complete.
+Instances are provisioned with amazon web services (aws), where any partial
+compute hour is charged as a full compute hour. A task of a few seconds would
+therefore be charged at 1h compute time, thus leading to significant cost for
+short lived tasks.
 
 #### Startup time
 
 It can take in the order of minutes to spawn a new instance. In contrast, a
-task can be run immediately from an existing container.
+task can be run immediately from an already running instance.
 
-However, this could be mitigated with aggressive provisioning - i.e. having
-idle workers available on standby for new task requests as they come in. This
+This could be mitigated with aggressive provisioning - i.e. having idle workers
+available on standby for new task requests as they arrive on the Queue. This
 can be thought of as somewhat analagous to the way that hotel rooms are
 managed. When a guest leaves, the room is cleaned, so that if a new unplanned
 guest arrives, there is a clean room immediately available. Rather than wait
@@ -92,9 +87,10 @@ In the worker world this concept does not entirely translate. We are often
 running at _maximum capacity_ and not in a position to spawn new workers.
 Therefore any additional time spent spawning instances is time not spent
 running a task. When not running at capacity, this also increases financial
-cost, since idle workers also cost money.
+cost, since idle workers would need to be spawned, and left running, for an
+indeterminate amount of time until a new task becomes available for execution.
 
-### 2. Execute tasks within a virtual machine
+### 2. Dismissed: Execute tasks within a virtual machine
 
 Impact:
 
@@ -105,10 +101,10 @@ its instances.
 
 #### Performance / memory usage
 
-This would have a heavy hit on performance and memory usage, and e.g. would not
-be feasible running a generic worker on a smartphone.
+This would have a heavy hit on performance and memory usage, and could preclude
+running a generic worker on e.g. a smartphone.
 
-### 3. Do not guarantee a clean environment
+### 3. Accepted: Do not guarantee a clean environment
 
 Impact:
 
@@ -120,20 +116,21 @@ mitigated by:
 1. Write well-behaved tasks
 2. Only use generic worker for prototyping / controlled / non-critical tasks
 3. Create other classes of worker, such as a Mac Worker and Windows Worker as a
-safe alternative to generic worker as soon as possible
+safe alternative to the generic worker.
 
-### Chosen solution: option 3
+Option 3 was considered to offer the best solution.
 
-Because of these limitation it is strongly recommended that tasks only use the
-generic worker if there is no alternative available, and that extra care and
-attention is paid to leaving workers in a clean state of health at the
-conclusion of a task, wherever possible. Additionally, in order to mitigate
-risks from non-clean workers providing invalid task results, the provisioner(s)
-of the generic worker must recycle the workers regularly.
+Therefore the generic worker comes with the following important caveats:
 
-## Queue `.payload` schema
+* Each task is responsible for returning the worker to its original state
+before completing.
+* The generic worker is intended for running _trusted tasks_ only
+* The generic worker should only be used if no alternative is available
+* Provisioners of the generic worker must recycle workers regularly
 
-<div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
+## Generic Worker payload definition
+
+<div data-render-schema="http://schemas.taskcluster.net/generic-worker/v1/payload.json"></div>
 
 
 ## Environment
@@ -146,7 +143,7 @@ section for more information.
 ### Reserved Environment Variables
 
 In addition to any environment (env) variables given we also provide every
-docker-worker task with the following environment variables these are mandatory
+task with the following environment variables these are mandatory
 and override any task provided values.
 
     - `TASK_ID` : The current task id.
@@ -176,7 +173,7 @@ Note: Because the task ID and timestamps are used during validation, this preven
 encrypted variables being reused between tasks (e.g. manual job retriggers on treeherder).
 
 In the example below, encrypted(raw-message) is a gpg encrypted object using the
-public key located at [references.taskcluster.net](http://references.taskcluster.net/docker-worker/v1/docker-worker-pub.pem).
+public key located at [references.taskcluster.net](http://references.taskcluster.net/generic-worker/v1/generic-worker-pub.pem).
 Encrypted environment variables are then base64 encoded and included under encryptedEnv in the task payload.
 
 Raw message example:
@@ -206,56 +203,10 @@ Task payload example with encrypted raw message:
 }
 ```
 
-Once decrypted within docker-worker, the variable can be referenced just like any other environment variable.
+Once decrypted, the variable can be referenced just like any other environment variable.
 
 ```js
 {
   "command": ["/bin/bash", "-c", "echo $SECRET_TOKEN"]
 }
-```
-
-### Features: `taskclusterProxy`
-
-The taskcluster proxy provides an easy and safe way to make authenticated
-taskcluster requests within the scope(s) of a particular task.
-
-For example lets say we have a task like this:
-
-```js
-{
-  "scopes": ["a", "b"],
-  "payload": {
-    "features": {
-      "taskclusterProxy": true
-    }
-  }
-}
-```
-
-A special docker container is linked to your task contained named "taskcluster"
-with this container linked you can make requests to various taskcluster services
-with _only_ the scopes listed in the task (in this case ["a", "b"])
-
-| Host | Service |
-|---------------------------------|-------------------------------|
-| queue.taskcluster.net           | taskcluster/queue/            |
-| scheduler.taskcluster.net       | taskcluster/scheduler/        |
-| index.taskcluster.net           | taskcluster/index/            |
-| aws-provisioner.taskcluster.net | taskcluster/aws-provisioner/  |
-
-For example (using curl) inside a task container.
-
-```sh
-curl taskcluster/queue/v1/<taskId>
-```
-
-You can also use the `baseUrl` parameter in the taskcluster-client
-
-```js
-var taskcluster = require('taskcluster-client');
-var queue = new taskcluster.Queue({
- baseUrl: 'taskcluster/queue/v1'
- });
-
-queue.getTask('<taskId>');
 ```
