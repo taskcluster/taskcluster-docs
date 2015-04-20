@@ -320,7 +320,6 @@ Head over to http://golang.org/doc/install and follow the instructions for your 
 
 ```
 go get github.com/petemoore/generic-worker
-go install github.com/petemoore/generic-worker
 ```
 
 ## Create TaskCluster account
