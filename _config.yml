@@ -9,6 +9,7 @@ redcarpet:
     - autolink
     - tables
     - with_toc_data
+    - strikethrough
 
 exclude:
   - 'README.md'
@@ -88,9 +89,16 @@ sections:
         url:  https://tools.taskcluster.net/auth/
       - name: Source Repository
         url:  https://github.com/taskcluster/taskcluster-auth
-  - name: Docker Worker
-    url:  /docker-worker/index.html
-    href: /docker-worker/
+  - name: Workers
+    url:  /workers/index.html
+    href: /workers/
+    links:
+      - name: Docker Worker
+        url:  /workers/docker-worker/index.html
+        href: /workers/docker-worker/
+      - name: Generic Worker
+        url:  /workers/generic-worker/index.html
+        href: /workers/generic-worker/
   - name: Tools
     url:  /tools/index.html
     href: /tools/
