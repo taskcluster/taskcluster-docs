@@ -96,7 +96,59 @@ Once decrypted within docker-worker, the variable can be referenced just like an
 }
 ```
 
-### Features: `taskclusterProxy`
+### Features
+
+Features are services provided by docker-worker that give tasks additional
+capabilities and in some cases the ability to communicate with external
+resources that would otherwise be unavailable.
+
+These features are enabled by declaring them within the task payload in the
+`features` object.
+
+Note: Some features require additional information within the task definition.
+Consult the documentation for each feature to understand the requirements.
+
+Example:
+```js
+{
+  "payload": {
+    "features": {
+      "exampleFeature": true
+    }
+  }
+}
+```
+
+#### Features: `balrogVPNProxy`
+
+Some tasks have the need for communicating with production balrog server over
+port 80 through a vpn tunnel.  The balrog vpn proxy feature allows a task to
+direct requests to http://balrog which will proxy the request over a vpn connection
+to production balrog.
+
+This is a restricted feature and taskcluster credentials of the submitter must
+contain scopes for `docker-worker:feature:balrogVPNProxy`.
+
+To enable, the task must contain the proper scope as well as be declared in
+the `features` object within the task payload.
+
+Example:
+```js
+{
+  "scopes": ["docker-worker:feature:balrogVPNProxy"],
+  "payload": {
+    "features": {
+      "balrogVPNProxy": true
+    }
+  }
+}
+```
+
+References:
+* [taskcluster-vpn-proxy](https://github.com/taskcluster/taskcluster-vpn-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/balrog_vpn_proxy.js)
+
+#### Features: `taskclusterProxy`
 
 The taskcluster proxy provides an easy and safe way to make authenticated
 taskcluster requests within the scope(s) of a particular task.
@@ -141,3 +193,31 @@ var queue = new taskcluster.Queue({
 
 queue.getTask('<taskId>');
 ```
+
+References:
+* [taskcluster-proxy](https://github.com/taskcluster/taskcluster-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/taskcluster_proxy.js)
+
+#### Features: `testdroidProxy`
+
+Source: https://github.com/taskcluster/testdroid-proxy
+
+The testdroid proxy allows a task to request and release a device by making
+the appropriate calls to http://testdroid.  These actions are documented in the
+testdroid-proxy
+[documentation](https://github.com/taskcluster/testdroid-proxy/blob/master/README.md).
+
+Example:
+```js
+{
+  "payload": {
+    "features": {
+      "testdroidProxy": true
+    },
+  }
+}
+```
+
+References:
+* [testdroid-proxy](https://github.com/taskcluster/testdroid-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/testdroid_proxy.js)
