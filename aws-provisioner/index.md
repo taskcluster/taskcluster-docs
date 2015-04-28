@@ -19,10 +19,6 @@ It is your responsibility to ensure that a worker starts on the AMI when the AMI
 boots that this worker understand the task payload and shutsdown when no more
 tasks is available from the queue, **enjoy!**
 
- * [API Documentation](/services/aws-provisioner-v1/api-docs/)
- * [Pulse Exchange Documentation](/services/aws-provisioner-v1/events/)
-
-
 External Links
 --------------
  * [AWS Provisioner Web Interface](https://tools.taskcluster.net/aws-provisioner/)
