@@ -233,7 +233,7 @@ One challenge with writing a completely native go implementation, is that there 
 1. [TaskCluster Go Client](http://taskcluster.github.io/taskcluster-client-go)
 2. [Json Schema 2 Go code generator](http://petemoore.github.io/jsonschema2go)
 3. [Mozilla Pulse Go Client](http://petemoore.github.io/pulse-go)
-4. [Generic Worker](http://petemoore.github.io/generic-worker)
+4. [Generic Worker](http://taskcluster.github.io/generic-worker)
 
 # TaskCluster Go Client
 
@@ -296,7 +296,7 @@ Currently the worker can be deployed, it will listen for tasks, execute them, an
 
 The worker has been implemented according to [this specification](/queue/worker-interaction/).
 
-* Website: http://petemoore.github.io/generic-worker
+* Website: http://taskcluster.github.io/generic-worker
 * Docs: https://godoc.org/github.com/petemoore/generic-worker
 * CI: http://travis-ci.org/petemoore/generic-worker
 * Source Code: https://github.com/petemoore/generic-worker
