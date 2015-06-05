@@ -18,6 +18,21 @@ system, etc...) with none to minimal taskcluster specifics built into your image
 <div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
 
 
+## Scopes
+
+Certain task features/capabilities require the use of docker-worker specific scopes in the form of `docker-worker:...` .  For details about scopes needed for features, images, and caches, consult the documentation for each topic.
+
+Currently docker-worker has types of scopes:
+
+#### Features
+Scope format: `docker-worker:feature:<feature name>` . These are features that will be linked to the container when the task runs.
+
+#### Images
+Scopes format:  `docker-worker:image:<registry>/<user>/<image>:<tag>` .  Scopes for images are necessary when the image requires authentication with a registry (e.g. private images).  Public images do not require scopes.
+
+#### Caches
+Scopes begin with `docker-worker:cache:<cache name>` .  Tasks that require cached volumes to be mounted must supply a scope for that cache.  This is to restrict accessing, and possibly corrupting, caches no related to the scope of credentials provided.
+
 ## Environment
 
 Environment variables can be provided in the task payload and will be added to the
@@ -25,7 +40,7 @@ current environment configuration.  Environment variables can be both encrypted 
 plain text.  Refer to the [Encrypted Environment Variables](#encrypted-environment-variables)
 section for more information.
 
-### Reserved Environment Variables
+#### Reserved Environment Variables
 
 In addition to any environment (env) variables given we also provide every
 docker-worker task with the following environment variables these are mandatory
@@ -42,7 +57,7 @@ Note that environment variables can also be used in the `command` field.
 }
 ```
 
-### Encrypted Environment Variables
+#### Encrypted Environment Variables
 
 Environment variables can be encrypted to allow secure transmission of private information
 such as access tokens, passwords, etc. Secure environment variables will be encrypted
@@ -96,7 +111,64 @@ Once decrypted within docker-worker, the variable can be referenced just like an
 }
 ```
 
-### Features: `taskclusterProxy`
+## Features
+
+Features are services provided by docker-worker that give tasks additional
+capabilities and in some cases the ability to communicate with external
+resources that would otherwise be unavailable.
+
+These features are enabled by declaring them within the task payload in the
+`features` object.
+
+Note: Some features require additional information within the task definition.
+Consult the documentation for each feature to understand the requirements.
+
+Example:
+
+```js
+{
+  "payload": {
+    "features": {
+      "exampleFeature": true
+    }
+  }
+}
+```
+
+#### Features: `balrogVPNProxy`
+
+Required scopes: `docker-worker:feature:balrogVPNProxy`
+
+Some tasks have the need for communicating with production balrog server over
+port 80 through a vpn tunnel.  The balrog vpn proxy feature allows a task to
+direct requests to http://balrog which will proxy the request over a vpn connection
+to production balrog.
+
+This is a restricted feature and taskcluster credentials of the submitter must
+contain scopes for `docker-worker:feature:balrogVPNProxy`.
+
+To enable, the task must contain the proper scope as well as be declared in
+the `features` object within the task payload.
+
+Example:
+
+```js
+{
+  "scopes": ["docker-worker:feature:balrogVPNProxy"],
+  "payload": {
+    "features": {
+      "balrogVPNProxy": true
+    }
+  }
+}
+```
+
+References:
+
+* [taskcluster-vpn-proxy](https://github.com/taskcluster/taskcluster-vpn-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/balrog_vpn_proxy.js)
+
+#### Features: `taskclusterProxy`
 
 The taskcluster proxy provides an easy and safe way to make authenticated
 taskcluster requests within the scope(s) of a particular task.
@@ -140,4 +212,60 @@ var queue = new taskcluster.Queue({
  });
 
 queue.getTask('<taskId>');
+```
+
+References:
+
+* [taskcluster-proxy](https://github.com/taskcluster/taskcluster-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/taskcluster_proxy.js)
+
+#### Features: `testdroidProxy`
+
+Source: https://github.com/taskcluster/testdroid-proxy
+
+The testdroid proxy allows a task to request and release a device by making
+the appropriate calls to http://testdroid.  These actions are documented in the
+testdroid-proxy
+[documentation](https://github.com/taskcluster/testdroid-proxy/blob/master/README.md).
+
+Example:
+
+```js
+{
+  "payload": {
+    "features": {
+      "testdroidProxy": true
+    },
+  }
+}
+```
+
+References:
+
+* [testdroid-proxy](https://github.com/taskcluster/testdroid-proxy)
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/testdroid_proxy.js)
+
+## Volume Caches
+
+Require Scopes: `docker-worker:cache:<cache name>`
+
+Docker-worker has the ability to provide volumes mounted within the task container that can persist between tasks.  This provides a way of caching large often used files (repos, object directories) and share them between tasks.
+
+Volume caches falls under the garbage collection policies when diskspace threshold is reached.  Any cached volumes that are no longer mounted within a container are removed from the host system when this event occurs.
+
+Tasks need to define a name for the cache that will be used for other tasks requiring the same cached volume as well as a mount point for where the volume will be mounted within the task container.
+
+Example:
+
+```js
+{
+  "scopes": [
+    "docker-worker:cache:b2g-object-directory"
+  ],
+  "payload": {
+    "cache": {
+      "b2g-object-directory": "/path/for/mount/point"
+    }
+  }
+}
 ```

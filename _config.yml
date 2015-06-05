@@ -63,7 +63,7 @@ sections:
     url:  /services/index.html
     href: /services/
     links:
-      - name: AWS Provisioner
+      - name: AWS Provisioner (legacy)
         url:  /services/aws-provisioner/index.html
         href: /services/aws-provisioner/
       - name: Task Indexing
@@ -89,6 +89,18 @@ sections:
         url:  https://tools.taskcluster.net/auth/
       - name: Source Repository
         url:  https://github.com/taskcluster/taskcluster-auth
+  - name: AWS Provisioner
+    url:  /aws-provisioner/index.html
+    href: /aws-provisioner/
+    links:
+    - name: API Documentation
+      url:  /aws-provisioner/api-docs/index.html
+      href: /aws-provisioner/api-docs/
+    - name: AMQP Exchanges
+      url:  /aws-provisioner/events/index.html
+      href: /aws-provisioner/events/
+    - name: Source Repository
+      url:  https://github.com/taskcluster/aws-provisioner
   - name: Workers
     url:  /workers/index.html
     href: /workers/

@@ -297,9 +297,9 @@ Currently the worker can be deployed, it will listen for tasks, execute them, an
 The worker has been implemented according to [this specification](/queue/worker-interaction/).
 
 * Website: http://taskcluster.github.io/generic-worker
-* Docs: https://godoc.org/github.com/petemoore/generic-worker
-* CI: http://travis-ci.org/petemoore/generic-worker
-* Source Code: https://github.com/petemoore/generic-worker
+* Docs: https://godoc.org/github.com/taskcluster/generic-worker
+* CI: http://travis-ci.org/taskcluster/generic-worker
+* Source Code: https://github.com/taskcluster/generic-worker
 * Status:
   - talking to queue, claiming tasks, publishing results: complete
   - publishing artifacts, encrypted environment variables, robust retry mechanisms, environment cleanup: not yet implemented
@@ -319,7 +319,7 @@ Head over to http://golang.org/doc/install and follow the instructions for your 
 ## Install generic worker
 
 ```
-go get github.com/petemoore/generic-worker
+go get github.com/taskcluster/generic-worker
 ```
 
 ## Create TaskCluster account
@@ -329,7 +329,7 @@ Head over to https://tools.taskcluster.net/auth/ and create yourself an account 
 ## Set up your env
 
 ```
-export PAYLOAD_SCHEMA="${GOPATH}/src/github.com/petemoore/generic-worker/schema.json"
+export PAYLOAD_SCHEMA="${GOPATH}/src/github.com/taskcluster/generic-worker/schema.json"
 export PROVISIONER_ID='<choose_whatever_you_like>'
 export REFRESH_URLS_PREMATURELY_SECS=20
 export TASKCLUSTER_ACCESS_TOKEN='<your_access_token_from_above>'
