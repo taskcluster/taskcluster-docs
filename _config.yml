@@ -69,6 +69,9 @@ sections:
       - name: Task Indexing
         url:  /services/index/index.html
         href: /services/index/
+      - name: Purge Cache
+        url:  /services/purge-cache/index.html
+        href: /services/purge-cache/
   - name: Auth
     url:  /auth/index.html
     href: /auth/
