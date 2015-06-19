@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>TaskCluster Scopes</title>
+
+    <meta name="description" content="Testing Infrastructure">
+    <meta name="author" content="Jonas Finnemann Jensen">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
+
+    <script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="../lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+  <h1><img src="../taskcluster-120.png" style="background: transparent; border: none; margin: 0px; vertical-align: bottom;"/>&nbsp;TaskCluster Scopes</h1>
+  <h3>Introduction to Scopes...</h3>
+  <p>
+    <small>By <a href="http://jonasfj.dk">Jonas Finnemann Jensen</a></small>
+  </p>
+</section>
+
+
+<section id="design-goals">
+  <h3>Scope Design Goals</h3>
+  <ul>
+    <li>Delegate authority with a high degree of granularity</li>
+    <li>Facilitate lightweight authorization</li>
+    <li>Check if a scope-set is the subset of another scope-set</li>
+    <hr>
+    <li>Keep it simple and stupid</li>
+    <li>Stay as declarative as possible</li>
+    <li>Be completely dynamic</li>
+  </ul>
+</section>
+
+<section id="definitions" style="text-align: left; font-size: 80%">
+  <h3>Formal Definitions</h3>
+  <p>
+  Let $\Sigma$ be the alphabet of unicode characters and $\Sigma^*$ be the
+  language of all strings over $\Sigma$.<br>
+  <br>
+  <b>Definition (Scope-Set):</b> A scope-set $s \subseteq \Sigma^*$ is a set of strings.
+  <br><br>
+
+  Given a scope-set $s$ we write $C(s)$ to denote the <i>complete scope-set</i>:
+  $$C(s) = s \cup \{ab \mid a* \in s \text{ and } ab \in \Sigma^*\}$$
+  <br>
+
+  <b>Definition (Satisfiability):</b><br>
+  A scope-set $s$ is said to satisfy $s'$ if $C(s') \subseteq \mathcal C(s)$,
+  denoted $s' \sqsubseteq s$.
+  <br><br><br>
+
+  Note,
+  <ul>
+    <li>$(\sqsubseteq, \mathcal P(\Sigma^*))$ is a partially ordered set,</li>
+    <li>the scope set $\{*\}$ satisfies all other scope-sets, $C(\{*\}) = \Sigma^*$.</li>
+  </ul>
+  </p>
+</section>
+
+
+<section id="satisfaction-examples" style="text-align: left; font-size: 70%;">
+  <h3>$\sqsubseteq$ Examples on Scope-Sets</h3>
+  <p>
+  $$
+    \begin{align}
+    X &\sqsubseteq Y \quad \text{// Read as } Y \text{ satisfies } X \\
+    &\phantom{\sqsubseteq \{} \text{// Derive tighter scope-sets} \\
+    \{\text{queue:create-task:*} \} &\sqsubseteq \{\text{queue:*}\}\\
+    \{\text{queue:*}, \text{auth:list-clients} \} &\sqsubseteq \{\text{queue:*}, \text{auth:*}\}\\
+    \{\text{auth:list-clients} \} &\sqsubseteq \{\text{queue:*}, \text{auth:list-clients} \}\\
+    &\phantom{\sqsubseteq \{} \text{// Separators are just eye-candy} \\
+    \{\text{queue:create}, \text{queue:d*} \} &\sqsubseteq \{\text{queue:*}\}\\
+    &\phantom{\sqsubseteq \{} \text{// But prefix must match} \\
+    \{\text{queue} \} &\not\sqsubseteq \{\text{queue:*}\}\\
+    &\phantom{\sqsubseteq \{} \text{// While any suffix is optional} \\
+    \{\text{queue:} \} &\sqsubseteq \{\text{queue:*}\}\\
+    &\phantom{\sqsubseteq \{} \text{// Expansion at end only} \\
+    \{\text{auth:list-clients} \} &\not\sqsubseteq \{\text{auth:*-clients}\}
+    \end{align}
+  $$
+  </p>
+</section>
+
+
+<section id="requests" style="text-align: left; font-size: 80%;">
+  <h3>Authorizing Requests</h3>
+  <p>
+    We have $C = (\textit{clientId}, \textit{accessToken})$ with scopes: $\{\text{queue:*}, \text{index:*}\}$
+  </p>
+
+<pre><code data-trim>
+var taskcluster = require('taskcluster-client');
+
+// Create client object with credentials
+var queue = new taskcluster.Queue({credentials: C});
+
+// Create task
+await queue.createTask(slugid.v4(), {
+  created:        taskcluster.fromNowJSON(),
+  deadline:       taskcluster.fromNowJSON('2 days 3 hours'),
+  provisionerId:  'aws-provisioner-v1',
+  workerType:     'b2gtest',
+  payload:        {...},
+  metadata:       {...}
+});
+</code></pre>
+Docs it says createTask requires:
+<pre style="background: #3F3F3F">queue:create-task:&lt;provisionerId&gt;/&lt;workerType&gt;</pre>
+
+Hence, in this case we need:
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest</pre>
+Which we have by $``\text{queue:*}``$.
+</section>
+
+<section id="requests-authorized-scopes" style="text-align: left; font-size: 80%;">
+  <h3>Authorizing Requests w. Authorized Scopes</h3>
+  <p>
+    We have $C = (\textit{clientId}, \textit{accessToken})$ with scopes: $\{\text{queue:*}, \text{index:*}\}$
+  </p>
+<pre><code data-trim>
+var taskcluster = require('taskcluster-client');
+
+// Create client object with credentials
+var queue = new taskcluster.Queue({
+  credentials: C,
+  authorizedScopes: ['queue:create-task:aws-provisioner-v1/*']
+});
+
+// Create task
+await queue.createTask(slugid.v4(), {
+  // We've forced provisionerId using `authorizedScopes`
+  provisionerId:  'aws-provisioner-v1',
+  ...
+});
+</code></pre>
+Useful when creating a task on behalf of a third-party.
+<ul>
+  <li>Proxying a request w. authorization</li>
+  <li>Creating task on behalf of a push</li>
+</ul>
+
+</section>
+
+<section id="temporary-credentials" style="text-align: left; font-size: 80%;">
+  <h3>Temporary Credentials</h3>
+  <p>
+    We have $C = (\textit{clientId}, \textit{accessToken})$ with scopes: $\{\text{queue:*}, \text{index:*}\}$
+  </p>
+
+<pre><code data-trim>
+var taskcluster = require('taskcluster-client');
+
+// Create temporary credentials
+var tempCreds = taskcluster.createTemporaryCredentials({
+  start:        new Date(),
+  expiry:       taskcluster.fromNow('4 hours'),
+  credentials:  C,
+  scopes:       ['queue:create-task:aws-provisioner-v1/*']
+});
+
+// Create client object with temporary credentials
+var queue = new taskcluster.Queue({
+  credentials: tempCreds
+});
+
+// Create task
+await queue.createTask(slugid.v4(), {
+  // We've forced provisionerId using `scopes` given to temporary credentials
+  provisionerId:  'aws-provisioner-v1',
+  ...
+});
+</code></pre>
+Only works because $\text{queue:*}$ satisfies the scope given.
+
+</section>
+
+
+<section id="delegating-to-tasks" style="text-align: left; font-size: 80%;">
+  <h3>Delegating with <code>task.scopes</code> (1)</h3>
+  <p>
+    We have $C = (\textit{clientId}, \textit{accessToken})$ with scopes: $\{\text{queue:*}, \text{index:*}\}$
+  </p>
+<pre><code data-trim>
+// Create task
+await queue.createTask(slugid.v4(), {
+  provisionerId:  'aws-provisioner-v1',
+  workerType:     'b2gtest',
+                  // Allows worker to know the creator have these scopes
+  scopes:         ['index:insert-task:gecko.v1.*']
+  ...
+  payload: {
+    features:     {taskclusterProxy: true} // Start auth proxy
+    ...
+  }
+});
+</code></pre>
+From docs createTask now requires:
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest
+index:insert-task:gecko.v1.*</pre>
+
+Docker-worker will use auth-proxy will use the authorizedScopes
+features to proxy requests.<br>
+</section>
+
+
+
+
+
+<section id="delegating-to-tasks-2" style="text-align: left; font-size: 80%;">
+  <h3>Delegating with <code>task.scopes</code> (2)</h3>
+  <p>
+    We have $C = (\textit{clientId}, \textit{accessToken})$ with scopes: $\{\text{queue:*}, \text{index:*}\}$
+  </p>
+<pre><code data-trim>
+// Create task
+await queue.createTask(slugid.v4(), {
+  provisionerId:  'aws-provisioner-v1',
+  workerType:     'b2gtest',
+                  // Allows worker to know the creator have this scope
+  scopes:         ['docker-worker:cache:jonasfj-*']
+  ...
+  payload: {
+    cache: {
+      'jonasfj-cache': '/var/apt/cache/'
+    }
+    ...
+  }
+});
+</code></pre>
+From docs createTask now requires:
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest
+docker-worker:cache:jonasfj-*</pre>
+
+To mount cache worker requires:
+$$
+  \{\text{docker-worker:cache:jonasfj-cache}\} \sqsubseteq \text{task.scopes}
+$$
+Or it rejects the task.
+</section>
+
+
+
+
+<section id="patterns" style="text-align: left; font-size: 80%;">
+  <h3>Common Scope Patterns</h3>
+  <p style="font-size: 60%;">
+    Merely guidelines...
+  </p>
+  Service specific<br>
+  <pre style="background: #3F3F3F">
+
+    &lt;service&gt;:&lt;action&gt;:&lt;resource&gt;<br>
+     - service:  queue, index, auth, docker-worker
+     - action:   create-task, create-artifact, insert-task, list-clients
+     - resource: &lt;provisionerId&gt;/&lt;workerType&gt;, &lt;path&gt;, &lt;docker-image&gt;
+
+         * resource usually uses "/" as separator,
+         * resource is sometimes omitted if not relevant.
+  </pre>
+  Role specific<br>
+  <pre style="background: #3F3F3F">
+
+    assume:&lt;role&gt;:&lt;qualifier&gt;<br>
+     - role:      worker-type, scheduler-id, worker-id
+     - qualifier: &lt;provisionerId&gt;/&lt;workerType&gt;, &lt;schedulerId&gt;/&lt;taskGroupId&gt;
+  </pre>
+  <p style="font-size: 60%;">
+  Usually required by multiple API end-points.<br>Think of the scope
+  "assume:worker-type:aws-provisioner-v1/b2gtest" as the authority to act as a
+  worker of this type.
+  </p>
+</section>
+
+<section style="text-align: left; font-size: 80%" id="continous-scopes">
+  <h3>Continuous Scopes</h3>
+  Idea:
+  <blockquote>
+    We want a scope that limits the artifact size a client can upload.
+  </blockquote>
+  Solution:<br>
+  <ul style="font-size: 70%; margin-left: 10%">
+    <li><code>queue:artifact-size:100mb</code></li>
+    <li><code>queue:artifact-size:500mb</code></li>
+    <li><code>queue:artifact-size:1gb</code></li>
+    <li><code>queue:artifact-size:5gb</code></li>
+    <li><code>queue:artifact-size:10gb</code></li>
+  </ul>
+  <br>
+  <p style="font-size: 80%;">
+    <b>Downside,</b> satisfiability doesn't follow semantics, e.g.
+      $$
+        \{\text{queue:artifact-size:100mb}\} \not\sqsubseteq \{\text{queue:artifact-size:1gb}\}
+      $$<br>
+    Hence, client with the 1gb scope can't create temporary credentials with
+    the 500mb scope.
+  </p>
+</section>
+
+
+<section style="text-align: left;" id="summary">
+  <h3>Summary</h3>
+  <ul>
+    <li>A scope is a string (you make a new scope by requiring it)</li>
+    <li>Clients have a set of scopes</li>
+    <li>APIs/resources requires a set of scopes (maybe dynamic)</li>
+    <li>A scope $``\text{a*}``$ satisfies any scopes prefixed $a$</li>
+  </ul><br>
+  <p style="font-size: 60%;">
+    <b>Downside,</b> We cannot have continuous scopes.<br>
+    Given $Y$ we cannot check if the client has some scope
+    "queue:artifact-size:X" where $Y \leq X$.<br>
+  </p>
+</section>
+
+
+<section style="text-align: left;" id="the-end">
+  <h1>THE END</h1>
+  <p>
+    - docs.taskcluster.net/auth <br>
+    - <a href="irc://irc.mozilla.org#taskcluster">#taskcluster</a> at irc.mozilla.org<br>
+  </p>
+</section>
+
+
+
+      </div>
+
+    </div>
+
+    <script src="../lib/js/head.min.js"></script>
+    <script src="../js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: false,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../plugin/zoom-js/zoom.js', async: true },
+          { src: '../plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
