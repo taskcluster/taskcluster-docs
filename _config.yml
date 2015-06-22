@@ -114,6 +114,16 @@ sections:
       - name: Generic Worker
         url:  /workers/generic-worker/index.html
         href: /workers/generic-worker/
+  - name: Presentations
+    url: /presentations/index.html
+    href: /presentations/
+    links:
+      - name: TaskCluster Introduction
+        url:  /presentations/intro/index.html
+        href: /presentations/intro/
+      - name: TaskCluster Scopes
+        url:  /presentations/scopes/index.html
+        href: /presentations/scopes/
   - name: Tools
     url:  /tools/index.html
     href: /tools/
