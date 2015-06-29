@@ -46,7 +46,7 @@ The fields here are explained in greater detail throughout the rest of this docu
    Pools may use different EC2 instance types, AMIs, etc.
 
  * `created` and `deadline` give a time boundary for the task.
-   If the task is not completed by its deadline, it will be dropped.
+   If the task is not completed by its deadline, it will be resolved as `exception` with reason `"deadline-exceeded"`.
 
  * The `payload` is interpreted by the Docker worker.
    The `image` key specifies the docker image to pull, and the `command` gives the command to run within that image.
