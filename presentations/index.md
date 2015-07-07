@@ -12,8 +12,6 @@ The following videos are published on our [official YouTube channel](https://www
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/B1MAyJpUya8" frameborder="0" allowfullscreen></iframe>
 
-https://github.com/taskcluster/taskcluster-docs
-
 Presentations
 =============
 
