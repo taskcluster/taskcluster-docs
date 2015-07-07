@@ -101,8 +101,7 @@
   <p>
   $$
     \begin{align}
-    X &\sqsubseteq Y \quad \text{// Read as } Y \text{ satisfies } X \\
-    &\phantom{\sqsubseteq \{} \text{// Derive tighter scope-sets} \\
+    X &\sqsubseteq Y \quad \text{// } X \text{ is satisfied by } Y \\
     \{\text{queue:create-task:*} \} &\sqsubseteq \{\text{queue:*}\}\\
     \{\text{queue:*}, \text{auth:list-clients} \} &\sqsubseteq \{\text{queue:*}, \text{auth:*}\}\\
     \{\text{auth:list-clients} \} &\sqsubseteq \{\text{queue:*}, \text{auth:list-clients} \}\\
@@ -113,7 +112,8 @@
     &\phantom{\sqsubseteq \{} \text{// While any suffix is optional} \\
     \{\text{queue:} \} &\sqsubseteq \{\text{queue:*}\}\\
     &\phantom{\sqsubseteq \{} \text{// Expansion at end only} \\
-    \{\text{auth:list-clients} \} &\not\sqsubseteq \{\text{auth:*-clients}\}
+    \{\text{auth:list-clients} \} &\not\sqsubseteq \{\text{auth:*-clients}\} \\
+    \textit{required scopes} &\sqsubseteq \textit{possessed scopes} \text{ // in general}
     \end{align}
   $$
   </p>
