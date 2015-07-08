@@ -353,28 +353,53 @@ Again babeljs has a good
 [introduction to ES6 features](https://babeljs.io/docs/learn-es2015/).
 
 
-Runtime Environment
--------------------
+Tutorial Runtime Environment
+----------------------------
 
- - runtime environment
-   - browserify
-   - async function(){ ... }().catch(err => ...)
-   - Capturing console is injected
-   - require and Buffer is available
-
-**Modules from node**
-`assert`, `buffer`, `console`, `constants`, `crypto`, `domain`, `events`,
-`http`, `https`, `os`, `path`, `punycode`, `querystring`, `stream`,
-`string_decoder`, `timers`, `tty`, `url`, `util`, `vm`, `zlib`
-
-
-**Modules from npm**
-`taskcluster-client`, `slugid`, `lodash`, `uuid`, `superagent`, `superagent-promise`, `debug`, `hawk`, `promise`, `url-join`, `bluebird`, `aws-sdk`, `aws-sdk-promise`, `js-yaml`, `xml2js`
-
+The code in the runnable examples on this page and through-out the tutorials
+here, is compiled with babeljs prior to being executed. Additionally, it is
+wrapped in `async function() { /* EXAMPLE CODE*/ }().catch(err => ...)`. This
+allows you to use `await` without wrapping in an `async` function and ensures
+that exceptions are caught and logged to console. All in all it makes it
+possible to write code as follows.
 
 <pre data-plugin="interactive-example">
-console.log("Hello World");
+// Load taskcluster-client module
+var taskcluster = require('taskcluster-client');
+
+// Create a queue client object
+var queue = new taskcluster.Queue();
+
+// Ping queue
+var result = await queue.ping();
+
+console.log("Ping'ed queue and got response: " + JSON.stringify(result));
 </pre>
+
+In node.js with babeljs you can't use `await` in the top-level function, but
+you can just create an `async` main function that is invoked immediately. In
+these example code environments we wrap in an `async` main function for you to
+simplify the examples.
+
+As the attentive reader might also have noticed, the example environment on
+these pages also defines a `console` variable that captures output and writes
+it below the editor when you press "Run Code". Finally, the environment also
+defines variables `Buffer` and `require`, such that examples can import
+modules bundled with browserify.
+
+We have embedded the following **standard node modules** from browserify:
+`assert`, `buffer`, `console`, `constants`, `crypto`, `domain`, `events`,
+`http`, `https`, `os`, `path`, `punycode`, `querystring`, `stream`,
+`string_decoder`, `timers`, `tty`, `url`, `util`, `vm`, `zlib`.
+
+And the following **modules from npm**:
+`taskcluster-client`, `slugid`, `lodash`, `uuid`, `superagent`,
+`superagent-promise`, `debug`, `hawk`, `promise`, `url-join`, `bluebird`,
+`aws-sdk`, `aws-sdk-promise`, `js-yaml`, `xml2js`.
+
+Feel free to request additional modules to be added, or versions to be upgraded.
+The intend is to supply modules that are useful in tutorials and for quick
+one-off experiments.
 
 <script src="bundle.js"></script>
 

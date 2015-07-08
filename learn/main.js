@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var buttons = document.createElement("div");
     buttons.style.marginBottom = '10px';
     var run = makeButton('Run Code', 'primary');
-    var reset = makeButton('Reset', 'warning');
+    var reset = makeButton('Reset Editor', 'warning');
     buttons.appendChild(run);
     buttons.appendChild(reset);
     run.onclick = function() {
