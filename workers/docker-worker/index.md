@@ -245,6 +245,35 @@ References:
 * [testdroid-proxy](https://github.com/taskcluster/testdroid-proxy)
 * [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/testdroid_proxy.js)
 
+#### Features: `dockerSave`
+
+When this feature is activated, after the task finishes, a copy of the container is saved using `docker commit`, converted into a tarball with `docker save`, and uploaded to s3 under the filename `public/dockerImage.tar`. The image itself will have repository `task/${taskId}/${runId}` and tag `:latest`. 
+
+Example: 
+
+```js
+{
+  "payload": {
+    "features": {
+      "dockerSave": true
+    },
+  }
+}
+//run task
+```
+
+Then, once the task finishes, the resulting image can be pulled and run in the following manner:
+
+```bash
+wget https://queue.taskcluster.net/v1/task/${taskId}/runs/${runId}/artifacts/public/dockerImage.tar
+docker load < dockerImage.tar
+docker run -it task/${taskId}/${runId}:latest /bin/sh
+```
+
+References:
+
+* [implementation](https://github.com/taskcluster/docker-worker/blob/master/lib/features/docker_save.js)
+
 ## Volume Caches
 
 Require Scopes: `docker-worker:cache:<cache name>`
