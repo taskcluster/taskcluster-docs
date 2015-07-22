@@ -247,6 +247,8 @@ References:
 
 #### Features: `dockerSave`
 
+Status: Unstable, api may be changed
+
 When this feature is activated, after the task finishes, a copy of the container is saved using `docker commit`, converted into a tarball with `docker save`, and uploaded to s3 under the filename `public/dockerImage.tar`. The image itself will have repository `task/${taskId}/${runId}` and tag `:latest`. 
 
 Example: 
