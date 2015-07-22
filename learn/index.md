@@ -1,7 +1,9 @@
 ---
-layout:   default
-class:    markdown
+layout:       default
+class:        markdown
+interactive:  true
 ---
+
 
 Interactive TaskCluster Tutorials
 =================================
@@ -400,6 +402,4 @@ And the following **modules from npm**:
 Feel free to request additional modules to be added, or versions to be upgraded.
 The intend is to supply modules that are useful in tutorials and for quick
 one-off experiments.
-
-<script src="bundle.js"></script>
 

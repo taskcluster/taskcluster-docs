@@ -3,7 +3,7 @@ var slugid  = require('slugid');
 var ace     = require('brace');
 require('brace/mode/javascript');
 require('brace/theme/ambiance');
-var babel   = require('babel-core/lib/babel/api/browser');
+var babel   = require('babel-core');
 
 // Babel runtime part we use
 require('babel-runtime/regenerator');

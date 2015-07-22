@@ -19,6 +19,10 @@
     <script src="/assets/bootstrap/js/bootstrap.min.js">
     </script>
 
+    {% if page.interactive %}
+    <script src="/learn/bundle.js"></script>
+    {% endif %}
+
     {% if page.docson %}
     <!-- JSON Schema Documentation -->
     <link rel="stylesheet" href="/assets/docson.css">

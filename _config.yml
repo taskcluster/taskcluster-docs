@@ -33,16 +33,27 @@ sections:
         href:  /introduction/getting-started/
       - name:  Github Projects
         url:   https://github.com/taskcluster
-  - name: Learn
-    url:  /learn/index.html
-    href: /learn/
-    links:
-      - name: Authenticate
-        url:  /learn/authenticate/index.html
-        href: /learn/authenticate
-      - name: Create a Task
-        url:  /learn/create-task/index.html
-        href: /learn/create-task
+  #- name: Learn
+  #  url:  /learn/index.html
+  #  href: /learn/
+  #  links:
+  #    - name: Introduction
+  #      url:  /learn/index.html
+  #      href: /learn/
+  #    - name: Authenticate
+  #      url:  /learn/authenticate/index.html
+  #      href: /learn/authenticate
+  #    - name: Create a Task
+  #      url:  /learn/create-task/index.html
+  #      href: /learn/create-task
+      # name: Listening for Task Events (PulseListener + WebListener)
+      # name: Tasks w. Custom Routes (custom routes, scopes, WebListener)
+      # name: Browsing the Index
+      # name: Indexing Tasks
+      # name: Create a Task-Graph
+
+      # name: Docker in docker-worker
+      # name:
   - name: Queue
     url:  /queue/index.html
     href: /queue/
@@ -56,8 +67,6 @@ sections:
     - name: AMQP Exchanges
       url:  /queue/exchanges/index.html
       href: /queue/exchanges/
-    - name: Queue Web Interface
-      url:  http://queue.taskcluster.net
     - name: Source Repository
       url:  https://github.com/taskcluster/taskcluster-queue
   - name: Scheduler
