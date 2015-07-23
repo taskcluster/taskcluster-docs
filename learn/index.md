@@ -13,14 +13,15 @@ script TaskCluster with modern asynchronous Javascript patterns. This page will
 give a brief introduction to modern asynchronous Javascript patterns, the rest
 of the tutorials are focused on how to use TaskCluster.
 
-The first tutorial "Authentication" **must** be competed before you proceed to
-the other tutorials, or the examples will not work. The first few tutorials aims
-to give you a quick introduction and it's recommended that you complete them.
-However, before you get started you should have a basic understanding of
-promises and `async` functions, this page should provide the required
-background, if not it's recommended you fine articles elsewhere.
+The first tutorial [Authentication](authenticate/) **must** be completed
+before you proceed to the other tutorials, or the examples will not
+work. The first few tutorials aim to give you a quick introduction and it's
+recommended that you complete them.  However, before you get started you should
+have a basic understanding of promises and `async` functions, this page should
+provide the required background, if not it's recommended you find articles
+elsewhere.
 
-Later tutorials will go more into depth focusing on how to combine
+Later tutorials will go into more depth focusing on how to combine
 TaskCluster features and components to achieve high-level goals.
 TaskCluster consists of many loosely coupled components, and while they all
 have extensive reference-style documentation, it can be very hard to see how
@@ -43,7 +44,7 @@ All the Javascript examples in these tutorials are compiled with
 [babeljs](https://babeljs.io/) using proposed ES7 features (stage 1).
 This setup compiles ES6 and ES7 proposed features to ES5 before they are
 evaluated, allowing us to use the same powerful of asynchronous features in both
-the browser and node.js (neither of which implements `async` functions yet.
+the browser and node.js (neither of which implements `async` functions yet).
 
 ### Promises
 
@@ -279,48 +280,68 @@ promise-chain, the answer is callback recursion, while it certainly is possible,
 it gets very complicated very quickly. Using `async` and `await` syntax is much
 simpler and easier to read. For completeness it should be noted that
 babeljs compiles `async` functions to state machines instead of promise
-chains. If you're curious about what babeljs constructs compile to give their
-[try it out](https://babeljs.io/repl/) editor a spin.
+chains. If you're curious about what babeljs constructs compile to give
+[their editor a spin](https://babeljs.io/repl/).
 
 
 ### Other ES6 Features
 
 As previously mentioned babeljs compiles all ES6 features to ES5 and some of
-these features very nifty. For a completely look at the features review the
+these features very nifty. For a complete look at the features, review the
 [babeljs introduction](https://babeljs.io/docs/learn-es2015/). This section will
 give a quick overview of the ES6 features we've found useful.
 
 First up is arrow functions, which is a short hand for writing functions and
-preserving the `this` reference. These very useful for writing event handlers,
-as illustrated in the example below.
+preserving the `this` reference. These are very useful for writing event
+handlers, as illustrated in the example below.
 
 <pre data-plugin="interactive-example">
 var events = require('events');
-var emitter = new events.EventEmitter();
 
-// Using old school functions
-emitter.on('my-event', function(arg1, arg2) {
-  console.log("function handler, arg1: " + arg1);
-}.bind(this)); // We should .bind(this), if the function used this
+var MyType = function() {
+  // Set a value on `this`
+  this.myProp = "my-value";
 
-// Using arrow function
-emitter.on('my-event', (arg1, arg2) => {
-  console.log("arrow handler 1, arg1: " + arg1);
-});
+  var emitter = new events.EventEmitter();
 
-// If we only take one argument we don't need parenthesis () and, if the body
-// is single statement, brackets {} aren't needed
-emitter.on('my-event', arg1 => console.log("arrow handler 2, arg1: " + arg1));
+  // Using old school function that gets the wrong `this` context
+  emitter.on('my-event', function(arg1, arg2) {
+    console.log("classic handler 1, arg1: " + arg1 + " , prop: " + this.myProp);
+  });
 
-// We still need paranthesis if no arguments is taken
-emitter.on('my-event', () => console.log("arrow handler 3"));
+  // Using old school function with `that` wrapping
+  var that = this;
+  emitter.on('my-event', function(arg1, arg2) {
+    console.log("classic handler 2, arg1: " + arg1 + " , prop: " + that.myProp);
+  });
 
-// Emit an event from the event emitter
-emitter.emit('my-event', 'val1');
+  // Using old school functions with .bind(this)
+  emitter.on('my-event', function(arg1, arg2) {
+    console.log("classic handler 3, arg1: " + arg1 + " , prop: " + this.myProp);
+  }.bind(this));
+
+  // Using arrow function
+  emitter.on('my-event', (arg1, arg2) => {
+    console.log("arrow handler 1, arg1: " + arg1 + " , prop: " + this.myProp);
+  });
+
+  // If we only take one argument we don't need parenthesis () and, if the body
+  // is single statement, brackets {} aren't needed
+  emitter.on('my-event', arg1 => console.log("arrow handler 2, arg1: " + arg1));
+
+  // We still need paranthesis if no arguments is taken
+  emitter.on('my-event', () => console.log("arrow handler 3"));
+
+  // Emit an event from the event emitter
+  emitter.emit('my-event', 'val1');
+};
+
+// Create a new instance of MyType
+var myType = new MyType();
 </pre>
 
 Generally, you'll want to use the arrow functions whenever you would normally
-make anonymous functions. As an added bonus babeljs will let is make `async`
+make anonymous functions. As an added bonus babeljs will let us make `async`
 arrow functions, example: `async () => { await aPromiseObject; }`.
 
 Another nifty ES6 feature is destructuring also known as unpacking, this is a
