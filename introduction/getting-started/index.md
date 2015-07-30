@@ -8,7 +8,7 @@ Hello, World
 
 Let's start by seeing TaskCluster in action.
 
-Visit the [Task Creator](https://tools.taskcluster/task-creator).
+Visit the [Task Creator](https://tools.taskcluster.net/task-creator).
 Before you can submit a task, you will need to log in:
 
  1. Click "Log In"
