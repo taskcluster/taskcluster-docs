@@ -267,7 +267,7 @@ Example:
 Then, once the task finishes, the resulting image can be pulled and run in the following manner:
 
 ```bash
-wget https://queue.taskcluster.net/v1/task/${taskId}/runs/${runId}/artifacts/public/dockerImage.tar.gz
+wget https://queue.taskcluster.net/v1/task/${taskId}/runs/${runId}/artifacts/public/dockerImage.tar
 docker load < dockerImage.tar
 docker run -it task/${taskId}/${runId}:latest /bin/sh
 ```
