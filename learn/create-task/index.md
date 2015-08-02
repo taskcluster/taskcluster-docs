@@ -78,14 +78,15 @@ In the example above you see how to specify the properties required by the
 queue. If we were to submit this task to the queue it would be accepted,
 however, the worker would immediately reject it because it doesn't carry a
 valid `task.payload`. The `task.payload` is specific to the workerType given,
-this way we can support multiple platforms and upgrade workers gradually.
+this way we can support multiple platforms and migrate tasks gradually,
+keeping legacy workerTypes around until all tasks have been ported.
 
 
 Constructing a `task.payload` for docker-worker
 -----------------------------------------------
 
 The `b2gtest` workerType is a deployment of `docker-worker`, this worker
-requires a `task.payload` that specifies which docker image to load, which
+requires a `task.payload` that specifies which _docker image_ to load, which
 command to run and a maximum allowed runtime. You can find detailed
 documentation on this site, the schema for the `task.payload` property is
 located at `schemas.taskcluster.net/docker-worker/v1/payload.json`, for
@@ -93,27 +94,202 @@ reference it is rendered below.
 
 <div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
 
-For the `image`
+For the `image` we can pick any docker image, take a look at
+[registry.hub.docker.com](https://registry.hub.docker.com/), you can even build
+and upload your own docker images. There are many benefits to using
+custom docker images notable ones include:
+
+ * Install dependencies from package repositories and lock them,
+ * Make custom scripts and binaries available in the runtime environment, and
+ * Test docker images locally before deploying to TaskCluster.
+
+There are many other benefits to docker, but an exhaustive list is beyond the
+scope of this document. If you are not familiar with docker you should play
+around with  the official docker
+[getting started guide](http://docs.docker.com/linux/started/). Deploying Linux
+binaries in tasks on TaskCluster is mostly about getting the binaries to run
+inside a docker container. For the most part this involves installing
+dependencies and configuring them, so become familiar with docker before you
+start deploying Linux tasks on TaskCluster.
+
+For the purpose of this tutorial we'll use the official `ubuntu:15.04` docker
+image. To make it interesting we'll run two commands `ls && du /usr` that should
+show us a little of what the image contains. The example below shows how to
+add a payload to the task definition from before.
 
 
-    * Schema
-    * Image Ubuntu
-    * Command: ls, du /
-    * maxRuntime
-    * artifact upload: /etc/passwd
-    * minimal example
+<pre data-plugin="interactive-example">
+let taskcluster = require('taskcluster-client');
 
+let task = {
+  provisionerId:      'aws-provisioner-v1',
+  workerType:         'b2gtest',
+  created:            (new Date()).toJSON(),
+  deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
+  expires:            taskcluster.fromNowJSON('6 months 2 days'),
+  metadata: {
+    name:             "Tutorial **Example** Task",
+    description:      "Task create from _interactive_ tutorials",
+    owner:            'nobody@taskcluster.net',
+    source:           window.location.href
+  },
+  payload: {
+    // Properties required by docker-worker
+    image:            'ubuntu:15.04',
+    command:          ['/bin/bash', '-c', 'ls && du /usr'],
+    maxRunTime:       600, // in seconds (600s = 10 minutes)
+    // Optional properties
+    artifacts: {
+      // Export an artifact with the name "public/passwd.txt" and
+      // take it from '/etc/passwd' after the task has run.
+      "public/passwd.txt": {
+        type:         'file',
+        path:         '/etc/passwd',
+        expires:      taskcluster.fromNowJSON('2 months')
+      }
+    }
+  }
+};
 
+// Print example task definition
+console.log(JSON.stringify(task, null, 2));
+</pre>
+
+To make things a little interesting the example above also exports the file
+`/etc/passwd` as an artifact with the name `public/passwd.txt`. It should be
+noted that all artifact names that starts with `public/` are public and
+accessing them doesn't require any credentials.
 
 Creating a Task
 ---------------
-    * Create a taskId (global.taskId)
-    * createTask(taskId, ...) (let taskId = global.taskId)
-    * Link task inspector
+
+All tasks have a `taskId` this is
+[UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+,version 4, meaning it's 122 random bits. To better fit these UUIDs into URLs,
+RabbitMQ routing keys and many other places we always encoded them in
+[URL-safe base64](http://tools.ietf.org/html/rfc4648#section-5)
+stripped of `==` padding. This yields a 22 character identifier like
+`a8_YezW8T7e1jLxG7evy-A`.
+
+We call an identifier on this form as a _slugid_, in Javascript we can generate
+them using the `slugid` module. Being based on UUID version 4 the risk of
+`taskId` collision is extremely small. In fact if you encounter an error
+telling you that a given `taskId` is already used by another task, it is most
+likely a problem with your retry logic that fails to make idempotent requests,
+or you accidentally reused the `taskId`. The example below shows how to generate
+a random slugid for use as `taskId`.
+
+<pre data-plugin="interactive-example">
+let slugid = require('slugid');
+
+// Generate a new taskId
+let taskId = slugid.v4();
+
+// Print the taskId
+console.log("Randomly generated taskId: " + taskId);
+</pre>
+
+When we have a `taskId` and a _task definition_, we are ready to create a task.
+In the example below we'll generate a random `taskId` store it on the `global`
+object for use in later examples. Then we construct a task definition, a
+`taskcluster.Queue` client with temporary credentials and create a new task
+using the `queue.createTask(taskId, payload)` method, where `payload` is the
+task definition.
+
+<pre data-plugin="interactive-example">
+let taskcluster = require('taskcluster-client');
+let slugid      = require('slugid');
+
+// Generate a new taskId
+let taskId = slugid.v4();
+
+// Store taskId for use in later examples to fetch status and artifacts
+global.taskId = taskId;
+
+// Task definition from previous example
+let task = {
+  provisionerId:      'aws-provisioner-v1',
+  workerType:         'b2gtest',
+  created:            (new Date()).toJSON(),
+  deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
+  expires:            taskcluster.fromNowJSON('6 months 2 days'),
+  metadata: {
+    name:             "Tutorial **Example** Task",
+    description:      "Task create from _interactive_ tutorials",
+    owner:            'nobody@taskcluster.net',
+    source:           window.location.href
+  },
+  payload: {
+    // Properties required by docker-worker
+    image:            'ubuntu:15.04',
+    command:          ['/bin/bash', '-c', 'ls && du /usr'],
+    maxRunTime:       600, // in seconds (600s = 10 minutes)
+    // Optional properties
+    artifacts: {
+      // Export an artifact with the name "public/passwd.txt" and
+      // take it from '/etc/passwd' after the task has run.
+      "public/passwd.txt": {
+        type:         'file',
+        path:         '/etc/passwd',
+        expires:      taskcluster.fromNowJSON('2 months')
+      }
+    }
+  }
+};
+
+// Create a Queue client object w. temporary credentials
+let queue = new taskcluster.Queue({
+  credentials: JSON.parse(localStorage.credentials)
+});
+
+// Create task
+let result = await queue.createTask(taskId, task);
+
+// Print results
+console.log("Created task:\n" + JSON.stringify(result.status, null, 2));
+console.log("Inspect it at:");
+console.log("https://tools.taskcluster.net/task-inspector/#" + taskId);
+</pre>
+
+If you are curious about the `createTask(taskId, payload)` method you can look
+it up in the [API docs](/queue/api-docs/) for the Queue. You should notice that
+the API docs lists a `Signature` property, like
+`Signature: createTask(taskId, payload) : result`, these signature are used to
+call methods in automatically generated client libraries. This allows for
+consistent and well-documented client libraries across all platforms.
 
 
 Fetch for Task State
 --------------------
+
+<pre data-plugin="interactive-example">
+let taskcluster = require('taskcluster-client');
+let assert      = require('assert');
+
+// Check that we have a taskId on global object from previous example
+assert(global.taskId, "You must create a task w. a taskId first!");
+
+// Create Queue client object (no credentials needed for queue.status)
+let queue = new taskcluster.Queue();
+
+// Fetch task status, given the taskId from the `global` object
+let result = await queue.status(global.taskId);
+
+// Print status
+if (['completed', 'failed', 'exception'].indexOf(result.status.state) !== -1) {
+  console.log("Task is now resolved... continue to next step");
+} else {
+  console.log("Task isn't resolved yet, you can inspect it at:");
+  console.log("https://tools.taskcluster.net/task-inspector/#" + global.taskId);
+}
+console.log("\nTask status structure:");
+console.log(JSON.stringify(result.status, null, 2));
+</pre>
+
+    * task status structure schema
+    * Explain runs, last run is always the latest
+       - Created when we retry due to infrastructure failure
+       - Generally you should **only** care about the latest run
     * queue.status(global.taskId)
 
 
@@ -123,41 +299,5 @@ Download Task Artifacts
     * artifactUrl = queue.buildSignedUrl(queue.getArtifact, taskId, runId)
     * artifactUrl = queue.buildUrl(queue.getArtifact, taskId, runId)
     * superagent.get(artifactUrl)
-
-
-<pre data-plugin="interactive-example">
-let taskcluster = require('taskcluster-client');
-let slugid      = require('slugid');
-
-// Create a queue client object w. temporary credentials
-let queue = new taskcluster.Queue({
-  credentials: JSON.parse(localStorage.credentials)
-});
-
-// Create new taskId (Random UUID encoded as url-safe base64)
-let taskId = slugid.v4();
-console.log("Generated taskId: " + taskId);
-
-// Create task
-let result = await queue.createTask(taskId, {
-  provisionerId:  'aws-provisioner-v1',     // Provisioner to find worker under
-  workerType:     'b2gtest',                // WorkerType to run task on
-  created:        new Date().toJSON(),
-  deadline:       taskcluster.fromNowJSON('2 hours'),
-  payload: {                      // docker-worker specific payload
-    image:        'ubuntu:15.04', // Use the ubuntu image tag 15.04
-    command:      ['du', '/usr'], // Run the command 'du' with argument '/usr'
-    maxRunTime:   600             // Run for at most 600s == 10min
-  },
-  metadata: {
-    name:         "Interactive Tutorial Task",
-    description:  "Task created from **interactive tutorial**...",
-    owner:        "nobody@localhost.local", // Person who caused this task
-    source:       window.location.href      // Source for the task definition
-  }
-});
-console.log("Created task:\n" + JSON.stringify(result.status, null, 2));
-console.log("Inspect it at: https://tools.taskcluster.net/task-inspector/#" + taskId);
-</pre>
 
 

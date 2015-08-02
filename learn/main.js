@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     editor.setTheme('ace/theme/ambiance');
     editor.setValue(initialCode, 1);
     editor.setAutoScrollEditorIntoView(true);
-    editor.setOption("maxLines", 50);
+    editor.setOption("maxLines", 80);
     editor.setOption("showFoldWidgets", false);
     editor.setHighlightActiveLine(false);
     editor.setHighlightGutterLine(false);
