@@ -65,8 +65,6 @@ let task = {
   },
   payload:            {}, // worker specific payload, we'll add it later
 
-  // Optional properties
-  expires:            taskcluster.fromNowJSON('6 months 2 days'),
   // There is more optional properties, but we don't need them here.
 };
 
@@ -126,7 +124,6 @@ let task = {
   workerType:         'b2gtest',
   created:            (new Date()).toJSON(),
   deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
-  expires:            taskcluster.fromNowJSON('6 months 2 days'),
   metadata: {
     name:             "Tutorial **Example** Task",
     description:      "Task create from _interactive_ tutorials",
@@ -212,7 +209,6 @@ let task = {
   workerType:         'b2gtest',
   created:            (new Date()).toJSON(),
   deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
-  expires:            taskcluster.fromNowJSON('6 months 2 days'),
   metadata: {
     name:             "Tutorial **Example** Task",
     description:      "Task create from _interactive_ tutorials",
@@ -262,6 +258,23 @@ consistent and well-documented client libraries across all platforms.
 Fetch for Task State
 --------------------
 
+Holding the `taskId` to a task, we can fetch the task status, using the
+`queue.status(taskId)` API end-point. This returns an object where the `status`
+property is the _task status structure_. This structure is commonly used to
+represent the status of a task in both API calls and pulse messages.
+Below is the JSON schema for the response from the `queue.status(taskId)`
+API end-point.
+
+<div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-status-response.json"></div>
+
+In the following example we use the `queue.status(taskId)` API end-point to
+fetch status for the task created earlier. Recall that we stored the `taskId`
+in `global.taskId`, so it should be present here unless you refreshed the
+browser window. Notice that inspecting a task doesn't require any credentials,
+you just need the `taskId`. We generally allow users to inspect meta-data
+without any credentials, this allows you to easily create custom dashboards
+and other useful tools.
+
 <pre data-plugin="interactive-example">
 let taskcluster = require('taskcluster-client');
 let assert      = require('assert');
@@ -286,18 +299,111 @@ console.log("\nTask status structure:");
 console.log(JSON.stringify(result.status, null, 2));
 </pre>
 
-    * task status structure schema
-    * Explain runs, last run is always the latest
-       - Created when we retry due to infrastructure failure
-       - Generally you should **only** care about the latest run
-    * queue.status(global.taskId)
+You may notice that the _task status structure_ has a list of runs. Each run
+have a `reasonCreated` and once resolved a `reasonResolved`. A run cannot
+change state once resolved, but a task may have additional runs until
+`task.deadline` is reached.
+
+The queue creates additional runs, if a run fails because a worker became
+unresponsive or reported a shutdown, for example if a node crashes or a
+EC2 spot-node is terminated. In this case the task will be _retried_ at-most
+`task.retries` times. If you don't want your task to be retried you can set
+`task.retries` to zero. Users can also _rerun_ a resolved task using
+`queue.rerunTask(taskId)`, this is generally not recommended, especially not if
+interacting relying in another service for scheduling dependent tasks.
+
+You should note the difference in terminology between:
+ * **retry task**, which happens in case of infrastructure failure, and,
+ * **rerun task**, which happens if explicitly requested by a caller.
+The distinction is important as a task that is automatically _retried_ won't
+cause a task exception message to published on pulse. Whereas a message
+signaling that the task is resolved will be published on pulse before
+calling `task.rerunTask(taskId)` as any effect.
 
 
 Download Task Artifacts
 -----------------------
-    * queue.listArtifacts(global.taskId, runId = 0)
-    * artifactUrl = queue.buildSignedUrl(queue.getArtifact, taskId, runId)
-    * artifactUrl = queue.buildUrl(queue.getArtifact, taskId, runId)
-    * superagent.get(artifactUrl)
 
+Once the task is resolved, or just the first run, we can list artifacts from
+runs of the task. A convenience method `queue.listLatestArtifacts` will list
+artifacts from the latest run. But you can also specify the exact run to
+list artifacts from, or download the status structure to find the latest run.
 
+In the example below we list artifacts from the latest run, `runId` always
+starts from zero and highest `runId` is always the latest. As we don't want to
+fetch the task status structure first we use
+`queue.listLatestArtifacts(taskId)` instead of
+`queue.listArtifacts(taskId, runId)`. Again, no credentials are required to
+inspect the list of artifacts.
+
+<pre data-plugin="interactive-example">
+let taskcluster = require('taskcluster-client');
+let assert      = require('assert');
+
+// Check that we have a taskId on global object from previous example
+assert(global.taskId, "You must create a task w. a taskId first!");
+
+// Create Queue client object
+let queue = new taskcluster.Queue();
+
+// Fetch artifacts using taskId from global object
+let result = await queue.listLatestArtifacts(global.taskId);
+
+// Print list of artifacts
+console.log(JSON.stringify(result, null, 2));
+</pre>
+
+As we list artifacts we should see an artifact `public/logs/live.log` and
+`public/passwd.txt`. The `public/logs/live.log` contains the task log, and
+is streamed live directly from the worker while the task is running. After the
+task is completed the `public/logs/live.log` will redirect to a file on S3.
+The `public/passwd.txt` is the `/etc/passwd` file as exported from the
+docker container after task execution.
+
+In the example below we list all artifacts again, and constructs URLs from
+which they can be downloaded. Then we download the task log and print it.
+It should be noted that artifacts prefixed `public/` are public and downloading
+them doesn't require any credentials.
+
+<pre data-plugin="interactive-example">
+let taskcluster = require('taskcluster-client');
+let assert      = require('assert');
+let request     = require('superagent-promise');
+
+// Check that we have a taskId on global object from previous example
+assert(global.taskId, "You must create a task w. a taskId first!");
+
+// Get taskId from global object
+let taskId = global.taskId;
+
+// Create Queue client object
+let queue = new taskcluster.Queue();
+
+// Fetch artifacts from latest run of task
+let result = await queue.listLatestArtifacts(taskId);
+
+// Print url for each artifact
+console.log("Artifacts:");
+for (let artifact of result.artifacts) {
+  // Build URL for the artifact
+  let url = queue.buildUrl(queue.getLatestArtifact, taskId, artifact.name);
+  // Print URL for artifact
+  console.log(url);
+}
+
+// Fetch public/logs/live.log
+let url = queue.buildUrl(queue.getLatestArtifact, taskId, 'public/logs/live.log');
+let res = await request.get(url).end();
+
+// Print task log
+console.log("\nTask Log:");
+console.log(res.text)
+</pre>
+
+The auxiliary method `queue.buildUrl` (not an API call) constructs a URL for
+the API method given as first parameter with URL parameters given. This is
+useful if you want to create a URL that can be passed around.
+If the artifact was private (ie. didn't start with `public/`) we could have
+constructed the `queue` object with credentials and used the auxiliary
+method `queue.buildSignedUrl` which works like `queue.buildUrl`, with the only
+difference that includes a signature in the query-string for the URL.
