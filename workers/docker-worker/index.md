@@ -293,6 +293,12 @@ Example:
 ```
 Then click on the `interactive.html` on task inspector link to enter the container.
 
+References:
+
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/interactive.js)
+* [implementation](https://github.com/taskcluster/docker-exec-websocket-server)
+
+
 ## Volume Caches
 
 Require Scopes: `docker-worker:cache:<cache name>`
