@@ -1,5 +1,6 @@
 <h3>Task Definition</h3>
 
+<center>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -18,10 +19,10 @@
      id="defs5327" />
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#333333"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0.66666667"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
      inkscape:cx="416.39285"
@@ -46,13 +47,14 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
+  <g class="fragment"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-552.36218)">
-		<g class="fragment"
-       id="g6054">
+    <g
+       id="g6054"
+       transform="matrix(0.94554785,0,0,0.94554785,6.26869,38.738105)">
       <text
          sodipodi:linespacing="125%"
          id="text5414"
@@ -67,85 +69,81 @@
            id="tspan5418"
            y="609.64789"
            x="15.428572"
-           sodipodi:role="line">  taskId:     'GInxHvMxT1qzK0MXuDeAKg',</tspan><tspan
+           sodipodi:role="line">  taskId:        'GInxHvMxT1qzK0MXuDeAKg',</tspan><tspan
            id="tspan5503"
            y="629.64789"
            x="15.428572"
-           sodipodi:role="line">  retries:    5,</tspan><tspan
+           sodipodi:role="line">  retries:       5,</tspan><tspan
            id="tspan5487"
            y="649.64789"
            x="15.428572"
-           sodipodi:role="line">  deadline:   '2015-04-16T23:21:50.103Z',</tspan><tspan
-           id="tspan5485"
+           sodipodi:role="line">  deadline:      '2015-04-16T23:21:50.103Z',</tspan><tspan
+           id="tspan5507"
            y="669.64789"
            x="15.428572"
-           sodipodi:role="line">  routes: [</tspan><tspan
-           id="tspan5479"
+           sodipodi:role="line">  routes:        ['custom.routing.key'],</tspan><tspan
+           id="tspan6031"
            y="689.64789"
            x="15.428572"
-           sodipodi:role="line">    'my.custom.rabbitmq.routing.key'</tspan><tspan
-           id="tspan5507"
+           sodipodi:role="line">  provisionerId: 'aws-provisioner-v1',</tspan><tspan
            y="709.64789"
            x="15.428572"
-           sodipodi:role="line">  ],</tspan><tspan
-           id="tspan6031"
+           sodipodi:role="line"
+           id="tspan3047">  workerType:    'docker-worker-v1',</tspan><tspan
+           id="tspan5491"
            y="729.64789"
            x="15.428572"
-           sodipodi:role="line" /><tspan
-           id="tspan5491"
+           sodipodi:role="line">  </tspan><tspan
+           id="tspan5432"
            y="749.64789"
            x="15.428572"
            sodipodi:role="line">  // WorkerType specific</tspan><tspan
-           id="tspan5432"
-           y="769.64789"
-           x="15.428572"
-           sodipodi:role="line">  workerType: 'docker-worker',</tspan><tspan
            id="tspan5511"
-           y="789.64789"
+           y="769.64789"
            x="15.428572"
            sodipodi:role="line">  payload: {  </tspan><tspan
            id="tspan5436"
-           y="809.64789"
+           y="789.64789"
            x="15.428572"
            sodipodi:role="line">    image:    'ubuntu',</tspan><tspan
            id="tspan5442"
-           y="829.64789"
+           y="809.64789"
            x="15.428572"
            sodipodi:role="line">    env: {</tspan><tspan
            id="tspan5446"
-           y="849.64789"
+           y="829.64789"
            x="15.428572"
            sodipodi:role="line">      REV:    '...'</tspan><tspan
            id="tspan5440"
-           y="869.64789"
+           y="849.64789"
            x="15.428572"
            sodipodi:role="line">    },</tspan><tspan
            id="tspan5444"
-           y="889.64789"
+           y="869.64789"
            x="15.428572"
-           sodipodi:role="line">    command:  './build.sh',</tspan><tspan
+           sodipodi:role="line">    command:  ['./build.sh'],</tspan><tspan
            id="tspan5448"
-           y="909.64789"
+           y="889.64789"
            x="15.428572"
            sodipodi:role="line">    artifacts: {</tspan><tspan
            id="tspan5452"
-           y="929.64789"
+           y="909.64789"
            x="15.428572"
            sodipodi:role="line">      'build.zip': '/home/build.zip'</tspan><tspan
            id="tspan5450"
-           y="949.64789"
+           y="929.64789"
            x="15.428572"
            sodipodi:role="line">    }</tspan><tspan
            id="tspan5458"
-           y="969.64789"
+           y="949.64789"
            x="15.428572"
            sodipodi:role="line">  },</tspan><tspan
            id="tspan5454"
-           y="989.64789"
+           y="969.64789"
            x="15.428572"
            sodipodi:role="line">  ...</tspan><tspan
            id="tspan5420"
-           y="1009.6479"
+           y="989.64789"
            x="15.428572"
            sodipodi:role="line">}</tspan></text>
     </g>
@@ -154,19 +152,19 @@
       <text
          sodipodi:linespacing="125%"
          id="text5497"
-         y="596.2193"
-         x="432.61664"
-         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
+         y="611.55023"
+         x="454.323"
+         style="font-size:13.34004021px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
          xml:space="preserve"><tspan
-           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-           y="596.2193"
-           x="432.61664"
+           style="font-size:16.67505074px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           y="611.55023"
+           x="454.323"
            id="tspan5499"
            sodipodi:role="line">TaskCluster Queue</tspan><tspan
            id="tspan5517"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-           y="621.2193"
-           x="432.61664"
+           y="632.39404"
+           x="454.323"
            sodipodi:role="line" /></text>
       <path
          sodipodi:nodetypes="cc"
@@ -177,24 +175,24 @@
       <text
          sodipodi:linespacing="150%"
          id="text6084"
-         y="624.2193"
-         x="432.71429"
-         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:150%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
+         y="634.89532"
+         x="454.40442"
+         style="font-size:13.34004021px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:150%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:150%;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-           y="624.2193"
-           x="432.71429"
+           y="634.89532"
+           x="454.40442"
            id="tspan6086"
            sodipodi:role="line"> - Manage state like retries and deadline</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:150%;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
            id="tspan6088"
-           y="648.2193"
-           x="432.71429"
+           y="654.9054"
+           x="454.40442"
            sodipodi:role="line"> - Publish messages with custom routing-key</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:150%;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
            id="tspan6090"
-           y="672.2193"
-           x="432.71429"
+           y="674.91547"
+           x="454.40442"
            sodipodi:role="line"> - Allow correct WorkerType to claim tasks</tspan></text>
     </g>
     <g class="fragment"
@@ -220,12 +218,12 @@
              sodipodi:role="line"
              x="662.02087"
              y="284.35834"
-             style="font-size:8px;fill:#ffffff;fill-opacity:1">$ docker pull ubuntu</tspan><tspan
+             style="font-size:8px;fill:#ffffff;fill-opacity:1"># docker pull ubuntu</tspan><tspan
              id="tspan5382"
              sodipodi:role="line"
              x="662.02087"
              y="294.35834"
-             style="font-size:8px;fill:#ffffff;fill-opacity:1">$ docker run \</tspan><tspan
+             style="font-size:8px;fill:#ffffff;fill-opacity:1"># docker run \</tspan><tspan
              id="tspan5396"
              sodipodi:role="line"
              x="662.02087"
@@ -250,12 +248,12 @@
              sodipodi:role="line"
              x="662.02087"
              y="344.35834"
-             style="font-size:8px;fill:#ffffff;fill-opacity:1">$ echo &quot;success: $?&quot;;</tspan><tspan
+             style="font-size:8px;fill:#ffffff;fill-opacity:1"># echo &quot;success: $?&quot;;</tspan><tspan
              id="tspan5402"
              sodipodi:role="line"
              x="662.02087"
              y="354.35834"
-             style="font-size:8px;fill:#ffffff;fill-opacity:1">$ docker copy \</tspan><tspan
+             style="font-size:8px;fill:#ffffff;fill-opacity:1"># docker cp \</tspan><tspan
              id="tspan5515"
              sodipodi:role="line"
              x="662.02087"
@@ -282,3 +280,5 @@
     </g>
   </g>
 </svg>
+
+</center>

@@ -1,4 +1,4 @@
-<h3>A set of loosely coupled components</h3>
+### A set of loosely coupled components
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"

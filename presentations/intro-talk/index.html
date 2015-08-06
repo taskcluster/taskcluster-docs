@@ -23,6 +23,11 @@
 		link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal/css/print/pdf.css' : '../reveal/css/print/paper.css';
 		document.getElementsByTagName( 'head' )[0].appendChild( link );
 	</script>
+  <style>
+  .reveal section { text-align: left; },
+  h1, h2, h3, h4, h5 { text-align: center; }
+  .reveal p, .reveal  ul { font-size: 80%; }
+  </style>
 
 	<!--[if lt IE 9]>
 	<script src="../reveal/lib/js/html5shiv.js"></script>
@@ -34,45 +39,67 @@
 <div class="slides">
 
 <section>
+<center>
+  <br><br>
 	<h1><img src="../taskcluster-120.png" style="background: transparent; border: none; margin: 0px; vertical-align: bottom;"/>&nbsp;TaskCluster</h1>
 	<h3>A Task Execution Platform</h3>
 	<p>
 		<small>Intro by <a href="http://jonasfj.dk">Jonas Finnemann Jensen</a></small>
 	</p>
+</center>
 </section>
+
+<section id="outline">
+<h3>Outline</h3>
+<ul style="margin-left: 8ex;">
+	<li>High-level Architecture</li>
+	<li>Tasks and task-graphs</li>
+	<li>WorkerTypes and life-cycle</li>
+	<li>docker-worker (what does it do)</li>
+	<li>Service Design</li>
+	<li>Integrating Add-on Services</li>
+	<li>TaskCluster in Constrast to BuildBot/Jenkins</li>
+	<li>TaskCluster at Mozilla</li>
+	<li>Questions...</li>
+</ul>
+</section>
+
 
 <section id="components" data-markdown="slides/components.md">
 </section>
 
-
-
 <section id="task" data-markdown="slides/task.md">
 </section>
-
 
 <section id="task-graph" data-markdown="slides/task-graph.md">
 </section>
 
-
-<section id="design-goals">
-	<h3>Design Goals</h3>
-	<ul>
-		<li>Keep configurations in-tree,</li>
-<pre><code>payload: {
-  image:    'custom-docker-image',
-  command:  '...'
-}, ...
-</code></pre>
-		<li>Support different WorkerTypes,</li>
-<pre><code>workerType: 'docker-worker',
-...</code></pre>
-		<li>High availability and scalability</li>
-	</ul>
+<section id="worker-types" data-markdown="slides/worker-types.md">
 </section>
+
+<section id="worker-life-cycle" data-markdown="slides/worker-life-cycle.md">
+</section>
+
+<section id="docker" data-markdown="slides/docker.md">
+</section>
+
+<section id="docker-worker" data-markdown="slides/docker-worker.md">
+</section>
+
+<section id="docker-worker-artifact-upload" data-markdown="slides/docker-worker-artifact.md">
+</section>
+
+<section id="docker-worker-livelog" data-markdown="slides/docker-worker-livelog.md">
+</section>
+
+<section id="docker-worker-interactive" data-markdown="slides/docker-worker-interactive.md">
+</section>
+
 
 <section style="text-align: left;" id="the-end">
 	<h1>THE END</h1>
 	<p>
+		- Questions?<br>
 		- docs.taskcluster.net <br>
 		- <a href="irc://irc.mozilla.org#taskcluster">#taskcluster</a> at irc.mozilla.org<br>
 
@@ -100,10 +127,10 @@
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-				controls: true,
+				controls: false,
 				progress: true,
 				history: true,
-				center: true,
+				center: false,
 
 				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
@@ -114,7 +141,8 @@
 					{ src: '../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: '../reveal/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true },
-					{ src: '../reveal/plugin/notes/notes.js', async: true }
+					{ src: '../reveal/plugin/notes/notes.js', async: true },
+          { src: '../reveal/plugin/math/math.js', async: true }
 				]
 			});
 
