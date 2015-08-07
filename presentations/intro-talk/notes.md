@@ -1,3 +1,13 @@
+TODO:
+ + Why taskcluster?
+ + Kleene Scopes
+ + Self-Serve APIs (scopes)
+ - Integrating Add-on Services (RabbitMQ + task.extra)
+ + TaskCluster in Contrast to BuildBot/Jenkins
+ + TaskCluster at Mozilla (number of tasks, median task pending time)
+ + Conclusion
+   (TC is a PaaS, self-serve, config in-tree, devs can touch config - not infra)
+
 Outline:
  - Overview: loosely coupled components
    - Queue:       Tracks state of tasks
@@ -30,7 +40,7 @@ Outline:
 
  - Service Architecture (Queue)
    - Scalability through Azure Storage and S3
-     (minimal maintaince, no database admin, etc)
+     (minimal maintenance, no database admin, etc)
    - Trivial scalability
    - Well-defined APIs and Exchanges (JSON schema)
    - Authorization with Scopes
@@ -71,12 +81,9 @@ Outline:
 
 
 
-Service Design:
- - Scalability through Azure Storage and S3
-   (minimal maintaince, no database admin, etc)
- - Trivial scalability
- - Well-defined APIs and Exchanges (JSON schema)
- - Authorization with Scopes
+
+Problem Statement
+
 
 Integrating Add-on Services:
  - RabbitMQ (custom routing keys)
@@ -84,16 +91,21 @@ Integrating Add-on Services:
  - Example: taskcluster-index that allows you to find tasks
 
 TaskCluster in Contrast to BuildBot/Jenkins
- - Self-serve PaaS
- - Minimal server-side project configuration
+ - Self-serve REST APIs
  - First class task-graph concept
- - Get everything through APIs
- - No central controller
+ - Minimal server-side project configuration (No central controller)
 
 TaskCluster at Mozilla
- - Average task pending time
+ - task pending time: max 11min, less than 30s
  - Number of tasks per day
  - Number of compute hours per day
+
+
+
+
+
+
+
 
 
 
@@ -110,15 +122,64 @@ TaskCluster at Mozilla
  - for the past year and half
 
 ### Outline
+ - Why TaskCluster (and not BuildBot or Jenkins)
  - Architecture (components and how they talk to each other)
  - Tasks and task-graphs (what they are, how we use them)
  - WorkerTypes and life-cycle (which worker types we have)
  - docker-worker (see what it does)
  - Service Design (how we write services -- make things reliable)
- - Add-on Services (how to integrate w. reporting, or index tasks)
  - Compare BuildBot/Jenkins (what benefits we get architecturally)
- - TaskCluster at Mozilla (fancy graphs about how we use it at Mozilla)
+ - TaskCluster in Numbers (fancy graphs/stats from Mozilla)
  - Questions...
+
+    //  - Add-on Services (how to integrate w. reporting, or index tasks)
+
+### Why taskcluster? (1)
+ - Many stories I've heard, you either:
+     A) Have a setup with a box for each developer (nobody has same config)
+     B) Central setup (owned by a single team, developers locked out)
+        - Often owned by a team of (Release Engineers + Ops)
+ - With BB/Jenkins you need staging envs to test new config
+   - These are hard
+   - Complicated BB/Jenkins setups aren't just deploy
+   - You may have pools with special hardware (phones)
+ - Can't put on slides -- At Mozilla we have a lot of people maintain BB
+                          without getting much done.
+                          (good people, but it's hard to refactor)
+ - There is a tight coupling between:
+   * test cases <-> source code
+   * test cases <-> project configuration
+     (chunking, dependencies... job triggered)
+ - Example:
+    * changing chunking may cause test cases to fail
+    * Say 1k test cases, two tasks, change to 3 tasks for added parallelism!
+    * not ideal, but a reality (because you can't test all combinations)
+    * In BB/Jenkins: You need staging setup; switch-over is non-trivial
+    * In TC: Changes to config can be merged like any patch
+      (You never need to replicate the entire setup in a staging environment)
+
+
+### Why taskcluster? (1)
+ - TC is about putting configuration in-tree
+ - You get:
+    * Changes is like making a patch
+    * No need for staging environments
+    * Config changes are tracked in revision history
+    * You run tests for old commits
+      (as long as the infrastructure still exists)
+
+
+TaskCluster:
+    Eng                   | RelEng
+    tests                 |
+    code                  |  scaling of VMs
+    tasks                 |  expiration of artifacts
+    scheduling            |  setup new runtime environment
+    chunking              |  (infrastructure)
+    choice of runtime env |
+(The concept of projects/branches from jenkins is purely a user-side thing in TC)
+
+
 
 ### Components
 
@@ -194,3 +255,11 @@ TaskCluster at Mozilla
    - Local reproducibility
      (use same docker image)
      (save docker container as image after running, for debugging)
+
+
+### Self-Serve APIs
+ - Build dashboards
+ - Run one-off tasks
+ - Tweak task-graph manually for experimentation
+ - Bisect revisions
+ - Run a single tasks to identify intermittent failures

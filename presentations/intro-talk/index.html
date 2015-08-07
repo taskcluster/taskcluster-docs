@@ -27,6 +27,7 @@
   .reveal section { text-align: left; },
   h1, h2, h3, h4, h5 { text-align: center; }
   .reveal p, .reveal  ul { font-size: 80%; }
+  .reveal pre code {max-height: none;}
   </style>
 
 	<!--[if lt IE 9]>
@@ -52,18 +53,20 @@
 <section id="outline">
 <h3>Outline</h3>
 <ul style="margin-left: 8ex;">
+	<li>Why TaskCluster? (not BuildBot / Jenkins)</li>
 	<li>High-level Architecture</li>
 	<li>Tasks and task-graphs</li>
 	<li>WorkerTypes and life-cycle</li>
 	<li>docker-worker (what does it do)</li>
 	<li>Service Design</li>
-	<li>Integrating Add-on Services</li>
-	<li>TaskCluster in Constrast to BuildBot/Jenkins</li>
-	<li>TaskCluster at Mozilla</li>
+	<li>TaskCluster in Numbers</li>
+	<li>Conclusion</li>
 	<li>Questions...</li>
 </ul>
 </section>
 
+<section id="why-taskcluster" data-markdown="slides/why.md">
+</section>
 
 <section id="components" data-markdown="slides/components.md">
 </section>
@@ -95,22 +98,22 @@
 <section id="docker-worker-interactive" data-markdown="slides/docker-worker-interactive.md">
 </section>
 
+<section id="service-design" data-markdown="slides/service-design.md">
+</section>
 
-<section style="text-align: left;" id="the-end">
-	<h1>THE END</h1>
-	<p>
-		- Questions?<br>
-		- docs.taskcluster.net <br>
-		- <a href="irc://irc.mozilla.org#taskcluster">#taskcluster</a> at irc.mozilla.org<br>
+<section id="auth" data-markdown="slides/auth.md">
+</section>
 
-		<br>
-		<small>
-		Remark<br>
-     - in production at Mozilla, but<br>
-		 - not easily deployable,<br>
-		 - under heavy development.
-   </small>
-	</p>
+<section id="star-scopes" data-markdown="slides/star-scopes.md">
+</section>
+
+<section id="self-serve-apis" data-markdown="slides/self-serve.md">
+</section>
+
+<section id="statistics" data-markdown="slides/stats.md">
+</section>
+
+<section id="the-end" data-markdown="slides/end.md">
 </section>
 
 
@@ -127,7 +130,7 @@
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-				controls: false,
+				controls: true,
 				progress: true,
 				history: true,
 				center: false,
@@ -138,8 +141,17 @@
 				dependencies: [
 					{ src: '../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: '../reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: '../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: '../reveal/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{
+						src: '../reveal/plugin/markdown/markdown.js',
+						condition: function() {
+							return !!document.querySelector('[data-markdown]');
+						}
+					},
+					{
+						src: '../reveal/plugin/highlight/highlight.js',
+						async: true,
+						callback: function() { hljs.initHighlightingOnLoad(); }
+					},
 					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true },
 					{ src: '../reveal/plugin/notes/notes.js', async: true },
           { src: '../reveal/plugin/math/math.js', async: true }

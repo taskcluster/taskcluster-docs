@@ -1,6 +1,7 @@
 ### Payload for docker-worker
 
-<pre><code class="js hljs" style="max-height: none;">task.payload = {
+```js
+task.payload = {
   image:            "taskcluster/builder:0.5.6",
   command:          ["/usr/local/bin/build-script.sh"],
   env: {
@@ -20,18 +21,20 @@
     interactive:    true
   },
 }
-</code></pre>
+```
+
 
 ---
 
 ### Local Reproducibility
 
-<pre><code class="bash hljs" style="max-height: none;"># pull down the image
+```bash
+# Pull down the image
 docker pull taskcluster/builder:0.5.6
 
 # Run task command in container, with env vars and caches
 docker run  \
-  -name task-container \                      # container name
+  -name <span>task-container</span> \         # container name
   -e REPOSITORY="https://hg.mozilla.org/" \   # env variable
   -e REVISION="0ecdc08f4f0a..." \
   -v /mnt/obj-dir:/home/worker/obj-dir \      # cache
@@ -44,5 +47,5 @@ docker cp task-container:/home/worker/binary.zip binary.zip
 
 # Clean up the container
 docker rm task-container;
-</code></pre>
+```
 
