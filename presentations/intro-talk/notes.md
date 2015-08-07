@@ -1,12 +1,12 @@
 TODO:
- + Why taskcluster?
- + Kleene Scopes
- + Self-Serve APIs (scopes)
+ - Notes
+ - Picture of a toaster
  - Integrating Add-on Services (RabbitMQ + task.extra)
- + TaskCluster in Contrast to BuildBot/Jenkins
- + TaskCluster at Mozilla (number of tasks, median task pending time)
- + Conclusion
-   (TC is a PaaS, self-serve, config in-tree, devs can touch config - not infra)
+
+
+
+
+
 
 Outline:
  - Overview: loosely coupled components
