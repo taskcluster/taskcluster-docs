@@ -34,7 +34,7 @@ docker pull taskcluster/builder:0.5.6
 
 # Run task command in container, with env vars and caches
 docker run  \
-  -name <span>task-container</span> \         # container name
+  -name task-container \         # container name
   -e REPOSITORY="https://hg.mozilla.org/" \   # env variable
   -e REVISION="0ecdc08f4f0a..." \
   -v /mnt/obj-dir:/home/worker/obj-dir \      # cache
