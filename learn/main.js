@@ -219,6 +219,7 @@ require("aws-sdk");
 require("aws-sdk-promise");
 require("js-yaml");
 require("xml2js");
+require("docker-exec-websocket-server");
 
 var makeButton = function(text, type) {
   var btn = document.createElement("a");

@@ -207,10 +207,34 @@ My goal: is to give an high-level view of
      (use same docker image)
      (save docker container as image after running, for debugging)
 
+### LiveLogging (1)
+ - No overhead if not used
+ - travis sends all log messages over RabbitMQ
+
+### Interactive Sessions
+ - Very low overhead if not used
+ - No filing bugs to get a loaner
+
+### Service Design (1)
+ - Auto-gen client libraries
+   (python, node, browser, go, java)
+
+### Service Design (2)
+ - No database
+ - Azure table storage is cheap
+   - storage is 0.12 / GB
+   - up to 500TB
 
 ### Self-Serve APIs
  - Build dashboards
- - Run one-off tasks
+
+### Self-Serve Use-Cases
+ - Run one-off tasks (new docker image, upgraded compiler)
+ - Run a single tasks to identify intermittent failures
+   (start interactive session)
  - Tweak task-graph manually for experimentation
  - Bisect revisions
- - Run a single tasks to identify intermittent failures
+
+### TaskCluster in Numbers
+ - Probably over provisioning
+
