@@ -267,12 +267,12 @@ API end-point.
 
 <div data-render-schema="http://schemas.taskcluster.net/queue/v1/task-status-response.json"></div>
 
-In the following example we use the `queue.status(taskId)` API end-point to
+In the following example we use the `queue.status(taskId)` API endpoint to
 fetch status for the task created earlier. Recall that we stored the `taskId`
 in `global.taskId`, so it should be present here unless you refreshed the
 browser window. Notice that inspecting a task doesn't require any credentials,
-you just need the `taskId`. We generally allow users to inspect meta-data
-without any credentials, this allows you to easily create custom dashboards
+you just need the `taskId`. We generally allow users to inspect metadata
+without any credentials, which lets you easily create custom dashboards
 and other useful tools.
 
 <pre data-plugin="interactive-example">
@@ -280,9 +280,9 @@ let taskcluster = require('taskcluster-client');
 let assert      = require('assert');
 
 // Check that we have a taskId on global object from previous example
-assert(global.taskId, "You must create a task w. a taskId first!");
+assert(global.taskId, "You must create a task with a taskId first!");
 
-// Create Queue client object (no credentials needed for queue.status)
+// Create Queue client object (no credentials needed for queue.status())
 let queue = new taskcluster.Queue();
 
 // Fetch task status, given the taskId from the `global` object
@@ -306,11 +306,11 @@ change state once resolved, but a task may have additional runs until
 
 The queue creates additional runs, if a run fails because a worker became
 unresponsive or reported a shutdown, for example if a node crashes or a
-EC2 spot-node is terminated. In this case the task will be _retried_ at-most
+EC2 spot-node is terminated. In this case the task will be _retried_ at most
 `task.retries` times. If you don't want your task to be retried you can set
 `task.retries` to zero. Users can also _rerun_ a resolved task using
 `queue.rerunTask(taskId)`, this is generally not recommended, especially not if
-interacting relying in another service for scheduling dependent tasks.
+relying on another service for scheduling dependent tasks.
 
 You should note the difference in terminology between:
  * **retry task**, which happens in case of infrastructure failure, and,
