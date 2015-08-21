@@ -41,8 +41,8 @@ shall use the `b2g-test` workerType from `aws-provisioner-v1`.
 A task definition also includes a `created` timestamp, a `deadline` at which
 point the _queue_ will resolve the task as `exception` unless the task has been
 resolved earlier. This ensures that all tasks will eventually be resolved.
-Timestamps are given in UTC as ISO 8601 formatted strings, exactly how
-`Date.toJSON()` works. As evident below, `taskcluster-client` has some nice
+Timestamps are given in UTC as ISO 8601 formatted strings, the format which
+`Date.toJSON()` returns. As evident below, `taskcluster-client` has some nice
 utilities for constructing relative timestamps for this.
 
 <pre data-plugin="interactive-example">
@@ -95,7 +95,7 @@ reference it is rendered below.
 For the `image` we can pick any docker image, take a look at
 [registry.hub.docker.com](https://registry.hub.docker.com/), you can even build
 and upload your own docker images. There are many benefits to using
-custom docker images notable ones include:
+custom docker images; notable ones include:
 
  * Install dependencies from package repositories and lock them,
  * Make custom scripts and binaries available in the runtime environment, and
@@ -103,7 +103,7 @@ custom docker images notable ones include:
 
 There are many other benefits to docker, but an exhaustive list is beyond the
 scope of this document. If you are not familiar with docker you should play
-around with  the official docker
+around with the official docker
 [getting started guide](http://docs.docker.com/linux/started/). Deploying Linux
 binaries in tasks on TaskCluster is mostly about getting the binaries to run
 inside a docker container. For the most part this involves installing
@@ -162,7 +162,7 @@ Creating a Task
 
 All tasks have a `taskId` this is
 [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
-,version 4, meaning it's 122 random bits. To better fit these UUIDs into URLs,
+, version 4, meaning it's 122 random bits. To better fit these UUIDs into URLs,
 RabbitMQ routing keys and many other places we always encoded them in
 [URL-safe base64](http://tools.ietf.org/html/rfc4648#section-5)
 stripped of `==` padding. This yields a 22 character identifier like
