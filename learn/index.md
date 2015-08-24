@@ -9,8 +9,8 @@ Interactive TaskCluster Tutorials
 =================================
 
 The goal of these interactive TaskCluster tutorials is to show you how to
-script TaskCluster with modern asynchronous Javascript patterns. This page will
-give a brief introduction to modern asynchronous Javascript patterns, the rest
+utilize TaskCluster with modern asynchronous Javascript patterns. This page will
+give a brief introduction to modern asynchronous Javascript patterns, and the rest
 of the tutorials are focused on how to use TaskCluster.
 
 The first tutorial [Authentication](authenticate/) **must** be completed
@@ -18,8 +18,8 @@ before you proceed to the other tutorials, or the examples will not
 work. The first few tutorials aim to give you a quick introduction and it's
 recommended that you complete them.  However, before you get started you should
 have a basic understanding of promises and `async` functions, this page should
-provide the required background, if not it's recommended you find articles
-elsewhere.
+provide the required background if you don't have it already. There are also 
+other articles and sites dedicated to these language features.
 
 Later tutorials will go into more depth focusing on how to combine
 TaskCluster features and components to achieve high-level goals.
@@ -32,8 +32,8 @@ So the skills you learn here can be employed to scripting both servers and
 static web-sites using TaskCluster APIs to display state, listen for events,
 spawn tasks and many other things.
 
-Note, the graphical TaskCluster tools on `tools.taskcluster.net` are all
-written in client-side the Javascript, in fact the entire site is a static
+Note: the graphical TaskCluster tools on `tools.taskcluster.net` are all
+written in client-side Javascript, in fact the entire site is a static
 web-site hosted on a CDN.
 
 
@@ -42,19 +42,20 @@ Modern `async` Javascript
 
 All the Javascript examples in these tutorials are compiled with
 [babeljs](https://babeljs.io/) using proposed ES7 features (stage 1).
-This setup compiles ES6 and ES7 proposed features to ES5 before they are
+This setup transpiles ES6 and ES7 proposed features to ES5 before they are
 evaluated, allowing us to use the same powerful of asynchronous features in both
-the browser and node.js (neither of which implements `async` functions yet).
+the browser and node.js (neither of which implement `async` functions yet).
 
 ### Promises
 
 A promise is an object that implements the
 [Promise/A+ specification](https://promisesaplus.com/). This ensures a lot of
-nice properties, you should read a tutorial on promises.
+nice properties which make them nice for asynchronous programming, and there
+are many other articles on how to use them well.
 But for the purposes of this introduction you can think of a promise as an
 object with a method`.then(resultCallback, errorCallback)`, such that either
 `resultCallback(result)` or `errorCallback(error)` is called when the promise
-is resolved (only one of callback is called, and only once).
+is resolved (only one of the callbacks is called, and only once).
 
 <pre data-plugin="interactive-example">
 // Construct a promise that is fulfilled after 500 ms
@@ -65,6 +66,10 @@ var aPromiseObject = new Promise(function(fulfill, reject) {
   setTimeout(function() {
     fulfill("Hello World"); // A promise can only have a single result
   }, 500);
+  setTimeout(function() {
+    // Since reject is called after fulfill, this will have no effect
+    reject("Goodbye World");
+  }, 1000);
 });
 
 // Let's supply the promise object with two callbacks, one for success and
@@ -76,11 +81,11 @@ aPromiseObject.then(function(result) {
 });
 </pre>
 
-Traditionally, Javascript developers have relied on callbacks when creating
-asynchronous functions, however, modern asynchronous Javascript functions
-returns a promise, instead of taking a callback as argument. This way you have
+Traditionally, Javascript developers have relied on callbacks when writing
+asynchronous functions; however, modern asynchronous Javascript functions
+return a promise instead of taking a callback as an argument. This way you have
 an object (a promise) representing an on-going asynchronous operation, allowing
-for a variety of nifty combinations and avoids deeply-nested callbacks.
+for a variety of nifty combinations and avoiding deeply-nested callbacks.
 
 One of the nifty tricks is that you can give a list of promises to
 `Promise.all()` which then returns a promise that is fulfilled when all the
@@ -112,7 +117,7 @@ aPromiseObject.then(function(results) {
 </pre>
 
 As seen the example when the promise from `Promise.all(promises)` is fulfilled,
-it is fulfilled with an array of the results from `promises` as result. Using
+it is fulfilled with an array of the results from `myAsyncFunc()` as result. Using
 `Promise.all()` is useful when doing things in parallel, and is particularly
 useful in combination with `Array.map`.
 
@@ -157,8 +162,8 @@ p3.then(function() {
 });
 </pre>
 
-You should play with this a bit, but don't be scared we're about introduce
-abstractions that hides a lot of complexity.
+You should play with this a bit, but don't be too scared as we're about to
+introduce a set of abstractions which hide a lot of complexity.
 
 
 ### ES7 (Proposed) `async` Functions
@@ -246,7 +251,7 @@ expression. Try commenting in `fulfill("My result");` below the `// HACK: ...`
 comment.
 
 As mentioned before you'll rarely have to use the `new Promise` constructor, if
-the libraries you employ returns promises from their asynchronous functions.
+the libraries you employ return promises from their asynchronous functions.
 As you'll see now this the case for the `taskcluster-client` module. Which we
 use the example below to repeatedly ping `queue.taskcluster.net`.
 
@@ -261,7 +266,7 @@ var queue = new taskcluster.Queue();
 var pingRepeatedly = async function(count) {
   while(count-- > 0) {
     var result = await queue.ping(); // Ping is just a check-if-alive API call
-    console.log("Ping'ed queue and got response: " + JSON.stringify(result));
+    console.log("Pinged queue and got response: " + JSON.stringify(result));
   }
 };
 
@@ -275,13 +280,12 @@ var pingRepeatedly = async function(count) {
 })();
 </pre>
 
-The alert reader will wonder how to implement `pingRepeatedly` using a
-promise-chain, the answer is callback recursion, while it certainly is possible,
-it gets very complicated very quickly. Using `async` and `await` syntax is much
-simpler and easier to read. For completeness it should be noted that
+The promise chaining alternative involves callback recursion, which is certainly
+possible, but gets very complicated very quickly. Using `async` and `await` syntax 
+is much simpler and easier to read. For completeness it should be noted that
 babeljs compiles `async` functions to state machines instead of promise
 chains. If you're curious about what babeljs constructs compile to give
-[their editor a spin](https://babeljs.io/repl/).
+their [editor](https://babeljs.io/repl/) a spin.
 
 
 ### Other ES6 Features
@@ -325,11 +329,11 @@ var MyType = function() {
     console.log("arrow handler 1, arg1: " + arg1 + " , prop: " + this.myProp);
   });
 
-  // If we only take one argument we don't need parenthesis () and, if the body
-  // is single statement, brackets {} aren't needed
+  // If we only take one argument we don't need parentheses () and, if the body
+  // is a single statement, brackets {} aren't needed
   emitter.on('my-event', arg1 => console.log("arrow handler 2, arg1: " + arg1));
 
-  // We still need paranthesis if no arguments is taken
+  // We still need parantheses if no arguments is taken
   emitter.on('my-event', () => console.log("arrow handler 3"));
 
   // Emit an event from the event emitter
@@ -341,10 +345,10 @@ var myType = new MyType();
 </pre>
 
 Generally, you'll want to use the arrow functions whenever you would normally
-make anonymous functions. As an added bonus babeljs will let us make `async`
+make anonymous functions. As an added bonus babeljs allows `async`
 arrow functions, example: `async () => { await aPromiseObject; }`.
 
-Another nifty ES6 feature is destructuring also known as unpacking, this is a
+Another nifty ES6 feature is destructuring, also known as unpacking, a
 well-known and commonly used feature from Python. It allows you to easily unpack
 elements from an object or a list, as illustrated in the example below.
 
@@ -371,7 +375,7 @@ console.log("element2: " + element2);
 
 This guide won't go into further details with ES6 features, but if you haven't
 had a look at ES6 classes, template strings, `let`/`const`, iterators and
-`for`-`of` constructions it's certainly a recommended read.
+`for ... of` constructions it's certainly a recommended read.
 Again babeljs has a good
 [introduction to ES6 features](https://babeljs.io/docs/learn-es2015/).
 
@@ -396,7 +400,7 @@ var queue = new taskcluster.Queue();
 // Ping queue
 var result = await queue.ping();
 
-console.log("Ping'ed queue and got response: " + JSON.stringify(result));
+console.log("Pinged queue and got response: " + JSON.stringify(result));
 </pre>
 
 In node.js with babeljs you can't use `await` in the top-level function, but
@@ -418,9 +422,8 @@ We have embedded the following **standard node modules** from browserify:
 And the following **modules from npm**:
 `taskcluster-client`, `slugid`, `lodash`, `uuid`, `superagent`,
 `superagent-promise`, `debug`, `hawk`, `promise`, `url-join`, `bluebird`,
-`aws-sdk`, `aws-sdk-promise`, `js-yaml`, `xml2js`.
+`aws-sdk`, `aws-sdk-promise`, `js-yaml`, `xml2js`, `docker-exec-websocket-server`.
 
 Feel free to request additional modules to be added, or versions to be upgraded.
-The intend is to supply modules that are useful in tutorials and for quick
+The intent is to supply modules that are useful in tutorials and for quick
 one-off experiments.
-
