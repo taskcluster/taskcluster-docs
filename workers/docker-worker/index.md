@@ -278,6 +278,29 @@ References:
 
 * [implementation](https://github.com/taskcluster/docker-worker/blob/master/lib/features/docker_save.js)
 
+####Features: `interactive`
+
+Allows ssh-like access to running containers. Will extend the lifetime of a task to allow a user to SSH in before the container dies, so be careful when using this feature. Will also keep the task alive while is connected and a little bit after that so a user can keep working in ssh after the task ends. 
+
+Example: 
+
+```js
+{
+  "payload": {
+    "features": {
+      "interactive": true
+    },
+  }
+}
+```
+Then click on the `interactive.html` on task inspector link to enter the container.
+
+References:
+
+* [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/interactive.js)
+* [implementation](https://github.com/taskcluster/docker-exec-websocket-server)
+
+
 ## Volume Caches
 
 Require Scopes: `docker-worker:cache:<cache name>`
