@@ -27,13 +27,13 @@ TaskCluster consists of many loosely coupled components, and while they all
 have extensive reference-style documentation, it can be very hard to see how
 all the pieces fit together.
 
-To keep all of this exciting the tutorials are designed to run in your browser.
-So the skills you learn here can be employed to scripting both servers and
-static web-sites using TaskCluster APIs to display state, listen for events,
-spawn tasks and many other things.
+To keep all of this exciting, the tutorials are designed to run in your browser.
+The skills you learn here can be employed on both servers and static web-sites 
+using TaskCluster APIs to display state, listen for events, spawn tasks and many 
+other things.
 
 Note: the graphical TaskCluster tools on `tools.taskcluster.net` are all
-written in client-side Javascript, in fact the entire site is a static
+written in client-side Javascript. In fact, the entire site is a static
 web-site hosted on a CDN.
 
 
@@ -50,10 +50,10 @@ the browser and node.js (neither of which implement `async` functions yet).
 
 A promise is an object that implements the
 [Promise/A+ specification](https://promisesaplus.com/). This ensures a lot of
-nice properties which make them nice for asynchronous programming, and there
-are many other articles on how to use them well.
-But for the purposes of this introduction you can think of a promise as an
-object with a method`.then(resultCallback, errorCallback)`, such that either
+nice properties, which make them nice for asynchronous programming. There
+are many other articles on how to use them well. But for the purposes of this 
+introduction you can think of a promise as an object with a 
+method`.then(resultCallback, errorCallback)`, such that either
 `resultCallback(result)` or `errorCallback(error)` is called when the promise
 is resolved (only one of the callbacks is called, and only once).
 
