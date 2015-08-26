@@ -269,7 +269,7 @@ Then, once the task finishes, the resulting image can be pulled and run in the f
 ```bash
 wget https://queue.taskcluster.net/v1/task/${taskId}/runs/${runId}/artifacts/public/dockerImage.tar
 docker load < dockerImage.tar
-docker run -it task-${taskId}-${runId}:latest /bin/sh
+docker run -it task/${taskId}/${runId}:latest /bin/sh
 ```
 
 Caches are also uploaded as artifacts under `public/cache/${cacheName}.tar` if they exist, to give the full environment under which the container is running. They be added by adding `-v host/cache:container/cache` as an option where the locations match the untarred cache on your machine and the targeted location in the container's payload. 
