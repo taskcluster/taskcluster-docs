@@ -231,8 +231,8 @@ The generic worker should be able to run on just about any virtual or physical d
 One challenge with writing a completely native go implementation, is that there is a small stack of components that the worker depends on that would also need to be ported to go:
 
 1. [TaskCluster Go Client](http://taskcluster.github.io/taskcluster-client-go)
-2. [Json Schema 2 Go code generator](http://petemoore.github.io/jsonschema2go)
-3. [Mozilla Pulse Go Client](http://petemoore.github.io/pulse-go)
+2. [Json Schema 2 Go code generator](http://taskcluster.github.io/jsonschema2go)
+3. [Mozilla Pulse Go Client](http://taskcluster.github.io/pulse-go)
 4. [Generic Worker](http://taskcluster.github.io/generic-worker)
 
 # TaskCluster Go Client
@@ -266,10 +266,10 @@ As stated above, due to the relative immaturity of the go programming language a
 
 Hopefully this library will service other go open source projects that also wish to support json schema.
 
-* Website: http://petemoore.github.io/jsonschema2go
-* Docs: https://godoc.org/github.com/petemoore/jsonschema2go/jsonschema2go
-* CI: http://travis-ci.org/petemoore/jsonschema2go
-* Source Code: https://github.com/petemoore/jsonschema2go
+* Website: http://taskcluster.github.io/jsonschema2go
+* Docs: https://godoc.org/github.com/taskcluster/jsonschema2go/jsonschema2go
+* CI: http://travis-ci.org/taskcluster/jsonschema2go
+* Source Code: https://github.com/taskcluster/jsonschema2go
 * Status: completed
 
 # Pulse Go
@@ -278,10 +278,10 @@ Another feature of the TaskCluster client library is that it needs to be able to
 
 Rather than write something task cluster specific, it made sense to write a generic Mozilla Pulse library, and use that under the hood. Therefore the pulse-go client was developed for this purpose. It is a fully fledged pulse client that is extensible, and can be used for consuming messages on any Pulse exchange.
 
-* Website: http://petemoore.github.io/pulse-go
-* Docs: https://godoc.org/github.com/petemoore/pulse-go
-* CI: http://travis-ci.org/petemoore/pulse-go
-* Source Code: https://github.com/petemoore/pulse-go
+* Website: http://taskcluster.github.io/pulse-go
+* Docs: https://godoc.org/github.com/taskcluster/pulse-go
+* CI: http://travis-ci.org/taskcluster/pulse-go
+* Source Code: https://github.com/taskcluster/pulse-go
 * Status:
   - consuming messages - completed
   - publishing messages - not yet implemented
