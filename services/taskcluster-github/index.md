@@ -98,14 +98,14 @@ tasks:
 ### Ubuntu-ci image
 
 <p>
-A basic docker image with node/npm and python/pip -- it also inculudeds a bash function <code>checkout-pull-request</code> which will automatically checkout and cd into a repo for testing some pull request which triggered a job. The container is defined at: https://github.com/taskcluster/taskcluster-github/tree/master/docker/ubuntu-ci
+A basic docker image with git, node/npm, and python/pip installed. It also includes a bash function <code>checkout-pull-request</code> which will automatically checkout and cd into a repo for testing some pull request which triggered a job. The container is defined at: https://github.com/taskcluster/taskcluster-github/tree/master/docker/ubuntu-ci and may be pulled from <code>quay.io/mrrrgn/ubuntu-ci:latest</code>.
 
-The ubuntu-ci is provided as a convenience, but <b>please feel free to push and use your own docker images.</b>
+The ubuntu-ci image is provided as a convenience, but <b>please feel free to push and use your own docker images.</b>
 </p>
 
 ### Environment Variables
 
-<p> There are environment variables available from within any TaskCluster GitHub triggered job. These are also available from within the <code>.taskclusterrc</code> file itself via curly braces.</p>
+<p> There are environment variables available from within any TaskCluster GitHub triggered job. These are also available from within the <code>.taskclusterrc</code> file itself via curly braces i.e. {% raw %}{{ varname }}{% endraw %}.</p>
 
 ```
   GITHUB_EVENT: {% raw %}"{{ event }}"{% endraw %}                   # pull_request.opened, etc...
