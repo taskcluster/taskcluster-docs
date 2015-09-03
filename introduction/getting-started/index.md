@@ -82,7 +82,7 @@ It boils down to running `mach task-graph` which submits tasks based on YAML fil
 Thus tasks are defined in-tree, and can be developed in try and deployed directly without involvement of any other group.
 
 The tasks for a particular push are tied together in a "task graph".
-You can inspect the graph for a task by clicking the taskGraphId link in the task inspector.
+You can inspect the graph for a task by clicking the taskGroupId link in the task inspector.
 Task graphs support delaying some tasks in the graph until others have finished, for example running tests once builds have completed.
 
 Docker Images
