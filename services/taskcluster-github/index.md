@@ -57,7 +57,7 @@ tasks:
 
 ### Task Whitelist Defaults
 <p>
-For security reasons, taskclusterrc jobs are whitelisted by default by user and organization. This means that a task will only be triggered by public members of the organization that own the repository. This behavior may be modified by changing the
+For security reasons, taskclusterrc jobs are whitelisted by default by user and organization. This means that a task will only be triggered by public members of the organization that own the repository. This behavior may be modified by changing the <code>whitelist:</code> object, defined under <code>extra:</code> in the task definition.
 </p>
 
 ```
