@@ -95,6 +95,9 @@ sections:
       - name: Purge Cache
         url:  /services/purge-cache/index.html
         href: /services/purge-cache/
+      - name: TaskCluster GitHub
+        url:  /services/taskcluster-github/index.html
+        href: /services/taskcluster-github/
   - name: Auth
     url:  /auth/index.html
     href: /auth/
