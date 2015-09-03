@@ -50,7 +50,7 @@ tasks:
      image: "ubuntu:latest"
      command:
        - "test"
-  - extra:
+    extra:
       github_events:        # A list of all github events which trigger this task
         - push
 ```
@@ -68,7 +68,7 @@ tasks:
      image: "ubuntu:latest"
      command:
        - "test"
-  - extra:
+    extra:
       whitelist:                # An object containing whitelists
         users:                  # A list of users allowed to trigger this task
           - mrrrgn              # github user mrrrgn can now always trigger this task
