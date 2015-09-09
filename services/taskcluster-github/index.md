@@ -34,6 +34,7 @@ tasks:
   # What kind of environment will you need (docker, windows, etc...)
   - provisionerId: "{% raw %}{{ taskcluster.docker.provisionerId }}{% endraw %}"
   # Worker types correspond to particular machine types (aws size, etc...)
+  # worker types may be added by priveleged taskcluster users at tools.taskcluster.net/aws-provisioner
     workerType: "{% raw %}{{ taskcluster.docker.workerType }}{% endraw %}"
     extra:
       github:
