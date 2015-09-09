@@ -111,10 +111,10 @@ version: 0
 
 tasks:
   - payload:
-     maxRunTime: 3600
-     image: "ubuntu:latest"
-     command:
-       - "test"
+      maxRunTime: 3600
+      image: "ubuntu:latest"
+      command:
+        - "test"
     deadline: {% raw %}"{{ '2 hours' | $fromNow }}"{% endraw %} # the task will timeout if it doesn't complete within 2 hours
 ```
 
