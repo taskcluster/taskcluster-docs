@@ -28,8 +28,8 @@ version: 0
 metadata:
   name: "TaskCluster GitHub Tests"
   description: "All non-integration tests for taskcluster github"
-  owner: "{% raw %}{{ event.head.user.email }}{% endraw %}"
-  source: "{% raw %}{{ event.head.repo.url }}{% endraw %}"
+  owner: "{% raw %}{{ event.head.user.email }}{% endraw %}" # the user who sent the pr/push e-mail will be inserted here
+  source: "{% raw %}{{ event.head.repo.url }}{% endraw %}"  # the repo where the pr came from will be inserted here
 tasks:
   # What kind of environment will you need (docker, windows, etc...)
   - provisionerId: "{% raw %}{{ taskcluster.docker.provisionerId }}{% endraw %}"
