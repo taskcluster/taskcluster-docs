@@ -40,7 +40,7 @@ tasks:
       github:
         # This must be set in order access GitHub info from inside your environment
         env: true
-        # Events that will trigger this job to run
+        # Events that will trigger this task
         events:
           - pull_request.opened
           - pull_request.synchronize
