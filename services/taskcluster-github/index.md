@@ -93,7 +93,8 @@ tasks:
 ### Who Can Trigger Jobs?
 <p>
 For security reasons only members of the Mozilla organization and repository collaborators can trigger taskcluster jobs. That is, to grant permissions to non-mozilla org members add them to a team, and make that team a repository collaborator. Read only permissions will suffice.
-
+</p>
+<p>
 In the future it will be possible to trigger jobs for any pull request by leaving a specially formatted comment (e.g. "TCGH Run <job_name>")
 </p>
 
