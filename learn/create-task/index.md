@@ -179,8 +179,8 @@ a random slugid for use as `taskId`.
 <pre data-plugin="interactive-example">
 let slugid = require('slugid');
 
-// Generate a new taskId
-let taskId = slugid.v4();
+// Generate a new taskId (see [npm docs](https://www.npmjs.com/package/slugid))
+let taskId = slugid.nice();
 
 // Print the taskId
 console.log("Randomly generated taskId: " + taskId);
@@ -198,7 +198,7 @@ let taskcluster = require('taskcluster-client');
 let slugid      = require('slugid');
 
 // Generate a new taskId
-let taskId = slugid.v4();
+let taskId = slugid.nice();
 
 // Store taskId for use in later examples to fetch status and artifacts
 global.taskId = taskId;

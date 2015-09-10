@@ -133,7 +133,7 @@ var taskcluster = require('taskcluster-client');
 var queue = new taskcluster.Queue({credentials: C});
 
 // Create task
-await queue.createTask(slugid.v4(), {
+await queue.createTask(slugid.nice(), {
   created:        taskcluster.fromNowJSON(),
   deadline:       taskcluster.fromNowJSON('2 days 3 hours'),
   provisionerId:  'aws-provisioner-v1',
@@ -165,7 +165,7 @@ var queue = new taskcluster.Queue({
 });
 
 // Create task
-await queue.createTask(slugid.v4(), {
+await queue.createTask(slugid.nice(), {
   // We've forced provisionerId using `authorizedScopes`
   provisionerId:  'aws-provisioner-v1',
   ...
@@ -202,7 +202,7 @@ var queue = new taskcluster.Queue({
 });
 
 // Create task
-await queue.createTask(slugid.v4(), {
+await queue.createTask(slugid.nice(), {
   // We've forced provisionerId using `scopes` given to temporary credentials
   provisionerId:  'aws-provisioner-v1',
   ...
@@ -220,7 +220,7 @@ Only works because $\text{queue:*}$ satisfies the scope given.
   </p>
 <pre><code data-trim>
 // Create task
-await queue.createTask(slugid.v4(), {
+await queue.createTask(slugid.nice(), {
   provisionerId:  'aws-provisioner-v1',
   workerType:     'b2gtest',
                   // Allows worker to know the creator have these scopes
@@ -251,7 +251,7 @@ features to proxy requests.<br>
   </p>
 <pre><code data-trim>
 // Create task
-await queue.createTask(slugid.v4(), {
+await queue.createTask(slugid.nice(), {
   provisionerId:  'aws-provisioner-v1',
   workerType:     'b2gtest',
                   // Allows worker to know the creator have this scope
