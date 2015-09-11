@@ -374,7 +374,7 @@ Go to https://tools.taskcluster.net/task-creator/ and create a task to run on yo
 
 This page provides a decent example task, but first make sure to edit `provisionerId` value should match what you set your `PROVISIONER_ID` env variable to, and the value of `workerType` should match what you set your `WORKER_TYPE` env variable to.
 
-Please note you should *NOT* use the default value of `aws-provisioner` for the `provisionerId` since then the production aws provisioner may start spawning ec2 instances, and the docker-worker may try to run the job. By specifying something unique for your local environment, the aws provisioner and docker workers will leave this task alone, and only your machine will claim the task.
+Please note you should *NOT* use the default value of `aws-provisioner-v1` for the `provisionerId` since then the production aws provisioner may start spawning ec2 instances, and the docker-worker may try to run the job. By specifying something unique for your local environment, the aws provisioner and docker workers will leave this task alone, and only your machine will claim the task.
 
 Don't forget to submit the task by clicking the *Create Task* icon.
 

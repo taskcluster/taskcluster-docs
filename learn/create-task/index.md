@@ -162,25 +162,25 @@ Creating a Task
 
 All tasks have a `taskId` this is
 [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
-, version 4, meaning it's 122 random bits. To better fit these UUIDs into URLs,
+, version 4. To better fit these UUIDs into URLs,
 RabbitMQ routing keys and many other places we always encoded them in
 [URL-safe base64](http://tools.ietf.org/html/rfc4648#section-5)
 stripped of `==` padding. This yields a 22 character identifier like
 `a8_YezW8T7e1jLxG7evy-A`.
 
-We call an identifier on this form as a _slugid_, in Javascript we can generate
-them using the `slugid` module. Being based on UUID version 4 the risk of
-`taskId` collision is extremely small. In fact if you encounter an error
-telling you that a given `taskId` is already used by another task, it is most
-likely a problem with your retry logic that fails to make idempotent requests,
-or you accidentally reused the `taskId`. The example below shows how to generate
-a random slugid for use as `taskId`.
+We call an identifier on this form a _slugid_, in Javascript we can generate
+them using the `slugid()` method of the `taskcluster-client` module. Being
+based on UUID version 4 the risk of `taskId` collision is extremely small. In
+fact if you encounter an error telling you that a given `taskId` is already
+used by another task, it is most likely a problem with your retry logic that
+fails to make idempotent requests, or you accidentally reused the `taskId`. The
+example below shows how to generate a random slugid for use as `taskId`.
 
 <pre data-plugin="interactive-example">
-let slugid = require('slugid');
+let taskcluster = require('taskcluster-client');
 
 // Generate a new taskId
-let taskId = slugid.v4();
+let taskId = taskcluster.slugid();
 
 // Print the taskId
 console.log("Randomly generated taskId: " + taskId);
@@ -195,10 +195,9 @@ task definition.
 
 <pre data-plugin="interactive-example">
 let taskcluster = require('taskcluster-client');
-let slugid      = require('slugid');
 
 // Generate a new taskId
-let taskId = slugid.v4();
+let taskId = taskcluster.slugid();
 
 // Store taskId for use in later examples to fetch status and artifacts
 global.taskId = taskId;
@@ -232,6 +231,11 @@ let task = {
     }
   }
 };
+
+if (localStorage.credentials === undefined) {
+  console.log("You must authenticate first - see Authenticate tutorial");
+  return;
+}
 
 // Create a Queue client object w. temporary credentials
 let queue = new taskcluster.Queue({

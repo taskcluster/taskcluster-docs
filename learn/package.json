@@ -13,7 +13,7 @@
     "babel-core":                     "^5.6.15",
     "babel-runtime":                  "^5.6.15",
     "taskcluster-client":             "^0.22.4",
-    "slugid":                         "^1.0.3",
+    "slugid":                         "^1.1.0",
     "lodash":                         "^3.10.0",
     "uuid":                           "^1.4.1",
     "superagent":                     "^1.1.0",

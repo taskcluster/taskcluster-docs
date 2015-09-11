@@ -5,7 +5,8 @@ class:    markdown
 Developer Tools
 ===============
 
-The [APIs](/queue/api-docs.html) and [task storage on S3](/queue/task-storage.html)
-offers a decent set of fairly generic properties. Based on these we have a
-number of generic development tools, that will be useful even if your task isn't
-completely normal.
+We have a variety of online tools that you can use for interactively working with our APIs.
+
+These are available at [tools.taskcluster.net](https://tools.taskcluster.net).
+
+[![Thumbnail of https://tools.taskcluster.net](/assets/tools-taskcluster-net-thumbnail.png)](https://tools.taskcluster.net)
