@@ -130,17 +130,17 @@ $(function() {
   });
 
   // Create new taskId
-  $('#task-id').val(slugid.nice());
+  $('#task-id').val(taskcluster.slugid());
 
   // Create default task
   cleanTaskDef = {
-    provisionerId:      'aws-provisioner',
+    provisionerId:      'aws-provisioner-v1',
     workerType:         'v2',
     created:            null, // later
     deadline:           null, // later
     payload: {
       image:            'ubuntu:13.10',
-      command:          ['/bin/bash', '-c', 'echo "hello World"'],
+      command:          ['/bin/bash', '-c', 'echo "Hello World"'],
       maxRunTime:       60 * 10
     },
     metadata: {
@@ -185,7 +185,7 @@ $(function() {
     e.preventDefault();
 
     // Create new taskId
-    $('#task-id').val(slugid.nice());
+    $('#task-id').val(taskcluster.slugid());
 
     // Create new default task
     var deadline = new Date();

@@ -86,9 +86,6 @@ sections:
     url:  /services/index.html
     href: /services/
     links:
-      - name: AWS Provisioner (legacy)
-        url:  /services/aws-provisioner/index.html
-        href: /services/aws-provisioner/
       - name: Task Indexing
         url:  /services/index/index.html
         href: /services/index/
