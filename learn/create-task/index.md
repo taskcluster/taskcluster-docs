@@ -232,6 +232,11 @@ let task = {
   }
 };
 
+if (localStorage.credentials === undefined) {
+  console.log("You must authenticate first - see Authenticate tutorial");
+  return;
+}
+
 // Create a Queue client object w. temporary credentials
 let queue = new taskcluster.Queue({
   credentials: JSON.parse(localStorage.credentials)
