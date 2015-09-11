@@ -151,15 +151,6 @@ sections:
     url:  /tools/index.html
     href: /tools/
     links:
-      - name: Task Inspector
-        url:  /tools/task-inspector/index.html
-        href: /tools/task-inspector/
-      - name: Task-Graph Inspector
-        url:  /tools/task-graph-inspector/index.html
-        href: /tools/task-graph-inspector/
-      - name: Task Creator
-        url:  /tools/task-creator/index.html
-        href: /tools/task-creator/
       - name: Reference Formats
         url:  /tools/references/index.html
         href: /tools/references/
