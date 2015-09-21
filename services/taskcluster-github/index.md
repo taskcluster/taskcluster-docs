@@ -10,7 +10,7 @@ docref:       true
 
 <h1>TaskCluster GitHub</h1>
 <p>
-Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks are defined in a YAML coniguration file which lives at the root of a repository. There is no explicit sign-up step, TaskCluster and Mozilla projects will simply begin accepting jobs as soon as a <code>.taskcluster.yml</code> exists.
+Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks are defined in a YAML configuration file which lives at the root of a repository. There is no explicit sign-up step, TaskCluster and Mozilla projects will simply begin accepting jobs as soon as a <code>.taskcluster.yml</code> exists.
 </p>
 <p>
 The syntax is somewhat verbose, but offers an enormous amount of flexibility. The eventual goal of this project is to support all platforms and allow users to define workflows for testing, shipping, and landing patches from within their configurations.
