@@ -95,6 +95,9 @@ sections:
       - name: TaskCluster GitHub
         url:  /services/taskcluster-github/index.html
         href: /services/taskcluster-github/
+      - name: Secrets
+        url:  /services/secrets/index.html
+        href: /services/secrets/
   - name: Auth
     url:  /auth/index.html
     href: /auth/
