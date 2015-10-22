@@ -90,6 +90,11 @@ tasks:
           - push
 ```
 
+### A note on testing
+<p>
+TaskCluster GitHub will <b>not</b> use <code>.taskcluster.yml</code> files from pull requests. To test <code>.taskcluster.yml</code> changes create a new branch on the master/base repository and open pull requests against it or make pushes to it (depending on the events you have enabled).
+</p>
+
 ### Who Can Trigger Jobs?
 <p>
 For security reasons only members of the Mozilla organization and repository collaborators can trigger taskcluster jobs. That is, to grant permissions to non-mozilla org members add them to a team, and make that team a repository collaborator. Read only permissions will suffice.
