@@ -7,7 +7,7 @@ Client Libraries
 
 ![books clipart](/assets/books.png)
 
-The TaskCluster client libraries enabling you to interface with TaskCluster in automation.
+The TaskCluster client libraries enable you to interface with TaskCluster in your automation.
 
 Node.js Client Library
 ----------------------
