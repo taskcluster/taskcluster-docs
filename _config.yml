@@ -154,6 +154,12 @@ sections:
     url:  /tools/index.html
     href: /tools/
     links:
+      - name: Web Tools
+        url:  /tools/web/index.html
+        href: /tools/web/
+      - name: Client Libraries
+        url:  /tools/clients/index.html
+        href: /tools/clients/
       - name: Reference Formats
         url:  /tools/references/index.html
         href: /tools/references/
