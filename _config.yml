@@ -98,6 +98,9 @@ sections:
       - name: Secrets
         url:  /services/secrets/index.html
         href: /services/secrets/
+      - name: Hooks
+        url:  /services/hooks/index.html
+        href: /services/hooks/
   - name: Auth
     url:  /auth/index.html
     href: /auth/
