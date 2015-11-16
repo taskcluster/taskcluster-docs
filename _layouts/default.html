@@ -167,16 +167,30 @@
         </div>
         <ul class="nav navbar-nav">
           {% for section in site.sections %}
-            {% if section.url == page.url %}
-              <li class="active">
-            {% else %}
+            <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" type="button">{{ section.name }} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
               <li>
-            {% endif %}
               {% if section.href %}
-                <a href="{{ section.href }}">{{ section.name }}</a>
+                <a href="{{ section.href }}">Overview</a>
               {% else %}
-                <a href="{{ section.url }}">{{ section.name }}</a>
+                <a href="{{ section.url }}">Overview</a>
               {% endif %}
+              </li>
+              {% for entry in section.links %}
+                {% if entry.url == page.url %}
+                  <li class="active">
+                {% else %}
+                  <li>
+                {% endif %}
+                  {% if entry.href %}
+                    <a href="{{ entry.href }}">{{ entry.name }}</a>
+                  {% else %}
+                    <a href="{{ entry.url }}">{{ entry.name }}</a>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
             </li>
           {% endfor %}
         </ul>

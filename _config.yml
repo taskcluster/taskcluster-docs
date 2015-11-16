@@ -26,27 +26,35 @@ exclude:
 #   still needs to match `page.url` to set active tags correctly.
 sections:
   - name: Introduction
-    url:  /index.html
-    href: /
     links:
-      - name:  Getting Started
-        url:   /introduction/getting-started/index.html
-        href:  /introduction/getting-started/
-      - name:  Github Projects
-        url:   https://github.com/taskcluster
+    - name:  Introduction
+      url:   /index.html
+      href:  /
+    - name:  Getting Started
+      url:   /introduction/getting-started/index.html
+      href:  /introduction/getting-started/
+    - name:  Github Projects
+      url:   https://github.com/taskcluster
   - name: Learn
-    url:  /learn/index.html
-    href: /learn/
     links:
-      - name: Introduction
-        url:  /learn/index.html
-        href: /learn/
-      - name: Authenticate
-        url:  /learn/authenticate/index.html
-        href: /learn/authenticate
-      - name: Create a Task
-        url:  /learn/create-task/index.html
-        href: /learn/create-task
+    - name: Introduction
+      url:  /learn/index.html
+      href: /learn/
+    - name: Authenticate
+      url:  /learn/authenticate/index.html
+      href: /learn/authenticate
+    - name: Create a Task
+      url:  /learn/create-task/index.html
+      href: /learn/create-task
+    - name: Screencasts
+      url: /presentations/index.html
+      href: /presentations/
+    - name: TaskCluster Introduction
+      url:  /presentations/intro/index.html
+      href: /presentations/intro/
+    - name: TaskCluster Scopes
+      url:  /presentations/scopes/index.html
+      href: /presentations/scopes/
       # name: Listening for Task Events (PulseListener + WebListener)
       # name: Tasks w. Custom Routes (custom routes, scopes, WebListener)
       # name: Browsing the Index
@@ -56,9 +64,10 @@ sections:
       # name: Docker in docker-worker
       # name:
   - name: Queue
-    url:  /queue/index.html
-    href: /queue/
     links:
+    - name: Overview
+      url:  /queue/index.html
+      href: /queue/
     - name: Worker Interaction
       url:  /queue/worker-interaction/index.html
       href: /queue/worker-interaction/
@@ -71,9 +80,10 @@ sections:
     - name: Source Repository
       url:  https://github.com/taskcluster/taskcluster-queue
   - name: Scheduler
-    url:  /scheduler/index.html
-    href: /scheduler/
     links:
+    - name: Overview
+      url:  /scheduler/index.html
+      href: /scheduler/
     - name: API Documentation
       url:  /scheduler/api-docs/index.html
       href: /scheduler/api-docs/
@@ -83,48 +93,51 @@ sections:
     - name: Source Repository
       url:  https://github.com/taskcluster/task-graph-scheduler
   - name: Services
-    url:  /services/index.html
-    href: /services/
     links:
-      - name: Task Indexing
-        url:  /services/index/index.html
-        href: /services/index/
-      - name: Purge Cache
-        url:  /services/purge-cache/index.html
-        href: /services/purge-cache/
-      - name: TaskCluster GitHub
-        url:  /services/taskcluster-github/index.html
-        href: /services/taskcluster-github/
-      - name: Secrets
-        url:  /services/secrets/index.html
-        href: /services/secrets/
-      - name: Hooks
-        url:  /services/hooks/index.html
-        href: /services/hooks/
+    - name: Overview
+      url:  /services/index.html
+      href: /services/
+    - name: Task Indexing
+      url:  /services/index/index.html
+      href: /services/index/
+    - name: Purge Cache
+      url:  /services/purge-cache/index.html
+      href: /services/purge-cache/
+    - name: TaskCluster GitHub
+      url:  /services/taskcluster-github/index.html
+      href: /services/taskcluster-github/
+    - name: Secrets
+      url:  /services/secrets/index.html
+      href: /services/secrets/
+    - name: Hooks
+      url:  /services/hooks/index.html
+      href: /services/hooks/
   - name: Auth
-    url:  /auth/index.html
-    href: /auth/
     links:
-      - name: Restricting Scopes
-        url:  /auth/authorized-scopes/index.html
-        href: /auth/authorized-scopes/
-      - name: Temporary Credentials
-        url:  /auth/temporary-credentials/index.html
-        href: /auth/temporary-credentials/
-      - name: Signed Urls
-        url:  /auth/signed-urls/index.html
-        href: /auth/signed-urls/
-      - name: API Documentation
-        url:  /auth/api-docs/index.html
-        href: /auth/api-docs/
-      - name: Authentication Manager
-        url:  https://tools.taskcluster.net/auth/
-      - name: Source Repository
-        url:  https://github.com/taskcluster/taskcluster-auth
+    - name: Overview
+      url:  /auth/index.html
+      href: /auth/
+    - name: Restricting Scopes
+      url:  /auth/authorized-scopes/index.html
+      href: /auth/authorized-scopes/
+    - name: Temporary Credentials
+      url:  /auth/temporary-credentials/index.html
+      href: /auth/temporary-credentials/
+    - name: Signed Urls
+      url:  /auth/signed-urls/index.html
+      href: /auth/signed-urls/
+    - name: API Documentation
+      url:  /auth/api-docs/index.html
+      href: /auth/api-docs/
+    - name: Authentication Manager
+      url:  https://tools.taskcluster.net/auth/
+    - name: Source Repository
+      url:  https://github.com/taskcluster/taskcluster-auth
   - name: AWS Provisioner
-    url:  /aws-provisioner/index.html
-    href: /aws-provisioner/
     links:
+    - name: Overview
+      url:  /aws-provisioner/index.html
+      href: /aws-provisioner/
     - name: API Documentation
       url:  /aws-provisioner/api-docs/index.html
       href: /aws-provisioner/api-docs/
@@ -137,32 +150,23 @@ sections:
     url:  /workers/index.html
     href: /workers/
     links:
-      - name: Docker Worker
-        url:  /workers/docker-worker/index.html
-        href: /workers/docker-worker/
-      - name: Generic Worker
-        url:  /workers/generic-worker/index.html
-        href: /workers/generic-worker/
-  - name: Presentations
-    url: /presentations/index.html
-    href: /presentations/
-    links:
-      - name: TaskCluster Introduction
-        url:  /presentations/intro/index.html
-        href: /presentations/intro/
-      - name: TaskCluster Scopes
-        url:  /presentations/scopes/index.html
-        href: /presentations/scopes/
+    - name: Overview
+      url:  /workers/index.html
+      href: /workers/
+    - name: Docker Worker
+      url:  /workers/docker-worker/index.html
+      href: /workers/docker-worker/
+    - name: Generic Worker
+      url:  /workers/generic-worker/index.html
+      href: /workers/generic-worker/
   - name: Tools
-    url:  /tools/index.html
-    href: /tools/
     links:
-      - name: Web Tools
-        url:  /tools/web/index.html
-        href: /tools/web/
-      - name: Client Libraries
-        url:  /tools/clients/index.html
-        href: /tools/clients/
-      - name: Reference Formats
-        url:  /tools/references/index.html
-        href: /tools/references/
+    - name: Web Tools
+      url:  /tools/web/index.html
+      href: /tools/web/
+    - name: Client Libraries
+      url:  /tools/clients/index.html
+      href: /tools/clients/
+    - name: Reference Formats
+      url:  /tools/references/index.html
+      href: /tools/references/
