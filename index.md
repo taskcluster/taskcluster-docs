@@ -9,7 +9,7 @@ TaskCluster - Mozilla Testing Infrastructure
 execution and provisioning of resources. It was designed to run automated builds
 and test at Mozilla.
 
-![Rough overview of taskcluster components](/assets/overview.png)
+![taskcluster components](/assets/overview.png)
 
 The diagram above illustrates how some of the most important
 **taskcluster components** interact.
@@ -20,13 +20,4 @@ provisioner launches worker nodes depending on how many pending tasks we have.
 Below you'll see an illustration of the **layers** from task-graph to task to
 run on some worker node.
 
-![Rough overview of taskcluster components](/assets/layers.png)
-
-### TaskCluster Scope
-<blockquote>
-  TaskCluster promises a <b>consistent task execution</b> environment.
-</blockquote>
-
-
-**This means**, that if you submit the same _deterministic task_ twice then
-you should get two consistent resolutions.
+![taskcluster layers](/assets/layers.png)
