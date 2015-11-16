@@ -2,16 +2,15 @@
 layout: default
 class:  markdown
 ---
-<img style="float: left; width: 20%; padding-right: 1em; padding-bottom: 1em;" src="/assets/taskcluster.svg" />
+<div class="well" style="min-height: 160px">
+<img width="120" height="120" style="float: left; padding-right: 1em; padding-bottom: 1em;" src="/assets/taskcluster.svg" />
+<h2>TaskCluster - Mozilla's CI Infrastructure</h2>
 
-TaskCluster - Mozilla's CI Infrastructure
-=========================================
-
-**TaskCluster** is a set of components that manages task queuing, scheduling,
+<em>TaskCluster</em> is a set of components that manages task queuing, scheduling,
 execution and provisioning of resources.  It was designed to run automated builds
 and tests at Mozilla.
+</div>
 
-<br clear="all"/>
 The diagram below illustrates how some of the most important
 **TaskCluster components** interact.
 When a user submits a task-graph to the scheduler, it posts tasks to

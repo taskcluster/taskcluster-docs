@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TaskCluster - Documentation</title>
+    <title>TaskCluster Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap and Awesome Font styles-->
@@ -158,22 +158,28 @@
     </script>
   </head>
   <body>
-    <nav role="navigation" class="navbar navbar-default">
-      <div class="navbar-header"><a href="/" class="navbar-brand">Task Cluster - Documentation</a></div>
-      <ul class="nav navbar-nav">
-        {% for section in site.sections %}
-          {% if section.url == page.url %}
-            <li class="active">
-          {% else %}
-            <li>
-          {% endif %}
-            {% if section.href %}
-              <a href="{{ section.href }}">{{ section.name }}</a>
+    <nav role="navigation" class="navbar navbar-default navbar-static-top navbar-inverse">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">
+            <img height="36" width="36" src="/assets/taskcluster-36.png"/>
+            &nbsp;TaskCluster Docs
+          </a>
+        </div>
+        <ul class="nav navbar-nav">
+          {% for section in site.sections %}
+            {% if section.url == page.url %}
+              <li class="active">
             {% else %}
-              <a href="{{ section.url }}">{{ section.name }}</a>
+              <li>
             {% endif %}
-          </li>
-        {% endfor %}
+              {% if section.href %}
+                <a href="{{ section.href }}">{{ section.name }}</a>
+              {% else %}
+                <a href="{{ section.url }}">{{ section.name }}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
     </nav>
     <div class="container">
       <div class="row">
