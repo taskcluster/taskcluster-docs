@@ -170,25 +170,24 @@
             <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" type="button">{{ section.name }} <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li>
-              {% if section.href %}
-                <a href="{{ section.href }}">Overview</a>
-              {% else %}
-                <a href="{{ section.url }}">Overview</a>
-              {% endif %}
-              </li>
               {% for entry in section.links %}
-                {% if entry.url == page.url %}
-                  <li class="active">
+                {% if entry.divider %}
+                  <li role="separator" class="divider"></li>
+                {% elsif entry.heading %}
+                <li class="dropdown-header">{{ entry.heading }}</li>
                 {% else %}
-                  <li>
-                {% endif %}
-                  {% if entry.href %}
-                    <a href="{{ entry.href }}">{{ entry.name }}</a>
+                  {% if entry.url == page.url %}
+                    <li class="active">
                   {% else %}
-                    <a href="{{ entry.url }}">{{ entry.name }}</a>
+                    <li>
                   {% endif %}
-                </li>
+                    {% if entry.href %}
+                      <a href="{{ entry.href }}">{{ entry.name }}</a>
+                    {% else %}
+                      <a href="{{ entry.url }}">{{ entry.name }}</a>
+                    {% endif %}
+                  </li>
+                {% endif %}
               {% endfor %}
             </ul>
             </li>
@@ -223,16 +222,22 @@
               <h2>{{ sec.name }}</h2>
               <ul class="nav nav-pills nav-stacked">
               {% for entry in sec.links %}
-                {% if entry.url == page.url %}
-                  <li class="active">
+                {% if entry.divider %}
+                  <hr />
+                {% elsif entry.heading %}
+                  <h4>{{ entry.heading }}</h4>
                 {% else %}
-                  <li>
-                {% endif %}
+                  {% if entry.url == page.url %}
+                    <li class="active">
+                  {% else %}
+                    <li>
+                  {% endif %}
                   {% if entry.href %}
                     <a href="{{ entry.href }}">{{ entry.name }}</a>
                   {% else %}
                     <a href="{{ entry.url }}">{{ entry.name }}</a>
                   {% endif %}
+                {% endif %}
                 </li>
               {% endfor %}
               </ul>

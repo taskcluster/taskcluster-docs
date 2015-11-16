@@ -25,7 +25,7 @@ exclude:
 #    and  you don't want the URL to feature `index.html`. But `url` property
 #   still needs to match `page.url` to set active tags correctly.
 sections:
-  - name: Introduction
+  - name: About
     links:
     - name:  Introduction
       url:   /index.html
@@ -33,8 +33,6 @@ sections:
     - name:  Getting Started
       url:   /introduction/getting-started/index.html
       href:  /introduction/getting-started/
-    - name:  Github Projects
-      url:   https://github.com/taskcluster
   - name: Learn
     links:
     - name: Introduction
@@ -46,6 +44,8 @@ sections:
     - name: Create a Task
       url:  /learn/create-task/index.html
       href: /learn/create-task
+    - divider: true
+    - heading: Presentations
     - name: Screencasts
       url: /presentations/index.html
       href: /presentations/
@@ -63,8 +63,20 @@ sections:
 
       # name: Docker in docker-worker
       # name:
-  - name: Queue
+  - name: Tools
     links:
+    - name: Web Tools
+      url:  /tools/web/index.html
+      href: /tools/web/
+    - name: Client Libraries
+      url:  /tools/clients/index.html
+      href: /tools/clients/
+    - name: Reference Formats
+      url:  /tools/references/index.html
+      href: /tools/references/
+  - name: Platform
+    links:
+    - heading: Queue
     - name: Overview
       url:  /queue/index.html
       href: /queue/
@@ -79,8 +91,8 @@ sections:
       href: /queue/exchanges/
     - name: Source Repository
       url:  https://github.com/taskcluster/taskcluster-queue
-  - name: Scheduler
-    links:
+    - divider: true
+    - heading: Scheduler
     - name: Overview
       url:  /scheduler/index.html
       href: /scheduler/
@@ -92,28 +104,8 @@ sections:
       href: /scheduler/events/
     - name: Source Repository
       url:  https://github.com/taskcluster/task-graph-scheduler
-  - name: Services
-    links:
-    - name: Overview
-      url:  /services/index.html
-      href: /services/
-    - name: Task Indexing
-      url:  /services/index/index.html
-      href: /services/index/
-    - name: Purge Cache
-      url:  /services/purge-cache/index.html
-      href: /services/purge-cache/
-    - name: TaskCluster GitHub
-      url:  /services/taskcluster-github/index.html
-      href: /services/taskcluster-github/
-    - name: Secrets
-      url:  /services/secrets/index.html
-      href: /services/secrets/
-    - name: Hooks
-      url:  /services/hooks/index.html
-      href: /services/hooks/
-  - name: Auth
-    links:
+    - divider: true
+    - heading: Authentication
     - name: Overview
       url:  /auth/index.html
       href: /auth/
@@ -129,12 +121,10 @@ sections:
     - name: API Documentation
       url:  /auth/api-docs/index.html
       href: /auth/api-docs/
-    - name: Authentication Manager
-      url:  https://tools.taskcluster.net/auth/
-    - name: Source Repository
-      url:  https://github.com/taskcluster/taskcluster-auth
-  - name: AWS Provisioner
+  - name: Core Services
     links:
+    - divider: true
+    - heading: AWS Provisioner
     - name: Overview
       url:  /aws-provisioner/index.html
       href: /aws-provisioner/
@@ -146,10 +136,8 @@ sections:
       href: /aws-provisioner/events/
     - name: Source Repository
       url:  https://github.com/taskcluster/aws-provisioner
-  - name: Workers
-    url:  /workers/index.html
-    href: /workers/
-    links:
+    - divider: true
+    - heading: Workers
     - name: Overview
       url:  /workers/index.html
       href: /workers/
@@ -159,14 +147,24 @@ sections:
     - name: Generic Worker
       url:  /workers/generic-worker/index.html
       href: /workers/generic-worker/
-  - name: Tools
+    - divider: true
+    - heading: Other Services
+    - name: Index
+      url:  /services/index/index.html
+      href: /services/index/
+    - name: Purge-Cache
+      url:  /services/purge-cache/index.html
+      href: /services/purge-cache/
+    - name: GitHub
+      url:  /services/taskcluster-github/index.html
+      href: /services/taskcluster-github/
+    - name: Secrets
+      url:  /services/secrets/index.html
+      href: /services/secrets/
+    - name: Hooks
+      url:  /services/hooks/index.html
+      href: /services/hooks/
+  - name: Development
     links:
-    - name: Web Tools
-      url:  /tools/web/index.html
-      href: /tools/web/
-    - name: Client Libraries
-      url:  /tools/clients/index.html
-      href: /tools/clients/
-    - name: Reference Formats
-      url:  /tools/references/index.html
-      href: /tools/references/
+    - name:  Github Projects
+      url:   https://github.com/taskcluster
