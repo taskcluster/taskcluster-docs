@@ -89,8 +89,6 @@ sections:
     - name: AMQP Exchanges
       url:  /queue/exchanges/index.html
       href: /queue/exchanges/
-    - name: Source Repository
-      url:  https://github.com/taskcluster/taskcluster-queue
     - divider: true
     - heading: Scheduler
     - name: Overview
@@ -102,8 +100,6 @@ sections:
     - name: AMQP Exchanges
       url:  /scheduler/events/index.html
       href: /scheduler/events/
-    - name: Source Repository
-      url:  https://github.com/taskcluster/task-graph-scheduler
     - divider: true
     - heading: Authentication
     - name: Overview
@@ -134,8 +130,6 @@ sections:
     - name: AMQP Exchanges
       url:  /aws-provisioner/events/index.html
       href: /aws-provisioner/events/
-    - name: Source Repository
-      url:  https://github.com/taskcluster/aws-provisioner
     - divider: true
     - heading: Workers
     - name: Overview
