@@ -17,8 +17,8 @@ for further details.
 
 Third-Party Libraries and Tools
 -------------------------------
-The TaskCluster Documentation Site wouldn't have been so awesome without the
-without these amazing libraries and tools, upon which it is built.
+The TaskCluster Documentation Site wouldn't have been so awesome without these
+amazing libraries and tools, upon which it is built.
 
 **Libraries**,
 
