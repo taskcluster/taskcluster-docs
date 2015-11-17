@@ -162,3 +162,6 @@ sections:
     links:
     - name:  Github Projects
       url:   https://github.com/taskcluster
+    - name: Conventions
+      url:  /devel/conventions/index.html
+      href: /devel/conventions/
