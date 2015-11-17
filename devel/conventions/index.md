@@ -6,7 +6,9 @@ class:    markdown
 Conventions
 ===========
 
-TaskCluster is a very open platform, and can easily descend into anarchy if we are not careful to enforce some standard approaches and conventions.
+TaskCluster is a very open platform!
+To help us with our day to day work, we have created some standard approaches and conventions.
+These make administration and coordination between the humans using the platform easier.
 
 ## Scopes and Roles
 
