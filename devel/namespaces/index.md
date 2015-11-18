@@ -29,9 +29,11 @@ Please file a pull request to add your project!
 
 Many scopes reflect the namespaces given elsewhere in this document, as described in the API documentation for the component.
 
-* `<component>:<verb>:` -
-   Scopes for most API actions have a prefix like this.
-   For example, the `queue.createTask` call is governed by a scope beginning with `queue:create-task:`.
+* `<component>:<action>:<resource>`,
+* `<component>:<action>:<qualifier>`,
+* `<component>:<action>:<specifier>` -
+   Scopes for most API actions follow this pattern.
+   For example, the `queue.createTask` call is governed by a scope beginning with `queue:create-task:<provisionerId>/<workerType>`.
 
 * `buildbot-bridge:`
    The release engineering team's buildbot bridge (BBB) uses scopes with this prefix.
@@ -85,7 +87,9 @@ Artifact names are, by convention, slash-separated.
 
 * `public/` -
    The queue allows access to any artifact that begins with `public/` without any kind of authentication.
-   Such public names are not further namespaced: tasks can create any public artifacts they like.
+   Public names are not further namespaced: tasks can create any public artifacts they like.
+   As such, users should not assume that an artifact with this prefix was created by a known process.
+   In other words, any task can create an artifact named `public/build/firefox.exe` , so do not trust such a file without verifying the trustworthiness of the task.
 
 * `private/` -
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed (e.g., to all Mozilla employees).
@@ -104,7 +108,7 @@ Artifact names are, by convention, slash-separated.
 Hooks are divided into "hook groups", for which the namespace is defined here.
 Within a hook group, the names are arbitrary (or defined by the project).
 
-* `project:<project>` - hooks for a speceific project
+* `project:<project>` - hooks for a specific project
 
 ## Worker Types
 
@@ -133,10 +137,6 @@ Secret names have the following structure:
   Secrets with this prefix are the exclusive domain of the given project.
   Users not associated with a project should not be given scopes associated with the project's secrets!
 
-## Routes
-
-TODO
-
 ## Indexes
 
 The index provides a nice, dot-separated hierarchy of names.
@@ -151,7 +151,7 @@ The index provides a nice, dot-separated hierarchy of names.
    Tasks indexed here have generated the `node_modules` directory required for the given revision.
    These are the responsibility of teh B2G automation team.
 
-* `garbage` -
+* `garbage.<ircnick>` -
    Anything goes under this index path.
    Use this for development and experimentation.
 
