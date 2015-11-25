@@ -75,11 +75,11 @@ Both are listed here:
 
 * `assume:scheduler-id:<schedulerId>/<taskGroupId>` -
    Roles of this form represent scopes available to schedulers with the given ID.
-   Will be deprecated; see [queue-scope-rethink-big-scheduler](https://public.etherpad-mozilla.org/p/jonasfj-tc-queue-scope-rethink-big-scheduler)
+   Will be deprecated; see [Bug 1228012](https://github.com/taskcluster/taskcluster-queue/pull/67)
 
 * `assume:worker-id:<workerGroup>/<workerId>` -
    Roles of this form represent scopes available to workers with the given ID.
-   Will be deprecated; see [queue-scope-rethink-big-scheduler](https://public.etherpad-mozilla.org/p/jonasfj-tc-queue-scope-rethink-big-scheduler)
+   Will be deprecated; see [Bug 1228012](https://github.com/taskcluster/taskcluster-queue/pull/67)
 
 * `assume:worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
