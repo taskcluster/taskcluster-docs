@@ -29,20 +29,20 @@ Please file a pull request to add your project!
 
 Many scopes reflect the namespaces given elsewhere in this document, as described in the API documentation for the component.
 
-* `<component>:<action>:<resource>`,
-* `<component>:<action>:<qualifier>`,
-* `<component>:<action>:<specifier>` -
+* `<component>:<action>:<details>` -
    Scopes for most API actions follow this pattern.
-   For example, the `queue.createTask` call is governed by a scope beginning with `queue:create-task:<provisionerId>/<workerType>`.
+   For example, the `queue.defineTask` call is governed by a scope beginning with `queue:define-task:<details>`, where the details describe a hierarchy of task attributes.
+   In cases where an action may be limited along any of several dimensions, each of those dimensions should be a separate scope.
 
-* `buildbot-bridge:`
+* `project:<project>:…`
+   Individual projects should use scopes with this prefix.
+   Projects are free to document the contained namespace in this document, link to another document, or leave it undocumented.
+
+* `buildbot-bridge:…`
    The release engineering team's buildbot bridge (BBB) uses scopes with this prefix.
    Will be deprecated; see [bug 1226018](https://bugzilla.mozilla.org/show_bug.cgi?id=1226018).
 
-* `project:<project>:`
-   Individual projects should use scopes with this prefix.
-
-* `signing:`
+* `signing:…`
    The release engineering team's signing system uses scopes with this prefix.
    Will be deprecated; see [bug 1226019](https://bugzilla.mozilla.org/show_bug.cgi?id=1226019).
 
@@ -52,34 +52,36 @@ Most roles are defined by some kind of automatic usage in a TaskCluster componen
 However, some are defined by convention.
 Both are listed here:
 
-* `client-id:<clientId>` -
+* `assume:client-id:<clientId>` -
    Roles with this prefix give the scopes for client credentials.
 
-* `hook-id:<hookGroupId>/<hookId>` -
+* `assume:hook-id:<hookGroupId>/<hookId>` -
    Roles of this form give the scopes used to create tasks on behalf of hooks.
 
-* `mozilla-group:<groupName>` -
+* `assume:mozilla-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
 
-* `mozilla-user:<userName>` -
+* `assume:mozilla-user:<userName>` -
    Roles of this form represent the scopes available to the given Mozilla LDAP user via the login service.
 
-* `repo:<host>/<path>:branch:<branch>`,
-* `repo:<host>/<path>:pull-request` -
+* `assume:repo:<host>/<path>:branch:<branch>`,
+* `assume:repo:<host>/<path>:pull-request` -
    Roles of this form represent scopes available to version-control pushes and pull requests.
 
-* `moz-tree:level:<level>`
+* `assume:moz-tree:level:<level>`
    Roles of this form include the basic scopes available to version-control trees at each of the three Mozilla source-code managament levels.
    They are useful as shorthand to configure `repo:*` roles.
    See [Mozilla Commit Access Policy](https://www.mozilla.org/en-US/about/governance/policies/commit/access-policy/) for information on levels.
 
-* `scheduler-id:<schedulerId>/<taskGroupId>` -
+* `assume:scheduler-id:<schedulerId>/<taskGroupId>` -
    Roles of this form represent scopes available to schedulers with the given ID.
+   Will be deprecated; see [queue-scope-rethink-big-scheduler](https://public.etherpad-mozilla.org/p/jonasfj-tc-queue-scope-rethink-big-scheduler)
 
-* `worker-id:<workerGroup>/<workerId>` -
+* `assume:worker-id:<workerGroup>/<workerId>` -
    Roles of this form represent scopes available to workers with the given ID.
+   Will be deprecated; see [queue-scope-rethink-big-scheduler](https://public.etherpad-mozilla.org/p/jonasfj-tc-queue-scope-rethink-big-scheduler)
 
-* `worker-type:<provisionerId>/<workerType>` -
+* `assume:worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
 
 ## Artifacts
@@ -87,22 +89,17 @@ Both are listed here:
 Artifacts are named objects attached to tasks, and available from the queue component.
 Artifact names are, by convention, slash-separated.
 
-* `public/` -
+* `public/…` -
    The queue allows access to any artifact that begins with `public/` without any kind of authentication.
    Public names are not further namespaced: tasks can create any public artifacts they like.
    As such, users should not assume that an artifact with this prefix was created by a known process.
    In other words, any task can create an artifact named `public/build/firefox.exe` , so do not trust such a file without verifying the trustworthiness of the task.
 
-* `private/` -
+* `private/…` -
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed (e.g., to all Mozilla employees).
    In general, users with narrower requirements than "not public" should select a different prefix and add it to this document.
 
-* `index/` -
-   Artifact names with this prefix follow the index namespace, replacing the `.` separators with `/`.
-   For example, a task that indexes artifacts under `gaia.npm_cache.node-v4-2.linux-x64` would name its artifacts with the prefix `index/gaia/npm_cache/node-v4_2/linux-x64`.
-   Scopes for creating and reading such artifacts should follow the ownership hierarchy of the index routes.
-
-* `project/<project>/` -
+* `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
 ## Hooks
@@ -110,7 +107,8 @@ Artifact names are, by convention, slash-separated.
 Hooks are divided into "hook groups", for which the namespace is defined here.
 Within a hook group, the names are arbitrary (or defined by the project).
 
-* `project:<project>` - hooks for a specific project
+* `taskcluster` - hooks used internally for taskcluster maintenance
+* `project-<project>` - hooks for a specific project
 
 ## Worker Types
 
@@ -138,6 +136,10 @@ Secret names have the following structure:
 * `project/<project>/` -
   Secrets with this prefix are the exclusive domain of the given project.
   Users not associated with a project should not be given scopes associated with the project's secrets!
+
+* `repo:<host>/<path>:branch:<branch>`,
+* `repo:<host>/<path>:pull-request` -
+  Secrets within these scopes may be made available to corresponding repositories, branches, and pull requests via the corresponding roles.
 
 ## Indexes
 
