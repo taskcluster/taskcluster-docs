@@ -165,3 +165,6 @@ sections:
     - name: Conventions
       url:  /devel/conventions/index.html
       href: /devel/conventions/
+    - name: Namespaces
+      url:  /devel/namespaces/index.html
+      href: /devel/namespaces/
