@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>TaskCluster Intro</title>
+	<meta name="description" content="Testing Infrastructure">
+	<meta name="author" content="Jonas Finnemann Jensen">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+	<link rel="stylesheet" href="../reveal/css/reveal.css">
+	<link rel="stylesheet" href="../reveal/css/theme/black.css" id="theme">
+
+	<!-- Code syntax highlighting -->
+	<link rel="stylesheet" href="../reveal/lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal/css/print/pdf.css' : '../reveal/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+  <style>
+  .reveal section { text-align: left; },
+  h1, h2, h3, h4, h5 { text-align: center; }
+  .reveal p, .reveal  ul { font-size: 80%; }
+  .reveal pre code {max-height: none;}
+  </style>
+
+	<!--[if lt IE 9]>
+	<script src="../reveal/lib/js/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+<center>
+  <br><br>
+	<h1><img src="../taskcluster-120.png" style="background: transparent; border: none; margin: 0px; vertical-align: bottom;"/>&nbsp;TaskCluster</h1>
+	<h3>Platform Introduction</h3>
+	<p>
+		<small>Intro by the <a href="irc://irc.mozilla.org#taskcluster">#taskcluster</a> team</small>
+	</p>
+</center>
+</section>
+
+<section id="outline">
+<h3>Outline</h3>
+<ul style="margin-left: 8ex;">
+
+	<li>Questions...</li>
+</ul>
+</section>
+
+<!-- Add your slides using an entry like this, so you have markdown files
+     Please don't add all your content into this file, that is a mess  -->
+<section id="the-end" data-markdown="slides/end.md"></section>
+
+
+
+			</div>
+
+		</div>
+
+		<script src="../reveal/lib/js/head.min.js"></script>
+		<script src="../reveal/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: false,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{
+						src: '../reveal/plugin/markdown/markdown.js',
+						condition: function() {
+							return !!document.querySelector('[data-markdown]');
+						}
+					},
+					{
+						src: '../reveal/plugin/highlight/highlight.js',
+						async: true,
+						callback: function() { hljs.initHighlightingOnLoad(); }
+					},
+					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../reveal/plugin/notes/notes.js', async: true },
+          { src: '../reveal/plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
