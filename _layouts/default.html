@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TaskCluster - Documentation</title>
+    <title>TaskCluster Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
 
     <!-- Bootstrap and Awesome Font styles-->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
@@ -158,22 +159,41 @@
     </script>
   </head>
   <body>
-    <nav role="navigation" class="navbar navbar-default">
-      <div class="navbar-header"><a href="/" class="navbar-brand">Task Cluster - Documentation</a></div>
-      <ul class="nav navbar-nav">
-        {% for section in site.sections %}
-          {% if section.url == page.url %}
-            <li class="active">
-          {% else %}
-            <li>
-          {% endif %}
-            {% if section.href %}
-              <a href="{{ section.href }}">{{ section.name }}</a>
-            {% else %}
-              <a href="{{ section.url }}">{{ section.name }}</a>
-            {% endif %}
-          </li>
-        {% endfor %}
+    <nav role="navigation" class="navbar navbar-default navbar-static-top navbar-inverse">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">
+            <img height="36" width="36" src="/assets/taskcluster-36.png"/>
+            &nbsp;TaskCluster Docs
+          </a>
+        </div>
+        <ul class="nav navbar-nav">
+          {% for section in site.sections %}
+            <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" type="button">{{ section.name }} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              {% for entry in section.links %}
+                {% if entry.divider %}
+                  <li role="separator" class="divider"></li>
+                {% elsif entry.heading %}
+                <li class="dropdown-header">{{ entry.heading }}</li>
+                {% else %}
+                  {% if entry.url == page.url %}
+                    <li class="active">
+                  {% else %}
+                    <li>
+                  {% endif %}
+                    {% if entry.href %}
+                      <a href="{{ entry.href }}">{{ entry.name }}</a>
+                    {% else %}
+                      <a href="{{ entry.url }}">{{ entry.name }}</a>
+                    {% endif %}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+            </li>
+          {% endfor %}
+        </ul>
     </nav>
     <div class="container">
       <div class="row">
@@ -203,16 +223,22 @@
               <h2>{{ sec.name }}</h2>
               <ul class="nav nav-pills nav-stacked">
               {% for entry in sec.links %}
-                {% if entry.url == page.url %}
-                  <li class="active">
+                {% if entry.divider %}
+                  <hr />
+                {% elsif entry.heading %}
+                  <h4>{{ entry.heading }}</h4>
                 {% else %}
-                  <li>
-                {% endif %}
+                  {% if entry.url == page.url %}
+                    <li class="active">
+                  {% else %}
+                    <li>
+                  {% endif %}
                   {% if entry.href %}
                     <a href="{{ entry.href }}">{{ entry.name }}</a>
                   {% else %}
                     <a href="{{ entry.url }}">{{ entry.name }}</a>
                   {% endif %}
+                {% endif %}
                 </li>
               {% endfor %}
               </ul>
