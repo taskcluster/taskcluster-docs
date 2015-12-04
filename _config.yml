@@ -40,6 +40,14 @@ sections:
     - name: Introduction
       url:  /learn/index.html
       href: /learn/
+    - divider: true
+    - heading: Tutorials
+    - name: Introduction
+      url:  /learn/tutorials/index.html
+      href: /learn/tutorials
+    - name: Modern Async Javascript
+      url:  /learn/async-javascript/index.html
+      href: /learn/async-javascript
     - name: Authenticate
       url:  /learn/authenticate/index.html
       href: /learn/authenticate
@@ -57,6 +65,12 @@ sections:
     - name: TaskCluster Scopes
       url:  /presentations/scopes/index.html
       href: /presentations/scopes/
+    - name: "TaskCluster 101: Platform Introduction"
+      url:  /presentations/TC-101/index.html
+      href: /presentations/TC-101/
+    - name: "TaskCluster 102: Advanced TaskCluster User Issues"
+      url:  /presentations/TC-102/index.html
+      href: /presentations/TC-102/
       # name: Listening for Task Events (PulseListener + WebListener)
       # name: Tasks w. Custom Routes (custom routes, scopes, WebListener)
       # name: Browsing the Index
