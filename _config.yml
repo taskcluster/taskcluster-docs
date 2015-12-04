@@ -57,6 +57,12 @@ sections:
     - name: TaskCluster Scopes
       url:  /presentations/scopes/index.html
       href: /presentations/scopes/
+    - name: TaskCluster 101: Platform Introduction
+      url:  /presentations/TC-101/index.html
+      href: /presentations/TC-101/
+    - name: TaskCluster 102: Advanced TaskCluster User Issues
+      url:  /presentations/TC-102/index.html
+      href: /presentations/TC-102/
       # name: Listening for Task Events (PulseListener + WebListener)
       # name: Tasks w. Custom Routes (custom routes, scopes, WebListener)
       # name: Browsing the Index
