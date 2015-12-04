@@ -40,6 +40,14 @@ sections:
     - name: Introduction
       url:  /learn/index.html
       href: /learn/
+    - divider: true
+    - heading: Tutorials
+    - name: Introduction
+      url:  /learn/tutorials/index.html
+      href: /learn/tutorials
+    - name: Modern Async Javascript
+      url:  /learn/async-javascript/index.html
+      href: /learn/async-javascript
     - name: Authenticate
       url:  /learn/authenticate/index.html
       href: /learn/authenticate
