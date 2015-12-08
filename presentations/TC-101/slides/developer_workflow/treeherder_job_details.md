@@ -7,6 +7,6 @@
 * Task Log
 
 <img
-  src="slides/developer_workflow/treeherder_job_details_annotation.png"
+  src="slides/developer_workflow/images/treeherder_job_details_annotation.png"
   style="border: none;"
 />
