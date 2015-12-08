@@ -9,7 +9,9 @@
       * Alernative setup docker,kernel modules for video and audio loopback devices
     * Some features such as testdroid device not available locally
 
+<center>
 <img
-  src="slides/developer_workflow/run_locally.png"
+  src="slides/developer_workflow/images/run_locally.png"
   style="border: none;"
 />
+</center>
