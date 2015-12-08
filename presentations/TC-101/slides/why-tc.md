@@ -2,14 +2,14 @@
 ### Why TaskCluster?
 
 
-TaskCluster increases transparency and reproducibility.
+Things TC is bringing to the table: 
 
-
-Examples: 
-
- * Making a configuration change to a container
- * Adding a package to the build environment
- * Making a system environment variable change for a test
+ * A modern webservices architecture
+ * Default to public
+ * Infinite chunking
+ * Containerization for Linux
+ * A worker process and isolation for Windows/OS X
+ 
 
 
 
@@ -6959,6 +6959,9 @@ In TaskCluster *your repository owns*:
 
 ### Why TaskCluster?
 
+TaskCluster increases transparency and reproducibility for developers.
+
  * We moved control over project configuration and runtime environment in-tree.
  * RelEng will still support configs for our core builds and workerTypes.
  * You can make changes to the environment and test in try!
+
