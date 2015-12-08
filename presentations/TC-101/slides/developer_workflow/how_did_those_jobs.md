@@ -4,9 +4,10 @@
     Buildbot<br>
 
     <ul>
-      <li>Push hook - buildbot master</li>
-      <li>Job pushed to buildbot worker by buildbot master</li>
-      <li>Parent jobs schedule dependent jobs once complete</li>
+      <li>ChangeSources - push/poll repo</li>
+      <li>Schedulers - process Change objects from ChangeSources</li>
+      <li>BuildRequests - pending jobs</li>
+      <li>Scheduler configuration determines what happens in response to a push</li>
     </ul>
 
 <div class="fragment">

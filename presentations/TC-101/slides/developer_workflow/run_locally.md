@@ -4,7 +4,8 @@
 * Caveats
     * Only works for docker based tasks currently
     * Some setup needed
-      * taskcluster-docker-environment
+      * taskcluster docker environment
+        * Clone docker-worker repo, run 'vagrant up'
         * requires virtualbox (might not be an option on some Linux installations)
       * Alernative setup docker,kernel modules for video and audio loopback devices
     * Some features such as testdroid device not available locally
