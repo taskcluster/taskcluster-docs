@@ -64,6 +64,7 @@
 
 <!-- Add your slides using an entry like this, so you have markdown files
      Please don't add all your content into this file, that is a mess  -->
+<section>
 <section id="intree-01" data-markdown="slides/intree-config/01-taskcluster.md"></section>
 <section id="intree-02" data-markdown="slides/intree-config/02-overview.md"></section>
 <section id="intree-03" data-markdown="slides/intree-config/03-scopes.md"></section>
@@ -73,6 +74,8 @@
 <section id="intree-07" data-markdown="slides/intree-config/07-branch.md"></section>
 <section id="intree-08" data-markdown="slides/intree-config/08-branch.md"></section>
 <section id="intree-09" data-markdown="slides/intree-config/09-running.md"></section>
+</section>
+<section>
 <section id="images-01" data-markdown="slides/intree-image/01-docker-image.md"></section>
 <section id="images-02" data-markdown="slides/intree-image/02-task-image.md"></section>
 <section id="images-03" data-markdown="slides/intree-image/03-image-workflow.md"></section>
@@ -83,6 +86,8 @@
 <section id="images-08" data-markdown="slides/intree-image/08-treeherder1.md"></section>
 <section id="images-09" data-markdown="slides/intree-image/09-treeherder2.md"></section>
 <section id="images-10" data-markdown="slides/intree-image/10-treeherder3.md"></section>
+</section>
+<section>
 <section id="hooks-01" data-markdown="slides/hooks/01-cron.md"></section>
 <section id="hooks-02" data-markdown="slides/hooks/02-creating.md"></section>
 <section id="hooks-03" data-markdown="slides/hooks/03-scopes.md"></section>
@@ -92,6 +97,382 @@
 <section id="prov-04" data-markdown="slides/provisioner/04-killing.md"></section>
 <section id="prov-05" data-markdown="slides/provisioner/05-breakage.md"></section>
 <section id="prov-06" data-markdown="slides/provisioner/06-contributing.md"></section>
+</section>
+<section>
+<section data-markdown>
+<aside class="notes">
+<ul>
+		<li>Go focus</li>
+</ul>
+
+<script type="text/template">
+		<h1><img src="../taskcluster-120.png" style="background: transparent; border: none; margin: 0px; vertical-align: bottom;"/>&nbsp;TaskCluster</h1>
+		<table>
+			<tr><td>Topic:</td><td>TaskCluster Client Libraries</td></tr>
+			<tr><td>Speaker:</td><td>Peter Moore</td></tr>
+			<tr><td>Duration:</td><td>15 mins</td></tr>
+		</table>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Topics
+		<ul>
+			<li class="fragment">What are the TaskCluster client libraries?</li>
+			<li class="fragment">What can you do with them?</li>
+			<li class="fragment">Live examples</li>
+			<li class="fragment">Reference materials</li>
+			<li class="fragment">Extending</li>
+			<li class="fragment">Advanced Features</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Interfaces to TaskCluster
+
+		<ul class="fragment">
+		<li>[Tree Herder](http://treeherder.mozilla.org/)</li>
+		<li>[Web Tools](http://tools.taskcluster.net/)</li>
+		<li>[Client Libraries](#/5/17)</li>
+		</ul>
+
+		<p class="fragment">__Anything__ you can via one of these web interfaces, you can also script.</p>
+
+		<p class="fragment">You can also do much, much more.</p>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Libraries to access TaskCluster APIs
+
+		HTTP Examples:
+		
+		<ul>
+		<li class="fragment">Create a Task</li>
+		<li class="fragment">Purge a Cache</li>
+		<li class="fragment">Modify a Role</li>
+		<li class="fragment">Get a WorkerType</li>
+		</ul>
+
+		AMQP Examples:
+
+		<ul>
+		<li class="fragment">Listen for task failures</li>
+		<li class="fragment">Listen for purge cache events</li>
+		<li class="fragment">Listen for worker shutdowns</li>
+		<li class="fragment">Listen for completed task graphs</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## HTTP APIs:
+
+		This is the current list of HTTP APIs:
+
+		<ul>
+		  <li class="fragment">Queue</li>
+		  <li class="fragment">Index</li>
+		  <li class="fragment">Auth</li>
+		  <li class="fragment">AWS Provisioner</li>
+		  <li class="fragment">Secrets</li>
+		  <li class="fragment">Scheduler</li>
+		  <li class="fragment">Hooks</li>
+		  <li class="fragment">Purge Cache</li>
+		</ul>
+
+		Note, each API maps to a TaskCluster component.
+
+		More about this later...
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## AMQP APIs (Pulse):
+
+		This is the current list of AMQP (Pulse) APIs:
+
+		<ul>
+		  <li class="fragment">Queue Events</li>
+		  <li class="fragment">Scheduler Events</li>
+		  <li class="fragment">Purge Cache Events</li>
+		  <li class="fragment">AWS Provisioner Events</li>
+		</ul>
+
+		Note, again, each API maps to a TaskCluster Component (but not all components expose an AMQP API).
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Anatomy
+
+		<ul>
+		<li class="fragment">Four libraries:
+		<ul>
+		  <li>node.js</li>
+		  <li>python</li>
+		  <li>go</li>
+		  <li>java</li>
+  </ul></li>
+		<li class="fragment">Access to HTTP APIs</li>
+		<li class="fragment">Access to AMQP (Pulse) APIs</li>
+		<li class="fragment">Additional Utility functions (more about this later...)</li>
+		</ul>
+
+		See [Tools -> Client Libraries](/tools/clients/)
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Example - Go Client
+
+```go
+import "github.com/taskcluster/taskcluster-client-go/queue"
+...
+myQueue := queue.New(clientId, accessToken)
+myQueue.Certificate = certificate
+
+taskId, taskGroupId := slugid.Nice(), slugid.Nice()
+
+td := &queue.TaskDefinitionRequest{
+  Created:  queue.Time(time.Now()),
+  Deadline: queue.Time(time.Now().AddDate(0, 0, 1)),
+  Expires:  queue.Time(time.Now().AddDate(0, 1, 0)),
+  Payload: json.RawMessage(`{
+      "command": [ ... ],
+      "maxRunTime": 7200,
+  }`),
+  Retries:       1,
+  ...
+}
+result, callSummary, err := myQueue.CreateTask(taskId, td)
+if err != nil { // handle error }
+```
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Example - Python Client
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Example - Node.js Client
+
+```node
+let taskcluster = require('taskcluster-client');
+
+let task = {
+  provisionerId:  'aws-provisioner-v1',
+  workerType:     'b2gtest',
+  created:        (new Date()).toJSON(),
+  deadline:       taskcluster.fromNowJSON('2 days 3 hours'),
+  metadata:       { ... }
+  payload:        {}, // worker specific payload
+  
+  // Further properties would go here
+};
+
+let taskId = taskcluster.slugid();
+
+// Create a Queue client object w. temporary credentials
+let queue = new taskcluster.Queue({
+credentials: myCredentials
+});
+
+// Create task
+let result = await queue.createTask(taskId, task);
+```
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Example - Java Client
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Review of typical use cases:
+
+		<ul>
+		<li class="fragment">Schedule a task</li>
+		<li class="fragment">Schedule a group of tasks</li>
+		<li class="fragment">Find a task run</li>
+		<li class="fragment">Download an artifact</li>
+		<li class="fragment">Cancel a task</li>
+		<li class="fragment">Create a new client</li>
+		<li class="fragment">Adjust a role</li>
+		<li class="fragment">List roles</li>
+		<li class="fragment">Create a new client</li>
+		<li class="fragment">Retrieve a secret</li>
+		<li class="fragment">Perform an action in response to an event</li>
+		</ul>
+
+See http://godoc.org/github.com/taskcluster/taskcluster-client-go
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## HTTP APIs
+
+		<ul>
+		<li class="fragment">Each component _declares_ HTTP APIs</li>
+		<li class="fragment">Example: aws-provisioner/lib/routes/v1.js</li>
+		<li class="fragment">APIs require scopes</li>
+		<li class="fragment">APIs have input and output schemas</li>
+		<li class="fragment">Example: aws-provisioner/schemas/get-secret-response.yml</li>
+		<li class="fragment">After deploying provisioner, automatic updates to:</li>
+		<ul>
+		  <li class="fragment">http://schemas.taskcluster.net/aws-provisioner/v1/get-secret-response.json</li>
+		  <li class="fragment">http://references.taskcluster.net/aws-provisioner/v1/api.json</li>
+		</ul>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## References and Schemas
+
+		<ul>
+		<li class="fragment">Formal declarations of all TaskCluster API endpoints</li>
+		<li class="fragment">All APIs protected by scopes</li>
+		<li class="fragment">To add APIs, create a new TaskCluster component</li>
+		<li class="fragment">Input/Output can be validated via json schema</li>
+		</ul>
+
+		&nbsp;
+
+		### Catalogue of APIs
+
+		<ul>
+		<li class="fragment">http://references.taskcluster.net/manifest.json</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		# Clients are dumb
+
+		<ul>
+		<li class="fragment">References and schemas define syntax</li>
+		<li class="fragment">Clients are agnostic to the services they connect to</li>
+		</ul>
+
+		&nbsp;
+
+		## Adding new APIs
+
+		<ul>
+		<li class="fragment">Create a new reference in your TaskCluster component</li>
+		<li class="fragment">Add it to http://references.taskcluster.net/manifest.json</li>
+		<li class="fragment">The python and node clients are routinely republished</li>
+		<li class="fragment">The go and java clients will be updated within an hour</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Client specialties
+
+		### Node.js
+		The Node.js client can run directly in your browser via browserify. This is how the tools.taskcluster.net tools work.
+
+		### Go and Java
+		Both these clients provide compile time guarantees that your data structures are valid. No more editing code, running a job for two hours, only to discover you spelt a property name wrong.
+
+		### Python
+		For easy integration with the majority of tools at mozilla.
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Caveats
+
+		The Java client does not support AMQP APIs.
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Online Support
+
+		<ul>
+		<li class="fragment">Remember the [client libraries page](/tools/clients/)</li>
+		<li class="fragment">See our [node.js client tutorials](/learn/async-javascript/)</li>
+		<li class="fragment">See the API docs:</li>
+		<ul>
+		  <li class="fragment">[Queue](/queue/api-docs/)</li>
+		  <li class="fragment">[Scheduler](/scheduler/api-docs/)</li>
+		  <li class="fragment">[Auth](/auth/api-docs/)</li>
+		  <li class="fragment">[AWS Provisioner](/aws-provisioner/api-docs/)</li>
+		  <li class="fragment">[Index](/services/index/)</li>
+		  <li class="fragment">[Purge Cache](/services/purge-cache/)</li>
+		  <li class="fragment">[GitHub](/services/taskcluster-github/)</li>
+		  <li class="fragment">[Secrets](/services/secrets/)</li>
+		  <li class="fragment">[Hooks](/services/hooks/)</li>
+		</ul>
+		<li class="fragment">Read the [go docs](http://godoc.org/github.com/taskcluster/taskcluster-client-go)</li>
+		<li class="fragment">Look after for new APIs as we all develop new components</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Putting It All Together
+
+		Time for some live coding!
+
+		<ul>
+		<li class="fragment">Generic Worker integration tests</li>
+		<li class="fragment">Buildbot Bridge</li>
+		<li class="fragment">Task Creator</li>
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Advanced features
+
+		<ul>
+		* Issuing temporary credentials
+		</ul>
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Obtaining credentials
+
+		Contact us in #taskcluster channel on IRC
+</script>
+</section>
+
+<section data-markdown>
+<script type="text/template">
+		## Getting Involved
+</script>
+</section>
+
+</section>
 <section id="the-end" data-markdown="slides/end.md"></section>
 
 
