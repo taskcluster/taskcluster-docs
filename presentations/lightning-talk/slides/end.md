@@ -1,6 +1,7 @@
 ### Conclusion
 
- * More on images in-tree:
+ * Interaction sessions on-demand
+ * Change test images on-push:
    * https://dxr.mozilla.org/mozilla-central/rev/tip/testing/docker/README.md
  * Questions? (ask us afterwards)
  * This is still rolling out (experimental)...

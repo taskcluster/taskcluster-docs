@@ -1,8 +1,8 @@
-### Linux Docker Tasks
+### Docker Task Definition
 
- * Task Definition:
    * `docker` image (contains binaries, libc, vim, gcc, ...)
-   * Command, ...
+   * Command
+   * Env, artifacts, caches, ...
 
 ```js
 task: { // Image from docker hub
