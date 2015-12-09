@@ -176,11 +176,13 @@ sections:
       href: /services/hooks/
   - name: Development
     links:
-    - name: Github Projects
-      url:  https://github.com/taskcluster
     - name: Conventions
       url:  /devel/conventions/index.html
       href: /devel/conventions/
     - name: Namespaces
       url:  /devel/namespaces/index.html
       href: /devel/namespaces/
+    - name: Github Projects
+      url:  https://github.com/taskcluster
+    - name: Travis CI Status
+      url:  https://travis-ci.org/taskcluster
