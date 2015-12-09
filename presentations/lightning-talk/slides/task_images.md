@@ -1,10 +1,18 @@
-### Task Images
+### Linux Docker Tasks
 
-* stored as task artifacts
-* tasks define what task ID and image path to use
+ * Task Definition:
+   * `docker` image (contains binaries, libc, vim, gcc, ...)
+   * Command, ...
 
 ```js
-task: {
+task: { // Image from docker hub
+  payload: {
+    image: "garndt/custom-ubuntu:latest"
+    ...
+  }
+}
+
+task: { // Image as artifact (from another task)
   payload: {
     image: {
       type:   'task-image',
@@ -13,4 +21,5 @@ task: {
     },
     ...
   }
+}
 ```

@@ -2,6 +2,6 @@
 
 On-push image building:
 
-* edit image context
-* commit changes and push to vcs
+* Edit image context
+* Commit changes and push to vcs
 * Decision task triggers image building task
