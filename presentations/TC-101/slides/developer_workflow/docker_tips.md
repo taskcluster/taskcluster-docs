@@ -6,7 +6,7 @@
     * Mount local source checkout
     * Keep cached copies of object directory and tc-vcs checkouts
 * Space issues
-  * use '-rm' to remove container after completion
+  * use '--rm' to remove container after completion
 * Enter running container
   * use 'docker exec -it <container id> /bin/bash'
 

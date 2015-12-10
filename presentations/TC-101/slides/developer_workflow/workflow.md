@@ -136,7 +136,7 @@ change code -> commit -> push to try -> magic symbols on treeherder
      transform="translate(-227.57133,235.97179)">
     <g
        id="g5290"
-       class="fragment">
+       >
       <g
          transform="matrix(2.7533673,0,0,2.7533673,-401.68292,-356.42785)"
          id="g4654">
@@ -175,7 +175,7 @@ change code -> commit -> push to try -> magic symbols on treeherder
     </g>
     <g
        id="g4700"
-       class="fragment">
+       >
       <rect
          y="-88.375328"
          x="756.34265"
@@ -197,7 +197,7 @@ change code -> commit -> push to try -> magic symbols on treeherder
     </g>
     <g
        id="g4705"
-       class="fragment">
+       >
       <rect
          y="198.57579"
          x="831.08539"

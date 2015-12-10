@@ -6,3 +6,9 @@
   * Dependencies not scheduled upon completion
   * Routes removed
   * Must possess scopes for scheduling task
+<center>
+<img
+  src="slides/developer_workflow/images/run_locally.png"
+  style="border: none;"
+/>
+</center>

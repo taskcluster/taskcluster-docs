@@ -4,7 +4,7 @@ Q1:
 
  * Big Graph Scheduler - enables larger task-graphs, self-dependencies
  * Production support for OS X on hardware
- * Improve operational support
+ * Refactor the workers
 
 Q2: 
 

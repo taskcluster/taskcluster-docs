@@ -3,7 +3,7 @@
  TaskCluster is a task execution platform.
  You can:
 
- * Run any command.
+ * Run any command in a container.
  * Configure and install software you need.
  * Run the task exec environment locally.
 
@@ -26,6 +26,9 @@ https://tools.taskcluster.net/introduction/getting-started/
 
 
 ---
+
+
+
 
 
 
@@ -52,6 +55,33 @@ A simple task:
   }
 }
 ```
+
+
+
+
+
+
+---
+
+
+### Tasks live in tree!
+
+
+
+
+We made an intentional choice to move this configuration to the code:
+
+```
+testing/taskcluster/*
+
+```
+
+We have 41 build and 177 test tasks in-tree today.
+
+ * B2G builds and tests, 
+ * Linux debug and some tests, and 
+ * OS X cross-compiled builds
+
 
 
 
