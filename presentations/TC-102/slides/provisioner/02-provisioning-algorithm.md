@@ -4,4 +4,5 @@
 * Sort them into buckets by state and workerType
 * Get the number of pending tasks
 * Determine difference between pending tasks and extant capacity
+* Min and max capacity
 * Submit bids

@@ -1,6 +1,7 @@
-## Creating Worker Types
+## Overview
 
-* Capacity, utility factor and bias
+* Bids on all EC2 nodes we have
+* spot bids
 * Worker Type definitions
-* Requirements of Provisioner
+* Capacity, utility factor and bias
 
