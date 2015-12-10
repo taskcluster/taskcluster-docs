@@ -7,3 +7,4 @@
  * Bias based on statistics
 * Comparison price is used to pick instanceType, availabilityZone and region
 * We submit for 2x the actual billable SpotPrice
+* Sanity limits
