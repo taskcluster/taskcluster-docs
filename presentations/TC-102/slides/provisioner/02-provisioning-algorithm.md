@@ -1,4 +1,4 @@
-## Algorithm to figure out if we need more bids
+## Determining what bids we need
 
 * List all owned Instance and SpotRequests
 * Sort them into buckets by state and workerType
