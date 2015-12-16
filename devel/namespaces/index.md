@@ -96,7 +96,7 @@ Artifact names are, by convention, slash-separated.
    In other words, any task can create an artifact named `public/build/firefox.exe` , so do not trust such a file without verifying the trustworthiness of the task.
 
 * `private/…` -
-   Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed (e.g., to all Mozilla employees).
+   Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed (e.g., to all Mozilla employees, contractors and community members under NDA).
    In general, users with narrower requirements than "not public" should select a different prefix and add it to this document.
 
 * `project/<project>/…` -
