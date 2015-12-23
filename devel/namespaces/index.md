@@ -133,6 +133,10 @@ Secrets provide key-value storage governed by scopes.
 As such, it's very important that secrets not be unexpectedly made accessible to users who should not see them.
 Secret names have the following structure:
 
+* `garbage/<ircnick>/` -
+  Secrets with this prefix are not actually secret - lots of people have access to them.
+  This is a place to test out interfaces to the secrets API, but do not store anything important here.
+
 * `project/<project>/` -
   Secrets with this prefix are the exclusive domain of the given project.
   Users not associated with a project should not be given scopes associated with the project's secrets!
