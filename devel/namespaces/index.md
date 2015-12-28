@@ -123,9 +123,31 @@ In the present implementation, both of these are arbitrary strings.
 For workers started by the AWS provisioner, they are avaiability zone and instance ID, respectively.
 For other worker types, anything goes.
 
-## Caches
+## Docker-Worker Caches
 
-Caches are not namespaced, but they [should be](https://bugzilla.mozilla.org/show_bug.cgi?id=1220684).
+Docker-worker caches are located on individual host machines, and thus may be shared among tasks with the same workerType.
+The namespaces for these caches help to avoid collisions and prevent cache-poisoning attacks.
+
+Cache names do not contain directory separators.
+
+Note: this is a [work in progress](https://bugzilla.mozilla.org/show_bug.cgi?id=1220684).
+
+* `gaia-…` -
+  Caches with this prefix are used by gaia builds, limited to the https://github.com/mozilla-b2g/gaia repository
+
+* `tooltool-cache` -
+  This cache contains cached downloads from tooltool.
+  Since tooltool is content-addressible, and verifies hashes on files in the cache, there is no risk of cache poisoning or collisions.
+
+* `level-<level>-<tree>-…` -
+  Caches with these prefixes correspond to tasks at the corresponding SCM levels.
+  See [Mozilla Commit Access Policy](https://www.mozilla.org/en-US/about/governance/policies/commit/access-policy/) for information on levels.
+  The rest of this namespace is free-form and generally divided by task type, with the following common cases:
+
+  * `level-<level>-<tree>-decision` - decision task workspace
+  * `level-<level>-<tree>-tc-vcs` `level-<level>-<tree>-tc-vcs-public-sources` - taskcluster-vcs caches
+  * `level-<level>-<tree>-linux-cache` - cache of `~/.cache`, containing Python packages among other things
+  * `level-<level>-<tree>-build-<platform>` - workspace cache for builds for the given platform
 
 ## Secrets
 
