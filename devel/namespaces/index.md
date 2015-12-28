@@ -173,3 +173,6 @@ The index provides a nice, dot-separated hierarchy of names.
 * `tc-vcs.v1` -
    Tasks indexed under this prefix represent caches used by the TaskCluster VCS tool to avoid crushing version-control hosts.
    These are the responsibility of the taskcluster team.
+
+* `project.<project>.…` -
+  Tasks indexed under this prefix are the domain of the respective project.
