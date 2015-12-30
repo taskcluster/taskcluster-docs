@@ -135,7 +135,7 @@ Example:
 }
 ```
 
-#### Features: `balrogVPNProxy`
+#### Feature: `balrogVPNProxy`
 
 Required scopes: `docker-worker:feature:balrogVPNProxy`
 
@@ -168,7 +168,7 @@ References:
 * [taskcluster-vpn-proxy](https://github.com/taskcluster/taskcluster-vpn-proxy)
 * [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/balrog_vpn_proxy.js)
 
-#### Features: `taskclusterProxy`
+#### Feature: `taskclusterProxy`
 
 The taskcluster proxy provides an easy and safe way to make authenticated
 taskcluster requests within the scope(s) of a particular task.
@@ -196,6 +196,12 @@ with _only_ the scopes listed in the task (in this case ["a", "b"])
 | scheduler.taskcluster.net       | taskcluster/scheduler/        |
 | index.taskcluster.net           | taskcluster/index/            |
 | aws-provisioner.taskcluster.net | taskcluster/aws-provisioner/  |
+| secrets.taskcluster.net         | taskcluster/secrets/          |
+| auth.taskcluster.net            | taskcluster/auth/             |
+| hooks.taskcluster.net           | taskcluster/hooks/            |
+| purge-cache.taskcluster.net     | taskcluster/purge-cache/      |
+
+and maybe more - see [the source](https://github.com/taskcluster/taskcluster-proxy/blob/master/taskcluster/services.go).
 
 For example (using curl) inside a task container.
 
@@ -219,7 +225,7 @@ References:
 * [taskcluster-proxy](https://github.com/taskcluster/taskcluster-proxy)
 * [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/taskcluster_proxy.js)
 
-#### Features: `testdroidProxy`
+#### Feature: `testdroidProxy`
 
 Source: https://github.com/taskcluster/testdroid-proxy
 
@@ -245,7 +251,7 @@ References:
 * [testdroid-proxy](https://github.com/taskcluster/testdroid-proxy)
 * [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/testdroid_proxy.js)
 
-#### Features: `dockerSave`
+#### Feature: `dockerSave`
 
 Status: Unstable, api may be changed
 
@@ -278,7 +284,7 @@ References:
 
 * [implementation](https://github.com/taskcluster/docker-worker/blob/master/lib/features/docker_save.js)
 
-####Features: `interactive`
+#### Feature: `interactive`
 
 Allows ssh-like access to running containers. Will extend the lifetime of a task to allow a user to SSH in before the container dies, so be careful when using this feature. Will also keep the task alive while is connected and a little bit after that so a user can keep working in ssh after the task ends. 
 
@@ -300,6 +306,50 @@ References:
 * [docker-worker integration](https://github.com/taskcluster/docker-worker/blob/master/lib/features/interactive.js)
 * [implementation](https://github.com/taskcluster/docker-exec-websocket-server)
 
+#### Feature: `relengAPIProxy`
+
+Status: stable, but limited access
+
+Like the Taskcluster proxy, this proxy allows easy and safe access to RelengAPI without embedding RelengAPI credentials in the task.
+
+The task must indicate the RelengAPI permissions it needs using scopes of the form `docker-worker:relengapi-proxy:<permission>`.
+Wildcard expansion is not allowed.
+
+Example:
+
+```js
+{
+  "scopes": [
+    "docker-worker:relengapi-proxy:tooltool.download.internal"
+  ],
+  "payload": {
+    "features": {
+      "relengAPIProxy": true,
+    }
+  }
+}
+```
+
+Requests can then be made from the task container, using `http://relengapi` in place of `https://api.pub.build.mozilla.org`.
+
+The set of allowed RelengAPI permissions are currently limited to
+
+ * `tooltool.download.public`
+ * `tooltool.download.internal`
+
+References:
+
+* [relengapi-proxy](https://github.com/taskcluster/relengapi-proxy)
+
+#### Feature: `allowPtrace`
+
+Status: stable
+
+This feature allows tasks to use the ptrace(2) syscall.
+The Firefox crash reporter, for example, requires this functionality.
+
+The feature accomplishes its magic by creating a task-specific AppArmor profile that allows any process in the profile to trace any other process in the profile.
+While this should be safe, assuming that all processes in the task container are at an equal privilege level, it is a deviation from the Docker security model and thus should be used with caution.
 
 ## Volume Caches
 
