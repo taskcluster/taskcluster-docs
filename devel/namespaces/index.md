@@ -109,6 +109,7 @@ Within a hook group, the names are arbitrary (or defined by the project).
 
 * `taskcluster` - hooks used internally for taskcluster maintenance
 * `project-<project>` - hooks for a specific project
+* `garbage` - playground for testing; hooks can be created here, but anyone can modify or delete them!
 
 ## Worker Types
 
