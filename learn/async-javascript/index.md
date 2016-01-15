@@ -43,7 +43,7 @@ Modern `async` Javascript
 All the Javascript examples in these tutorials are compiled with
 [babeljs](https://babeljs.io/) using proposed ES7 features (stage 1).
 This setup transpiles ES6 and ES7 proposed features to ES5 before they are
-evaluated, allowing us to use the same powerful of asynchronous features in both
+evaluated, allowing us to use the same powerful asynchronous features in both
 the browser and node.js (neither of which implement `async` functions yet).
 
 ### Promises
@@ -116,7 +116,7 @@ aPromiseObject.then(function(results) {
 });
 </pre>
 
-As seen the example when the promise from `Promise.all(promises)` is fulfilled,
+As seen in the example when the promise from `Promise.all(promises)` is fulfilled,
 it is fulfilled with an array of the results from `myAsyncFunc()` as result. Using
 `Promise.all()` is useful when doing things in parallel, and is particularly
 useful in combination with `Array.map`.
@@ -291,7 +291,7 @@ their [editor](https://babeljs.io/repl/) a spin.
 ### Other ES6 Features
 
 As previously mentioned babeljs compiles all ES6 features to ES5 and some of
-these features very nifty. For a complete look at the features, review the
+these features are very nifty. For a complete look at the features, review the
 [babeljs introduction](https://babeljs.io/docs/learn-es2015/). This section will
 give a quick overview of the ES6 features we've found useful.
 
