@@ -136,11 +136,11 @@ certain that another run of the task will have the same result. This differs
 from `queue.reportFailure` in the sense that we report a failure if the task
 specific code failed.
 
-Most tasks includes a lot of declarative steps, such as poll a docker image,
+Most tasks include a lot of declarative steps, such as poll a docker image,
 create cache folder, decrypt encrypted environment variables, set environment
 variables and etc. Clearly, if decryption of environment variables fail, there
 is no reason to retry the task. Nor can it be said that the task failed,
-because the error wasn't cause by execution of Turing complete code.
+because the error wasn't caused by execution of Turing complete code.
 
 If however, we run some executable code referenced in `task.payload` and the
 code crashes or exists non-zero, then the task is said to be failed. The
@@ -150,11 +150,11 @@ the execution of task specific Turing complete code.
 
 Terminating the Worker Early
 ----------------------------
-If the worker finds itself having to terminate early, for example a spot nodes
+If the worker finds itself having to terminate early, for example a spot node
 that detects pending termination. Or a physical machine ordered to be
 provisioned for another purpose, the worker should report exception with the
 reason `worker-shutdown`. Upon such report the queue will resolve the run as
-exception and create a new run, if the task has additional retries left.
+an exception and create a new run, if the task has additional retries left.
 
 
 Reporting Task Result
