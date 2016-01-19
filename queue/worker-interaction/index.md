@@ -152,7 +152,7 @@ Terminating the Worker Early
 ----------------------------
 If the worker finds itself having to terminate early, for example a spot node
 that detects pending termination. Or a physical machine ordered to be
-provisioned for another purpose, the worker should report exception with the
+provisioned for another purpose, the worker should report an exception with the
 reason `worker-shutdown`. Upon such report the queue will resolve the run as
 an exception and create a new run, if the task has additional retries left.
 
