@@ -26,7 +26,7 @@ Specifically, Alice will specify the `authorizedScopes` key as specified below.
 Then Alice will base64 encode the JSON object above and include as the `ext`
 attribute in Hawk. When the server receives the request from Alice it will
 first validate that Alice have all the scopes specified in `authorizedScopes`,
-and then use the restricted set of scopes `scopeA` and `scopeB` to evaluate
+and then use the restricted set of scopes `scopeA` and `scopeC` to evaluate
 if the request is authorized.
 
 This technique is used in the task-graph scheduler to ensure that tasks created
