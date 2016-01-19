@@ -15,7 +15,7 @@ completion, specifically that a task completed in a predictable manner.
 The task-graph scheduler on the other hand, doesn't care about which tasks are
 pending, whether or not machines crashes, etc. It cares about the result of
 completed tasks. Hence, when a task completes it is the task-graph scheduler
-that schedules dependent tasks, or tries to rerun the task if the it completed
+that schedules dependent tasks, or tries to rerun the task if it completed
 unsuccessfully.
 
 **Notice**, the distinction between _rerun_ and _retry_, the queue _retries_ as
