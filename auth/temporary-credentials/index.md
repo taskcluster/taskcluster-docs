@@ -5,7 +5,7 @@ class:    markdown
 Temporary Credentials
 =====================
 
-Any client with an `clientId` and an `accessToken` can issue temporary
+Any client with a `clientId` and an `accessToken` can issue temporary
 credentials with a subset of its credentials. Temporary credentials consists of
 a `clientId`, `temporaryAccessToken` and a certificate validating these.
 
@@ -40,7 +40,7 @@ Note, a subset in scope terminology can also be a specialization, for example
 if the issuer has the scope `queue:*` the scopes property can have the scope
 `queue:get-artifact:*`, because it's a specialization of `queue:*`.
 
-The `start` and `expiry` properties is the validity start and expiration of the
+The `start` and `expiry` properties are the validity start and expiration of the
 certificate, respectively. Both `start` and `expiry` are in milliseconds since
 unix epoch, and these cannot be more than 31 days apart. Notice that it is
 allowed to issue temporary credentials that take effect in the future, useful
@@ -106,12 +106,12 @@ each request.
 
 Authenticating with Temporary Credentials
 -----------------------------------------
-If an issuer have provided you with a set of temporary credentials, that is the
+If an issuer has provided you with a set of temporary credentials, that is the
 issuers `clientId`, a certificate (base64 encoded), and a
-`temporaryAccessToken`, then you can perform request using hawk, by signing your
+`temporaryAccessToken`, then you can perform a request using hawk, by signing your
 requests with `clientId` and `temporaryAccessToken`, as well as sending the
 certificate along in the `ext` property. Note, the hawk `ext` is covered by the
-request HMAC, so you'll need to provided before you sign the request.
+request HMAC, so you'll need to provide it before you sign the request.
 
 **Remark**, it is possible to _restrict authorized scopes_ using the `ext` in
 combination with the certificate for a set of temporary credentials. Just merge
