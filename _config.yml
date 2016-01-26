@@ -186,3 +186,5 @@ sections:
       url:  https://github.com/taskcluster
     - name: Travis CI Status
       url:  https://travis-ci.org/taskcluster
+    - name: Open Github Issues/PRs
+      url:  https://github.com/search?utf8=%E2%9C%93&q=user%3Ataskcluster+is%3Aopen&type=Issues&ref=searchresults
