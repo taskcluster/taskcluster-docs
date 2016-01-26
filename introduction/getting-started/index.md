@@ -78,7 +78,7 @@ Decision Tasks and Task Graphs
 What determines what tasks are submitted for a given version-control push?
 For Gecko pushes, a TaskCluster scheduler recognizes the push and submits a "decision task".
 This task is denoted with a "D" in Treeherder, and may be hidden depending on your view.
-It boils down to running `mach task-graph` which submits tasks based on YAML files under `testing/taskcluster/tasks` in the source-code tree.
+It boils down to running `mach taskcluster-graph` which submits tasks based on YAML files under `testing/taskcluster/tasks` in the source-code tree.
 Thus tasks are defined in-tree, and can be developed in try and deployed directly without involvement of any other group.
 
 The tasks for a particular push are tied together in a "task graph".
