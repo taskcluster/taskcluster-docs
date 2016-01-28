@@ -376,40 +376,37 @@ Example:
 }
 ```
 
-## Coalescing
+## Superseding
 
 In some casse, the demand for tasks outstrips the available resources to run those tasks, and pending counts on queues start to grow.
 In many cases, executing some tasks in the queue can render others unnecessary.
 For example, if the test tasks for a later version-control revision succeed, then tests for earlier revisions can be skipped.
-Such earlier tasks are "superseded" by the later task.
+Such earlier tasks are said to be "superseded" by the later task.
 
-Docker-worker supports "coalescing" multiple tasks, executing only one (the "primary task").
-It does so using a "coalescing key", determined as described in the payload schema documentation.
+Docker-worker supports superseding multiple tasks, executing only one (the "primary task").
+Crucially, the primary task need not be the same task that the worker found on the queue, but may be one deeper into the queue (e.g., a change pushed to version control later).
+It does so with the help of a superseder service, specified in the task payload as `supersederUrl`:
 
 Example:
 
 ```js
 {
-    "routes": [
-        "coalesce.foo.v1.build.master"
-    ],
-    "coalescer": {
-        "routePrefix": "coalesce.foo.v1",
-        "url": "https://foo-coalescer.herokuapp.com/"
-    }
+    "supersederUrl": "https://foo-coalescer.herokuapp.com/build/linux/master"
 }
 ```
 
-This task would have coalescing key `build.master`.
-The worker gets the list of tasks to coalesce by appending the coalescing key to the URL.
-The returned list is sorted such that each task supersedes all tasks appearing earlier in the list.
+The docker-worker will append the taskId of the task it has received from the queue (the "initial taskId") as a query argument, `?taskId=<taskId>`.
+The supserseding task is free to interpret the URL path in any way.
+
+The supserseder returns a list of taskIds, including the initial taskId, in the `supersedes` property of the response body.
+The list is sorted such that each task supersedes all tasks appearing earlier in the list.
 The worker will attempt to claim each task, and execute the highest-indexed task for which `claimTask` succeeds -- this task becomes the primary task.
 
-Continuing the example, the foo-coalescer service migh respond with
+Continuing the example, given an initial taskId of `E5SBRfo-RfOIxh0V4187Qg`, the foo-coalescer service might respond with
 
 ```js
 {
-    "build.master": [
+    "supersedes": [
         "E5SBRfo-RfOIxh0V4187Qg",
         "909mRog1E98Va0g-bb91ba",
         "KGt8egfvRaqxczIRgOScaw"
@@ -420,7 +417,7 @@ Continuing the example, the foo-coalescer service migh respond with
 This indicates that, for this coalescing key, the best task to execute is `KGt8egfvRaqxczIRgOScaw`, superseding `909mRog1E98Va0g-bb91ba` and `E5SBRfo-RfOIxh0V4187Qg`.
 The worker would try to claim all three tasks.
 If the claims succeeded for all but the last task, then it would consider `909mRog1E98Va0g-bb91ba` the primary task and execute it.
-Note that this is probably not the same task that it pulled from the queue!
+Note that this is not the same task that it received from the queue!
 
 When the primary task completes, all of the secondary tasks are resolved as exception/superseded, with an artifact named `public/supersedes.json` containing the `taskId` and `runId` of the primary task.
 The primary task gets an artifact named `public/superseded-by.json` with a list of `{taskId, runId}` for the tasks it superseded.
