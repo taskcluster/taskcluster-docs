@@ -58,9 +58,9 @@ temporary credentials with more descriptive clientIds, such as
 
 This is accomplished by including the actual cliendId used to issue the
 temporary credentials in the  `issuer` property of the certificate, along with
-a `name` property giving the name that should be used with the credential.  The
-issuer must have the scope `auth:create-client:<name>`, and any use of the
-credential must use `name` as the `clientId`.
+a `clientId` property giving the clientId that should be used with the credential.  The
+issuer must have the scope `auth:create-client:<clientId>`, and any use of the
+credential must use clientId as the Hawk ID.
 
 Signature Generation
 --------------------
@@ -85,7 +85,7 @@ or, for named temporary credentials:
 
 ```
 version:1\n
-name:<name>\n
+clientId:<clientId>\n
 issuer:<issuer>\n
 seed:<seed>\n
 start:<start>\n
@@ -97,9 +97,9 @@ scopes:\n
 <scopes[n]>
 ```
 
-These cases can be distinguished by the presence or absence of the `name` and
-`issuer` properties in the certificate.  A certificate containing only one of
-these properties is not valid.
+These cases can be distinguished by the presence or absence of the `clientId`
+and `issuer` properties in the certificate.  A certificate containing only one
+of these properties is not valid.
 
 In the certificate example from previous section, the string to sign would be:
 
