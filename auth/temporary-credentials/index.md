@@ -57,8 +57,7 @@ temporary credentials with more descriptive clientIds, such as
 `tc-login/sso/someuser@mozilla.com`.
 
 This is accomplished by including the actual cliendId used to issue the
-temporary credentials in the  `issuer` property of the certificate, along with
-a `clientId` property giving the clientId that should be used with the credential.  The
+temporary credentials in the  `issuer` property of the certificate.  The
 issuer must have the scope `auth:create-client:<clientId>`, and any use of the
 credential must use clientId as the Hawk ID.
 
@@ -97,9 +96,9 @@ scopes:\n
 <scopes[n]>
 ```
 
-These cases can be distinguished by the presence or absence of the `clientId`
-and `issuer` properties in the certificate.  A certificate containing only one
-of these properties is not valid.
+These cases can be distinguished by the presence or absence of the `issuer`
+property in the certificate.  The `clientId` must match the provided
+`clientId`.
 
 In the certificate example from previous section, the string to sign would be:
 
