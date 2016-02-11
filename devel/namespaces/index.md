@@ -131,8 +131,6 @@ The namespaces for these caches help to avoid collisions and prevent cache-poiso
 
 Cache names do not contain directory separators.
 
-Note: this is a [work in progress](https://bugzilla.mozilla.org/show_bug.cgi?id=1220684).
-
 * `gaia-…` -
   Caches with this prefix are used by gaia builds, limited to the https://github.com/mozilla-b2g/gaia repository
 
