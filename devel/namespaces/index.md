@@ -46,6 +46,44 @@ Many scopes reflect the namespaces given elsewhere in this document, as describe
    The release engineering team's signing system uses scopes with this prefix.
    Will be deprecated; see [bug 1226019](https://bugzilla.mozilla.org/show_bug.cgi?id=1226019).
 
+## Clients
+
+Client names describe the entity making an API call.
+They are used for logging and auditing, but not for access control -- all access control is performed with scopes.
+ClientIds have the following forms:
+
+ * `mozilla-ldap/<email>` -
+   Clients with this name belong to users who have been authenticated against the Mozilla LDAP database.
+   These are temporary credentials issued by [TaskCluster-Login](https://github.com/taskcluster/taskcluster-login).
+
+ * `persona/<email>` -
+   Clients with this name belong to users who have been authenticated by Persona, conferring a lower level of trust than Mozilla LDAP.
+   These are temporary credentials issued by [TaskCluster-Login](https://github.com/taskcluster/taskcluster-login).
+
+ * `mozilla-ldap/<email>/*`,
+   `persona/<email>/*` -
+   Clients with this form are managed by the user identified by the prefix.
+   The portion of the name matching `*` is at the discretion of the user.
+
+ * `<component>/*` -
+   TaskCluster Platform services generate clientIds with this form.
+   The service itself will generally have a clientId of `<component>`.
+
+ * `queue/task/<taskId>` -
+   Clients of this form represent specific tasks, and are issued by the queue in the form of temporary credentials.
+
+ * `aws-provisioner/worker/<workerGroupId>/<workerId>` -
+   Clients of this form represent specific wokers, and are issued by the AWS provisioner in the form of temporary credentials.
+
+ * `project/<project>/*` -
+   Clients for a specific project have this prefix.
+   Administrators for the project are granted control over this namespace, and may further subdivide it as they see fit.
+   They are welcome to document those subdivisions here.
+
+ * `garbage/*` -
+   Playground for testing; clients here should not be active in the wild.
+   Likewise, deleting or modifying clients with this prefix will not cause production failures.
+
 ## Roles
 
 Most roles are defined by some kind of automatic usage in a TaskCluster component.
