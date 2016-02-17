@@ -38,10 +38,6 @@ Many scopes reflect the namespaces given elsewhere in this document, as describe
    Individual projects should use scopes with this prefix.
    Projects are free to document the contained namespace in this document, link to another document, or leave it undocumented.
 
-* `buildbot-bridge:…`
-   The release engineering team's buildbot bridge (BBB) uses scopes with this prefix.
-   Will be deprecated; see [bug 1226018](https://bugzilla.mozilla.org/show_bug.cgi?id=1226018).
-
 * `signing:…`
    The release engineering team's signing system uses scopes with this prefix.
    Will be deprecated; see [bug 1226019](https://bugzilla.mozilla.org/show_bug.cgi?id=1226019).
