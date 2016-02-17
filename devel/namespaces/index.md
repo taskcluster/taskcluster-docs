@@ -84,6 +84,28 @@ Both are listed here:
 * `assume:worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
 
+## Client IDs
+
+Client IDs appear in both permanent credentials and temporary credentials. The
+client IDs of all permanent credentials are registered centrally
+([here](https://tools.taskcluster.net/auth/clients/)). The client IDs of
+temporary credentials are not centrally registered, however they are
+transported in the http header of taskcluster requests, and therefore can be
+logged by taskcluster components.
+
+Until recently, temporary credentials inherited the client ID of the permanent
+credentials that they were created from, but now it is possible to also create
+named temporary credentials with a custom client ID. Both forms of temporary
+credentials are currently in operational use. See [createClient API
+endpoint](http://docs.taskcluster.net/auth/api-docs/#createClient) and
+[Temporary Credentials generation
+process](http://docs.taskcluster.net/auth/temporary-credentials/) for more
+details.
+
+* `garbage/*`
+   These client IDs are reserved for temporary credentials created in automated
+   tests.
+
 ## Artifacts
 
 Artifacts are named objects attached to tasks, and available from the queue component.
