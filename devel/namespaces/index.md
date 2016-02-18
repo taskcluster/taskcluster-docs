@@ -65,7 +65,7 @@ ClientIds have the following forms:
    TaskCluster Platform services generate clientIds with this form.
    The service itself will generally have a clientId of `<component>`.
 
- * `queue/task/<taskId>` -
+ * `queue/task/<taskId>/<runId>` -
    Clients of this form represent specific tasks, and are issued by the queue in the form of temporary credentials.
 
  * `aws-provisioner/worker/<workerGroupId>/<workerId>` -
