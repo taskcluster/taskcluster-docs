@@ -419,5 +419,5 @@ The worker would try to claim all three tasks.
 If the claims succeeded for all but the last task, then it would consider `909mRog1E98Va0g-bb91ba` the primary task and execute it.
 Note that this is not the same task that it received from the queue!
 
-When the primary task completes, all of the secondary tasks are resolved as exception/superseded, with an artifact named `public/supersedes.json` containing the `taskId` and `runId` of the primary task.
-The primary task gets an artifact named `public/superseded-by.json` with a list of `{taskId, runId}` for the tasks it superseded.
+When the primary task completes, all of the secondary tasks are resolved as exception/superseded, with an artifact named `public/superseded-by.json` containing the `taskId` and `runId` of the primary task.
+The primary task gets an artifact named `public/superses.json` with a list of `{taskId, runId}` for the tasks it supersedes.
