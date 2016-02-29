@@ -133,6 +133,9 @@ Artifact names are, by convention, slash-separated.
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed (e.g., to all Mozilla employees, contractors and community members under NDA).
    In general, users with narrower requirements than "not public" should select a different prefix and add it to this document.
 
+* `private/docker-worker/…` -
+   Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed to everybody with commit-level 1 access, regardless of NDA state.
+
 * `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
