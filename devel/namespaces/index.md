@@ -34,7 +34,7 @@ Many scopes reflect the namespaces given elsewhere in this document, as describe
    For example, the `queue.defineTask` call is governed by a scope beginning with `queue:define-task:<details>`, where the details describe a hierarchy of task attributes.
    In cases where an action may be limited along any of several dimensions, each of those dimensions should be a separate scope.
 
-* `project:<project>:…`
+* `project:<project>:…` -
    Individual projects should use scopes with this prefix.
    Projects are free to document the contained namespace in this document, link to another document, or leave it undocumented.
 
@@ -89,7 +89,7 @@ Both are listed here:
 * `hook-id:<hookGroupId>/<hookId>` -
    Roles of this form give the scopes used to create tasks on behalf of hooks.
 
-* `moz-tree:level:<level>`
+* `moz-tree:level:<level>` -
    Roles of this form include the basic scopes available to version-control trees at each of the three Mozilla source-code managament levels.
    They are useful as shorthand to configure `repo:*` roles.
    See [Mozilla Commit Access Policy](https://www.mozilla.org/en-US/about/governance/policies/commit/access-policy/) for information on levels.
@@ -106,7 +106,7 @@ Both are listed here:
 * `mozillians-user:<userName>` -
    Roles of this form represent the scopes available to the given Mozillians user via the login service.
 
-* `project:<project>:…`
+* `project:<project>:…` -
    Roles of this form are controlled by the corresponding project.
 
 * `project-member:<project>` -
