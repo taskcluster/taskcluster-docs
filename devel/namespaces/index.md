@@ -107,14 +107,6 @@ Both are listed here:
    They are useful as shorthand to configure `repo:*` roles.
    See [Mozilla Commit Access Policy](https://www.mozilla.org/en-US/about/governance/policies/commit/access-policy/) for information on levels.
 
-* `scheduler-id:<schedulerId>/<taskGroupId>` -
-   Roles of this form represent scopes available to schedulers with the given ID.
-   Will be deprecated; see [Bug 1228012](https://github.com/taskcluster/taskcluster-queue/pull/67)
-
-* `worker-id:<workerGroup>/<workerId>` -
-   Roles of this form represent scopes available to workers with the given ID.
-   Will be deprecated; see [Bug 1228012](https://github.com/taskcluster/taskcluster-queue/pull/67)
-
 * `worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
 
