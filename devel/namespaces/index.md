@@ -38,10 +38,6 @@ Many scopes reflect the namespaces given elsewhere in this document, as describe
    Individual projects should use scopes with this prefix.
    Projects are free to document the contained namespace in this document, link to another document, or leave it undocumented.
 
-* `signing:…`
-   The release engineering team's signing system uses scopes with this prefix.
-   Will be deprecated; see [bug 1226019](https://bugzilla.mozilla.org/show_bug.cgi?id=1226019).
-
 ## Clients
 
 Client names describe the entity making an API call.
@@ -88,24 +84,47 @@ Both are listed here:
 
 * `client-id:<clientId>` -
    Roles with this prefix give the scopes for client credentials.
+   In general, scopes should be assigned directly to clients, instead.
 
 * `hook-id:<hookGroupId>/<hookId>` -
    Roles of this form give the scopes used to create tasks on behalf of hooks.
-
-* `mozilla-group:<groupName>` -
-   Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
-
-* `mozilla-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozilla LDAP user via the login service.
-
-* `repo:<host>/<path>:branch:<branch>`,
-* `repo:<host>/<path>:pull-request` -
-   Roles of this form represent scopes available to version-control pushes and pull requests.
 
 * `moz-tree:level:<level>`
    Roles of this form include the basic scopes available to version-control trees at each of the three Mozilla source-code managament levels.
    They are useful as shorthand to configure `repo:*` roles.
    See [Mozilla Commit Access Policy](https://www.mozilla.org/en-US/about/governance/policies/commit/access-policy/) for information on levels.
+
+* `mozilla-group:<groupName>` -
+   Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
+
+* `mozilla-user:<userName>` -
+   Roles of this form represent the scopes available to the given Mozilla LDAP user (email) via the login service.
+
+* `mozillians-group:<groupName>` -
+   Roles of this form represent the scopes available to members of the given Mozillians group via the login service.
+
+* `mozillians-user:<userName>` -
+   Roles of this form represent the scopes available to the given Mozillians user via the login service.
+
+* `project:<project>:…`
+   Roles of this form are controlled by the corresponding project.
+
+* `project-member:<project>` -
+   Roles of this form represent the scopes accorded to members of the given project.
+   This role is then be assumed by the appropriate groups.
+   The scopes associated with a `project-member` role are:
+
+   * `auth:{crud}-client:project/<project>/*` - manage project-specific clients
+   * `auth:{crud}-role:hook-id:project-<project>/*` - manage scopes for project-specific hooks
+   * `project:<project>:*` - all project-specific scopes
+   * `queue:get-artifact:project/<project/*` - create project-specific (non-public) artifacts
+   * `hooks:modify-hook:project-<project>/*` - manage project-specific hooks
+   * `secrets:<verb>:project/<project>/*` - manage project-specific secrets
+   * `queue:route:index.project.<project>.*` - manage project routes
+
+* `repo:<host>/<path>:branch:<branch>`,
+* `repo:<host>/<path>:pull-request` -
+   Roles of this form represent scopes available to version-control pushes and pull requests.
 
 * `worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
