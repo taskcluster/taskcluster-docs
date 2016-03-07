@@ -20,7 +20,7 @@ The known projects are:
 
  * `taskcluster` -- The taskcluster platform itself
  * `releng` -- Mozilla release engineering (build, test, and release processes)
- * `gaia` -- B2G/Firefox OS build system
+ * `rust` -- B2G/Firefox OS build system
  * `bmo` -- bugzilla.mozilla.org development
 
 Please file a pull request to add your project!
