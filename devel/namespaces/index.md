@@ -22,6 +22,7 @@ The known projects are:
  * `releng` -- Mozilla release engineering (build, test, and release processes)
  * `gaia` -- B2G/Firefox OS build system
  * `rust` -- Rust development + servo
+ * `ateam` -- The engineering productivity team
 
 Please file a pull request to add your project!
 
