@@ -20,8 +20,8 @@ The known projects are:
 
  * `taskcluster` -- The taskcluster platform itself
  * `releng` -- Mozilla release engineering (build, test, and release processes)
- * `rust` -- B2G/Firefox OS build system
- * `bmo` -- bugzilla.mozilla.org development
+ * `gaia` -- B2G/Firefox OS build system
+ * `rust` -- Rust development + servo
 
 Please file a pull request to add your project!
 
@@ -115,6 +115,7 @@ Both are listed here:
    The scopes associated with a `project-member` role are:
 
    * `auth:{crud}-client:project/<project>/*` - manage project-specific clients
+   * `auth:{crud}-role:project:<project>:*` - manage project-specific clients
    * `auth:{crud}-role:hook-id:project-<project>/*` - manage scopes for project-specific hooks
    * `project:<project>:*` - all project-specific scopes
    * `queue:get-artifact:project/<project/*` - create project-specific (non-public) artifacts
