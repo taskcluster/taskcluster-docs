@@ -45,6 +45,14 @@
       if (entry.output) {
         retval = 'result';
       }
+
+      if(entry.query){
+        var query = entry.query.slice();
+        if(query.length > 0){
+          let queryElements = "{" + query.join(", ") + "}";
+          args.push(queryElements);
+        }
+      }
       var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
     %>
      <tr>
@@ -137,6 +145,13 @@
         retval = 'result';
       }
 
+      if(entry.query){
+        var query = entry.query.slice();
+        if(query.length > 0){
+          let queryElements = "{" + query.join(", ") + "}";
+          args.push(queryElements);
+        }
+      }
       var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
     %>
     <dd><code><%= signature%></code></dd>
