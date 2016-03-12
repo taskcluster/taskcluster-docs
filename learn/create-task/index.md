@@ -251,6 +251,9 @@ console.log("Inspect it at:");
 console.log("https://tools.taskcluster.net/task-inspector/#" + taskId);
 </pre>
 
+Note that it may take a few minutes for this task to execute, as TaskCluster must
+create a new Amazon EC2 instance to run it.
+
 If you are curious about the `createTask(taskId, payload)` method you can look
 it up in the [API docs](/queue/api-docs/) for the Queue. You should notice that
 the API docs lists a `Signature` property, like
