@@ -51,7 +51,7 @@ let taskcluster = require('taskcluster-client');
 let task = {
   // Required properties
   provisionerId:      'aws-provisioner-v1',
-  workerType:         'b2gtest',
+  workerType:         'tutorial',
   created:            (new Date()).toJSON(),
   deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
   metadata: {
@@ -83,7 +83,7 @@ keeping legacy workerTypes around until all tasks have been ported.
 Constructing a `task.payload` for docker-worker
 -----------------------------------------------
 
-The `b2gtest` workerType is a deployment of `docker-worker`, this worker
+The `tutorial` workerType is a deployment of `docker-worker`, this worker
 requires a `task.payload` that specifies which _docker image_ to load, which
 command to run and a maximum allowed runtime. You can find detailed
 documentation on this site, the schema for the `task.payload` property is
@@ -121,7 +121,7 @@ let taskcluster = require('taskcluster-client');
 
 let task = {
   provisionerId:      'aws-provisioner-v1',
-  workerType:         'b2gtest',
+  workerType:         'tutorial',
   created:            (new Date()).toJSON(),
   deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
   metadata: {
@@ -205,7 +205,7 @@ global.taskId = taskId;
 // Task definition from previous example
 let task = {
   provisionerId:      'aws-provisioner-v1',
-  workerType:         'b2gtest',
+  workerType:         'tutorial',
   created:            (new Date()).toJSON(),
   deadline:           taskcluster.fromNowJSON('2 days 3 hours'),
   metadata: {

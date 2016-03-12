@@ -19,7 +19,7 @@ What you see in the text box is a bare-bones task description, looking something
 
     { 
       provisionerId:      'aws-provisioner-v1',
-      workerType:         'b2gtest',
+      workerType:         'tutorial',
       created:            '2015-06-15Z12:00:00,
       deadline:           '2015-06-22Z12:00:00,
       payload: {

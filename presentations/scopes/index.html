@@ -137,7 +137,7 @@ await queue.createTask(taskcluster.slugid(), {
   created:        taskcluster.fromNowJSON(),
   deadline:       taskcluster.fromNowJSON('2 days 3 hours'),
   provisionerId:  'aws-provisioner-v1',
-  workerType:     'b2gtest',
+  workerType:     'tutorial',
   payload:        {...},
   metadata:       {...}
 });
@@ -146,7 +146,7 @@ Docs it says createTask requires:
 <pre style="background: #3F3F3F">queue:create-task:&lt;provisionerId&gt;/&lt;workerType&gt;</pre>
 
 Hence, in this case we need:
-<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest</pre>
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/tutorial</pre>
 Which we have by $``\text{queue:*}``$.
 </section>
 
@@ -222,7 +222,7 @@ Only works because $\text{queue:*}$ satisfies the scope given.
 // Create task
 await queue.createTask(taskcluster.slugid(), {
   provisionerId:  'aws-provisioner-v1',
-  workerType:     'b2gtest',
+  workerType:     'tutorial',
                   // Allows worker to know the creator have these scopes
   scopes:         ['index:insert-task:gecko.v1.*']
   ...
@@ -233,7 +233,7 @@ await queue.createTask(taskcluster.slugid(), {
 });
 </code></pre>
 From docs createTask now requires:
-<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/tutorial
 index:insert-task:gecko.v1.*</pre>
 
 Docker-worker will use auth-proxy will use the authorizedScopes
@@ -253,7 +253,7 @@ features to proxy requests.<br>
 // Create task
 await queue.createTask(taskcluster.slugid(), {
   provisionerId:  'aws-provisioner-v1',
-  workerType:     'b2gtest',
+  workerType:     'tutorial',
                   // Allows worker to know the creator have this scope
   scopes:         ['docker-worker:cache:jonasfj-*']
   ...
@@ -266,7 +266,7 @@ await queue.createTask(taskcluster.slugid(), {
 });
 </code></pre>
 From docs createTask now requires:
-<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/b2gtest
+<pre style="background: #3F3F3F">queue:create-task:aws-provisioner-v1/tutorial
 docker-worker:cache:jonasfj-*</pre>
 
 To mount cache worker requires:
@@ -304,7 +304,7 @@ Or it rejects the task.
   </pre>
   <p style="font-size: 60%;">
   Usually required by multiple API end-points.<br>Think of the scope
-  "assume:worker-type:aws-provisioner-v1/b2gtest" as the authority to act as a
+  "assume:worker-type:aws-provisioner-v1/tutorial" as the authority to act as a
   worker of this type.
   </p>
 </section>
