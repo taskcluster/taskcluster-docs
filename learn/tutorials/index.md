@@ -12,7 +12,7 @@ utilize TaskCluster with modern asynchronous Javascript patterns. This page will
 give a brief introduction to modern asynchronous Javascript patterns, and the rest
 of the tutorials are focused on how to use TaskCluster.
 
-The first tutorial [Authentication](authenticate/) **must** be completed
+The first tutorial [Authentication](../authenticate/) **must** be completed
 before you proceed to the other tutorials, or the examples will not
 work. The first few tutorials aim to give you a quick introduction and it's
 recommended that you complete them.  However, before you get started you should
