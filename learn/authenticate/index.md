@@ -109,8 +109,8 @@ let queue = new taskcluster.Queue({
   credentials: JSON.parse(localStorage.credentials)
 });
 
-// Query for number of pending b2gtest tasks
-let result = await queue.pendingTasks('aws-provisioner-v1', 'b2gtest');
+// Query for number of pending tutorial tasks
+let result = await queue.pendingTasks('aws-provisioner-v1', 'tutorial');
 
 // Print result
 console.log(result);
