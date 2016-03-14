@@ -118,7 +118,7 @@ Both are listed here:
    * `auth:{crud}-client:project/<project>/*` - manage project-specific clients
    * `auth:{crud}-role:project:<project>:*` - manage project-specific clients
    * `auth:{crud}-role:hook-id:project-<project>/*` - manage scopes for project-specific hooks
-   * `project:<project>:*` - all project-specific scopes
+   * `assume:project:<project>:*` - all project-specific scopes
    * `queue:get-artifact:project/<project/*` - create project-specific (non-public) artifacts
    * `hooks:modify-hook:project-<project>/*` - manage project-specific hooks
    * `secrets:<verb>:project/<project>/*` - manage project-specific secrets
