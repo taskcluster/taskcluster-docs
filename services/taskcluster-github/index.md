@@ -90,6 +90,30 @@ tasks:
           - push
 ```
 
+### Branch Filtering
+
+You can also modify a task definition so that it will only run for events on certain branches. For example, the task defined below will only run for pushes to the master branch:
+
+```
+---
+version: 0
+
+...
+
+tasks:
+  - payload:
+     maxRunTime: 3600
+     image: "ubuntu:latest"
+     command:
+       - "test"
+    extra:
+      github:
+        events:        # A list of all github events which trigger this task
+          - push
+        branches:
+          - master
+```
+
 ### A note on testing
 <p>
 TaskCluster GitHub will <b>not</b> use <code>.taskcluster.yml</code> files from pull requests. To test <code>.taskcluster.yml</code> changes create a new branch on the master/base repository and open pull requests against it or make pushes to it (depending on the events you have enabled).
