@@ -11,10 +11,10 @@ At the [2016 tc-worker workweek](http://www.chesnok.com/daily/2016/03/11/workwee
 * Enable rapid change
 * Community friendliness
 
-These are all under an umbrella we call Getting Things Built™. None of our work matters unless __it works__! Read further for a slightly expanded list of principles!
+These are all under an umbrella we call Getting Things Built&#8482;. None of our work matters unless __it works__! Read further for a slightly expanded list of principles!
 
 
-### Getting Things Built™
+### Getting Things Built&#8482;
 
 * Self-service
   * Task Isolation
