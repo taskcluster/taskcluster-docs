@@ -116,7 +116,7 @@ Both are listed here:
    The scopes associated with a `project-member` role are:
 
    * `auth:{crud}-client:project/<project>/*` - manage project-specific clients
-   * `auth:{crud}-role:project:<project>:*` - manage project-specific clients
+   * `auth:{crud}-role:project:<project>/*` - manage project-specific clients
    * `auth:{crud}-role:hook-id:project-<project>/*` - manage scopes for project-specific hooks
    * `project:<project>:*` - all project-specific scopes
    * `queue:get-artifact:project/<project/*` - create project-specific (non-public) artifacts
