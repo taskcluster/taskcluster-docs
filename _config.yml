@@ -160,6 +160,9 @@ sections:
     - name: Hooks
       url:  /services/hooks/index.html
       href: /services/hooks/
+    - name: Cors-Proxy
+      url: /services/cors-proxy/index.html
+      href: /services/cors-proxy
   - name: Development
     links:
     - name: Github Projects
