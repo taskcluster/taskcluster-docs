@@ -1,0 +1,18 @@
+code.experimental,h2.experimental>p{
+	color:rgb(32, 29, 29);
+	background-color:#FFE9D2;
+}
+code.stable,h2.stable>p{
+	color:rgb(32, 29, 29);
+	background-color:#E2F5BF;
+}
+code.deprecated,h2.deprecated>p,code.deprecated>a{
+	color:#C7254E;
+	background-color:#E1DBDB;
+}
+h2>p{
+	border-radius:4px;
+	padding:0.5%;
+	margin-bottom:0%;
+	display:inline;
+}
