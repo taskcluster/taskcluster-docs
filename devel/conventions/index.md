@@ -31,6 +31,9 @@ This is to ensure that we are deploying a consistent tree of package versions, a
 When creating a new service, run `npm shrinkwrap` to generate an `npm-shrinkwrap.json` based on the packages you have installed in your development environment, then check that file into the Git repository.
 When beginning development on an existing service, the usual `npm install` will install the specific versions named in the `npm-shrinkwrap.json`.
 
+*Important*: Do not use `devDependencies`, as npm versions before 3.0 do not deal with them correctly and will cause failures in deployment that do not appear in local runs or Travis.
+Instead, list all dependencies in `dependencies`.
+
 When changing a service's dependencies, the easiest approach is to use `npm install --save` to install the package and update `package.json` at the same time.
 Once this is complete, run `npm shrinkwrap` and add the modified `npm-shrinkwrap.json` to your commit.
 Pull requests with a modified `package.json` that do not have a corresponding `npm-shrinkwrap.json` diff should be viewed with suspicion!
