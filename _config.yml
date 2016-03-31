@@ -150,6 +150,9 @@ sections:
     - name: Overview
       url:  /workers/index.html
       href: /workers/
+    - name: TaskCluster Worker
+      url:  /workers/taskcluster-worker/index.html
+      href: /workers/taskcluster-worker/
     - name: Docker Worker
       url:  /workers/docker-worker/index.html
       href: /workers/docker-worker/
