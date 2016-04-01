@@ -71,5 +71,4 @@ amazing libraries and tools, upon which it is built.
 
 **Tools**,
  * [Jekyll](https://github.com/jekyll/jekyll), content generator on github pages.
- * [Pygments](http://pygments.org/), syntax highlighting on github pages.
- * [RedCarpet](https://github.com/vmg/redcarpet), markdown for github pages.
+ * [Kramdown](http://kramdown.gettalong.org/), markdown converter.
