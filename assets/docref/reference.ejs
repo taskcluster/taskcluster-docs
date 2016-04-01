@@ -54,9 +54,10 @@
         }
       }
       var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
+      var stabilityValue = entry.stability || "unknown";
     %>
      <tr>
-      <td><code><a
+      <td><code  class = '<%= stabilityValue %>'><a
                   href='#<%= entry.name %>'
                   title='<%= entry.title%>'><%= signature %></a></code></td>
       <td><%= entry.title %></td>
@@ -99,10 +100,15 @@
 
 <% entries.filter(function(entry) {
     return entry.type == 'function';
-  }).forEach(function(entry) { %>
+  }).forEach(function(entry) {
+    var stabilityValue = entry.stability || "unknown";
+    var title = marked(entry.title);
+    if (entry.stability != "stable") {
+      title = title + "(" + entry.stability + ")";
+    } %>
   <a name='<%= entry.name %>'></a>
   <hr>
-  <h2><%= marked(entry.title) %></h2>
+  <h2 class = '<%= stabilityValue %>'><%= title %></h2>
   <dl class='dl-horizontal method-properties'>
     <dt>Method</dt>
     <dd><div class='label label-default'><%= entry.method %></div></dd>
@@ -155,6 +161,8 @@
       var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
     %>
     <dd><code><%= signature%></code></dd>
+    <dt>Stability</dt>
+    <dd><code class='<%= stabilityValue %>' ><%= stabilityValue %></code></dd>
   </dl>
   <%= marked(entry.description) %>
   <% if (entry.input) { %>

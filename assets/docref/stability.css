@@ -1,0 +1,21 @@
+code.experimental{
+	color:rgb(32, 29, 29);
+	background-color:#FFE9D2;
+}
+code.stable{
+	color:rgb(0, 0, 0);
+	background-color:#FFFFFF;
+}
+code.deprecated{
+	background-color:#CCCCCC;
+}
+code.unknown{
+	color:#444444;
+	background-color:#999999;
+}
+h2>p{
+	border-radius:4px;
+	padding:0.5%;
+	margin-bottom:0%;
+	display:inline;
+}
