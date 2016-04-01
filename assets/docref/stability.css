@@ -1,18 +1,17 @@
-code.experimental,h2.experimental>p{
+code.experimental{
 	color:rgb(32, 29, 29);
 	background-color:#FFE9D2;
 }
-code.stable,h2.stable>p{
-	color:rgb(32, 29, 29);
-	background-color:#E2F5BF;
+code.stable{
+	color:rgb(0, 0, 0);
+	background-color:#FFFFFF;
 }
-code.deprecated,h2.deprecated>p,code.deprecated>a{
-	color:#C7254E;
-	background-color:#E1DBDB;
+code.deprecated{
+	background-color:#CCCCCC;
 }
-code.unknown,h2.unknown>p,code.unknown>a{
+code.unknown{
 	color:#444444;
-	background-color:#DDDDDD;
+	background-color:#999999;
 }
 h2>p{
 	border-radius:4px;
