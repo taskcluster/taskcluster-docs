@@ -10,6 +10,10 @@ code.deprecated,h2.deprecated>p,code.deprecated>a{
 	color:#C7254E;
 	background-color:#E1DBDB;
 }
+code.unknown,h2.unknown>p,code.unknown>a{
+	color:#444444;
+	background-color:#DDDDDD;
+}
 h2>p{
 	border-radius:4px;
 	padding:0.5%;
