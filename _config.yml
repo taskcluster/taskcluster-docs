@@ -26,6 +26,9 @@ sections:
     - name: Getting Started
       url:  /introduction/getting-started/index.html
       href: /introduction/getting-started/
+    - name: Core Principles
+      url:  /introduction/principles/index.html
+      href: /introduction/principles/
     - name: Blog
       url:  http://planet.mozilla.org/taskcluster
   - name: Learn
