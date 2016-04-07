@@ -117,6 +117,15 @@ sections:
     - name: Overview
       url:  /auth/index.html
       href: /auth/
+    - name: Scopes
+      url:  /auth/scopes/index.html
+      href: /auth/scopes/
+    - name: Clients
+      url:  /auth/clients/index.html
+      href: /auth/clients/
+    - name: Roles
+      url:  /auth/roles/index.html
+      href: /auth/roles/
     - name: Restricting Scopes
       url:  /auth/authorized-scopes/index.html
       href: /auth/authorized-scopes/

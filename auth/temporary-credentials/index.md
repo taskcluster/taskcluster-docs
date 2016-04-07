@@ -6,8 +6,8 @@ Temporary Credentials
 =====================
 
 Any client with a `clientId` and an `accessToken` can issue temporary
-credentials with a subset of its credentials. Temporary credentials consists of
-a `clientId`, `temporaryAccessToken` and a certificate validating these.
+credentials with a subset of its [scopes](../scopes/). Temporary credentials consist of
+a `clientId`, `temporaryAccessToken` and a certificate validating them.
 
 Temporary credentials always have an explicit start and expiry date, which can
 be up to 31 days apart. A set of temporary credentials cannot be used to issue
@@ -17,13 +17,16 @@ untrusted sources.
 A certificate looks as follows and must be attached to all requests in Hawk's `ext` property.
 
 ```js
-certificate: {
-  version:          1,
-  scopes:           ['ScopeA', 'ScopeB'],
-  start:            1410399435102,
-  expiry:           1410399497349,
-  seed:             'KpJvYUNXSYeWqc0vnsAq9wJJgvWv5pTh6IYhd120YZTQ',
-  signature:        'Yw1ETAM+6PGA0T65IAEShwyDLDQqw7M8qpFzLpG+Nm8='
+ext = {
+  // ...
+  certificate: {
+    version:          1,
+    scopes:           ['ScopeA', 'ScopeB'],
+    start:            1410399435102,
+    expiry:           1410399497349,
+    seed:             'KpJvYUNXSYeWqc0vnsAq9wJJgvWv5pTh6IYhd120YZTQ',
+    signature:        'Yw1ETAM+6PGA0T65IAEShwyDLDQqw7M8qpFzLpG+Nm8='
+  }
 }
 ```
 
