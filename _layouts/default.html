@@ -169,29 +169,41 @@
         </div>
         <ul class="nav navbar-nav">
           {% for section in site.sections %}
-            <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" type="button">{{ section.name }} <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              {% for entry in section.links %}
-                {% if entry.divider %}
-                  <li role="separator" class="divider"></li>
-                {% elsif entry.heading %}
-                <li class="dropdown-header">{{ entry.heading }}</li>
-                {% else %}
-                  {% if entry.url == page.url %}
-                    <li class="active">
+            {% assign page_sections = section.links|map:"url" %}
+            {% assign page_url = page.url|append:"index.html" %}
+            {% if page_sections contains page_url and page_url != "/index.html" %}
+              <li class="active dropdown">
+            {% else %}
+              <li class="dropdown">
+            {% endif %}
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" type="button">{{ section.name }} <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                {% for entry in section.links %}
+                  {% assign page_heading = page.url|remove_first:"/"|split:"/"|first %}
+                  {% assign sec_heading = entry.heading|downcase|replace:" ","-" %}
+                  {% if entry.divider %}
+                    <li role="separator" class="divider"></li>
+                  {% elsif entry.heading %}
+                  {% if page_heading == sec_heading %}
+                    <li class="active dropdown-header">{{ entry.heading }}</li>
                   {% else %}
-                    <li>
+                    <li class="dropdown-header">{{ entry.heading }}</li>
                   {% endif %}
-                    {% if entry.href %}
-                      <a href="{{ entry.href }}">{{ entry.name }}</a>
+                  {% else %}
+                    {% if entry.url == page_url %}
+                      <li class="active">
                     {% else %}
-                      <a href="{{ entry.url }}">{{ entry.name }}</a>
+                      <li>
                     {% endif %}
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
+                      {% if entry.href %}
+                        <a href="{{ entry.href }}">{{ entry.name }}</a>
+                      {% else %}
+                        <a href="{{ entry.url }}">{{ entry.name }}</a>
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
             </li>
           {% endfor %}
         </ul>
