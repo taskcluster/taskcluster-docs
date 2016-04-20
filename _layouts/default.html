@@ -21,6 +21,20 @@
     <script src="/assets/bootstrap/js/bootstrap.min.js">
     </script>
 
+    <!-- Search provided by Algolia-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
+    <link rel="stylesheet" href="/assets/docsearch.css">
+    <script src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+      $(function() {
+        docsearch({
+          apiKey: '92dbc7f60d82217d93759d6e55e375b0',
+          indexName: 'taskcluster',
+          inputSelector: '#docs-search',
+        });
+      });
+    </script>
+
     {% if page.interactive %}
     <script src="/learn/bundle.js"></script>
     {% endif %}
@@ -206,6 +220,9 @@
               </ul>
             </li>
           {% endfor %}
+          <form class="navbar-form navbar-left" role="search">
+            <input type="text" id="docs-search" class="form-control" autocomplete="off" name="query" placeholder="Search Taskcluster Docs..." />
+          </form>
         </ul>
     </nav>
     <div class="container">
