@@ -255,7 +255,7 @@ Note that it may take a few minutes for this task to execute, as TaskCluster mus
 create a new Amazon EC2 instance to run it.
 
 If you are curious about the `createTask(taskId, payload)` method you can look
-it up in the [API docs](/queue/api-docs/) for the Queue. You should notice that
+it up in the [API docs](/services/platform/queue/api-docs/) for the Queue. You should notice that
 the API docs lists a `Signature` property, like
 `Signature: createTask(taskId, payload) : result`, these signature are used to
 call methods in automatically generated client libraries. This allows for

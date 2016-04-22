@@ -176,6 +176,6 @@ The ubuntu-ci image is provided as a convenience, but <b>please feel free to pus
   GITHUB_HEAD_USER_EMAIL: {% raw %}"{{ event.head.user.email }}"{% endraw %}
 ```
 
+### Configuration Schema
+
 <div data-render-schema='http://schemas.taskcluster.net/github/v1/taskcluster-github-config.json'></div>
-<div data-doc-ref='http://references.taskcluster.net/github/v1/api.json'></div>
-<div data-doc-ref='http://references.taskcluster.net/github/v1/exchanges.json'></div>

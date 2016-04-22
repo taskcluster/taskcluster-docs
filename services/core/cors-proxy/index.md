@@ -54,4 +54,3 @@ response headers. If you want to access one or more headers denied by default,
 you can use the `X-Cors-Proxy-Expose-Headers` header. You set it to the list of
 headers you want to access, separate by comma. On response, the cors-proxy will
 set the [Access-Control-Expose-Headers]() header with the list you passed.
-
