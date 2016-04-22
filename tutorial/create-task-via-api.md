@@ -5,8 +5,8 @@ docson:       true
 interactive:  true
 ---
 
-Creating Your First Task
-========================
+Creating A Task With createTask
+===============================
 
 This tutorial will show you how to create a task, as well as how to fetch
 both state and artifacts from the task. Later tutorials will show you how to
@@ -414,3 +414,7 @@ If the artifact was private (ie. didn't start with `public/`) we could have
 constructed the `queue` object with credentials and used the auxiliary
 method `queue.buildSignedUrl` which works like `queue.buildUrl`, with the only
 difference that includes a signature in the query-string for the URL.
+
+# Next Steps
+
+ * The "Services" menu contains links to the API documentation for all TaskCluster services.
