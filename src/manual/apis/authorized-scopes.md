@@ -1,0 +1,39 @@
+---
+title: Authorized Scopes
+order: 5
+---
+Authorized Scopes
+=================
+
+If you are making API requests on behalf of a less-trusted entity that you only
+know to possess a subset of your [scopes](../scopes/), you can specify which of
+the scopes you have that a given request is authorized to rely on. If the
+request cannot be authorized with the restricted set of scopes you specified,
+it will fail, even though you may in fact have the scopes required to conduct
+the request.  In effect, you can reduce the available scopes for each API
+request.
+
+**Example**, imagine that CRAN service would like to create TaskCluster tasks
+whenever an R project is updated in the archive.  However, different R packages
+have different levels of trust and require different scopes.  The tc-cran
+service runs with the superset of all scopes that might be required (perhaps
+`assume:project:cran:pkg:*`), and calls `queue.createTask` with
+`authorizedScopes` set to `['assume:project:cran:pkg:paleotree']` for paleotree
+tasks.  The scopes available for creating that task are then limited to those
+assigned to the paleotree package via its role.
+
+Authorized scopes are specified in the Hawk `ext` property with the
+`authorizedScopes` property.  The TaskCluster client packages all contain
+support for this functionality.
+
+```js
+{
+  authorizedScopes:  ['scopeA', 'scopeC']
+}
+```
+
+This technique is used in the task-graph scheduler to ensure that tasks created
+are only created with the set of scopes that the task-graph has.
+
+**Note** the way hawk works, the `ext` property is covered by the HMAC
+signature. So it's not possible to modify this property on-the-fly.

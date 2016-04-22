@@ -1,7 +1,8 @@
 ---
-layout:   default
-class:    markdown
+title: Workers
+order: 1
 ---
+
 Workers
 =======
 

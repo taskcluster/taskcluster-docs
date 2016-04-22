@@ -1,3 +1,7 @@
+---
+title: TaskCluster Manual
+---
+
 The diagram below illustrates how some of the most important
 **TaskCluster components** interact.
 When a user submits a task-graph to the scheduler, it posts tasks to

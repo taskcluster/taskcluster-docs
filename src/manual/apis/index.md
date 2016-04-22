@@ -1,16 +1,16 @@
 ---
-layout:   default
-class:    markdown
+order: 1
+title: Using the APIs
 ---
-Authentication and Authorization
-================================
+
+Using the APIs
+==============
 
 All TaskCluster components use Hawk over SSL for authentication and
 authorize access based on a set of scopes associated with each client.
 
 Credentials and scopes are managed by the authentication component, at
-[auth.taskcluster.net](http://auth.taskcluster.net). These pages cover
-general authentication topics as well as API end-points from this component.
+[auth.taskcluster.net](http://auth.taskcluster.net).
 
 Authentication
 --------------

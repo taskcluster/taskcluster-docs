@@ -1,0 +1,29 @@
+nav.navbar.navbar-default.navbar-static-top.navbar-inverse(role='navigation')
+  .navbar-header
+    a.navbar-brand(href='/')
+      img(height='36', width='36', src='/assets/taskcluster-36.png')
+      |              TaskCluster Docs
+  ul.nav.navbar-nav
+    li
+      a(href="/tutorial") Tutorial
+    li
+      a(href="/manual") Manual
+    li
+      a(href="/reference") Reference
+    li.dropdown
+      a.dropdown-toggle(data-toggle="dropdown", role="button", href="#", type="button")
+        | More&nbsp;
+        span.caret
+      ul.dropdown-menu(role="menu")
+        li
+          a(href="/presentations") Presentations
+        li.divider(role="separator")
+        li.dropdown-header External Links
+        li
+          a(href="http://planet.mozilla.org/taskcluster") Blog
+        li
+          a(href="https://github.com/taskcluster") GitHub
+        li
+          a(href="https://travis-ci.org/taskcluster") Travis CI
+    form.navbar-form.navbar-left(role='search')
+      input#docs-search.form-control(type='text', autocomplete='off', name='query', placeholder='Search Taskcluster Docs...')

@@ -1,8 +1,3 @@
----
-layout:   default
-class:    markdown
----
-
 The following is a list of presentations, in various forms, given about TaskCluster.
 If you give a presentation that you believe should be listed here, please add a link in a pull request!
 

@@ -1,0 +1,35 @@
+# This file maps old paths new new paths.  The result will be a redirect.
+
+# From the Jekyll-based docs:
+/introduction/principles: /manual/devel/principles
+/devel/conventions: /manual/devel/conventions
+/devel/namespaces: /manual/devel/namespaces
+/tools/web: /manual/tools/web
+/tools/clients: /manual/tools/clients
+/tools/references: /manual/tools/references
+/aws-provisioner: /manual/execution/aws-provisioner
+/workers: /manual/execution/workers
+/workers/taskcluster-worker: /manual/execution/workers/taskcluster-worker
+/workers/docker-worker: /manual/execution/workers/docker-worker
+/workers/generic-worker: /manual/execution/workers/generic-worker
+/queue: /manual/tasks/queue
+/queue/worker-interaction: /manual/tasks/worker-interaction
+/scheduler: /manual/tasks/scheduler
+/auth: /manual/apis
+/auth/scopes: /manual/apis/scopes
+/auth/clients: /manual/apis/clients
+/auth/roles: /manual/apis/roles
+/auth/authorized-scopes: /manual/apis/authorized-scopes
+/auth/temporary-credentials: /manual/apis/temporary-credentials
+/auth/signed-urls: /manual/apis/signed-urls
+/auth/api-docs: /reference/platform/auth/api-docs
+/queue/api-docs: /reference/platform/queue/api-docs
+/queue/exchanges: /reference/platform/queue/exchanges
+/scheduler/api-docs: /reference/platform/scheduler/api-docs
+/scheduler/events: /reference/platform/scheduler/exchanges
+/aws-provisioner/api-docs: /reference/core/aws-provisioner/api-docs
+/aws-provisioner/events: /reference/core/aws-provisioner/exchanges
+/services/index: /reference/core/index/api-docs
+/services/taskcluster-github: /manual/vcs/github
+/services/secrets: /reference/core/secrets/api-docs
+/services/cors-proxy: /reference/core/cors-proxy

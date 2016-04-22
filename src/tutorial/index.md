@@ -19,9 +19,9 @@ Especially if you did not find the information you were seeking, you are best ab
 
 How do you want to use TaskCluster?
 
- * [I'm not sure - what is it??](what-is-tc)
- * [I want to run a task manually in TaskCluster](hello-world)
- * [I'm a Firefox / Gecko developer and I want to change builds or tests](gecko-tasks)
+ * [I'm not sure - what is it??](tutorial/what-is-tc)
+ * [I want to run a task manually in TaskCluster](tutorial/hello-world)
+ * [I'm a Firefox / Gecko developer and I want to change builds or tests](tutorial/gecko-tasks)
  * [A task is failing and I want to debug it] - TODO
- * [I want to work with the TaskCluster APIs](interactive)
+ * [I want to work with the TaskCluster APIs](tutorial/interactive)
  * [I want to hack on TaskCluster itself] - TODO
