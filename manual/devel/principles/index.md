@@ -73,4 +73,3 @@ These are all under an umbrella we call Getting Things Built&#8482;. None of our
 <img src="/assets/principles.svg" alt="Taskcluster Principles Diagram" width="100%">
 
 </section>
-

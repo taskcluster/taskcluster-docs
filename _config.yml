@@ -26,9 +26,6 @@ sections:
     - name: Getting Started
       url:  /introduction/getting-started/index.html
       href: /introduction/getting-started/
-    - name: Core Principles
-      url:  /introduction/principles/index.html
-      href: /introduction/principles/
     - name: Blog
       url:  http://planet.mozilla.org/taskcluster
   - name: Learn
@@ -77,82 +74,85 @@ sections:
       # name:
   - name: Manual
     links:
-    - heading: Queue
-    - name: Overview
-      url:  /queue/index.html
-      href: /queue/
-    - name: Worker Interaction
-      url:  /queue/worker-interaction/index.html
-      href: /queue/worker-interaction/
-    - divider: true
-    - heading: Scheduler
-    - name: Overview
-      url:  /scheduler/index.html
-      href: /scheduler/
-    - divider: true
-    - heading: Authentication
-    - name: Overview
-      url:  /auth/index.html
-      href: /auth/
+    - heading: Working with Tasks
+    - name: Queue
+      url:  /manual/tasks/queue/index.html
+      href: /manual/tasks/queue/
+    - name: Worker-Queue Interaction
+      url:  /manual/tasks/worker-interaction/index.html
+      href: /manual/tasks/worker-interaction/
+    - name: Scheduler
+      url:  /manual/tasks/scheduler/index.html
+      href: /manual/tasks/scheduler/
+    - heading: Using TaskCluster APIs
+    - name: Authentication
+      url:  /manual/apis/index.html
+      href: /manual/apis/
     - name: Scopes
-      url:  /auth/scopes/index.html
-      href: /auth/scopes/
+      url:  /manual/apis/scopes/index.html
+      href: /manual/apis/scopes/
     - name: Clients
-      url:  /auth/clients/index.html
-      href: /auth/clients/
+      url:  /manual/apis/clients/index.html
+      href: /manual/apis/clients/
     - name: Roles
-      url:  /auth/roles/index.html
-      href: /auth/roles/
+      url:  /manual/apis/roles/index.html
+      href: /manual/apis/roles/
     - name: Restricting Scopes
-      url:  /auth/authorized-scopes/index.html
-      href: /auth/authorized-scopes/
+      url:  /manual/apis/authorized-scopes/index.html
+      href: /manual/apis/authorized-scopes/
     - name: Temporary Credentials
-      url:  /auth/temporary-credentials/index.html
-      href: /auth/temporary-credentials/
+      url:  /manual/apis/temporary-credentials/index.html
+      href: /manual/apis/temporary-credentials/
     - name: Signed Urls
-      url:  /auth/signed-urls/index.html
-      href: /auth/signed-urls/
+      url:  /manual/apis/signed-urls/index.html
+      href: /manual/apis/signed-urls/
     - divider: true
-    - heading: Workers
-    - name: Overview
-      url:  /workers/index.html
-      href: /workers/
+    - heading: Version Control Interfaces
+      # TC-VCS
+    - name: GitHub
+      url:  /manual/vcs/github/index.html
+      href: /manual/vcs/github/
+      # Mozilla-TC
+      # Gaia-TC
+    - divider: true
+    - heading: Task Execution
+    - name: AWS Provisioner
+      url:  /manual/execution/aws-provisioner/index.html
+      href: /manual/execution/aws-provisioner/
+    - name: Workers
+      url:  /manual/execution/workers/index.html
+      href: /manual/execution/workers/
     - name: TaskCluster Worker
-      url:  /workers/taskcluster-worker/index.html
-      href: /workers/taskcluster-worker/
+      url:  /manual/execution/workers/taskcluster-worker/index.html
+      href: /manual/execution/workers/taskcluster-worker/
     - name: Docker Worker
-      url:  /workers/docker-worker/index.html
-      href: /workers/docker-worker/
+      url:  /manual/execution/workers/docker-worker/index.html
+      href: /manual/execution/workers/docker-worker/
     - name: Generic Worker
-      url:  /workers/generic-worker/index.html
-      href: /workers/generic-worker/
+      url:  /manual/execution/workers/generic-worker/index.html
+      href: /manual/execution/workers/generic-worker/
     - divider: true
     - heading: Tools
     - name: Web Tools
-      url:  /tools/web/index.html
-      href: /tools/web/
+      url:  /manual/tools/web/index.html
+      href: /manual/tools/web/
     - name: Client Libraries
-      url:  /tools/clients/index.html
-      href: /tools/clients/
+      url:  /manual/tools/clients/index.html
+      href: /manual/tools/clients/
     - name: Reference Formats
-      url:  /tools/references/index.html
-      href: /tools/references/
+      url:  /manual/tools/references/index.html
+      href: /manual/tools/references/
     - divider: true
-    - heading: Miscellaneous
-    - name: AWS Provisioner
-      url:  /aws-provisioner/index.html
-      href: /aws-provisioner/
-    - name: GitHub
-      url:  /services/core/github/index.html
-      href: /services/core/github/
-    - divider: true
-    - heading: Development
+    - heading: Developing TaskCluster
+    - name: Core Principles
+      url:  /manual/devel/principles/index.html
+      href: /manual/devel/principles/
     - name: Conventions
-      url:  /devel/conventions/index.html
-      href: /devel/conventions/
+      url:  /manual/devel/conventions/index.html
+      href: /manual/devel/conventions/
     - name: Namespaces
-      url:  /devel/namespaces/index.html
-      href: /devel/namespaces/
+      url:  /manual/devel/namespaces/index.html
+      href: /manual/devel/namespaces/
     - name: Github Projects
       url:  https://github.com/taskcluster
     - name: Travis CI Status

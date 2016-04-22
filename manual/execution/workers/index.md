@@ -23,6 +23,6 @@ Queue downtime for the roll out of a new worker. It also means one-off workers
 can be written for one-off jobs, if required.
 
 For the interaction between workers and the Queue, see [Queue - Worker
-Interaction](/queue/worker-interaction/).
+Interaction](/manual/tasks/manual/tasks/worker-interaction/).
 
 For specific classes of workers, see the nested subsections.

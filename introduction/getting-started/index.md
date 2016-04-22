@@ -41,7 +41,7 @@ Submit the task, and click the resulting task ID to load the task inspector whil
 The fields here are explained in greater detail throughout the rest of this documentation, but briefly:
 
  * `provisionerId` identifies the TaskCluster provisioner responsible for the compute resources that will execute the task.
-   In this case, it is the [AWS Provisioner](/services/aws-provisioner/), which runs its tasks on Amazon EC2 instances using Docker.
+   In this case, it is the [AWS Provisioner](/services/manual/execution/aws-provisioner/), which runs its tasks on Amazon EC2 instances using Docker.
  * `workerType` is a parameter specific to the AWS provisioner which identifies the pool of EC2 resources within which the task should be executed.
    Pools may use different EC2 instance types, AMIs, etc.
 

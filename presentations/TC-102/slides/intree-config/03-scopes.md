@@ -1,7 +1,7 @@
 ## Scopes
 
 * **Short version:** scopes = permissions
-* **Long version:** http://docs.taskcluster.net/auth/authorized-scopes/
+* **Long version:** http://docs.taskcluster.net/manual/apis/authorized-scopes/
 
 ```
 scopes:
