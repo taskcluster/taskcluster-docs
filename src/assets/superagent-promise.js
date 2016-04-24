@@ -315,19 +315,19 @@ Promise.prototype.catch = function (onRejected) {
 
 
 Promise.resolve = function (value) {
-  return new Promise(function (resolve) { 
+  return new Promise(function (resolve) {
     resolve(value);
   });
 }
 
 Promise.reject = function (value) {
-  return new Promise(function (resolve, reject) { 
+  return new Promise(function (resolve, reject) {
     reject(value);
   });
 }
 
 Promise.race = function (values) {
-  return new Promise(function (resolve, reject) { 
+  return new Promise(function (resolve, reject) {
     values.map(function(value){
       Promise.cast(value).then(resolve, reject);
     })
@@ -1722,7 +1722,7 @@ Emitter.prototype.hasListeners = function(event){
  * TODO: combatible error handling?
  */
 
-module.exports = function(arr, fn, initial){  
+module.exports = function(arr, fn, initial){
   var idx = 0;
   var len = arr.length;
   var curr = arguments.length == 3
@@ -1732,7 +1732,7 @@ module.exports = function(arr, fn, initial){
   while (idx < len) {
     curr = fn.call(null, curr, arr[idx], ++idx, arr);
   }
-  
+
   return curr;
 };
 },{}],9:[function(require,module,exports){

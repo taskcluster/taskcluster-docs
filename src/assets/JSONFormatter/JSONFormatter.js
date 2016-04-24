@@ -1,42 +1,42 @@
 /*
  * Collapsible JSON Formatter - Formatter and colorer of raw JSON code
- * 
+ *
  * jQuery Json Formatter plugin v0.1.3
- * 
+ *
  * Usage
  * -----
- * 
+ *
  * $('#target').jsonFormat('json string'); // or
  * $('#target').jsonFormat('#source', {options override defaults}); // see jf.config
  * #target {
  *     font-family: monospace;
  *     white-space: pre; // or pre-wrap // All fails without this one!
  * }
- * 
+ *
  * License
  * -------
- * 
+ *
  * Copyright (c) 2008-2009 Vladimir Bodurov
  * http://quickjsonformatter.codeplex.com/
- * 
+ *
  * Copyright (c) 2012 Redsandro - Made jQuery plugin
  * http://www.redsandro.com/
- * 
+ *
  * The MIT License (MIT)
- * 
- * Permission is hereby granted, free of charge, to any person obtaining 
- * a copy of this software and associated documentation files (the "Software"), 
- * to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
- * and/or sell copies of the Software, and to permit persons to whom the 
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included 
+ *
+ * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  */
- 
- 
- 
+
+
+
 jQuery.fn.jsonFormat = function(src, params) {
 	var jf = {
 		config : {
@@ -47,9 +47,9 @@ jQuery.fn.jsonFormat = function(src, params) {
 			QuoteKeys : false,
 			IsCollapsible : true,
 			_dateObj : new Date(),
-			_regexpObj : new RegExp()			
+			_regexpObj : new RegExp()
 		},
-		
+
 		/**
 		 * Process - starts processing the JSON
 		 * @param json - input JSON string
@@ -154,7 +154,7 @@ jQuery.fn.jsonFormat = function(src, params) {
 		IsArray : function(obj) {
 			return obj && typeof obj === 'object' && typeof obj.length === 'number'
 					&& !(obj.propertyIsEnumerable('length'));
-		}, 
+		},
 		FormatLiteral : function(literal, quote, comma, indent, isArray, style) {
 			if (typeof literal == 'string')
 				literal = literal.split("<").join("&lt;").split(">").join("&gt;");
@@ -197,22 +197,22 @@ jQuery.fn.jsonFormat = function(src, params) {
 			img.src = src;
 		}
 	};
- 
+
 	// Expand clicked?
 	if (src.parentNode &&
 		src.parentNode.nextSibling &&
 		src.parentNode.nextSibling.classList &&
 		src.parentNode.nextSibling.classList.contains('collapsible'))
 		jf.ExpImgClicked(src);
-	
+
 	// Optional settings to override jf.config
 	jQuery.extend(jf.config, params);
-	
+
 	// each, in case for some freak reason multiple target elements are selected
 	this.each(function() {
 		jQuery(this).html(jf.Process(src));
 	});
-	
+
 	// Daisychaining hippy love
 	return this;
 };
