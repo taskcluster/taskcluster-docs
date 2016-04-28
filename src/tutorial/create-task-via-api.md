@@ -417,4 +417,5 @@ difference that includes a signature in the query-string for the URL.
 
 # Next Steps
 
- * The "Services" menu contains links to the API documentation for all TaskCluster services.
+ * The [reference component](/reference) contains links to the API
+   documentation for all TaskCluster services.

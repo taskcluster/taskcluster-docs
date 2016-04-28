@@ -66,9 +66,6 @@ You've run your first task!
 
 OK, that was pretty simple -- but I can think of easier ways to print "hello world".  What's next?
 
- * [I want to look at some real tasks] - TODO
- * [I want to know more about how the task actually executes] - TODO
+ * [I want to look at some real tasks](finding-tasks)
  * [I want to know how the tools site works](interactive)
- * [Does TaskCluster support Windows?] - TODO
- * [Does TaskCluster support OS X?] - TODO
  * [I'm a Firefox / Gecko developer - how do my commits get built?](gecko-tasks)
