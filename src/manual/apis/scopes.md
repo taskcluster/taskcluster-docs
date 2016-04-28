@@ -35,3 +35,14 @@ But I Thought Scopes Were Crazy Complicated?
 --------------------------------------------
 
 Nope, that's all there is to it!
+
+Here are a few examples:
+
+The scope set `["queue:create-task:aws-provisioner-v1/*",
+"queue:route:index.project.persona.*"]` satisfies the scope set
+`["queue:create-task:aws-provisioner-v1/persona-builder",
+"queue:route:index.project.persona.build.20160101.linux64"]`.
+
+The scope set `["secrets:get:garbage/*", "queue:create-task:*"]` satisfies the
+scope set `["secrets:get:garbage/my/secret",
+"secrets:get:garbage/your/secret"]`.

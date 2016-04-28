@@ -6,7 +6,7 @@ Temporary Credentials
 =====================
 
 Any client with a `clientId` and an `accessToken` can issue temporary
-credentials with a subset of its [scopes](../scopes/). Temporary credentials consist of
+credentials with a subset of its [scopes](scopes). Temporary credentials consist of
 a `clientId`, `temporaryAccessToken` and a certificate validating them.
 
 Temporary credentials always have an explicit start and expiry date, which can

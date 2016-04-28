@@ -1,6 +1,4 @@
 ---
-layout:       default
-class:        html
 docson:       true
 marked:       true
 ejs:          true

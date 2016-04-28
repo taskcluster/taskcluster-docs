@@ -6,7 +6,7 @@ Authorized Scopes
 =================
 
 If you are making API requests on behalf of a less-trusted entity that you only
-know to possess a subset of your [scopes](../scopes/), you can specify which of
+know to possess a subset of your [scopes](scopes), you can specify which of
 the scopes you have that a given request is authorized to rely on. If the
 request cannot be authorized with the restricted set of scopes you specified,
 it will fail, even though you may in fact have the scopes required to conduct
