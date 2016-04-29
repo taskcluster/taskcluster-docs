@@ -22,7 +22,7 @@ function index() {
     .pipe(markdown())
     .pipe(filter.renameIndex())
     .pipe(rename({extname: ''}))
-    .pipe(pug({template: 'layout/layout.pug'}))
+    .pipe(pug({template: 'layout/index.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
 

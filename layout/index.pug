@@ -1,0 +1,42 @@
+doctype html
+html(lang='en')
+  include head.pug
+  body
+    include navbar.pug
+    .container
+      .row
+        .col-md-2
+        .col-md-8.landingpage-header
+          img(width="180" height="180" src="/assets/taskcluster.svg")
+          h1 TaskCluster Documentation
+          p
+            em TaskCluster
+            =" "
+            | is the task execution framework that supports Mozilla's continuous
+            | integration and release processes.
+        .col-md-2
+      .row
+        .col-md-4.col-xs-12.landingpage-component
+          a(href="/tutorial")
+            .well
+              span.glyphicon.glyphicon-eye-open(aria-hidden="true")
+              h2 Tutorial
+              p
+                | Follow the tutorial to learn about TaskCluster, focusing on the
+                | parts most relevant to you.
+        .col-md-4.col-xs-12.landingpage-component
+          a(href="/manual")
+            .well
+              span.glyphicon.glyphicon-book(aria-hidden="true")
+              h2 Manual
+              p
+                | Read the manual for a more comprehensive description of TaskCluster's
+                | design and operation.
+        .col-md-4.col-xs-12.landingpage-component
+          a(href="/reference")
+            .well
+              span.glyphicon.glyphicon-wrench(aria-hidden="true")
+              h2 Reference
+              p
+                | Refer to the reference documentation for the technical details
+                | of each component.

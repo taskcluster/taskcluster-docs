@@ -8,6 +8,55 @@ nav.navbar-inverse .navbar-text {
   color: #fff;
 }
 
+/* index page */
+.landingpage-header {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.landingpage-header {
+  margin: 10px 30px 30px 30px;
+  text-align: center;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 300;
+  padding: 10px 30px;
+}
+
+.landingpage-header h1 {
+  font-size: 38px;
+}
+
+.landingpage-header img {
+    position: absolute;
+    opacity: 0.1;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.landingpage-component {
+  text-align: center;
+  padding: 10px 40px;
+  min-height: 18em;
+}
+
+.landingpage-component a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.landingpage-component .well {
+  padding-top: 2em;
+  min-height: 20em;
+}
+
+
+.landingpage-component .glyphicon {
+  font-size: 70px;
+  color: gray;
+}
+
 .content {
   margin-bottom: 50px;
 }
