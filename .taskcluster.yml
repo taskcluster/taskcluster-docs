@@ -1,0 +1,27 @@
+version: 0
+metadata:
+  name: "Publish taskcluster-docs to S3"
+  description: "Run `gulp publish` to publish the docs to S3`"
+  owner: "{{ event.head.user.email }}"
+  source: "{{ event.head.repo.url }}"
+tasks:
+  - provisionerId: "{{ taskcluster.docker.provisionerId }}"
+    workerType: "{{ taskcluster.docker.workerType }}"
+    extra:
+      github:
+        events:
+          - pull_request.opened
+          - pull_request.synchronize
+    payload:
+      maxRunTime: 3600
+      image: "quay.io/mrrrgn/ubuntu-ci:0.0.1"
+      command:
+        - "/bin/bash"
+        - "--login"
+        - "-c"
+        - "checkout-pull-request && npm install . && ./node_modules/gulp publish"
+    metadata:
+      name: "Publish taskcluster-docs to S3"
+      description: "Run `gulp publish` to publish the docs to S3`"
+      owner: "{{ event.head.user.email }}"
+      source: "{{ event.head.repo.url }}"
