@@ -15,7 +15,7 @@ tasks:
           - pull_request.synchronize
     payload:
       maxRunTime: 3600
-      image: "quay.io/mrrrgn/ubuntu-ci:0.0.1"
+      image: "quay.io/mrrrgn/ubuntu-ci:0.0.2"
       command:
         - "/bin/bash"
         - "--login"
