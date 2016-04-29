@@ -103,6 +103,10 @@ function site() {
   )
 }
 
+gulp.task('check', function() {
+  return site();
+});
+
 gulp.task('webserver', function() {
   return site().pipe(virtual_webserver({debug: true}));
 });
