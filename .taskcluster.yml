@@ -8,6 +8,7 @@ tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
     extra:
+      env: true
       github:
         events:
           - pull_request.opened
