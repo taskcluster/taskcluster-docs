@@ -21,7 +21,7 @@ tasks:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone $GITHUB_HEAD_REPO_URL && cd taskcluster-docs && git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request && git checkout pull-request && bash taskcluster-build.sh pull-request"
+        - "git clone $GITHUB_BASE_REPO_URL && cd taskcluster-docs && git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request && git checkout pull-request && bash taskcluster-build.sh pull-request"
     metadata:
       name: "taskcluster-docs check"
       description: "Run `gulp check` to verify docs well-formedness`"
