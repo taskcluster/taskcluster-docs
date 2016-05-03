@@ -328,8 +328,6 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
 
                 // Fetch external schema
                 if(this.key === "$ref") {
-                    // ensure all refs are https, to avoid mixed-content warnings
-                    item = item.replace(/^http:/, 'https:');
                     if((/^https?:\/\//).test(item)) {
                         var segments = item.split("#");
                         var p = $.get(segments[0]).then(function(content) {
