@@ -14,4 +14,4 @@ docref:       true
   Currently, only timers are supported.
 </p>
 
-<div data-doc-ref='http://references.taskcluster.net/hooks/v1/api.json'></div>
+<div data-doc-ref='https://references.taskcluster.net/hooks/v1/api.json'></div>

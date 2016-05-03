@@ -21,6 +21,6 @@ docref:       true
     refer to worker specific documentation to see if it's supported.
 </p>
 
-<div data-doc-ref='http://references.taskcluster.net/purge-cache/v1/api.json'></div>
+<div data-doc-ref='https://references.taskcluster.net/purge-cache/v1/api.json'></div>
 
-<div data-doc-ref='http://references.taskcluster.net/purge-cache/v1/exchanges.json'></div>
+<div data-doc-ref='https://references.taskcluster.net/purge-cache/v1/exchanges.json'></div>
