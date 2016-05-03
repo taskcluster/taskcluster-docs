@@ -1,0 +1,126 @@
+head
+  meta(charset='utf-8')
+  title TaskCluster Documentation
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  link(rel='shortcut icon', href='/assets/favicon.ico')
+  // Bootstrap and Awesome Font styles
+  link(rel='stylesheet', href='/assets/bootstrap/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/assets/bootstrap/css/bootstrap-theme.min.css')
+  // Custom styling
+  link(rel='stylesheet', href='/assets/style.css')
+  link(rel='stylesheet', href='/assets/highlight.css')
+  link(rel='stylesheet', href='/assets/markdown.css')
+  link(rel='stylesheet', href='/assets/docref/stability.css')
+  // jQuery and Bootstrap Javascript
+  script(src='/assets/jquery.min.js')
+  script(src='/assets/bootstrap/js/bootstrap.min.js')
+  // Search provided by Algolia
+  link(rel='stylesheet', href='https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css')
+  link(rel='stylesheet', href='/assets/docsearch.css')
+  script(src='https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js')
+  script.
+    $(function() {
+      docsearch({
+        apiKey: '92dbc7f60d82217d93759d6e55e375b0',
+        indexName: 'taskcluster',
+        inputSelector: '#docs-search',
+      });
+    });
+  if interactive
+    script(src='/assets/bundle.js')
+  if docson
+    // JSON Schema Documentation
+    link(rel='stylesheet', href='/assets/docson.css')
+    link(rel='stylesheet', href='/assets/docson/css/docson.css')
+    script(src='/assets/docson/lib/require.js')
+    script.
+        require.config({baseUrl: "/assets/docson/"});
+        require(["docson"], function(docson) {
+          docson.templateBaseUrl = "/assets/docson/templates";
+          window.renderSchemas = function() {
+            $('[data-render-schema]').each(function() {
+              var el = $(this);
+              if (el.data('has-rendered')) {
+                return;
+              }
+              el.data('has-rendered', true);
+              var schema = el.data('render-schema');
+              $.get(schema, function(data) {
+                docson.doc(el, data);
+              });
+            });
+          };
+
+          // Wait for document to load
+          $(function() {
+            window.renderSchemas();
+          });
+        });
+  if prism || inspector
+    link(rel='stylesheet', href='/assets/prism.css')
+    script(src='/assets/prism.js')
+  if sequence_diagrams
+    script(src='/assets/raphael-min.js')
+    script(src='/assets/underscore-min.js')
+    script(src='/assets/sequence-diagram-min.js')
+    script.
+      $(function() {
+        $(".sequence-diagram-hand").sequenceDiagram({theme: 'hand'});
+        $(".sequence-diagram-simple").sequenceDiagram({theme: 'simple'});
+      });
+  if JSONFormatter || inspector
+    link(rel='stylesheet', href='/assets/JSONFormatter/JSONFormatter.css')
+    script(src='/assets/JSONFormatter/JSONFormatter.js')
+  if ejs
+    script(src='/assets/ejs_production.js')
+  if moment || inspector
+    script(src='/assets/moment.min.js')
+  if TermJS || inspector
+    script(src='/assets/term.js')
+  if underscore
+    script(src='/assets/underscore-min.js')
+  if ACE
+    script(src='/assets/ace/ace.js')
+    script(src='/assets/ace/mode-javascript.js')
+    script(src='/assets/ace/mode-json.js')
+    script(src='/assets/ace/mode-markdown.js')
+    script(src='/assets/ace/mode-sh.js ')
+    script(src='/assets/ace/theme-twilight.js')
+  if marked || inspector
+    script(src='/assets/marked.js')
+  if superagent
+    script(src='/assets/superagent-promise.js')
+  if docref
+    script(src='/assets/docref/docref.js')
+  if dagred3
+    script(src='/assets/d3.v3.min.js')
+    script(src='/assets/dagre-d3.min.js')
+  if BootstrapSelect || inspector
+    link(rel='stylesheet', href='/assets/bootstrap-select/bootstrap-select.min.css')
+    script(src='/assets/bootstrap-select/bootstrap-select.min.js')
+  if slugid
+    script(src='/assets/slugid-browserify.js')
+  if taskclusterclient || inspector
+    script(src='/assets/lodash.min.js')
+    script(src='/assets/promise.js')
+    script(src='/assets/taskcluster-client.js')
+  if inspector
+    link(rel='stylesheet', href='/assets/inspector/inspector.css')
+    script(src='/assets/inspector/react.js')
+    script(src='/assets/inspector/JSXTransformer.js')
+    script(type='text/jsx', src='/assets/inspector/utils.jsx')
+    script(type='text/jsx', src='/assets/inspector/format.jsx')
+    script(type='text/jsx', src='/assets/inspector/terminalview.jsx')
+    script(type='text/jsx', src='/assets/inspector/logview.jsx')
+    script(type='text/jsx', src='/assets/inspector/runinfo.jsx')
+    script(type='text/jsx', src='/assets/inspector/taskinfo.jsx')
+    script(type='text/jsx', src='/assets/inspector/taskview.jsx')
+    script(type='text/jsx', src='/assets/inspector/inspector.jsx')
+  // Google Analytics
+  script.
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-49796218-12', 'auto');
+    ga('send', 'pageview');
