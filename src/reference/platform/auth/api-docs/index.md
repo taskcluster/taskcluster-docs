@@ -8,4 +8,4 @@ superagent:   true
 docref:       true
 ---
 
-<div data-doc-ref='https://references.taskcluster.net/auth/v1/api.json'></div>
+<div data-doc-ref='http://references.taskcluster.net/auth/v1/api.json'></div>
