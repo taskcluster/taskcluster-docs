@@ -28,6 +28,13 @@ head
     });
   if interactive
     script(src='/assets/bundle.js')
+  if docson || docref
+    script.
+      // Make sure the URL's protocol is `https`.  Lots of schema and refernce
+      // URLs are hard-coded as http, but that will cause mixed-content warnings.
+      var fixUrlProtocol = function(url) {
+        return url.replace(/^http:/, 'https:');
+      }
   if docson
     // JSON Schema Documentation
     link(rel='stylesheet', href='/assets/docson.css')
@@ -45,7 +52,7 @@ head
               }
               el.data('has-rendered', true);
               var schema = el.data('render-schema');
-              $.get(schema, function(data) {
+              $.get(fixUrlProtocol(schema), function(data) {
                 docson.doc(el, data);
               });
             });
