@@ -330,7 +330,7 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
                 if(this.key === "$ref") {
                     if((/^https?:\/\//).test(item)) {
                         var segments = item.split("#");
-                        var p = $.get(segments[0]).then(function(content) {
+                        var p = $.get(fixUrlProtocol(segments[0])).then(function(content) {
                             if(typeof content != "object") {
                                 try {
                                     content = JSON.parse(content);

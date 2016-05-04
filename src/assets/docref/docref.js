@@ -12,7 +12,7 @@ $(function() {
   $('*[data-doc-ref]').each(function() {
     var container = $(this);
     var reference = container.data('doc-ref');
-    request.get(reference).end().then(function(res) {
+    request.get(fixUrlProtocol(reference)).end().then(function(res) {
       container.html(_renderReference.render(res.body));
       $('[data-toggle="tooltip"]').tooltip();
       if (window.renderSchemas) {
