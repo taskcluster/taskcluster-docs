@@ -21,7 +21,7 @@ tasks:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone $GITHUB_BASE_REPO_URL && cd taskcluster-docs && git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request && git checkout pull-request && bash taskcluster-build.sh pull-request"
+        - "git clone $GITHUB_BASE_REPO_URL && cd taskcluster-docs && git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request && git checkout pull-request && bash util/taskcluster-build.sh pull-request"
     metadata:
       name: "taskcluster-docs check"
       description: "Run `gulp check` to verify docs well-formedness`"
@@ -29,6 +29,8 @@ tasks:
       source: "{{ event.head.repo.url }}"
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
+    scopes:
+        - "auth:aws-s3:read-write:docs-taskcluster-net/"
     extra:
       github:
         env: true
@@ -40,11 +42,13 @@ tasks:
     payload:
       maxRunTime: 3600
       image: "node:5.11"
+      features:
+        taskclusterProxy: true
       command:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone $GITHUB_HEAD_REPO_URL && cd taskcluster-docs && git checkout $GITHUB_HEAD_BRANCH && bash taskcluster-build.sh push"
+        - "git clone $GITHUB_HEAD_REPO_URL && cd taskcluster-docs && git checkout $GITHUB_HEAD_BRANCH && bash util/taskcluster-build.sh push"
     metadata:
       name: "taskcluster-docs publish"
       description: "Run `gulp publish` to publish the docs to S3`"
