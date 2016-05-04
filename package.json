@@ -20,7 +20,7 @@
     "express": "^4.13.4",
     "grunt-frontmatter": "^1.0.3",
     "gulp": "^3.9.1",
-    "gulp-awspublish": "^3.0.2",
+    "gulp-awspublish": "git://github.com/djmitche/gulp-awspublish#noAcl",
     "gulp-clean": "^0.3.2",
     "gulp-data": "^1.2.1",
     "gulp-front-matter": "^1.3.0",

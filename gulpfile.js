@@ -116,7 +116,7 @@ gulp.task('publish', function() {
 
   return site()
     .pipe(s3.setHeaders())
-    .pipe(publisher.publish())
+    .pipe(publisher.publish({}, {noAcl: true}))
     .pipe(publisher.cache())
     .pipe(awspublish.reporter())
 });
