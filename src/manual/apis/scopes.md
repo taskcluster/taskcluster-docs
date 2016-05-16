@@ -6,6 +6,22 @@ title: Scopes
 Scopes
 ======
 
+Authorization
+-------------
+
+All TaskCluster endpoints are guarded by [scopes](scopes).  The authorization
+information passed with each API call is used to determine a set of scopes
+associated with the caller.  These are compared against the scopes required by
+the endpoint.  If they are satisfied, the request is allowed to proceed.
+
+The scopes required for each endpoint are documented in the reference section
+of this manual.  Note that some API endpoints may have additional scope
+requirements that depend on the body of the request; read the endpoint
+documentation carefully to discover these.
+
+Scopes
+------
+
 A scope is simply a string, limited to printable ASCII characters.  Scopes
 generally travel in sets.  For example, a typical client will have a set of a
 few dozen scopes.
