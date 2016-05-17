@@ -88,13 +88,13 @@ ul.toc li a:hover {
 
 ul.toc li ul {
   color: #777;
-  margin-bottom: 1em;
+  margin-bottom: 0;
 }
 
 ul.toc li ul li {
   color: #777;
   margin-top: 0.5em;
-  margin-left: 0.5em;
+  margin-left: 1em;
   margin-bottom: 0;
 }
 
