@@ -174,6 +174,21 @@ In the present implementation, both of these are arbitrary strings.
 For workers started by the AWS provisioner, they are avaiability zone and instance ID, respectively.
 For other worker types, anything goes.
 
+## Provisioner IDs
+
+Provisioner IDs are limited to 22 characters.
+We do not subdivide namespaces; instead, they are enumerated here:
+
+ * `aws-provisioner-v1` -- the AWS provisioner
+ * `buildbot-bridge` -- the AWS provisioner
+
+## Scheduler IDs
+
+Scheduler IDs are limited to 22 characters.
+We do not subdivide namespaces; instead, they are enumerated here:
+
+ * `tc-diagnostics` -- the taskcluster diagnostics tool
+
 ## Docker-Worker Caches
 
 Docker-worker caches are located on individual host machines, and thus may be shared among tasks with the same workerType.
