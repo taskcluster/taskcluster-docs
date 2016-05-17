@@ -1,9 +1,9 @@
 mixin tableOfContents(children)
-  ul.tableOfContents
+  ul.toc
     each child in children
       li
         if child.path == path
-          b #{child.title}
+          span.active #{child.title}
         else
           if child.link
             a(href=child.path) #{child.title}
