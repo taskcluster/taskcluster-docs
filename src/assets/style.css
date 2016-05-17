@@ -63,3 +63,45 @@ nav.navbar-inverse .navbar-text {
 .sequence-diagram-hand, .sequence-diagram-simple {
   text-align: center;
 }
+
+/* Table of Contents */
+ul.toc {
+  padding-left: 0;
+}
+
+ul.toc li {
+  list-style-type: none;
+}
+
+ul.toc li span.active {
+  font-weight: 700;
+}
+
+ul.toc li a {
+  text-decoration: none;
+  display: block;
+}
+
+ul.toc li a:hover {
+  background-color: #eee;
+}
+
+ul.toc li ul {
+  color: #777;
+  margin-bottom: 0;
+}
+
+ul.toc li ul li {
+  color: #777;
+  margin-top: 0.5em;
+  margin-left: 1em;
+  margin-bottom: 0;
+}
+
+ul.toc li ul li ul {
+  font-size: 0.9em;
+}
+
+ul.toc li ul li ul li {
+  margin-top: 0;
+}

@@ -4,12 +4,10 @@ nav.navbar.navbar-default.navbar-static-top.navbar-inverse(role='navigation')
       img(height='36', width='36', src='/assets/taskcluster-36.png')
       |              TaskCluster Docs
   ul.nav.navbar-nav
-    li
-      a(href="/tutorial") Tutorial
-    li
-      a(href="/manual") Manual
-    li
-      a(href="/reference") Reference
+    - var sections = { tutorial : 'Tutorial', manual: 'Manual', reference: 'Reference' }
+    for section, p in sections
+      li(class= (p === path.split('/')[1]) && 'active')
+        a(href= "/" + p)= section
     li.dropdown
       a.dropdown-toggle(data-toggle="dropdown", role="button", href="#", type="button")
         | More&nbsp;
@@ -25,5 +23,6 @@ nav.navbar.navbar-default.navbar-static-top.navbar-inverse(role='navigation')
           a(href="https://github.com/taskcluster") GitHub
         li
           a(href="https://travis-ci.org/taskcluster") Travis CI
-  form.navbar-form.navbar-right(role='search', style="display: none")
-    input#docs-search.form-control(type='text', autocomplete='off', name='query', placeholder='Search...', style='margin-right: 0px')
+  ul.nav.navbar-right(role='search', style='display: none')
+    form.navbar-form
+      input#docs-search.form-control(type='text', autocomplete='off', name='query', placeholder='Search Taskcluster Docs')
