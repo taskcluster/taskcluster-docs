@@ -23,6 +23,7 @@ nav.navbar.navbar-default.navbar-static-top.navbar-inverse(role='navigation')
           a(href="https://github.com/taskcluster") GitHub
         li
           a(href="https://travis-ci.org/taskcluster") Travis CI
-  ul.nav.navbar-right(role='search', style='display: none')
-    form.navbar-form
-      input#docs-search.form-control(type='text', autocomplete='off', name='query', placeholder='Search Taskcluster Docs')
+    form.navbar-form.navbar-left.search
+      .form-group.has-feedback
+        input#docs-search.form-control(type='text', autocomplete='off', name='query')
+        span.glyphicon.glyphicon-search.form-control-feedback(aria-hidden='true')

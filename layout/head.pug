@@ -21,9 +21,13 @@ head
   script.
     $(function() {
       docsearch({
-        apiKey: '92dbc7f60d82217d93759d6e55e375b0',
+        apiKey: 'a85bf4b3df84bee712cefa9e60046a80',
         indexName: 'taskcluster',
         inputSelector: '#docs-search',
+        autocompleteOptions: {
+          autoselect: true,
+          openOnFocus: true,
+        },
       });
     });
   if interactive
