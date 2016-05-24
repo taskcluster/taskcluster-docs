@@ -20,6 +20,7 @@ How do you want to use TaskCluster?
  * [A task is failing and I want to debug it](tutorial/debug-task)
  * [I want to work with the TaskCluster APIs](tutorial/interactive)
  * [I want to hack on TaskCluster itself] - TODO
+ * [I want to submit changes of TaskCluster itself for review](tutorial/reviews)
 
 ## Patches Welcome!
 
