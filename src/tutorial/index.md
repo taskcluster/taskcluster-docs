@@ -14,7 +14,7 @@ operation, see the manual portion of this documentation.
 
 How do you want to use TaskCluster?
 
- * [I'm not sure - what is it??](tutorial/what-is-tc)
+ * [What is TaskCluster?](tutorial/what-is-tc)
  * [I want to run a task manually in TaskCluster](tutorial/hello-world)
  * [I'm a Firefox / Gecko developer and I want to change builds or tests](tutorial/gecko-tasks)
  * [A task is failing and I want to debug it](tutorial/debug-task)
