@@ -19,8 +19,7 @@ How do you want to use TaskCluster?
  * [I'm a Firefox / Gecko developer and I want to change builds or tests](tutorial/gecko-tasks)
  * [A task is failing and I want to debug it](tutorial/debug-task)
  * [I want to work with the TaskCluster APIs](tutorial/interactive)
- * [I want to hack on TaskCluster itself] - TODO
- * [I want to submit changes of TaskCluster itself for review](tutorial/reviews)
+ * [I want to hack on TaskCluster itself](tutorial/hack-tc)
 
 ## Patches Welcome!
 
