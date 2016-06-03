@@ -2,6 +2,8 @@
 title: Reference
 ---
 
+# Taskcluster Reference
+
 This portion of the TaskCluster documentation contains reference material.
 Consult the [manual](/manual) for the background to this information.
 
