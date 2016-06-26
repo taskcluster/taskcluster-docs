@@ -1,14 +1,12 @@
 /** Document Reference Utility for TaskCluster */
-
 $(function() {
   $('*[data-doc-readme]').each(function() {
     var container = $(this);
-    var reference = container.data('doc-readme');
-    request.get(fixUrlProtocol(reference)).end().then(function(res) {
+    var url = container.data('doc-readme');
 
-      // render to html
+    request.post('http://cors-proxy.taskcluster.net/request', {url}).end().then(function(res) {
       var markup = marked(res.text);
       container.html(markup);
-    });
+    })
   });
 });
