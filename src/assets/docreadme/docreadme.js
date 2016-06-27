@@ -4,7 +4,7 @@ $(function() {
     var container = $(this);
     var url = container.data('doc-readme');
 
-    request.post('http://cors-proxy.taskcluster.net/request', {url}).end().then(function(res) {
+    request.post('https://cors-proxy.taskcluster.net/request', {url}).end().then(function(res) {
       var markup = marked(res.text);
       container.html(markup);
     })
