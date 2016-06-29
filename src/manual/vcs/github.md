@@ -10,6 +10,10 @@ are defined in a YAML configuration file which lives at the root of a
 repository. There is no explicit sign-up step, TaskCluster and Mozilla projects
 will simply begin accepting jobs as soon as a `.taskcluster.yml` exists.
 
+*Note: for PR status reporting to work properly, you need to add
+[TaskClusterRobot](https://github.com/TaskClusterRobot) to the contributors
+(read/write) for your repository.*
+
 The syntax is somewhat verbose, but offers an enormous amount of flexibility.
 The eventual goal of this project is to support all platforms and allow users
 to define workflows for testing, shipping, and landing patches from within
