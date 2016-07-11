@@ -8,15 +8,13 @@ When a developer pushes to a Gecko repository, a long chain of events begins:
  * These tasks are arranged in a "task graph", with some tasks (e.g., tests) depending on others (builds).
    Once its prerequisite tasks complete, a dependent task begins.
  * The result of each task is sent to [TreeHerder](https://treeherder.mozilla.org) where developers and sheriffs can track the status of the push.
- * The outputs from each task -- log files, Firefox installers, and so on -- appear attached to each task when it completes.
+ * The outputs from each task -- log files, Firefox installers, and so on -- appear attached to each task (viewable in the [Task Inspector](https://tools.taskcluster.net/task-inspector/)) when it completes.
 
 # Next Steps
 
 Due to its "self-service" desgn, very little of this process is actually part of TaskCluster, so we provide only a brief overview and some pointers.
-TaskCluster provides a small bit of glue ([mozilla-taskcluster](/manual/vcs/mozilla-taskcluster)) to create the decision task, but the task itself is defined entirely in-tree.
-Similarly, TreeHerder is a separate service, not operated as a part of TaskCluster, although mozilla-taskcluster does feed data to it based on `task.extra`.
+TaskCluster provides a small bit of glue ([mozilla-taskcluster](/manual/vcs/mozilla-taskcluster)) to create the decision task and some more ([taskcluster-treeherder](/reference/core/treeherder)) to communicate with treeherder, but the task graph itself is defined entirely in-tree.
 
- * [How is the decision task defined?](gecko-decision-task) - TODO
- * [How is the task-graph generated?](gecko-task-graph) - TODO
- * [How do try pushes work?](gecko-try-pushes) - TODO
- * [How are the docker images created?](gecko-docker-images) - TODO
+ * [How is the decision task defined?](gecko-decision-task)
+ * [How is the task-graph generated?](gecko-task-graph)
+ * [I want to add a new job](gecko-new-job)
