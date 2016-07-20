@@ -227,9 +227,11 @@ Secret names have the following structure:
   Secrets with this prefix are the exclusive domain of the given project.
   Users not associated with a project should not be given scopes associated with the project's secrets!
 
-* `repo:<host>/<path>:branch:<branch>`,
+* absolute name `repo:<host>/<path>:branch:<branch>` or prefix `repo:<host>/<path>:branch:<branch>:` -
+  For secrets that should only be available to a single branch of a repository, and not other branches or forks of that repository.
+  The first form is for a single secret object containing all secrets; the second form is for using multiple secret objects.
 * `repo:<host>/<path>:pull-request` -
-  Secrets within these scopes may be made available to corresponding repositories, branches, and pull requests via the corresponding roles.
+  Secrets named in this manner will be available to repository forks, branches, and pull requests via the corresponding roles.
 
 ## Indexes
 
