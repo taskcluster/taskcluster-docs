@@ -9,6 +9,8 @@ Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks
 are defined in a YAML configuration file which lives at the root of a
 repository. There is no explicit sign-up step, TaskCluster and Mozilla projects
 will simply begin accepting jobs as soon as a `.taskcluster.yml` exists.
+However, annotating pull requests with the status of TaskCluster jobs does
+require the configuration step described in _Configuring TaskClusterRobot_ below.
 
 The syntax is somewhat verbose, but offers an enormous amount of flexibility.
 The eventual goal of this project is to support all platforms and allow users
@@ -179,3 +181,15 @@ available from within the `.taskcluster.yml` file itself via curly braces i.e.
   GITHUB_HEAD_USER_EMAIL: "{{ event.head.user.email }}"
 ```
 
+### Configuring TaskClusterRobot
+
+By default, TaskClusterRobot will comment on the events you specify in your
+`.taskcluster.yml` file, providing a link to the job in TaskCluster. If you
+enable jobs on pull requests, and you want TaskClusterRobot to also annotate
+a pull request with the status of a job, so you can see the results of the job
+in GitHub (without having to follow the link to TaskCluster), then you need
+to configure TaskClusterRobot to have write permissions to the repository.
+
+To do so, either add TaskClusterRobot to a team that has write permissions,
+or make TaskClusterRobot a contributor to the repository on the repository's
+_Settings > Collaborators & teams_ page and give it write permissions.
