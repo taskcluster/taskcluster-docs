@@ -1,3 +1,11 @@
+---
+followup:
+  subtext: Digging Deeper
+  links:
+    finding-tasks: I want to look at some real tasks
+    interactive: I want to know how the tools site works
+    gecko-tasks: I'm a Firefox/Gecko developer - How do my commits get built?
+---
 # Hello, World
 
 Let's start by seeing TaskCluster in action.
@@ -61,11 +69,3 @@ You've run your first task!
 # See Also
 
  * ["TaskCluster Hello World" video by mrrrgn and dustin](https://vreplay.mozilla.com/replay/showRecordingExternal.html?key=7AvN2iczQYcI3lY)
-
-# Next Steps
-
-OK, that was pretty simple -- but I can think of easier ways to print "hello world".  What's next?
-
- * [I want to look at some real tasks](finding-tasks)
- * [I want to know how the tools site works](interactive)
- * [I'm a Firefox / Gecko developer - how do my commits get built?](gecko-tasks)

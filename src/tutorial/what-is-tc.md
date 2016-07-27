@@ -1,3 +1,8 @@
+---
+followup:
+  links:
+    hello-world: Create a task to see TaskCluster in action!
+---
 # What is TaskCluster
 
 *TaskCluster* is a set of components that manages task queuing, scheduling,
@@ -29,7 +34,3 @@ While we have built some Mozilla-specific integrations, the platform and many of
 However, the platform is not presently designed to be easily redeployed.
 While it is by no means impossible to set up a second instance of TaskCluster outside of Mozilla, neither is it a turnkey installation.
 We hope to address this soon, once we have demonstrated the usefulness of the platform.
-
-# Next Steps
-
-Try creating a [hello world](hello-world) task to see TaskCluster in action.

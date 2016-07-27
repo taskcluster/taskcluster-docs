@@ -2,6 +2,9 @@
 layout:       default
 class:        markdown
 interactive:  true
+followup:
+  links:
+    authenticate: Authenticate
 ---
 
 Modern `async` Javascript
@@ -394,7 +397,3 @@ And the following **modules from npm**:
 Feel free to request additional modules to be added, or versions to be upgraded.
 The intent is to supply modules that are useful in tutorials and for quick
 one-off experiments.
-
-# Next Steps
-
-* [Authenticate](authenticate)

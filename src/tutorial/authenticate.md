@@ -3,6 +3,9 @@ layout:             default
 class:              markdown
 sequence_diagrams:  true
 interactive:        true
+followup:
+  links:
+    create-task-via-api: Create a task with createTask
 ---
 
 Authenticating to TaskCluster
@@ -121,7 +124,3 @@ console.log(result);
 
 Don't worry if the number of pending tasks is zero; that is the case most of
 the time, as we aim to process tasks as soon as they arrive.
-
-# Next Steps
-
-* [Create a task with createTask](create-task-via-api)
