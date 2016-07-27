@@ -1,0 +1,9 @@
+if followup
+  div.followup
+    hr
+    h2 Next Steps
+      if followup.subtext
+        small  #{followup.subtext}
+    .list-group
+      each title, link in followup.links
+        a(href=link, class='list-group-item')= title

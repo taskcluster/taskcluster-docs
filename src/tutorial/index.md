@@ -1,3 +1,15 @@
+---
+followup:
+  subtext: How do you want to use TaskCluster?
+  links:
+    tutorial/what-is-tc: I'm not sure - what is it?
+    tutorial/hello-world: I want to run a task manually in TaskCluster
+    tutorial/gecko-tasks: I'm a Firefox / Gecko developer and I want to change builds or tests
+    tutorial/debug-task: A task is failing and I want to debug it
+    tutorial/interactive: I want to work with the TaskCluster APIs
+    tutorial/hack-tc: I want to hack on TaskCluster itself
+---
+
 # TaskCluster
 
 Welcome to TaskCluster!
@@ -10,16 +22,7 @@ information.
 If you want a more comprehensive description of TaskCluster's design and
 operation, see the manual portion of this documentation.
 
-# Next Steps
-
 How do you want to use TaskCluster?
-
- * [I'm not sure - what is it??](tutorial/what-is-tc)
- * [I want to run a task manually in TaskCluster](tutorial/hello-world)
- * [I'm a Firefox / Gecko developer and I want to change builds or tests](tutorial/gecko-tasks)
- * [A task is failing and I want to debug it](tutorial/debug-task)
- * [I want to work with the TaskCluster APIs](tutorial/interactive)
- * [I want to hack on TaskCluster itself](tutorial/hack-tc)
 
 ## Patches Welcome!
 

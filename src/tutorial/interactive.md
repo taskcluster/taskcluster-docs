@@ -1,6 +1,10 @@
 ---
 layout:       default
 class:        markdown
+followup:
+  links:
+    async-javascript: Modern Async Javascript
+    authenticate: Authenticate
 ---
 
 Interactive API Tutorial
@@ -28,8 +32,3 @@ other things.
 Note: the graphical TaskCluster tools on `tools.taskcluster.net` are all
 written in client-side Javascript. In fact, the entire site is a static
 web-site hosted on a CDN.
-
-# Next Steps
-
-* [Modern Async JavaScript](async-javascript)
-* [Authenticate](authenticate)

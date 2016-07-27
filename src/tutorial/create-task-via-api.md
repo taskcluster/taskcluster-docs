@@ -3,6 +3,9 @@ layout:       default
 class:        markdown
 docson:       true
 interactive:  true
+followup:
+  links:
+    '/reference': API documentation for all TaskCluster services
 ---
 
 Creating A Task With createTask
@@ -414,8 +417,3 @@ If the artifact was private (ie. didn't start with `public/`) we could have
 constructed the `queue` object with credentials and used the auxiliary
 method `queue.buildSignedUrl` which works like `queue.buildUrl`, with the only
 difference that includes a signature in the query-string for the URL.
-
-# Next Steps
-
- * The [reference component](/reference) contains links to the API
-   documentation for all TaskCluster services.

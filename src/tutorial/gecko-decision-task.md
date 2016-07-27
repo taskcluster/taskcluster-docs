@@ -1,3 +1,9 @@
+---
+followup:
+  links:
+    gecko-task-graph: How is the task-graph generated?
+---
+
 # Gecko Decision Task
 
 Upon detecting a push to a supported Mercurial repository, TaskCluster reads [`.taskcluster.yml`](https://dxr.mozilla.org/mozilla-central/source/.taskcluster.yml) from the root directory of the repository, in the revision just pushed.
@@ -11,7 +17,3 @@ This pattern occurs even for a try push.
 That means you can modify how the decision task is invoked, or even what the decision task does, in a try push!
 
 You can find a link to the latest mozilla-central decision task in [the TaskCluster index](https://tools.taskcluster.net/index/#gecko.v2.mozilla-central.latest.firefox/gecko.v2.mozilla-central.latest.firefox.decision).
-
-# Next Steps
-
- * [How is the task-graph generated?](gecko-task-graph)
