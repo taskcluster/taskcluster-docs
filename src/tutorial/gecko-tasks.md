@@ -3,7 +3,7 @@ followup:
   links:
     gecko-decision-task: How is the decision task defined?
     gecko-task-graph: How is the task-graph generated?
-    gecko-docker-images: How are the docker images created?
+    gecko-docker-images: (TODO) How are the docker images created?
 ---
 # Gecko and TaskCluster
 
