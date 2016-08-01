@@ -1,7 +1,6 @@
 ---
 followup:
   links:
-    gecko-try-pushes: (TODO) How do try pushes work?
     gecko-new-job: I want to add a new job
 ---
 
