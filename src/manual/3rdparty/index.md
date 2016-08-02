@@ -28,6 +28,10 @@ First, because mere posession of a credential with a clientId and some 44-charac
 Second, even if you validate the accessToken, TaskCluster is fairly permissive in creation of temporary credentials with arbitrary clientIds, by design.
 The information you may rely on for authorization is contained in the list of scopes returned from the [auth.authenticateHawk](/reference/platform/auth/api-docs#authenticateHawk) method.
 
+*CAUTION:* remember that you are dealing with powerful credentials belonging to real users.
+Think carefully about how you handle those credentials, and how you can minimize the handling that you do.
+Beyond that, what plans you have for detecting and handling credential disclosure?
+
 # Approaches
 
 ## Frontend-Only Use
@@ -72,3 +76,9 @@ Your service should redirect the user's browser to `https://login.taskcluster.ne
 
 If user clicks the button to grant access to <target>, the user will be redirected to `<target>?clientId=...&accessToken=...&certificate=...`, so that the <target> URL may obtain the temporary TaskCluster credentials.
 The target URL should take pains to modify the browser location as quickly as possible to prevent disclosing the accessToken.
+
+## Troubleshooting
+
+If your access checks are not working, the most common error is forgetting to handle the certificate in addition to the clientId and accessToken.
+There is no need to interpret the certificate (please don't!); just treat it as an opaque string.
+Omitting the certificate when it is required will generally result in "Bad Mac" errors.
