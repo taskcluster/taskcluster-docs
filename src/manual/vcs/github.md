@@ -12,6 +12,10 @@ will simply begin accepting jobs as soon as a `.taskcluster.yml` exists.
 However, annotating pull requests with the status of TaskCluster jobs does
 require the configuration step described in _Configuring TaskClusterRobot_ below.
 
+*Note: for PR status reporting to work properly, you need to add
+[TaskClusterRobot](https://github.com/TaskClusterRobot) to the contributors
+(read/write) for your repository.*
+
 The syntax is somewhat verbose, but offers an enormous amount of flexibility.
 The eventual goal of this project is to support all platforms and allow users
 to define workflows for testing, shipping, and landing patches from within
