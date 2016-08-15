@@ -26,6 +26,17 @@ function index() {
     .pipe(headers.set('Content-Type', 'text/html'))
 }
 
+function error() {
+  return gulp
+    .src('src/error.md', {base: 'src'})
+    .pipe(frontmatter({property: 'data'}))
+    .pipe(markdown())
+    .pipe(filter.renameIndex())
+    .pipe(rename({extname: ''}))
+    .pipe(pug({template: 'layout/layout.pug'}))
+    .pipe(headers.set('Content-Type', 'text/html'))
+}
+
 function tutorial() {
   return gulp
     .src('src/tutorial/**/*.md', {base: 'src'})
@@ -94,6 +105,7 @@ function presentations() {
 function site() {
   return merge(
     index(),
+    error(),
     tutorial(),
     manual(),
     reference(),
