@@ -12,7 +12,7 @@ Authenticating to TaskCluster
 =============================
 
 TaskCluster uses its own kind of "credentials" to [authenticate API
-requests](/manual/apis/).  These credentials can come from a variety of
+requests](/manual/apis).  These credentials can come from a variety of
 sources, but in this section we will use [temporary
 credentials](/manual/apis/temporary-credentials) issued by the TaskCluster
 login service.

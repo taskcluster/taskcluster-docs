@@ -45,7 +45,7 @@ In practice, roles are used in a few ways within TaskCluster:
  * As a way to configure scopes for TaskCluster resources like hooks or worker types
  * As a scope allowing the bearer to "assume" the named role.
 
-See the [namespaces](../../devel/namespaces/) document for more information.
+See the [namespaces](/manual/devel/namespaces) document for more information.
 
 The set of defined roles is visible in the [Roles
 tool](http://tools.taskcluster.net/auth/roles/).  This interface helpfully
