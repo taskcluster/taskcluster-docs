@@ -9,11 +9,11 @@ var _renderReference = new EJS({
 });
 
 $(function() {
-  $('*[data-doc-ref]').each(function() {
+  $('.api-reference').each(function() {
     var container = $(this);
-    var reference = container.data('doc-ref');
-    request.get(fixUrlProtocol(reference)).end().then(function(res) {
-      container.html(_renderReference.render(res.body));
+
+    try {
+      container.html(_renderReference.render(referenceData));
       $('[data-toggle="tooltip"]').tooltip();
       if (window.renderSchemas) {
         renderSchemas();
@@ -29,8 +29,8 @@ $(function() {
           }
         }
       }, 250);
-    }, function() {
-      container.html(_renderLoadError.render({reference: reference}));
-    });
+    } catch(e) {
+      container.html(_renderLoadError.render(e));
+    };
   });
 });
