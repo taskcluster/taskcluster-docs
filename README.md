@@ -7,8 +7,9 @@ It's a basic static site, generated with some Gulp plugins.
 Development Setup
 -----------------
 
-  1. Install: `npm install`
-  2. Run the webserver: `gulp webserver`
+  1. Copy `user-config-example.yml` into `user-config.yml` and fill in the blannks. Note: This config is only used during development!
+  2. Install: `npm install`
+  3. Run the webserver: `gulp webserver`
     * Note that it does not auto-reload on change.
 
 Publishing

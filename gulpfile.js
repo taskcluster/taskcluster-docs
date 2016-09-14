@@ -124,13 +124,13 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('publish', function() {
-  var publisher = s3.makePublisher();
-
-  return site()
-    .pipe(s3.setHeaders())
-    .pipe(publisher.publish({}, {noAcl: true}))
-    .pipe(publisher.cache())
-    .pipe(awspublish.reporter())
+  return s3.makePublisher().then(function(publisher) {
+    return site()
+      .pipe(s3.setHeaders())
+      .pipe(publisher.publish({}, {noAcl: true}))
+      .pipe(publisher.cache())
+      .pipe(awspublish.reporter())
+  });
 });
 
 gulp.task('default', ['webserver']);
