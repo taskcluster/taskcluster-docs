@@ -9,7 +9,8 @@ Development Setup
 
   1. Copy `user-config-example.yml` into `user-config.yml` and fill in the blannks. Note: This config is only used during development!
   2. Install: `npm install`
-  3. Run the webserver: `gulp webserver`
+  3. [Optional] If you want remote references locally, run `gulp download`.
+  4. Run the webserver: `gulp webserver`
     * Note that it does not auto-reload on change.
 
 Publishing

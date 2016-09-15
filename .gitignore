@@ -1,3 +1,4 @@
 node_modules/
 .awspublish-*
 user-config.yml
+build/

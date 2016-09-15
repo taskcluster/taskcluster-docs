@@ -1,9 +1,12 @@
 var gulp = require('gulp');
+var path = require('path');
 var markdown = require('gulp-markdown');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
 var data = require('gulp-data');
 var clean = require('gulp-clean');
+var gunzip = require('gulp-gunzip');
+var untar = require('gulp-untar');
 var virtual_webserver = require('./lib/virtual-webserver');
 var pug = require('./lib/pug');
 var frontmatter = require('gulp-front-matter');
@@ -13,6 +16,7 @@ var filter = require('./lib/filter');
 var navlinks = require('./lib/navlinks');
 var makeRedirects = require('./lib/make-redirects');
 var s3 = require('./lib/s3');
+var raw = require('./lib/raw');
 
 // define streams creating each type of file
 function index() {
@@ -61,15 +65,21 @@ function manual() {
 }
 
 function reference() {
-  return gulp
-    .src('src/reference/**/*.md', {base: 'src'})
+  return merge(
+    gulp.src(['build/reference/**/*.json', '!*metadata.json'], {base: 'build'})
+      .pipe(raw()),
+    merge(
+      gulp.src('src/reference/**/*.md', {base: 'src'}),
+      gulp.src('build/reference/**/*.md', {base: 'build'}).pipe(raw())
+    )
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
-    .pipe(navlinks({rootPath: '/reference'}))
-    .pipe(pug({template: 'layout/layout.pug'}))
-    .pipe(headers.set('Content-Type', 'text/html'))
+  )
+  .pipe(rename({extname: ''}))
+  .pipe(navlinks({rootPath: '/reference'}))
+  .pipe(pug({template: 'layout/layout.pug'}))
+  .pipe(headers.set('Content-Type', 'text/html'));
 }
 
 function assets() {
@@ -130,6 +140,27 @@ gulp.task('publish', function() {
       .pipe(publisher.publish({}, {noAcl: true}))
       .pipe(publisher.cache())
       .pipe(awspublish.reporter())
+  });
+});
+
+gulp.task('clean-build', function() {
+  return gulp.src('build', {read: false})
+    .pipe(clean());
+});
+
+// We don't depend on this to avoid having to redownload
+// every time during development. I'm sure we can come up
+// with some way to do modified times and intelligently
+// redownload if we want, but I don't want to right now.
+gulp.task('download', ['clean-build'], function() {
+  return s3.makeDownloader('taskcluster-raw-docs').then(function(downloader) {
+    downloader
+      .pipe(gunzip())
+      .pipe(rename(function(path) {
+        path.dirname = 'reference';
+      }))
+      .pipe(untar())
+      .pipe(gulp.dest('build'));
   });
 });
 

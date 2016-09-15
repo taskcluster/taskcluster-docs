@@ -5,6 +5,8 @@ set -e
 npm install --quiet
 export PATH="$PWD/node_modules/.bin:$PATH"
 
+gulp download
+
 if [ "$1" = "pull-request" ]; then
     gulp check
 elif [ "$1" = "push" ]; then
