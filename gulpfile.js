@@ -66,7 +66,7 @@ function manual() {
 
 function reference() {
   return merge(
-    gulp.src(['build/reference/**/*.json', '!*metadata.json'], {base: 'build'})
+    gulp.src(['build/reference/*/references/*.json'], {base: 'build'})
       .pipe(raw()),
     merge(
       gulp.src('src/reference/**/*.md', {base: 'src'}),

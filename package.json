@@ -45,7 +45,6 @@
     "superagent": "^1.1.0",
     "superagent-promise": "^0.2.0",
     "taskcluster-client": "^0.22.4",
-    "taskcluster-lib-docs": "^3.0.1",
     "through2": "^2.0.1",
     "typed-env-config": "^1.1.0",
     "url-join": "^0.0.1",
