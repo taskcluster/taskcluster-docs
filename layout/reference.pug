@@ -9,6 +9,11 @@ style.
     margin-left: 6px;
   }
 
+script.
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
 // /************ Title, meta-data and description ************/
 
 h1 !{marked(title)}
@@ -125,10 +130,10 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
   | !{marked(entry.description)}
   if entry.input
     h3 Request Payload
-    div('data-render-schema'= entry.input)
+    div(data-render-schema= entry.input)
   if entry.output
     h3 Request Payload
-    div('data-render-schema'= entry.output)
+    div(data-render-schema= entry.output)
   br
 
 
@@ -166,46 +171,27 @@ each entry in entries.filter(function(entry) { return entry.type === 'topic-exch
           td
             // TODO: Make these have tooltips
             if key.constant
-              .label.label-default constant-key
+              .label.label-default(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= `This key always assume the value \`${key.constant}\`. Used to allow additional routing key formats.`
+              ) constant-key
               br
             if !key.required
-              .label.label-info option-key
+              .label.label-info(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= "This key takes the value of `_`, if it does not make sense for the event reported."
+              ) option-key
               br
             if key.multipleWords
-              .label.label-danger multi-key
+              .label.label-danger(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= "This key may container dots `.`, creating multiple sub-keys, match it with `#`"
+              ) multi-key
               br
   if entry.schema
     h3 Message Payload
-    div('data-render-schema'= entry.schema)
+    div(data-render-schema= entry.schema)
   br
-
-  // Leaving this here for tooltip info for now
-  //<% entry.routingKey.forEach(function(key, index) { %>
-  //   <tr>
-  //    <td><div class='badge badge-default'><%= index %></div></td>
-  //    <td><code><%= key.name %></code></td>
-  //    <td><%= marked(key.summary) %></td>
-  //    <td>
-  //      <% if(key.constant) { %>
-  //      <div class="label label-default"
-  //           data-toggle="tooltip"
-  //           data-placement="left"
-  //           title="This key always assume the value `<%= key.constant%>`, used to allow additional routing key formats.">constant-key</div>
-  //      <% } %>
-  //      <% if(!key.required) { %>
-  //      <div class="label label-info"
-  //           data-toggle="tooltip"
-  //           data-placement="left"
-  //           title="This key takes the value of `_`, if it does not make sense for the event reported">option-key</div>
-  //      <% } %>
-  //      <% if(key.multipleWords) { %>
-  //      <div class="label label-danger"
-  //           data-toggle="tooltip"
-  //           data-placement="left"
-  //           title="This key may container dots `.`, creating multiple sub-keys, match it with `#`">multi-key</div>
-  //      <% } %>
-  //    </td>
-  //   </tr>
-  //<% }); %>
-  //</tbody>
-  //</table>
