@@ -34,6 +34,7 @@ tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
     scopes:
+        - "auth:aws-s3:read-only:taskcluster-raw-docs/*"
         - "auth:aws-s3:read-write:docs-taskcluster-net/"
     extra:
       github:
