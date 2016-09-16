@@ -7,6 +7,8 @@ metadata:
 tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
+    scopes:
+        - "auth:aws-s3:read-only:taskcluster-raw-docs/*"
     extra:
       github:
         env: true
