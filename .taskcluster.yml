@@ -17,6 +17,8 @@ tasks:
     payload:
       maxRunTime: 3600
       image: "node:5.11"
+      features:
+        taskclusterProxy: true
       command:
         - "/bin/bash"
         - "--login"
