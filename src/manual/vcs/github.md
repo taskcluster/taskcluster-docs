@@ -41,7 +41,7 @@ tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     # Be careful with spacing under the lines with dashes. Next line should begin under the word, not under the dash.
     # Worker types correspond to particular machine types (aws size, etc...)
-    # worker types may be added by priveleged taskcluster users at tools.taskcluster.net/aws-provisioner
+    # worker types may be added by priveleged taskcluster users at https://tools.taskcluster.net/aws-provisioner
     workerType: "{{ taskcluster.docker.workerType }}"
     extra:
       github:
@@ -154,8 +154,8 @@ tasks:
 
 The official Node.js docker image. More information can be found [here:](https://github.com/nodejs/docker-node).
 
-This image is provided as a convenience, but *please feel free to push
-and use your own docker images.*
+This documentation uses the node image because it is convenient, but you may use any docker image you like, 
+including one of your own design.
 
 ### Environment Variables
 
