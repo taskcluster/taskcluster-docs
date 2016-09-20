@@ -4,6 +4,7 @@ var ace     = require('brace');
 require('brace/mode/javascript');
 require('brace/theme/ambiance');
 var babel   = require('babel-core');
+require('src/tarball.js');
 
 // Babel runtime regenerator
 require('babel-runtime/regenerator');
