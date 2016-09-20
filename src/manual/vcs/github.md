@@ -39,8 +39,9 @@ metadata:
 tasks:
   # What kind of environment will you need (docker, windows, etc...)
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
-  # Worker types correspond to particular machine types (aws size, etc...)
-  # worker types may be added by priveleged taskcluster users at tools.taskcluster.net/aws-provisioner
+    # Be careful with spacing under the lines with dashes. Next line should begin under the word, not under the dash.
+    # Worker types correspond to particular machine types (aws size, etc...)
+    # worker types may be added by priveleged taskcluster users at tools.taskcluster.net/aws-provisioner
     workerType: "{{ taskcluster.docker.workerType }}"
     extra:
       github:
@@ -53,12 +54,12 @@ tasks:
           - pull_request.reopened
     payload:
       maxRunTime: 3600                          # Job timeout, in seconds
-      image: "quay.io/mrrrgn/ubuntu-ci:0.0.1"   # Our docker container (if using docker)
+      image: "node:5"                           # Official Node.js docker container (if using docker)
       command:                                  # A command to run, list entries are arguments
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "checkout-pull-request && npm install . && npm test"
+        - "git clone {{event.head.repo.url}} repo && cd repo && git checkout {{event.head.sha}} && npm install . && npm test"
     # Each task also requires explicit metadata
     metadata:
       name: "TaskCluster GitHub Tests"
@@ -84,7 +85,7 @@ version: 0
 tasks:
   - payload:
      maxRunTime: 3600
-     image: "ubuntu:latest"
+     image: "node:<version>"
      command:
        - "test"
     extra:
@@ -103,7 +104,7 @@ version: 0
 tasks:
   - payload:
      maxRunTime: 3600
-     image: "ubuntu:latest"
+     image: "node:<version>"
      command:
        - "test"
     extra:
@@ -143,22 +144,17 @@ version: 0
 tasks:
   - payload:
       maxRunTime: 3600
-      image: "ubuntu:latest"
+      image: "node:<version>"
       command:
         - "test"
     deadline: "{{ '2 hours' | $fromNow }}" # the task will timeout if it doesn't complete within 2 hours
 ```
 
-### Ubuntu-ci image
+### Node.js image
 
-A basic docker image with git, node/npm, and python/pip installed. It also
-includes a bash function `checkout-pull-request` which will automatically
-checkout and cd into a repo for testing some pull request which triggered a
-job. The container is defined at:
-https://github.com/taskcluster/taskcluster-github/tree/master/docker/ubuntu-ci
-and may be pulled from `quay.io/mrrrgn/ubuntu-ci:latest`.
+The official Node.js docker image. More information can be found [here:](https://github.com/nodejs/docker-node).
 
-The ubuntu-ci image is provided as a convenience, but *please feel free to push
+This image is provided as a convenience, but *please feel free to push
 and use your own docker images.*
 
 ### Environment Variables
