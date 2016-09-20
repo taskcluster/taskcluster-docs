@@ -152,7 +152,7 @@ tasks:
 
 ### Node.js image
 
-The official Node.js docker image. More information can be found [here:](https://github.com/nodejs/docker-node).
+The official Node.js docker image. More information can be found [here](https://github.com/nodejs/docker-node).
 
 This documentation uses the node image because it is convenient, but you may use any docker image you like, 
 including one of your own design.
