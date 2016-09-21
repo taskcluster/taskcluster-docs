@@ -2,15 +2,14 @@
 title: TaskCluster Manual
 ---
 
-The diagram below illustrates how some of the most important
-**TaskCluster components** interact.
-When a user submits a task-graph to the scheduler, it posts tasks to
-the queue, from where the tasks are executed by workers. All the while a
-provisioner launches worker nodes depending on how many pending tasks we have.
+TaskCluster is a collection of microservices that, together, form a distributed
+task-execution framework supporting Mozilla's continuous integration.
 
-![TaskCluster components](/assets/overview.png)
+Most of these microservices provide REST APIs, and [accessing those
+APIs](/manual/apis) is an important part of interacting with TaskCluster.
+Several TaskCluster components also [watch version-control
+repositories](/manual/vcs), so it is also possible to interact with TaskCluster
+without ever making an API call.
 
-Below you'll see an illustration of the **layers** from task-graph to task to
-run on some worker node.
-
-![TaskCluster layers](/assets/layers.png)
+In any case, TaskCluster is focused on [tasks](/manual/tasks) and on [executing
+those tasks](/manual/execution) efficiently.
