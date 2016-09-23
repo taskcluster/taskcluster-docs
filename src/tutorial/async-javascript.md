@@ -392,7 +392,7 @@ We have embedded the following **standard node modules** from browserify:
 And the following **modules from npm**:
 `taskcluster-client`, `slugid`, `lodash`, `uuid`, `superagent`,
 `superagent-promise`, `debug`, `hawk`, `promise`, `url-join`, `bluebird`,
-`aws-sdk`, `aws-sdk-promise`, `js-yaml`, `xml2js`, `docker-exec-websocket-server`.
+`aws-sdk`, `js-yaml`, `xml2js`, `docker-exec-websocket-server`.
 
 Feel free to request additional modules to be added, or versions to be upgraded.
 The intent is to supply modules that are useful in tutorials and for quick
