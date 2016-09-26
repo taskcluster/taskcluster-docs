@@ -24,7 +24,7 @@ Limit the places you copy these credentials:
  * Redirect, or rewrite `window.location`, to remove them from the browser's location bar.
 
 *Do not* use clientIds for authentication.
-First, because mere posession of a credential with a clientId and some 44-character accessToken does not prove anything until you have validated that the accessToken is valid.
+First, because mere possession of a credential with a clientId and some 44-character accessToken does not prove anything until you have validated that the accessToken is valid.
 Second, even if you validate the accessToken, TaskCluster is fairly permissive in creation of temporary credentials with arbitrary clientIds, by design.
 The information you may rely on for authorization is contained in the list of scopes returned from the [auth.authenticateHawk](/reference/platform/auth/api-docs#authenticateHawk) method.
 
@@ -66,9 +66,20 @@ In particular, look for scopes of the forms:
  * `assume:mozilla-group:<group>`
  * `assume:mozillians-group:<group>`
 
-This is one of the rare cases where you should *not* apply scope expansion; that is, posessing `assume:mozillians-user:*` should not allow a user to see data for all mozillians!
+This is one of the rare cases where you should *not* apply scope expansion; that is, possessing `assume:mozillians-user:*` should not allow a user to see data for all Mozillians!
 
 See the [tc-login](/reference/core/login) reference documentation for more.
+
+# Don't be a [Confused Deputy](https://en.wikipedia.org/wiki/Confused_deputy_problem)
+
+If the service you are building acts on behalf of users, with its own TaskCluster credentials, you must be very careful to avoid allowing malicious users to abuse your privileges.
+For example, your service might create tasks based on a user's choices in a browser form.
+If the service has the scopes to create tasks that can read secrets, but does not verify that the user has such permission, then the service would provide a way for malicious users to create tasks that display those secrets.
+
+The best way to avoid this issue is to not act as a deputy.
+In this case, that would mean using the user's own TaskCluster credentials to create the tasks, rather than credentials assigned to the service.
+
+Where this is not possible, consult with the TaskCluster team before proceeding.
 
 # Access Grant Process
 
