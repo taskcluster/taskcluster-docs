@@ -216,7 +216,6 @@ require("promise");
 require("url-join");
 require("bluebird");
 require("aws-sdk");
-require("aws-sdk-promise");
 require("js-yaml");
 require("xml2js");
 require("docker-exec-websocket-server");
