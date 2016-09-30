@@ -7,6 +7,8 @@ metadata:
 tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
+    scopes:
+        - "auth:aws-s3:read-only:taskcluster-raw-docs/*"
     extra:
       github:
         env: true
@@ -17,6 +19,8 @@ tasks:
     payload:
       maxRunTime: 3600
       image: "node:5.11"
+      features:
+        taskclusterProxy: true
       command:
         - "/bin/bash"
         - "--login"
@@ -30,6 +34,7 @@ tasks:
   - provisionerId: "{{ taskcluster.docker.provisionerId }}"
     workerType: "{{ taskcluster.docker.workerType }}"
     scopes:
+        - "auth:aws-s3:read-only:taskcluster-raw-docs/*"
         - "auth:aws-s3:read-write:docs-taskcluster-net/"
     extra:
       github:

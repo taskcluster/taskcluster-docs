@@ -1,0 +1,197 @@
+//- This is pretty much just the ejs template from src/assets/docref
+
+style.
+  .method-properties > dt,
+  .method-properties > dd {
+    padding-top: 5px;
+  }
+  .sub-table {
+    margin-left: 6px;
+  }
+
+script.
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+// /************ Title, meta-data and description ************/
+
+h1 !{marked(title)}
+
+dl.dl-horizontal
+  if typeof(baseUrl) != 'undefined'
+    dt BaseUrl
+    dd
+      code= baseUrl
+
+| !{marked(description)}
+
+// /************ Functions Table ************/
+
+//- Check if we have any function entries
+
+if entries.some(function(entry) {return entry.type == 'function';})
+  h3 Functions
+
+  | For more information on invoking the API methods described here, see <a href="/manual/apis">Using the APIs</a> in the manual.
+
+  table.table.table-bordered(style="width: auto;")
+    thead
+      tr
+        th Signature
+        th Summary
+    tbody
+      each entry in entries.filter(function(entry) { return entry.type === 'function'; })
+        - var args = entry.args.slice();
+        if entry.input
+          - args.push('payload');
+        - var retval = 'void';
+        if entry.output
+          - retval = 'result';
+        if entry.query
+          - var query = entry.query.slice();
+          if query.length > 0
+            - var queryElements = "{" + query.join(", ") + "}";
+            - args.push(queryElements);
+        - var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
+        - var stabilityValue = entry.stability || "unknown";
+        tr
+          td
+            code(class=stabilityValue)
+              a(href=`#${entry.name}`, title=entry.title)= signature
+          td= entry.title
+
+// /************ Exchanges Table ************/
+
+//- Check if we have any topic-exchanges entries
+if entries.some(function(entry) {return entry.type == 'topic-exchange';})
+  h3 Exchanges
+
+  table.table.table-bordered(style="width: auto;")
+    thead
+      tr
+        th Exchange
+        th Summary
+    tbody
+      each entry in entries.filter(function(entry) { return entry.type === 'topic-exchange'; })
+        - var exchange = exchangePrefix + entry.exchange;
+        tr
+          td
+            code
+              a(href=`#${entry.name}`, title=entry.title)= exchange
+          td= entry.title
+
+// /************ Function Entries ************/
+
+each entry in entries.filter(function(entry) { return entry.type === 'function'; })
+  - var stabilityValue = entry.stability || "unknown";
+  - var title = marked(entry.title);
+  if entry.stability != "stable"
+    - title = title + "(" + entry.stability + ")";
+  a(name=entry.name)
+  hr
+  h2(class=stabilityValue) !{title}
+  dl.dl-horizontal.method-properties
+    dt Method
+    dd
+      .label.label-default= entry.method
+    dt Route
+    dd
+      - var route = entry.route.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;').replace(/&lt;/g, '<b>&lt;').replace(/&gt;/g, '&gt;</b>')
+      code !{route}
+    if entry.scopes
+      dt Scopes
+      dd
+        each scopeset, index in entry.scopes
+          each scope, index in scopeset
+            div.label.label-success !{scope.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
+            if index != scopeset.length - 1
+              | , 
+          if index != entry.scopes.length - 1
+            | , or <br>
+    dt Signature
+    - var args = entry.args.slice();
+    if entry.input
+      - args.push('payload');
+    - var retval = 'void';
+    if entry.output
+      - retval = 'result';
+    if entry.query
+      - var query = entry.query.slice();
+      if query.length > 0
+        - var queryElements = "{" + query.join(", ") + "}";
+        - args.push(queryElements);
+    - var signature = entry.name + "(" + args.join(', ') + ") : " + retval;
+    dd
+      code= signature
+    <dt>Stability</dt>
+    dd
+      code(class=stabilityValue)= stabilityValue
+  | !{marked(entry.description)}
+  if entry.input
+    h3 Request Payload
+    div(data-render-schema= entry.input)
+  if entry.output
+    h3 Request Payload
+    div(data-render-schema= entry.output)
+  br
+
+
+
+// /************ Exchange Entries ************/
+
+each entry in entries.filter(function(entry) { return entry.type === 'topic-exchange'; })
+  a(name=entry.name)
+  hr
+  h2(class=stabilityValue) !{title}
+  dl.dl-horizontal.method-properties
+    dt Exchange
+    dd
+      code= exchangePrefix + entry.exchange
+    dt Signature
+    dd
+      code "#{entry.name}(routingKeyPattern)"
+  | !{marked(entry.description)}
+  h3 Routing Key
+  table.table.sub-table(style="width: auto;")
+    thead
+      tr
+        th Index
+        th Name
+        th Summary
+        th
+    tbody
+      each key, index in entry.routingKey
+        tr
+          td
+            .badge.badge-default= index
+          td
+            code= key.name
+          td !{marked(key.summary)}
+          td
+            // TODO: Make these have tooltips
+            if key.constant
+              .label.label-default(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= `This key always assume the value \`${key.constant}\`. Used to allow additional routing key formats.`
+              ) constant-key
+              br
+            if !key.required
+              .label.label-info(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= "This key takes the value of `_`, if it does not make sense for the event reported."
+              ) option-key
+              br
+            if key.multipleWords
+              .label.label-danger(
+                data-toggle= "tooltip",
+                data-placement= "left",
+                title= "This key may container dots `.`, creating multiple sub-keys, match it with `#`"
+              ) multi-key
+              br
+  if entry.schema
+    h3 Message Payload
+    div(data-render-schema= entry.schema)
+  br
