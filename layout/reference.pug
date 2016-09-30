@@ -98,7 +98,7 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
     dt Route
     dd
       - var route = entry.route.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;').replace(/&lt;/g, '<b>&lt;').replace(/&gt;/g, '&gt;</b>')
-      code= route
+      code !{route}
     if entry.scopes
       dt Scopes
       dd
