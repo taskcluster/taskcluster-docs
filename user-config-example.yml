@@ -1,7 +1,0 @@
----
-defaults:
-  taskcluster:
-    # You'll need a client with auth:aws-s3:read-only:taskcluster-raw-docs/ to develop locally
-    credentials:
-      clientId: '...'
-      accessToken: '...'

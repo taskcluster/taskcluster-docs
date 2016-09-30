@@ -17,6 +17,8 @@ var navlinks = require('./lib/navlinks');
 var makeRedirects = require('./lib/make-redirects');
 var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
+var download = require('gulp-download-stream');
+
 
 // define streams creating each type of file
 function index() {
@@ -153,8 +155,8 @@ gulp.task('clean-build', function() {
 // with some way to do modified times and intelligently
 // redownload if we want, but I don't want to right now.
 gulp.task('download', ['clean-build'], function() {
-  return s3.makeDownloader('taskcluster-raw-docs').then(function(downloader) {
-    downloader
+  return s3.getPublicFiles('taskcluster-raw-docs').then(function(files) {
+    download(files)
       .pipe(gunzip())
       .pipe(rename(function(path) {
         path.dirname = 'reference';
