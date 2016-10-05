@@ -72,14 +72,40 @@ See the [tc-login](/reference/core/login) reference documentation for more.
 
 # Don't be a [Confused Deputy](https://en.wikipedia.org/wiki/Confused_deputy_problem)
 
-If the service you are building acts on behalf of users, with its own TaskCluster credentials, you must be very careful to avoid allowing malicious users to abuse your privileges.
-For example, your service might create tasks based on a user's choices in a browser form.
+If the service you are building acts on behalf of users, with its own TaskCluster credentials, you must be very careful to avoid allowing malicious users to abuse your privileges through scope escalation.
+Scope escalation is when a user can cause some action for which they do not have the appropriate scopes.
+
+For example, your service might create tasks based on a user's selections in a browser form.
 If the service has the scopes to create tasks that can read secrets, but does not verify that the user has such permission, then the service would provide a way for malicious users to create tasks that display those secrets.
+The user has escalated their access to include those scopes which they did not already possess.
+
+The phrase "confused deputy" refers to the case where a service performs some actions on a user's behalf (as a deputy), but allows scope escalation (confused).
+
+## Don't be a Deputy
 
 The best way to avoid this issue is to not act as a deputy.
-In this case, that would mean using the user's own TaskCluster credentials to create the tasks, rather than credentials assigned to the service.
+This means using the user's own TaskCluster credentials to create the tasks, rather than using credentials assigned to the service.
+In the example above, ideally the user's credentials would be stored locally in the browser, and the client-side code would call the queue's `createTask` method directly.
+A less optimal solution would involve sending the user's credentials to the backend and using those credentials to call `createTask` on the backend.
 
-Where this is not possible, consult with the TaskCluster team before proceeding.
+## Deputy Tools
+
+If you must act as a deputy -- for example, running tasks without a browser involved -- TaskCluster provides a tool to prevent confusion.
+
+This tool is [Authorized Scopes](authorized-scopes), which are used with an API call to reduce the scopes available to that call.
+For example, a service which creates tasks during low-load times might have a `createDelayedTask` API method taking a time and a task definition.
+
+The obvious, but incorrect, way to authenticate this would be to duplicate the `queue.createTask` permissions model, verifying the caller possess the scopes in `task.scopes`.
+When the system load fell and it was time to run the task, the service would call `queue.createTask` using its own credentials.
+But there are already some subtlties in queue's permissions model, and that model may change over time, introducing a scope-escalation vulnerability.
+
+The better answer is to capture the scopes of the credentials used to call `createDelayedTask`.
+When calling `queue.createTask`, pass those scopes as `authorizedScopes`.
+This method avoids any interpretation of scopes by the delayed-task service, so there is no possibility of a scope escalation.
+
+This better answer does lose the advantage of error-checking: `createDelayedTask` will happily accept a task for which the user does not have scopes, but will fail when the service calls `queue.createTask`.
+It's safe to fix this with an approximation to the queue permissions model, as long as the `authorizedScopes` are still enforced.
+The failure modes for this check are acceptable: either `createDelayedTask` refuses to create a delayed task which should be accepted, or it accepts a task which will later fail due to the `authorizedScopes`.
 
 # Access Grant Process
 
