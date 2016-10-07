@@ -14,7 +14,7 @@ require the configuration step described in _Configuring TaskClusterRobot_ below
 
 *Note: for PR status reporting to work properly, you need to add
 [TaskClusterRobot](https://github.com/TaskClusterRobot) to the contributors
-(read/write) for your repository.*
+(read/write) for your repository. [Instructions](https://docs.taskcluster.net/reference/core/github/docs/usage)*
 
 The syntax is somewhat verbose, but offers an enormous amount of flexibility.
 The eventual goal of this project is to support all platforms and allow users
@@ -117,10 +117,9 @@ tasks:
 
 ### A note on testing
 
-TaskCluster GitHub will *not* use `.taskcluster.yml` files from pull requests.
-To test `.taskcluster.yml` changes create a new branch on the master/base
-repository and open pull requests against it or make pushes to it (depending on
-the events you have enabled).
+TaskCluster GitHub *will* use `.taskcluster.yml` files from pull requests. However,
+TaskCluster will not run any tasks that are not from a collaborator on a repo or a
+member of an organization. This is currently in-flux and subject to change.
 
 ### Who Can Trigger Jobs?
 
@@ -128,9 +127,6 @@ For security reasons only members of the Mozilla organization and repository
 collaborators can trigger taskcluster jobs. That is, to grant permissions to
 non-mozilla org members add them to a team, and make that team a repository
 collaborator. Read only permissions will suffice.
-
-In the future it will be possible to trigger jobs for any pull request by
-leaving a specially formatted comment (e.g. "TCGH Run <job_name>")
 
 ### Deadlines and the `{{ $fromNow }}` function
 
@@ -183,13 +179,4 @@ available from within the `.taskcluster.yml` file itself via curly braces i.e.
 
 ### Configuring TaskClusterRobot
 
-By default, TaskClusterRobot will comment on the events you specify in your
-`.taskcluster.yml` file, providing a link to the job in TaskCluster. If you
-enable jobs on pull requests, and you want TaskClusterRobot to also annotate
-a pull request with the status of a job, so you can see the results of the job
-in GitHub (without having to follow the link to TaskCluster), then you need
-to configure TaskClusterRobot to have write permissions to the repository.
-
-To do so, either add TaskClusterRobot to a team that has write permissions,
-or make TaskClusterRobot a contributor to the repository on the repository's
-_Settings > Collaborators & teams_ page and give it write permissions.
+Instructions can be found on [the usage page](https://docs.taskcluster.net/reference/core/github/docs/usage).
