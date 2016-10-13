@@ -6,6 +6,7 @@ Presentations
 
 Please bear in mind that these were current when they were presented, but may now be out of date.
 
+ * [In-Tree TaskGraph Generation](https://public.etherpad-mozilla.org/p/dustin-tech-topics-in-tree-taskgraph) - [video](https://vreplay.mozilla.com/replay/showRecordingExternal.html?key=kIYW8KtEJBavJqa) (October 2016)
  * [In-Tree Taskgraphs](/presentations/in-tree-taskgraphs/) (June 2016)
  * ["try:" with TaskCluster](/presentations/try-with-taskcluster/) (December 2015)
  * [TaskCluster 101: Platform Introduction](/presentations/TC-101/) (December 2015)
