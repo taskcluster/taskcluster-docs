@@ -164,8 +164,18 @@ Within a hook group, the names are arbitrary (or defined by the project).
 ## Worker Types
 
 Worker types are broken down into `<provisionerId>` and `<workerType>`.
-Within the AWS provisioner, worker types are currently not namespaced.
-All names are up for grabs -- [for now](https://bugzilla.mozilla.org/show_bug.cgi?id=1220686).
+Provisioner IDs are issued individually, with no namespacing.
+Worker types are specific to the provisioner ID, but provisioners that provide general services (currently that means `aws-provisioner-v1`) should follow the following guidelines:
+
+* `project-*` - worker types designed for a specific project; the suffix is arbitrary and up to the project
+* `gecko-t-*` - worker types for gecko tests; the suffix is arbitrary
+* `gecko-L-b-*` - worker types for gecko builds, with `L` replaced with the SCM level; the suffix is arbitrary
+* `ami-test*` - worker types for testing deployment of new AMIs
+* `tutorial` - default worker type for the getting-started tutorial in this documentation
+* `github-worker` - default worker type for Github-triggered jobs
+* `hg-worker` - default worker type for Mercurial-triggered jobs
+
+Note that there are many worker types not following this convention, as worker types must be kept around for a long time to run old jobs.
 
 ## Worker IDs
 
