@@ -71,8 +71,3 @@
 /workers/: /manual/execution/workers
 /workers/taskcluster-worker: /manual/execution/workers/taskcluster-worker
 /workers/taskcluster-worker/: /manual/execution/workers/taskcluster-worker
-
-# handle a trailing slash here, since I type it all the time
-/reference/: /reference
-/manual/: /manual
-/tutorial/: /tutorial
