@@ -167,7 +167,7 @@ Worker types are broken down into `<provisionerId>` and `<workerType>`.
 Provisioner IDs are issued individually, with no namespacing.
 Worker types are specific to the provisioner ID, but provisioners that provide general services (currently that means `aws-provisioner-v1`) should follow the following guidelines:
 
-* `project-*` - worker types designed for a specific project; the suffix is arbitrary and up to the project
+* `<project>-*` - worker types designed for a specific project; the suffix is arbitrary and up to the project
 * `gecko-t-*` - worker types for gecko tests; the suffix is arbitrary
 * `gecko-L-b-*` - worker types for gecko builds, with `L` replaced with the SCM level; the suffix is arbitrary
 * `ami-test*` - worker types for testing deployment of new AMIs
