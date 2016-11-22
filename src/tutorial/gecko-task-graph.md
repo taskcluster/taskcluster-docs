@@ -1,11 +1,10 @@
 ---
+title: Gecko Task Graph Creation
 followup:
   links:
     gecko-new-job: I want to add a new job
     gecko-task-graph-howto: I want to change something else
 ---
-
-# Gecko Task Graph Creation
 
 The decision task is responsible for creating the "task graph".
 This is the collection of all tasks required in response to the push, connected by dependencies.
@@ -15,6 +14,8 @@ Task-graph generation occurs entirely "in-tree", in the sense that both the conf
 This means that it can evolve along with Gecko, and in fact may work differently on different branches!
 
 The task-graph generation process is well-documented in the [Gecko Documentation](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/index.html).
+
+---
 
 ## Try Pushes
 

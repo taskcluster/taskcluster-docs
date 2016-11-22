@@ -1,23 +1,22 @@
 ---
-title: Worker Interaction
+title: "Queue: Worker Interaction"
 order: 2
-sequence_diagrams:  true
+sequence_diagrams: true
 ---
 
-Queue - Worker Interaction
-==========================
 This document outlines a how queue and worker interacts, through-out the
 life-cycle of a task on its way to resolution. This document serves to ease the
 implementation of workers, and focuses on interaction with Azure queues as most
 other API methods are documented in the API reference.
 
+---
 
-Polling Azure Queues for Tasks
-------------------------------
+## Polling Azure Queues for Tasks
+
 At a high-level the polling process, from the perspective of the worker, can be
 illustrated as follows:
 
-<div class="sequence-diagram-hand" style="margin:auto;">
+<div class="sequence-diagram-hand">
 participant Queue
 participant Worker
 participant Azure Queue
@@ -111,8 +110,10 @@ value of the `<DequeueCount>` and logs messages that alerts the operator if
 a message has been dequeued a significant number of times. For example more
 than 10.
 
-Reclaiming Tasks
-----------------
+---
+
+## Reclaiming Tasks
+
 When the worker has claimed a task, it's said to have a claim to a given
 `taskId`/`runId`. This claim has an expiration, see the `takenUntil` property
 in the _task status structure_ returned from `queue.claimTask` and
@@ -120,9 +121,10 @@ in the _task status structure_ returned from `queue.claimTask` and
 denoted in `takenUntil` expires. It's recommended that this attempted a few
 minutes prior to expiration, to allow for clock drift.
 
+---
 
-Dealing with Invalid Task Payloads
-----------------------------------
+## Dealing with Invalid Task Payloads
+
 If the task payload is malformed or invalid, keep in mind that the queue doesn't
 validate the contents of the `task.payload` property, the worker may resolve the
 current run by reporting an exception. When reporting an exception, using
@@ -147,18 +149,20 @@ code crashes or exists non-zero, then the task is said to be failed. The
 difference is whether or not the unexpected behavior happened before or after
 the execution of task specific Turing complete code.
 
+---
 
-Terminating the Worker Early
-----------------------------
+## Terminating the Worker Early
+
 If the worker finds itself having to terminate early, for example a spot node
 that detects pending termination. Or a physical machine ordered to be
 provisioned for another purpose, the worker should report an exception with the
 reason `worker-shutdown`. Upon such report the queue will resolve the run as
 an exception and create a new run, if the task has additional retries left.
 
+---
 
-Reporting Task Result
----------------------
+## Reporting Task Result
+
 When the worker has completed the task successfully it should call
 `queue.reportCompleted`. If the task is unsuccessful, ie. exits non-zero, the
 worker should resolve it using `queue.reportFailed` (this implies test or

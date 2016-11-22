@@ -1,10 +1,9 @@
 ---
+title: Gecko Decision Task
 followup:
   links:
     gecko-task-graph: How is the task-graph generated?
 ---
-
-# Gecko Decision Task
 
 Upon detecting a push to a supported Mercurial repository, TaskCluster reads [`.taskcluster.yml`](https://dxr.mozilla.org/mozilla-central/source/.taskcluster.yml) from the root directory of the repository, in the revision just pushed.
 It parses this file, substituting a number of variables based on the push, and submits the resulting task to the [TaskCluster queue](/manual/tasks/queue).

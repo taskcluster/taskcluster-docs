@@ -1,26 +1,22 @@
-TaskCluster Documentation Site
-==============================
+# TaskCluster Documentation Site
 
-This is the taskcluster documentation site, hosted at https://docs.taskcluster.net.
+
+This is the TaskCluster documentation site, hosted at https://docs.taskcluster.net.
 It's a basic static site, generated with some Gulp plugins.
 
 Development Setup
 -----------------
 
-  1. Copy `user-config-example.yml` into `user-config.yml` and fill in the blannks. Note: This config is only used during development!
-  2. Install: `npm install`
-  3. [Optional] If you want remote references locally, run `gulp download`.
-  4. Run the webserver: `gulp webserver`
+  1. Copy `user-config-example.yml` into `user-config.yml` and fill in the blanks. _Note: This config is only used during development!_
+  2. Install: `npm install` or `yarn`
+  3. [Optional] If you want remote references locally, run `npm run download` or `yarn download`.
+  4. Run the webserver: `npm start` or `yarn start`.
     * Note that it does not auto-reload on change.
 
 Publishing
 ----------
 
-This is done automatically, but for the record:
-
-```
-gulp publish
-```
+This is done automatically, but for the record: `npm run deploy` or `yarn deploy`.
 
 Third-Party Libraries and Tools
 -------------------------------

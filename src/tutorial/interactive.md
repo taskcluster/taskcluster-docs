@@ -1,14 +1,12 @@
 ---
-layout:       default
-class:        markdown
+title: Interactive API Tutorial
+layout: default
+class: markdown
 followup:
   links:
     async-javascript: Modern Async Javascript
     authenticate: Authenticate
 ---
-
-Interactive API Tutorial
-========================
 
 The goal of this interactive tutorial is to show you how to access TaskCluster
 APIs with modern asynchronous Javascript patterns. This page will give a brief
@@ -19,8 +17,8 @@ The first tutorial [Authentication](authenticate) **must** be completed before
 you proceed to the other tutorials, or the examples will not work. The first
 few tutorials aim to give you a quick introduction and it's recommended that
 you complete them.  However, before you get started you should have a basic
-understanding of ES6 features like promises and `async` functions. [This
-page](async-javascript) should provide the required background if you don't
+understanding of ES2015+ features like Promises and async functions. "[Modern
+Asynchronous JavaScript](async-javascript)" discusses the background if you don't
 have it already. There are also other articles and sites dedicated to these
 language features.
 
@@ -30,5 +28,5 @@ using TaskCluster APIs to display state, listen for events, spawn tasks and many
 other things.
 
 Note: the graphical TaskCluster tools on `tools.taskcluster.net` are all
-written in client-side Javascript. In fact, the entire site is a static
-web-site hosted on a CDN.
+written in client-side JavaScript. In fact, the entire site is a static
+website hosted on a CDN.

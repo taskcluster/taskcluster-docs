@@ -9,14 +9,10 @@ style.
     margin-left: 6px;
   }
 
-script.
-  $(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-
 // /************ Title, meta-data and description ************/
 
 h1 !{marked(title)}
+hr
 
 dl.dl-horizontal
   if typeof(baseUrl) != 'undefined'
@@ -35,7 +31,7 @@ if entries.some(function(entry) {return entry.type == 'function';})
 
   | For more information on invoking the API methods described here, see <a href="/manual/apis">Using the APIs</a> in the manual.
 
-  table.table.table-bordered(style="width: auto;")
+  table.table.table-bordered.table-responsive
     thead
       tr
         th Signature
@@ -67,7 +63,7 @@ if entries.some(function(entry) {return entry.type == 'function';})
 if entries.some(function(entry) {return entry.type == 'topic-exchange';})
   h3 Exchanges
 
-  table.table.table-bordered(style="width: auto;")
+  table.table.table-bordered.table-responsive
     thead
       tr
         th Exchange
@@ -106,9 +102,10 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
           each scope, index in scopeset
             div.label.label-success !{scope.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
             if index != scopeset.length - 1
-              | , 
+              <br />
           if index != entry.scopes.length - 1
-            | , or <br>
+            .strike
+              span or
     dt Signature
     - var args = entry.args.slice();
     if entry.input
@@ -153,7 +150,7 @@ each entry in entries.filter(function(entry) { return entry.type === 'topic-exch
       code "#{entry.name}(routingKeyPattern)"
   | !{marked(entry.description)}
   h3 Routing Key
-  table.table.sub-table(style="width: auto;")
+  table.table.sub-table
     thead
       tr
         th Index

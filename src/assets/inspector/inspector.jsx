@@ -439,7 +439,7 @@ var TaskGraphInspectorWidget = React.createClass({
       }
     });
     return (
-      <table className="table table-condensed table-tasks">
+      <table className="table table-condensed table-tasks table-responsive">
         <thead>
           <tr>
             <th>TaskId</th>

@@ -1,11 +1,11 @@
 ---
+title: Gecko and TaskCluster
 followup:
   links:
     gecko-decision-task: How is the decision task defined?
     gecko-task-graph: How is the task-graph generated?
     gecko-docker-images: How are the docker images created?
 ---
-# Gecko and TaskCluster
 
 When a developer pushes to a Gecko repository, a long chain of events begins:
 

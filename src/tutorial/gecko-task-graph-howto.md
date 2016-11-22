@@ -1,4 +1,6 @@
-# Changing the Task Graph
+---
+title: Changing the Task Graph
+---
 
 We know that task-graph configuration is not an area of expertise for most Firefox developers.
 So the task-graph generation machinery is designed to make common changes easy.

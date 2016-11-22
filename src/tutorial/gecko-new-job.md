@@ -1,17 +1,18 @@
 ---
-docson:       true
-marked:       true
-ejs:          true
-superagent:   true
-docref:       true
+title: Adding a new job
+docson: true
+marked: true
+ejs: true
+superagent: true
+docref: true
 ---
-
-# Adding a New Job
 
 TaskCluster runs tasks.
 It's just as happy to run your new tasks as any of the already-defined tasks!
 All you need to do is add some configuration for your new tasks, then test it out in try.
 The documentation for that process is kept [in-tree](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/how-tos.html), where it can co-evolve with the task-graph generation system.
+
+---
 
 ## TreeHerder Reporting
 
@@ -22,6 +23,8 @@ Gecko tasks carry a number of fields in `task.extra.treeherder` that describe ho
 The schema for this information is as follows:
 
 <div data-render-schema='https://schemas.taskcluster.net/taskcluster-treeherder/v1/task-treeherder-config.json'></div>
+
+---
 
 ## New Worker Type
 

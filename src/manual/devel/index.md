@@ -3,8 +3,6 @@ title: Development
 order: 90
 ---
 
-# Development
-
 This chapter of the manual contains information useful for people working on the TaskCluster codebase.
 
 The [TaskCluster organization](https://github.com/taskcluster) on Github contains the source code for all of the microservices, a collection of supporting libraries, and more.

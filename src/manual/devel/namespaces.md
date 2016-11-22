@@ -3,14 +3,13 @@ title: Namespaces
 order: 2
 ---
 
-Namespaces
-==========
-
 TaskCluster has a number of namespaces defined to allow multiple users to get along without interfering with one another.
 The platform itself is agnostic to the structure of these namespaces, but infrastructure that interacts with the platform is dependent on the namespaces for security and correctness.
 
 This document necessarily contains information that is specific to users of the TaskCluster platform.
 As such, it is open to contributions from all users who wish to carve out a section of a namespace -- just [submit a pull request](https://github.com/taskcluster/taskcluster-docs).
+
+---
 
 ## Projects
 
@@ -26,6 +25,8 @@ The known projects are:
 
 Please file a pull request to add your project!
 
+---
+
 ## Scopes
 
 Many scopes reflect the namespaces given elsewhere in this document, as described in the API documentation for the component.
@@ -38,6 +39,8 @@ Many scopes reflect the namespaces given elsewhere in this document, as describe
 * `project:<project>:…` -
    Individual projects should use scopes with this prefix.
    Projects are free to document the contained namespace in this document, link to another document, or leave it undocumented.
+
+---
 
 ## Clients
 
@@ -76,6 +79,8 @@ ClientIds have the following forms:
  * `garbage/*` -
    Playground for testing; clients here should not be active in the wild.
    Likewise, deleting or modifying clients with this prefix will not cause production failures.
+
+---
 
 ## Roles
 
@@ -131,6 +136,8 @@ Both are listed here:
 * `worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
 
+---
+
 ## Artifacts
 
 Artifacts are named objects attached to tasks, and available from the queue component.
@@ -152,6 +159,8 @@ Artifact names are, by convention, slash-separated.
 * `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
+---
+
 ## Hooks
 
 Hooks are divided into "hook groups", for which the namespace is defined here.
@@ -160,6 +169,8 @@ Within a hook group, the names are arbitrary (or defined by the project).
 * `taskcluster` - hooks used internally for taskcluster maintenance
 * `project-<project>` - hooks for a specific project
 * `garbage` - playground for testing; hooks can be created here, but anyone can modify or delete them!
+
+---
 
 ## Worker Types
 
@@ -177,12 +188,16 @@ Worker types are specific to the provisioner ID, but provisioners that provide g
 
 Note that there are many worker types not following this convention, as worker types must be kept around for a long time to run old jobs.
 
+---
+
 ## Worker IDs
 
 Worker IDs are broken down into `<workerGroup>` and `<workerId>`.
 In the present implementation, both of these are arbitrary strings.
 For workers started by the AWS provisioner, they are avaiability zone and instance ID, respectively.
 For other worker types, anything goes.
+
+---
 
 ## Provisioner IDs
 
@@ -193,12 +208,16 @@ We do not subdivide namespaces; instead, they are enumerated here:
  * `buildbot-bridge` -- the AWS provisioner
  * `scriptworker-prov-v1` -- the scriptworker provisioner
 
+---
+
 ## Scheduler IDs
 
 Scheduler IDs are limited to 22 characters.
 We do not subdivide namespaces; instead, they are enumerated here:
 
  * `tc-diagnostics` -- the taskcluster diagnostics tool
+
+---
 
 ## Docker-Worker Caches
 
@@ -224,6 +243,8 @@ Cache names do not contain directory separators.
   * `level-<level>-<tree>-linux-cache` - cache of `~/.cache`, containing Python packages among other things
   * `level-<level>-<tree>-build-<platform>` - workspace cache for builds for the given platform
 
+---
+
 ## Secrets
 
 Secrets provide key-value storage governed by scopes.
@@ -243,6 +264,8 @@ Secret names have the following structure:
   The first form is for a single secret object containing all secrets; the second form is for using multiple secret objects.
 * `repo:<host>/<path>:pull-request` -
   Secrets named in this manner will be available to repository forks, branches, and pull requests via the corresponding roles.
+
+---
 
 ## Indexes
 

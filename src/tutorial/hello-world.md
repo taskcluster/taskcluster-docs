@@ -1,4 +1,5 @@
 ---
+title: Hello, World
 followup:
   subtext: Digging Deeper
   links:
@@ -6,9 +7,10 @@ followup:
     interactive: I want to know how the tools site works
     gecko-tasks: I'm a Firefox/Gecko developer - How do my commits get built?
 ---
-# Hello, World
 
 Let's start by seeing TaskCluster in action.
+
+---
 
 ## Signing In
 
@@ -24,27 +26,29 @@ Click the "Grant Permission" button, which will return you to the task creator.
 
 What you see in the text box is a bare-bones task description, looking something like this (the details may evolve as features are added):
 
-    {
-      "provisionerId": "aws-provisioner-v1",
-        "workerType": "tutorial",
-        "created": "2016-09-16T21:20:34.867Z",
-        "deadline": "2016-09-16T22:20:34.867Z",
-        "payload": {
-          "image": "ubuntu:13.10",
-          "command": [
-            "/bin/bash",
-          "-c",
-          "echo 'hello World'"
-          ],
-          "maxRunTime": 600
-        },
-        "metadata": {
-          "name": "Example Task",
-          "description": "Markdown description of **what** this task does",
-          "owner": "name@example.com",
-          "source": "http://tools.taskcluster.net/task-creator/"
-        }
+```json
+{
+  "provisionerId": "aws-provisioner-v1",
+    "workerType": "tutorial",
+    "created": "2016-09-16T21:20:34.867Z",
+    "deadline": "2016-09-16T22:20:34.867Z",
+    "payload": {
+      "image": "ubuntu:13.10",
+      "command": [
+        "/bin/bash",
+      "-c",
+      "echo 'hello World'"
+      ],
+      "maxRunTime": 600
+    },
+    "metadata": {
+      "name": "Example Task",
+      "description": "Markdown description of **what** this task does",
+      "owner": "name@example.com",
+      "source": "http://tools.taskcluster.net/task-creator/"
     }
+}
+```
 
 Happily, this is already set up to print "hello world"!
 Submit the task, and click the resulting task ID to load the task inspector while the task is scheduled and run.
@@ -70,6 +74,6 @@ Scrolling all the way to the bottom, you should see the greeting output by the `
 
 You've run your first task!
 
-# See Also
+### See Also
 
  * ["TaskCluster Hello World" video by mrrrgn and dustin](https://vreplay.mozilla.com/replay/showRecordingExternal.html?key=7AvN2iczQYcI3lY)

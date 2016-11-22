@@ -1,12 +1,12 @@
 ---
+title: What is TaskCluster?
 followup:
   links:
     hello-world: Create a task to see TaskCluster in action!
 ---
-# What is TaskCluster
 
 *TaskCluster* is a set of components that manages task queuing, scheduling,
-execution and provisioning of resources.  It was designed to run automated
+execution and provisioning of resources. It was designed to run automated
 builds and tests at Mozilla.
 
 Like most software organizations, Mozilla needs to compile and test the code its developers produce.
@@ -26,7 +26,9 @@ These include
  * Secure storage for secret data such as API keys required to complete tasks
  * Workers of various types that will actually run the tasks.
 
-# Is it Mozilla-specific?
+---
+
+## Is it Mozilla-specific?
 
 In principle, no, TaskCluster could be useful to any organization with needs similar to Mozilla's.
 While we have built some Mozilla-specific integrations, the platform and many of the core services could be re-used without change in another organization.

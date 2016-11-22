@@ -6,7 +6,11 @@
   "main": "main.js",
   "scripts": {
     "build": "browserify main.js | uglifyjs > src/assets/bundle.js",
-    "develop": "watchify main.js -o src/assets/bundle.js"
+    "develop": "watchify main.js -o src/assets/bundle.js",
+    "start": "gulp",
+    "check": "gulp check",
+    "download": "gulp download",
+    "deploy": "gulp publish"
   },
   "dependencies": {
     "aws-sdk": "^2.3.8",
@@ -55,7 +59,7 @@
   },
   "devDependencies": {
     "browserify": "^10.2.4",
-    "watchify": "^3.2.3",
-    "uglify-js": "^2.4.23"
+    "uglify-js": "^2.4.23",
+    "watchify": "^3.2.3"
   }
 }
