@@ -6,7 +6,10 @@ html(lang='en')
     if nav
       #content.container-fluid
         .row
-          aside.col-md-3.hidden-xs.hidden-sm
+          .col-xs-12.hidden-md.hidden-lg
+            button.btn.btn-primary(type="button", data-toggle="collapse", data-target="#sidebar") Menu
+            hr
+          aside#sidebar.col-md-3.col-xs-12.hidden-sm.hidden-xs
             include sidebar.pug
           section#content.col-md-9
             if title

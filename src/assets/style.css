@@ -171,6 +171,18 @@ pre.json-schema {
   text-align: center;
 }
 
+@media screen and (max-width: 767px) {
+  #sidebar.collapse.in {
+    display: block !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #sidebar.collapse, #sidebar.collapse.in {
+    display: block !important;
+  }
+}
+
 ul.pager {
   font-size: 13px;
 }
