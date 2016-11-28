@@ -1,0 +1,19 @@
+if nav
+  hr
+  ul.pager
+    if nav.prev
+      li.previous
+        a(href=nav.prev)
+          span(aria-hidden="true") &larr;&nbsp;
+          | Previous
+      if nav.up
+        li.previous.up
+          a(href=nav.up)
+            span(aria-hidden="true") &uarr;&nbsp;
+            | Up
+      if nav.next
+        li.next
+          a(href=nav.next)
+            | Next
+            span(aria-hidden="true")
+              | &nbsp;&rarr;

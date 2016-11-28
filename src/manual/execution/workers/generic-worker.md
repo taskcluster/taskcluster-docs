@@ -1,19 +1,19 @@
 ---
 title: Generic Worker
 order: 2
-docson:       true
+docson: true
 ---
-
-# Generic Worker
 
 The generic worker was our first worker that was intended for non-linux
 environments. In theory it can run against any platform which supports the go
 programming language, however in practice we use it currently only for
-Windows™, and the generic worker will be soon superceded by the TaskCluster
+Windows™, and the generic worker will be soon superseded by the TaskCluster
 Worker.
 
 If you are looking at standing up new jobs, we recommend you take a look at the
 TaskCluster Worker, which is intended to eventually replace the Generic Worker.
+
+---
 
 ## Generic Worker payload definition
 
@@ -29,6 +29,8 @@ The payload comprises of a command to run, environment variables to be set
 
 The worker will run the task, upload log files, and report back status to the
 Queue.
+
+---
 
 ## Building Firefox Desktop for Windows
 

@@ -2,7 +2,7 @@
 title: TaskCluster Manual
 ---
 
-TaskCluster is a collection of microservices that, together, form a distributed
+TaskCluster is a collection of microservices that together form a distributed
 task-execution framework supporting Mozilla's continuous integration.
 
 Most of these microservices provide REST APIs, and [accessing those

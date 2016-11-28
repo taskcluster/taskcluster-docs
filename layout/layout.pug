@@ -1,13 +1,26 @@
-
 doctype html
 html(lang='en')
   include head.pug
   body
     include navbar.pug
-    .container
-      .row
-        section.col-md-9.content
-          | !{content}
-          include followup.pug
-        aside.col-md-3
-          include sidebar.pug
+    if nav
+      #content.container-fluid
+        .row
+          aside.col-md-3.hidden-xs.hidden-sm
+            include sidebar.pug
+          section#content.col-md-9
+            if title
+              h1 !{title}
+              hr
+            | !{content}
+            include followup.pug
+            include pager.pug
+    else
+      #content.container
+        if title
+          h1 !{title}
+          hr
+        | !{content}
+        include followup.pug
+        include pager.pug
+    include footer.pug

@@ -1,29 +1,29 @@
 ---
-layout:       default
-class:        markdown
-interactive:  true
+title: Modern Asynchronous JavaScript
+layout: default
+class: markdown
+interactive: true
 followup:
   links:
     authenticate: Authenticate
 ---
 
-Modern `async` Javascript
-=========================
-
 All the Javascript examples in these tutorials are compiled with
-[babeljs](https://babeljs.io/) using proposed ES7 features (stage 1).
-This setup transpiles ES6 and ES7 proposed features to ES5 before they are
+[Babel](https://babeljs.io/) using proposed ECMAScript features (stage 1).
+This setup transpiles ES2015+ features to ES5 before they are
 evaluated, allowing us to use the same powerful asynchronous features in both
-the browser and node.js (neither of which implement `async` functions yet).
+the browser and Node.js, neither of which implement `async` functions yet).
 
-### Promises
+---
+
+## Promises
 
 A promise is an object that implements the
 [Promise/A+ specification](https://promisesaplus.com/). This ensures a lot of
 nice properties, which make them nice for asynchronous programming. There
 are many other articles on how to use them well. But for the purposes of this
 introduction you can think of a promise as an object with a
-method`.then(resultCallback, errorCallback)`, such that either
+method `.then(resultCallback, errorCallback)`, such that either
 `resultCallback(result)` or `errorCallback(error)` is called when the promise
 is resolved (only one of the callbacks is called, and only once).
 
@@ -91,8 +91,9 @@ it is fulfilled with an array of the results from `myAsyncFunc()` as result. Usi
 `Promise.all()` is useful when doing things in parallel, and is particularly
 useful in combination with `Array.map`.
 
+---
 
-### Chaining Promises
+## Chaining Promises
 
 Another nifty trick with promises is that promises can be chained.
 The result of the `.then` method is a new promise, this promise will be resolved
@@ -135,12 +136,14 @@ p3.then(function() {
 You should play with this a bit, but don't be too scared as we're about to
 introduce a set of abstractions which hide a lot of complexity.
 
+---
 
-### ES7 (Proposed) `async` Functions
-The `async` function proposal for ES7, as implemented by babeljs, introduces
+## Async Functions
+
+Async Functions are new additions to JavaScript with ES2017 and introduces
 two new keywords: `async` and `await`. The `async` keyword is used to label a
 function as asynchronous `async function() {...}`. Inside the function body of
-an asynchronous function you may then use the `await aPromiseObject` to _block_
+an asynchronous function you may then use the `await aPromiseObject` to _suspend_
 execution of the function pending resolution of a promise.
 
 If we take the chained promise example from before and implement the chain
@@ -253,17 +256,18 @@ var pingRepeatedly = async function(count) {
 The promise chaining alternative involves callback recursion, which is certainly
 possible, but gets very complicated very quickly. Using `async` and `await` syntax
 is much simpler and easier to read. For completeness it should be noted that
-babeljs compiles `async` functions to state machines instead of promise
-chains. If you're curious about what babeljs constructs compile to give
+Babel compiles async functions to state machines instead of promise
+chains. If you're curious about what Babel constructs compile to give
 their [editor](https://babeljs.io/repl/) a spin.
 
+---
 
-### Other ES6 Features
+## Other ES2015 Features
 
-As previously mentioned babeljs compiles all ES6 features to ES5 and some of
+As previously mentioned Babel compiles all ES6 features to ES5 and some of
 these features are very nifty. For a complete look at the features, review the
-[babeljs introduction](https://babeljs.io/docs/learn-es2015/). This section will
-give a quick overview of the ES6 features we've found useful.
+[Babel introduction](https://babeljs.io/docs/learn-es2015/). This section will
+give a quick overview of the ES2015 features we've found useful.
 
 First up is arrow functions, which is a short hand for writing functions and
 preserving the `this` reference. These are very useful for writing event
@@ -303,7 +307,7 @@ var MyType = function() {
   // is a single statement, brackets {} aren't needed
   emitter.on('my-event', arg1 => console.log("arrow handler 2, arg1: " + arg1));
 
-  // We still need parantheses if no arguments is taken
+  // We still need parentheses if no arguments is taken
   emitter.on('my-event', () => console.log("arrow handler 3"));
 
   // Emit an event from the event emitter
@@ -315,10 +319,10 @@ var myType = new MyType();
 </pre>
 
 Generally, you'll want to use the arrow functions whenever you would normally
-make anonymous functions. As an added bonus babeljs allows `async`
+make anonymous functions. As an added bonus, async functions can also be
 arrow functions, example: `async () => { await aPromiseObject; }`.
 
-Another nifty ES6 feature is destructuring, also known as unpacking, a
+Another nifty ES2015 feature is destructuring, also known as unpacking, a
 well-known and commonly used feature from Python. It allows you to easily unpack
 elements from an object or a list, as illustrated in the example below.
 
@@ -343,19 +347,19 @@ console.log("element1: " + element1);
 console.log("element2: " + element2);
 </pre>
 
-This guide won't go into further details with ES6 features, but if you haven't
-had a look at ES6 classes, template strings, `let`/`const`, iterators and
-`for ... of` constructions it's certainly a recommended read.
-Again babeljs has a good
+This guide won't go into further details with ES2015 features, but if you haven't
+had a look at classes, template strings, `let` and `const` variables, iterators and
+`for...of` constructions it's certainly a recommended read.
+Again Babel has a good
 [introduction to ES6 features](https://babeljs.io/docs/learn-es2015/).
 
+---
 
-Tutorial Runtime Environment
-----------------------------
+## Tutorial Runtime Environment
 
 The code in the runnable examples on this page and through-out the tutorials
-here, is compiled with babeljs prior to being executed. Additionally, it is
-wrapped in `async function() { /* EXAMPLE CODE*/ }().catch(err => ...)`. This
+here, is compiled with Babel prior to being executed. Additionally, it is
+wrapped in `(async function() { /* EXAMPLE CODE*/ })().catch(err => ...)`. This
 allows you to use `await` without wrapping in an `async` function and ensures
 that exceptions are caught and logged to console. All in all it makes it
 possible to write code as follows.
@@ -373,7 +377,7 @@ var result = await queue.ping();
 console.log("Pinged queue and got response: " + JSON.stringify(result));
 </pre>
 
-In node.js with babeljs you can't use `await` in the top-level function, but
+In Node.js with Babel you can't use `await` in the top-level function, but
 you can just create an `async` main function that is invoked immediately. In
 these example code environments we wrap in an `async` main function for you to
 simplify the examples.
@@ -384,7 +388,7 @@ it below the editor when you press "Run Code". Finally, the environment also
 defines variables `Buffer` and `require`, such that examples can import
 modules bundled with browserify.
 
-We have embedded the following **standard node modules** from browserify:
+We have embedded the following **standard Node.js modules** from browserify:
 `assert`, `buffer`, `console`, `constants`, `crypto`, `domain`, `events`,
 `http`, `https`, `os`, `path`, `punycode`, `querystring`, `stream`,
 `string_decoder`, `timers`, `tty`, `url`, `util`, `vm`, `zlib`.

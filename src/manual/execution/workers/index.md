@@ -3,9 +3,6 @@ title: Workers
 order: 1
 ---
 
-Workers
-=======
-
 TaskCluster workers are software processes which consume tasks from the Queue,
 perform them, and report results. Typically workers are implemented as daemons
 running on dedicated instances in the cloud, but a worker can be any software
@@ -14,7 +11,7 @@ TaskCluster task. For example a worker could be a program run manually once by
 a user on a physical smartphone to perform a task provided by the Queue.
 
 The TaskCluster Queue and Scheduler do _not_ require any configuration or
-programmatical changes in order to start supporting a new worker. In this
+programmatic changes in order to start supporting a new worker. In this
 sense, they are agnostic. A task defines which `provisionerId` and `workerType`
 it requires, as arbitrary string fields. So long as a worker successfully
 authenticates requests to the Queue, and makes claims against the given

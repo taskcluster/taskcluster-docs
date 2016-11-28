@@ -11,6 +11,7 @@
 <% /************ Title, meta-data and description ************/ %>
 
 <h1><%= marked(title) %></h1>
+<hr />
 
 <dl class='dl-horizontal'>
   <% if (typeof(baseUrl) != 'undefined') { %>
@@ -29,7 +30,7 @@
 
 For more information on invoking the API methods described here, see <a href="/manual/apis">Using the APIs</a> in the manual.
 
-<table class='table table-bordered' style="width: auto;">
+<table class='table table-bordered table-responsive'>
   <thead>
     <tr>
       <th>Signature</th>
@@ -75,7 +76,7 @@ For more information on invoking the API methods described here, see <a href="/m
 <% // Check if we have any topic-exchanges entries
    if (entries.some(function(entry) {return entry.type == 'topic-exchange';})) { %>
 <h3>Exchanges</h3>
-<table class='table table-bordered' style="width: auto;">
+<table class='table table-bordered table-responsive'>
   <thead>
     <tr>
       <th>Exchange</th>
@@ -133,11 +134,11 @@ For more information on invoking the API methods described here, see <a href="/m
                    .replace(/[>]/g, '&gt;')
             %></div><%
             if (index != scopeset.length - 1) {
-              %>, <%
+              %><br /><%
             }
           });
           if (index != entry.scopes.length - 1) {
-            %>, or <br><%
+            %><div class="strike"><span>or</span></div><%
           }
         });
         %>
@@ -199,7 +200,7 @@ For more information on invoking the API methods described here, see <a href="/m
   </dl>
   <%= marked(entry.description) %>
   <h3>Routing Key</h3>
-  <table class='table sub-table' style="width: auto;">
+  <table class='table sub-table'>
   <thead>
     <tr>
       <th>Index</th>

@@ -1,10 +1,8 @@
 ---
 title: Docker Worker
 order: 1
-docson:       true
+docson: true
 ---
-
-# Docker Worker
 
 This worker is designed to handle tasks on linux via
 [docker](http://www.docker.com/).
@@ -13,10 +11,13 @@ The worker being based on docker allows you to execute just about any task that
 runs on linux in a portable fashion (i.e you can run it locally, on another CI
 system, etc...) with none to minimal taskcluster specifics built into your images.
 
-## Queue `.payload` schema
+---
+
+## Queue payload schema
 
 <div data-render-schema="http://schemas.taskcluster.net/docker-worker/v1/payload.json"></div>
 
+---
 
 ## Scopes
 
@@ -25,13 +26,15 @@ Certain task features/capabilities require the use of docker-worker specific sco
 Currently docker-worker has types of scopes:
 
 #### Features
-Scope format: `docker-worker:feature:<feature name>` . These are features that will be linked to the container when the task runs.
+Scope format: `docker-worker:feature:<feature name>`. These are features that will be linked to the container when the task runs.
 
 #### Images
-Scopes format:  `docker-worker:image:<registry>/<user>/<image>:<tag>` .  Scopes for images are necessary when the image requires authentication with a registry (e.g. private images).  Public images do not require scopes.
+Scopes format: `docker-worker:image:<registry>/<user>/<image>:<tag>`. Scopes for images are necessary when the image requires authentication with a registry (e.g. private images).  Public images do not require scopes.
 
 #### Caches
-Scopes begin with `docker-worker:cache:<cache name>` .  Tasks that require cached volumes to be mounted must supply a scope for that cache.  This is to restrict accessing, and possibly corrupting, caches no related to the scope of credentials provided.
+Scopes begin with `docker-worker:cache:<cache name>`. Tasks that require cached volumes to be mounted must supply a scope for that cache. This is to restrict accessing, and possibly corrupting, caches no related to the scope of credentials provided.
+
+---
 
 ## Environment
 
@@ -110,6 +113,8 @@ Once decrypted within docker-worker, the variable can be referenced just like an
   "command": ["/bin/bash", "-c", "echo $SECRET_TOKEN"]
 }
 ```
+
+---
 
 ## Features
 

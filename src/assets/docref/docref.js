@@ -9,7 +9,7 @@ var _renderReference = new EJS({
 });
 
 $(function() {
-  $('*[data-doc-ref]').each(function() {
+  $('[data-doc-ref]').each(function() {
     var container = $(this);
     var reference = container.data('doc-ref');
     request.get(fixUrlProtocol(reference)).end().then(function(res) {

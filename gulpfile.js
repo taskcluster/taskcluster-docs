@@ -28,7 +28,18 @@ function index() {
     .pipe(markdown())
     .pipe(filter.renameIndex())
     .pipe(rename({extname: ''}))
-    .pipe(pug({template: 'layout/index.pug'}))
+    .pipe(pug({template: 'layout/layout.pug'}))
+    .pipe(headers.set('Content-Type', 'text/html'))
+}
+
+function resources() {
+  return gulp
+    .src('src/resources.md', {base: 'src'})
+    .pipe(frontmatter({property: 'data'}))
+    .pipe(markdown())
+    .pipe(filter.renameIndex())
+    .pipe(rename({extname: ''}))
+    .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
 
@@ -117,6 +128,7 @@ function presentations() {
 function site() {
   return merge(
     index(),
+    resources(),
     error(),
     tutorial(),
     manual(),

@@ -1,9 +1,7 @@
 ---
-title: Github
+title: TaskCluster GitHub
 order: 1
 ---
-
-# TaskCluster GitHub
 
 Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks
 are defined in a YAML configuration file which lives at the root of a
@@ -115,24 +113,30 @@ tasks:
           - master
 ```
 
+---
+
 ### A note on testing
 
 TaskCluster GitHub *will* use `.taskcluster.yml` files from pull requests. However,
 TaskCluster will not run any tasks that are not from a collaborator on a repo or a
 member of an organization. This is currently in-flux and subject to change.
 
+---
+
 ### Who Can Trigger Jobs?
 
 For security reasons only members of the Mozilla organization and repository
-collaborators can trigger taskcluster jobs. That is, to grant permissions to
-non-mozilla org members add them to a team, and make that team a repository
+collaborators can trigger TaskCluster jobs. That is, to grant permissions to
+non-Mozilla org members add them to a team, and make that team a repository
 collaborator. Read only permissions will suffice.
 
-### Deadlines and the `{{ $fromNow }}` function
+---
+
+### Deadlines and the fromNow function
 
 A function `{{ $fromNow }}` is included in the syntax so that users may specify
-consistent timeouts and deadlines. The function will accept parameters like: `
-'1 day' `, ` '3 hours' `, ` '1 hour' `, etc...
+consistent timeouts and deadlines. The function will accept parameters like:
+`'1 day'`, `'3 hours'`, `'1 hour'`, etc.
 
 ```
 ---
@@ -150,8 +154,7 @@ tasks:
 
 The official Node.js docker image. More information can be found [here](https://github.com/nodejs/docker-node).
 
-This documentation uses the node image because it is convenient, but you may use any docker image you like, 
-including one of your own design.
+This documentation uses the Node.js image because it is convenient, but you may use any docker image you like, including one of your own design.
 
 ### Environment Variables
 

@@ -1,10 +1,8 @@
 ---
 title: TaskCluster Worker
 order: 2
-sequence_diagrams:  true
+sequence_diagrams: true
 ---
-
-# TaskCluster Worker
 
 The TaskCluster Worker is our latest worker, written in Go, which is intended
 to replace all other workers.
@@ -12,7 +10,7 @@ to replace all other workers.
 We wanted to write a worker that had a pluggable architecture, to make it super
 simple for people to create their own custom workers with their own feature
 sets, supporting arbitrary platforms, without needing to fork the worker
-codebase.  This is achieved with a runtime discovery of
+codebase. This is achieved with a runtime discovery of
 [plugins](https://godoc.org/github.com/taskcluster/taskcluster-worker/plugins#Plugin)
 (worker features) and
 [engines](https://godoc.org/github.com/taskcluster/taskcluster-worker/engines#Engine)
@@ -25,6 +23,8 @@ import paths.
 
 We hope to be production ready by end of Q2 2016 (30 June 2016).
 
+---
+
 ## Engines
 
 Engines represent the environment that the worker runs in, such as a native
@@ -36,7 +36,9 @@ executing tasks. It provides features such as setting environment variables,
 executing commands, extracting artifacts, mounting caches, etc. You can think
 of it as being like a container, that the task runs inside. The specific set of
 features that it needs to support is a function of the plugins which are
-enabled...
+enabled.
+
+---
 
 ### Engine Lifecycle
 
@@ -69,7 +71,7 @@ started or stopped). Using different types provides a guarantee that only valid
 methods will be exposed at each lifecycle phase. Finally, the ResultSet is
 disposed.
 
-<div class="sequence-diagram-hand" style="margin:auto;">
+<div class="sequence-diagram-hand">
 participant Main
 participant EngineProvider
 participant Engine
@@ -88,12 +90,14 @@ Sandbox        --> Main           : ResultSet
 Main           ->  ResultSet      : Dispose()
 </div>
 
+---
+
 ## Plugins
 
 Plugins provide (typically engine-independent) features.
 
 There are plugins for setting environment variables, managing cache folders,
-cancelling tasks, serving livelogs, proxying taskcluster requests, providing
+cancelling tasks, serving livelogs, proxying TaskCluster requests, providing
 interactive features such as VNC and SSH access, as well as many other things.
 And, of course, you can extend the worker with your own custom plugins.
 
@@ -110,16 +114,18 @@ and engines can be tested independently of the plugins. For features which are
 engine-specific, engines may return a _feature not supported_ error. Although
 this might sound like an unwanted runtime error, it is not. At worker type
 creation time, the set of available features is determined, and a task payload
-json schema is constructed for the given worker type, and _registered_ with the
+JSON schema is constructed for the given worker type, and _registered_ with the
 Queue. This means the Queue will reject task submissions that violate the
 available features of a given worker type, by validating the task definition
-against the json schema for that worker type.
+against the JSON schema for that worker type.
 
 Therefore it is impossible for workers to claim tasks that require features
 that they do not support, and thus _feature not supported_ is not a runtime
 error that breaks a task, but rather an error that is interpreted at worker
-type creation time to limit the task payload json schema that will be
+type creation time to limit the task payload JSON schema that will be
 registered with the Queue for that worker type.
+
+---
 
 ### Plugin Lifecycle
 
@@ -135,9 +141,9 @@ a
 [TaskPlugin](https://godoc.org/github.com/taskcluster/taskcluster-worker/plugins#TaskPlugin).
 This is an instance dedicated to the given task. Unlike the SandboxBuilder ->
 Sandbox -> ResultSet counterpart, Plugin does not mutate into other types
-during the task lifecylce.
+during the task lifecycle.
 
-<div class="sequence-diagram-hand" style="margin:auto;">
+<div class="sequence-diagram-hand">
 participant Main
 participant PluginProvider
 participant Plugin
@@ -154,6 +160,8 @@ Main           ->  TaskPlugin     : Stopped()
 Main           ->  TaskPlugin     : Finished()
 Main           ->  TaskPlugin     : Dispose()
 </div>
+
+---
 
 ## Engine-Plugin interaction
 
@@ -174,7 +182,7 @@ called against all the TaskPlugins.
 This behaviour is implemented via
 [WaitGroups](https://golang.org/pkg/sync/#WaitGroup).
 
-<div class="sequence-diagram-hand" style="margin:auto;">
+<div class="sequence-diagram-hand">
 participant Main
 participant Plugin
 participant TaskPlugin
@@ -199,14 +207,14 @@ Main           ->  TaskPlugin     : Stopped()
 Main           ->  TaskPlugin     : Finished()
 Main           ->  TaskPlugin     : Dispose()
 Main           ->  ResultSet      : Dispose()
-
 </div>
 
+---
 
 ## Contributing
 
 If you are interested in helping out with the TaskCluster Worker, you can find
-the [source code on github](https://github.com/taskcluster/taskcluster-worker).
+the [source code on GitHub](https://github.com/taskcluster/taskcluster-worker).
 Perhaps you might be interested in contributing a Plugin or an Engine? We are
 always happy to receive Pull Requests. Speak to us in `#taskcluster` or
 `#taskcluster-worker` on [IRC](https://wiki.mozilla.org/IRC). We look forward

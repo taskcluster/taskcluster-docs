@@ -4,16 +4,13 @@ order: 1
 docson: true
 ---
 
-Reference Formats
-=================
-
 Most TaskCluster components makes heavy use of JSON schemas for validation of
 incoming and outgoing data, whether through APIs or AMQP exchanges. This makes
 the external API surface very reliable and consistent, as well as it helps us
 find a lot of bugs and typos.
 
 The use of JSON schemas also makes it very easy to **generate documentation**
-for all the external interfaces offered by taskcluster components, as done on
+for all the external interfaces offered by TaskCluster components, as done on
 this site. To further simplify the generation of documentation and API-clients
 we have formalized formats for describing interfaces.
 
@@ -27,9 +24,10 @@ AMQP exchanges are documented. This is useful for **automatic generation** of:
 **Note**, these formats are not completely stable and change over time, or
 merge into one.
 
+---
 
-API References
---------------
+## API References
+
 Our API end-points all have a simple URL made up of a `baseUrl + route` where
 a few argument have substituted into the `route`. The API end-point takes
 JSON and input and returns JSON, input is always validate before it's accepted
@@ -46,8 +44,8 @@ The JSON schema for the API reference format is
 validated prior to publication.
 
 
-AMQP Exchange References
-------------------------
+## AMQP Exchange References
+
 All of our AMQP exchanges are `topic` exchanges, and the messages are always in
 JSON. Which makes it easy to validate all messages against a declared JSON
 schema prior to publication. Note, we do **not** recommend validation of

@@ -2,7 +2,6 @@ var util    = require('util');
 var slugid  = require('slugid');
 var ace     = require('brace');
 require('brace/mode/javascript');
-require('brace/theme/ambiance');
 var babel   = require('babel-core');
 
 // Babel runtime regenerator
@@ -224,6 +223,7 @@ var makeButton = function(text, type) {
   var btn = document.createElement("a");
   btn.innerHTML = text;
   btn.classList.add("btn");
+  btn.classList.add("btn-xs");
   btn.classList.add("btn-" + type);
   btn.style.marginRight = '5px';
   return btn;
@@ -243,17 +243,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
   preList.forEach(function(pre) {
     var initialCode = pre.textContent.replace(/\n$/, '');
-    pre.style.border = 'none';
-    pre.style.borderRadius = '0px';
+    pre.style.border = '1px solid #ddd';
+    pre.style.borderRadius = '5px';
     var editor = ace.edit(pre);
     editor.$blockScrolling = Infinity;
-    editor.setTheme('ace/theme/ambiance');
     editor.setValue(initialCode, 1);
     editor.setAutoScrollEditorIntoView(true);
     editor.setOption("maxLines", 80);
     editor.setOption("showFoldWidgets", false);
     editor.setHighlightActiveLine(false);
     editor.setHighlightGutterLine(false);
+    editor.renderer.setShowGutter(false);
+    editor.renderer.setPadding(10);
+    editor.renderer.setScrollMargin(10, 10, 10, 10);
+    editor.container.style.lineHeight = 1.6;
     editor.setShowPrintMargin(false);
     editor.getSession().setMode('ace/mode/javascript');
     editor.getSession().setUseSoftTabs(true);
@@ -277,6 +280,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return util.inspect(arg);
       });
       output.style.display  = 'block';
+      output.style.marginBottom = '20px';
       output.textContent   += data + '\n';
     };
     capturingConsole.log    = writeOutput;
@@ -291,7 +295,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Create buttons
     var buttons = document.createElement("div");
-    buttons.style.marginBottom = '10px';
+    buttons.style.marginBottom = '20px';
+    buttons.style.marginTop = '-10px';
+    buttons.style.paddingLeft = '5px';
     var run = makeButton('Run Code', 'primary');
     var reset = makeButton('Reset Editor', 'warning');
     buttons.appendChild(run);

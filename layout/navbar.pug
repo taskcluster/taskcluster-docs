@@ -1,29 +1,20 @@
-nav.navbar.navbar-default.navbar-static-top.navbar-inverse(role='navigation')
-  .navbar-header
-    a.navbar-brand(href='/')
-      img(height='36', width='36', src='/assets/taskcluster-36.png')
-      |              TaskCluster Docs
-  ul.nav.navbar-nav
-    - var sections = { tutorial : 'Tutorial', manual: 'Manual', reference: 'Reference' }
-    for section, p in sections
-      li(class= (p === path.split('/')[1]) && 'active')
-        a(href= "/" + p)= section
-    li.dropdown
-      a.dropdown-toggle(data-toggle="dropdown", role="button", href="#", type="button")
-        | More&nbsp;
-        span.caret
-      ul.dropdown-menu(role="menu")
-        li
-          a(href="/presentations") Presentations
-        li.divider(role="separator")
-        li.dropdown-header External Links
-        li
-          a(href="http://planet.mozilla.org/taskcluster") Blog
-        li
-          a(href="https://github.com/taskcluster") GitHub
-        li
-          a(href="https://travis-ci.org/taskcluster") Travis CI
-    form.navbar-form.navbar-left.search
-      .form-group.has-feedback
-        input#docs-search.form-control(type='text', autocomplete='off', name='query')
-        span.glyphicon.glyphicon-search.form-control-feedback(aria-hidden='true')
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      button(type="button", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar").navbar-toggle.collapsed
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href="/")
+        img(src="/assets/taskcluster.svg")
+        | TASKCLUSTER <span class="bullet">&bullet;</span> DOCS
+    #navbar.collapse.navbar-collapse
+      form.navbar-form.navbar-right
+        .form-group
+          input#docs-search.form-control.input-sm(type="text", placeholder="Search", autocomplete="off", name="query")
+      ul.nav.navbar-nav.navbar-right
+        - var sections = { tutorial : 'Tutorial', manual: 'Manual', reference: 'Reference', resources: 'Resources' }
+        for section, p in sections
+          li(class= (p === path.split('/')[1]) && 'active')
+            a(href= "/" + p)= section

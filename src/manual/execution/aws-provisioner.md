@@ -2,8 +2,6 @@
 title: AWS Provisioner
 order: 1
 ---
-AWS Provisioner
-===============
 
 The AWS provisioner provisions EC2 spot instances in response to queue length.
 It is identified with `aws-provisioner-v1` as the `provisionerId` in a task

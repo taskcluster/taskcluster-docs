@@ -1,33 +1,17 @@
-mixin tableOfContents(children)
-  ul.toc
-    each child in children
-      li
-        if child.path == path
-          span.active #{child.title}
-        else
-          if child.link
-            a(href=child.path) #{child.title}
-          else
-            span #{child.title}
-        if child.children
-          +tableOfContents(child.children)
+mixin sidebarList(children)
+  each child in children
+    li
+      if child.path == path
+        span.active #{child.title}
+      else if child.link
+        a(href=child.path) #{child.title}
+      else
+        span #{child.title}
+      if child.children
+        ul
+          +sidebarList(child.children)
 
 if nav
-  .row
-    .col-xs-4.text-center
-      if nav.prev
-        a(href=nav.prev)
-           span.glyphicon.glyphicon-arrow-left
-    .col-xs-4.text-center
-      if nav.up
-        a(href=nav.up)
-           span.glyphicon.glyphicon-arrow-up
-    .col-xs-4.text-center
-      if nav.next
-        a(href=nav.next)
-           span.glyphicon.glyphicon-arrow-right
-  if nav.toc
-    .row
-      .col-xs-12
-        h3 Table of Contents
-        +tableOfContents(nav.toc)
+  ul.main-menu.nav.nav-stacked
+    if nav.toc
+      +sidebarList(nav.toc)
