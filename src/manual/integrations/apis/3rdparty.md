@@ -9,7 +9,7 @@ This is particularly useful for services with a similar audience, which will ben
 # Getting Credentials
 
 You can interact with TaskCluster by redirecting your users to a TaskCluster URL as described below.
-If the user authenticates correctly and grants your service access, they are redirected back to your site with a set of [temporary credentials](/manual/apis/temporary-credentials) based on their assigned scopes.
+If the user authenticates correctly and grants your service access, they are redirected back to your site with a set of [temporary credentials](temporary-credentials) based on their assigned scopes.
 
 # Guidelines
 

@@ -1,6 +1,6 @@
 ---
 title: TaskCluster GitHub
-order: 1
+order: 40
 ---
 
 Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks
