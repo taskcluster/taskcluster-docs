@@ -16,14 +16,14 @@ These microservices share many characteristics, making it easy to use them
 together.
 
 TaskCluster aims to be a general platform for task execution to support
-software development within the Mozilla organization.  It is very much a work
-in progress.  The current focus is to support Firefox development, without
+software development within the Mozilla organization. It is very much a work
+in progress. The current focus is to support Firefox development, without
 losing the generality that will make it useful for other Mozilla projects.
 
 TaskCluster is designed to integrate tightly with other services and
-components.  Some of those integrations are Mozilla-specific (for example,
-TreeHerder).  Some integrations are maintained and provided by the TaskCluster
-team, such as AWS compute resources.  Others are managed separately, and may
+components. Some of those integrations are Mozilla-specific (for example,
+TreeHerder). Some integrations are maintained and provided by the TaskCluster
+team, such as AWS compute resources. Others are managed separately, and may
 not be available to all users -- including the compute resources assigned to
 Firefox development.
 
@@ -39,8 +39,8 @@ need to interface with, this section can provide all of the technical detail
 you need to do so successfully.
 
 The remainder of the manual is divided into major sections based on your level
-of interaction with TaskCluster.  [Tasks & Task Execution](/manual/tasks)
+of interaction with TaskCluster. [Tasks & Task Execution](/manual/tasks)
 focuses on tasks, and is useful for those creating and interacting with tasks.
 [Integrations](/manual/integrations) covers integration of other systems with
-TaskCluster.  Finally, [Development](/manual/devel) collects topics related to
+TaskCluster. Finally, [Development](/manual/devel) collects topics related to
 development of TaskCluster itself.

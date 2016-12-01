@@ -21,7 +21,7 @@ system, etc...) with none to minimal taskcluster specifics built into your image
 
 ## Scopes
 
-Certain task features/capabilities require the use of docker-worker specific scopes in the form of `docker-worker:...` .  For details about scopes needed for features, images, and caches, consult the documentation for each topic.
+Certain task features/capabilities require the use of docker-worker specific scopes in the form of `docker-worker:...` . For details about scopes needed for features, images, and caches, consult the documentation for each topic.
 
 Currently docker-worker has types of scopes:
 
@@ -29,7 +29,7 @@ Currently docker-worker has types of scopes:
 Scope format: `docker-worker:feature:<feature name>`. These are features that will be linked to the container when the task runs.
 
 #### Images
-Scopes format: `docker-worker:image:<registry>/<user>/<image>:<tag>`. Scopes for images are necessary when the image requires authentication with a registry (e.g. private images).  Public images do not require scopes.
+Scopes format: `docker-worker:image:<registry>/<user>/<image>:<tag>`. Scopes for images are necessary when the image requires authentication with a registry (e.g. private images). Public images do not require scopes.
 
 #### Caches
 Scopes begin with `docker-worker:cache:<cache name>`. Tasks that require cached volumes to be mounted must supply a scope for that cache. This is to restrict accessing, and possibly corrupting, caches no related to the scope of credentials provided.
@@ -39,8 +39,8 @@ Scopes begin with `docker-worker:cache:<cache name>`. Tasks that require cached 
 ## Environment
 
 Environment variables can be provided in the task payload and will be added to the
-current environment configuration.  Environment variables can be both encrypted or
-plain text.  Refer to the [Encrypted Environment Variables](#encrypted-environment-variables)
+current environment configuration. Environment variables can be both encrypted or
+plain text. Refer to the [Encrypted Environment Variables](#encrypted-environment-variables)
 section for more information.
 
 #### Reserved Environment Variables
@@ -145,7 +145,7 @@ Example:
 Required scopes: `docker-worker:feature:balrogVPNProxy`
 
 Some tasks have the need for communicating with production balrog server over
-port 80 through a vpn tunnel.  The balrog vpn proxy feature allows a task to
+port 80 through a vpn tunnel. The balrog vpn proxy feature allows a task to
 direct requests to http://balrog which will proxy the request over a vpn connection
 to production balrog.
 
@@ -235,7 +235,7 @@ References:
 Source: https://github.com/taskcluster/testdroid-proxy
 
 The testdroid proxy allows a task to request and release a device by making
-the appropriate calls to http://testdroid.  These actions are documented in the
+the appropriate calls to http://testdroid. These actions are documented in the
 testdroid-proxy
 [documentation](https://github.com/taskcluster/testdroid-proxy/blob/master/README.md).
 
@@ -360,9 +360,9 @@ While this should be safe, assuming that all processes in the task container are
 
 Require Scopes: `docker-worker:cache:<cache name>`
 
-Docker-worker has the ability to provide volumes mounted within the task container that can persist between tasks.  This provides a way of caching large often used files (repos, object directories) and share them between tasks.
+Docker-worker has the ability to provide volumes mounted within the task container that can persist between tasks. This provides a way of caching large often used files (repos, object directories) and share them between tasks.
 
-Volume caches falls under the garbage collection policies when diskspace threshold is reached.  Any cached volumes that are no longer mounted within a container are removed from the host system when this event occurs.
+Volume caches falls under the garbage collection policies when diskspace threshold is reached. Any cached volumes that are no longer mounted within a container are removed from the host system when this event occurs.
 
 Tasks need to define a name for the cache that will be used for other tasks requiring the same cached volume as well as a mount point for where the volume will be mounted within the task container.
 

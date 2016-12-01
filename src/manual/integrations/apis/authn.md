@@ -11,11 +11,11 @@ consisting of a `clientId` and an `accessToken` (and, if using temporary
 credentials, a `certificate`).
 
 These credentials are used with the Hawk protocol to authenticate each HTTP
-request.  The `clientId` is passed as the `id` parameter, and `accessToken` is
+request. The `clientId` is passed as the `id` parameter, and `accessToken` is
 passed as the `key` parameter.
 
 If given, the certificate is passed as `ext.certificate` to the
-`Hawk.client.header` method.  In JavaScript:
+`Hawk.client.header` method. In JavaScript:
 ```js
 var header = Hawk.client.header('https://foo.taskcluster.net', 'GET', {
   credentials: {
