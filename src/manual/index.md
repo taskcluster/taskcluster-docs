@@ -22,7 +22,7 @@ losing the generality that will make it useful for other Mozilla projects.
 
 TaskCluster is designed to integrate tightly with other services and
 components. Some of those integrations are Mozilla-specific (for example,
-TreeHerder). Some integrations are maintained and provided by the TaskCluster
+Treeherder). Some integrations are maintained and provided by the TaskCluster
 team, such as AWS compute resources. Others are managed separately, and may
 not be available to all users -- including the compute resources assigned to
 Firefox development.
