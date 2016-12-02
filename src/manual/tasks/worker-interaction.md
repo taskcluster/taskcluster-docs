@@ -1,6 +1,6 @@
 ---
 title: "Queue: Worker Interaction"
-order: 2
+order: 30
 sequence_diagrams: true
 ---
 

@@ -21,8 +21,6 @@ be trivially enabled or disabled, in addition to any custom features and/or
 engines that the developer wishes to add, simply by adjusting the go build
 import paths.
 
-We hope to be production ready by end of Q2 2016 (30 June 2016).
-
 ---
 
 ## Engines

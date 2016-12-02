@@ -1,6 +1,6 @@
 ---
 title: Tools
-order: 80
+order: 60
 ---
 
 This chapter describes the tools available for working with TaskCluster.
