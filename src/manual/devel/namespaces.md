@@ -269,7 +269,7 @@ Secret names have the following structure:
 
 ## Indexes
 
-The index provides a nice, dot-separated hierarchy of names.
+The index provides a nice, dot-separated hierarchy of names. When using these as AMQP routes, they are prefixed with `index.`, so for example the project 'foo' might route messages about its level 3 repository tasks to routes starting with `index.project.foo.level-3.…`
 
 * `buildbot` - the "old" index for Buildbot builds; do not use
 
