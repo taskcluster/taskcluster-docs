@@ -62,8 +62,17 @@ Note that environment variables can also be used in the `command` field.
 
 #### Encrypted Environment Variables
 
+**WARNING**: we do not recommend using encrypted environment variables.
+Instead, prefer to use the secrets service.  Encrypted environment variables
+are currently secure, but if the private key is ever disclosed, *all* formerly
+protected values will be readable to anyone posessing that key.  This section
+remains here only for reference, since encrypted environment variables are
+still in use for some tasks.
+
+---
+
 Environment variables can be encrypted to allow secure transmission of private information
-such as access tokens, passwords, etc. Secure environment variables will be encrypted
+such as access tokens, passwords, etc. Secure environment variables must be encrypted
 using a public key and then base64 encoded prior to submitting the task.
 
 Each encrypted environment variable must include the message version, task ID,
