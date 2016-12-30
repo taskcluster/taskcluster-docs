@@ -1,6 +1,6 @@
 ---
 title: Core Services
-order: 2
+order: 3
 ---
 
 # Taskcluster Core Services

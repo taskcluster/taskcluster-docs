@@ -1,6 +1,6 @@
 ---
 title: TaskCluster Platform
-order: 1
+order: 2
 ---
 
 # Taskcluster Platform Services

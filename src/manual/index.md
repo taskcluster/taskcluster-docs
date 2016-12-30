@@ -36,7 +36,9 @@ that is most relevant to you.
 The [reference section](/reference) contains documentation about the
 TaskCluster services and libraries. Once you have determined the services you
 need to interface with, this section can provide all of the technical detail
-you need to do so successfully.
+you need to do so successfully.  The reference section begins with a [guide to
+the microservices](/reference/guide) that can help to determine the services
+most relevant to your work.
 
 The remainder of the manual is divided into major sections based on your level
 of interaction with TaskCluster. [Tasks & Task Execution](/manual/tasks)
