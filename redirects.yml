@@ -30,10 +30,13 @@
 /devel/namespaces/: /manual/devel/namespaces
 /introduction/principles: /manual/devel/principles
 /introduction/principles/: /manual/devel/principles
-/queue/api-docs: /reference/platform/queue/api-docs
-/queue/api-docs/: /reference/platform/queue/api-docs
-/queue/exchanges: /reference/platform/queue/exchanges
-/queue/exchanges/: /reference/platform/queue/exchanges
+/queue/api-docs: /reference/platform/queue/reference/api-docs
+/queue/api-docs/: /reference/platform/queue/reference/api-docs
+/queue/exchanges: /reference/platform/queue/reference/events
+/queue/exchanges/: /reference/platform/queue/reference/events
+/reference/platform/queue/api-docs: /reference/platform/queue/reference/api-docs
+/reference/platform/queue/exchanges: /reference/platform/queue/reference/events
+/reference/platform/queue/task: /reference/platform/queue/reference/docs/task-schema
 /queue: /manual/tasks/queue
 /queue/: /manual/tasks/queue
 /queue/worker-interaction: /manual/tasks/worker-interaction
