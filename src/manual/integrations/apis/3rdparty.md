@@ -26,7 +26,7 @@ Limit the places you copy these credentials:
 *Do not* use clientIds for authentication.
 First, because mere possession of a credential with a clientId and some 44-character accessToken does not prove anything until you have validated that the accessToken is valid.
 Second, even if you validate the accessToken, TaskCluster is fairly permissive in creation of temporary credentials with arbitrary clientIds, by design.
-The information you may rely on for authorization is contained in the list of scopes returned from the [auth.authenticateHawk](/reference/platform/auth/api-docs#authenticateHawk) method.
+The information you may rely on for authorization is contained in the list of scopes returned from the [auth.authenticateHawk](/reference/platform/auth/reference/api-docs#authenticateHawk) method.
 
 *CAUTION:* remember that you are dealing with powerful credentials belonging to real users.
 Think carefully about how you handle those credentials, and how you can minimize the handling that you do.
@@ -39,12 +39,12 @@ Beyond that, what plans you have for detecting and handling credential disclosur
 If your application is a frontend-only tool, or only needs to call TaskCluster APIs on behalf of the user, you can perform the Access Grant process, then store the resulting credentials in the JavaScript heap or (to survive reloads) LocalStorage.
 Simply use those credentials along with the TaskCluster client to make calls to TaskCluster APIs.
 
-If you would like to perform additional error-checking, you can use those credentials to call [auth.currentScopes](/reference/platform/auth/api-docs#currentScopes).
+If you would like to perform additional error-checking, you can use those credentials to call [auth.currentScopes](/reference/platform/auth/reference/api-docs#currentScopes).
 
 ## Authorizing With Scopes
 
 The ideal way for your service to use TaskCluster credentials is to accept TaskCluster authentication on calls to your backend API.
-This is quite simple: call [auth.authenticateHawk](/reference/platform/auth/api-docs#authenticateHawk) from your backend with the appropriate parts of the HTTP request.
+This is quite simple: call [auth.authenticateHawk](/reference/platform/auth/reference/api-docs#authenticateHawk) from your backend with the appropriate parts of the HTTP request.
 Then verify that the returned scopes satisfy the scopes required for the operation being protected.
 There is no need to "register" the scopes you would like to use, but see the [namespaces document](/manual/devel/namespaces) for guidance on selecting appropriate names.
 
@@ -57,7 +57,7 @@ Just be cautious of the warning above regarding using clientIds for authenticati
 ## Authenticating With Scopes
 
 If you need to know *who* the user is, such as to look up associated information in a backend database, do not use the provided clientId.
-Instead, treat the scopes returned from [auth.authenticateHawk](/reference/platform/auth/api-docs#authenticateHawk) as assertions of identity and group membership.
+Instead, treat the scopes returned from [auth.authenticateHawk](/reference/platform/auth/reference/api-docs#authenticateHawk) as assertions of identity and group membership.
 
 In particular, look for scopes of the forms:
 
