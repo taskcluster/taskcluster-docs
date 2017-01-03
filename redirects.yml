@@ -1,9 +1,9 @@
 # This file maps old paths new new paths.  The result will be a redirect.
 
 # From the Jekyll-based docs, both with and without a trailing /
-/auth/api-docs: /reference/platform/auth/reference/api
-/auth/api-docs/: /reference/platform/auth/reference/api
-/reference/platform/auth/api-docs: /reference/platform/auth/reference/api
+/auth/api-docs: /reference/platform/auth/references/api
+/auth/api-docs/: /reference/platform/auth/references/api
+/reference/platform/auth/api-docs: /reference/platform/auth/references/api
 /auth/authorized-scopes: /manual/apis/authorized-scopes
 /auth/authorized-scopes/: /manual/apis/authorized-scopes
 /auth/clients: /manual/apis/clients
@@ -30,12 +30,12 @@
 /devel/namespaces/: /manual/devel/namespaces
 /introduction/principles: /manual/devel/principles
 /introduction/principles/: /manual/devel/principles
-/queue/api-docs: /reference/platform/queue/reference/api
-/queue/api-docs/: /reference/platform/queue/reference/api
-/queue/exchanges: /reference/platform/queue/reference/events
-/queue/exchanges/: /reference/platform/queue/reference/events
-/reference/platform/queue/api-docs: /reference/platform/queue/reference/api
-/reference/platform/queue/exchanges: /reference/platform/queue/reference/events
+/queue/api-docs: /reference/platform/queue/references/api
+/queue/api-docs/: /reference/platform/queue/references/api
+/queue/exchanges: /reference/platform/queue/references/events
+/queue/exchanges/: /reference/platform/queue/references/events
+/reference/platform/queue/api-docs: /reference/platform/queue/references/api
+/reference/platform/queue/exchanges: /reference/platform/queue/references/events
 /reference/platform/queue/task: /reference/platform/queue/reference/docs/task-schema
 /queue: /manual/tasks/queue
 /queue/: /manual/tasks/queue
