@@ -3,7 +3,7 @@ title: TaskCluster GitHub
 order: 40
 ---
 
-Easily trigger TaskCluster jobs based on GitHub pushes and pull requests. Tasks
+Easily trigger TaskCluster jobs based on GitHub pushes, pull requests and releases. Tasks
 are defined in a YAML configuration file which lives at the root of a
 repository. There is no explicit sign-up step, TaskCluster and Mozilla projects
 will simply begin accepting jobs as soon as a `.taskcluster.yml` exists.
@@ -22,8 +22,7 @@ their configurations.
 ### A simple .taskcluster.yml file
 
 The following `.taskcluster.yml` is used by the taskcluster-github project
-itself. It will run nodejs tests when a user opens, reopens, or updates a pull
-request.
+itself. It will run nodejs tests when a user opens, reopens or updates a pull request.
 
 ```
 # The version is always required
@@ -75,6 +74,7 @@ You can modify a task definition so that it will only run for specific GitHub ev
   * `pull_request.reopened`
   * `pull_request.closed`
   * `push`                     (a push is made directly to the repo)
+  * `release`                  (a new tag or release published in any branch of the repo)
 
 
 ```
@@ -91,6 +91,28 @@ tasks:
         events:        # A list of all github events which trigger this task
           - push
 ```
+
+Remember that clone command for a release somewhat differs, so if you need to clone the tag instead of the whole repository, it makes sense to have a separate tasks set defined just for the release event. You'll find the example of the clone command below.
+
+```
+---
+version: 0
+tasks:
+  - payload:
+     maxRunTime: 3600
+     image: "node:<version>"
+     command:
+        - "/bin/bash"
+        - "--login"
+        - "-c"
+        - "git clone -b {{ event.version }} {{ event.head.repo.url }} repo && cd repo && git checkout {{ event.version }} && npm install . && npm test"
+    extra:
+      github:
+        events:        # A list of all github events which trigger this task
+          - release
+```
+
+---
 
 ### Branch Filtering
 
@@ -112,6 +134,7 @@ tasks:
         branches:
           - master
 ```
+Branch filtering doesn't work for releases.
 
 ---
 
