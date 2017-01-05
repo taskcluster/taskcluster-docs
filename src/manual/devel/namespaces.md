@@ -133,6 +133,9 @@ Both are listed here:
 * `repo:<host>/<path>:pull-request` -
    Roles of this form represent scopes available to version-control pushes and pull requests.
 
+* `repo:<host>/<path>:cron:<jobName>` -
+   Roles of this form are used for cron jobs by the periodic task-graph generation support in Gecko.
+
 * `worker-type:<provisionerId>/<workerType>` -
    Roles of this form represent scopes available to workers of the given type.
 
