@@ -97,3 +97,8 @@
 /manual/tools/references: /manual/integrations/tools/references
 /manual/tools/clients: /manual/integrations/tools/clients
 /manual/tools/web: /manual/integrations/tools/web
+/reference/core/docker-worker: /reference/workers/docker-worker
+/reference/core/docker-worker/payload: /reference/workers/docker-worker/payload
+/reference/core/generic-worker: /reference/workers/generic-worker
+/reference/core/generic-worker/payload: /reference/workers/generic-worker/payload
+/reference/core/taskcluster-worker: /reference/workers/taskcluster-worker

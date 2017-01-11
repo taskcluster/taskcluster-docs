@@ -52,9 +52,9 @@ The [taskcluster-notify service](core/taskcluster-notify) handles sending notifi
 TaskCluster allows a great deal of flexibility in task execution, so the available options for workers are many.
 
 The project provides several implementations of workers.
-[Docker-worker](core/docker-worker) runs tasks on Linux in docker containers.
-[Generic-worker](core/generic-worker) runs tasks witout containers, and has thorough support for Windows.
-[Taskcluster-worker](core/taskcluster-worker) aims to be the single implementation that is used everywhere, sporting "engines" for specific circumstances.
+[Docker-worker](workers/docker-worker) runs tasks on Linux in docker containers.
+[Generic-worker](workers/generic-worker) runs tasks witout containers, and has thorough support for Windows.
+[Taskcluster-worker](workers/taskcluster-worker) aims to be the single implementation that is used everywhere, sporting "engines" for specific circumstances.
 
 Other users of TaskCluster have built worker implementations as well.
 For example, release engineering has built "scriptworker" which can execute tasks using predefined scripts for higher security.
