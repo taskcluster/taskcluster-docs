@@ -105,7 +105,7 @@ tasks:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone -b {{ event.version }} {{ event.head.repo.url }} repo && cd repo && git checkout {{ event.version }} && npm install . && npm test"
+        - "git clone -b {{ event.version }} {{ event.head.repo.url }} repo && cd repo && npm install . && npm test"
     extra:
       github:
         events:        # A list of all github events which trigger this task
