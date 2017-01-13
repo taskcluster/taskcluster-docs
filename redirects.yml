@@ -4,6 +4,7 @@
 /auth/api-docs: /reference/platform/auth/references/api
 /auth/api-docs/: /reference/platform/auth/references/api
 /reference/platform/auth/api-docs: /reference/platform/auth/references/api
+/reference/platform/queue/reference/api-docs: /reference/platform/auth/references/api
 /auth/authorized-scopes: /manual/apis/authorized-scopes
 /auth/authorized-scopes/: /manual/apis/authorized-scopes
 /auth/clients: /manual/apis/clients
