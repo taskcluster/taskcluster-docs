@@ -19,7 +19,7 @@ The eventual goal of this project is to support all platforms and allow users
 to define workflows for testing, shipping, and landing patches from within
 their configurations.
 
-### A simple .taskcluster.yml file
+## A simple .taskcluster.yml file
 
 The following `.taskcluster.yml` is used by the taskcluster-github project
 itself. It will run nodejs tests when a user opens, reopens or updates a pull request.
@@ -65,7 +65,7 @@ tasks:
       source: "{{ event.head.repo.url }}"
 ```
 
-### GitHub Events
+## GitHub Events
 
 You can modify a task definition so that it will only run for specific GitHub events, those events being:
 
@@ -138,7 +138,7 @@ Branch filtering doesn't work for releases.
 
 ---
 
-### A note on testing
+## A note on testing
 
 TaskCluster GitHub *will* use `.taskcluster.yml` files from pull requests. However,
 TaskCluster will not run any tasks that are not from a collaborator on a repo or a
@@ -146,7 +146,7 @@ member of an organization. This is currently in-flux and subject to change.
 
 ---
 
-### Who Can Trigger Jobs?
+## Who Can Trigger Jobs?
 
 For security reasons only members of the Mozilla organization and repository
 collaborators can trigger TaskCluster jobs. That is, to grant permissions to
@@ -155,7 +155,7 @@ collaborator. Read only permissions will suffice.
 
 ---
 
-### Deadlines and the fromNow function
+## Deadlines and the fromNow function
 
 A function `{{ $fromNow }}` is included in the syntax so that users may specify
 consistent timeouts and deadlines. The function will accept parameters like:
@@ -173,34 +173,97 @@ tasks:
     deadline: "{{ '2 hours' | $fromNow }}" # the task will timeout if it doesn't complete within 2 hours
 ```
 
-### Node.js image
+## Node.js image
 
 The official Node.js docker image. More information can be found [here](https://github.com/nodejs/docker-node).
 
 This documentation uses the Node.js image because it is convenient, but you may use any docker image you like, including one of your own design.
 
-### Environment Variables
+## Token Substitution and Environment Variables
 
-There are environment variables available from within any TaskCluster GitHub
-triggered job with `extra: github: env: true` in its config. These are also
-available from within the `.taskcluster.yml` file itself via curly braces i.e.
-`{{ varname }}`.
+The following tables list curly brace tokens (`{{ tokenName }}`) that can be
+included in your `.taskcluster.yml` file which will be substituted at task
+generation time.
+
+In addition to these token substitutions, by setting `extra.github.env` to
+`true` in `.taskcluster.yml`, your generated tasks will also include additional
+environment variables with `GITHUB_` prefix. If these environment variables are
+not required (i.e. you only require token substitutions) then you do not need
+to set `extra.github.env`. These environment variables are also listed in the
+tables below, where they occur. Currently not all token substituions are
+available as environment variables (notably, the release metadata).
+
+### Pull Request Metadata
 
 ```
-  GITHUB_EVENT: "{{ event.type }}"                   # pull_request.opened, etc...
-  GITHUB_BRANCH: "{{ event.base.repo.branch }}"      # from the HEAD repo
-  GITHUB_PULL_REQUEST: "{{ event.pullRequest }}"     # 1, 2, 3, ..., n
-  GITHUB_BASE_REPO_URL: "{{ event.base.repo.url }}"  # https://github.com/someorg/somerepo
-  GITHUB_BASE_USER: "{{ event.base.user.login }}"    # johndoe
-  GITHUB_BASE_SHA: "{{ event.base.sha }}"            # commit sha
-  GITHUB_BASE_BRANCH: "{{ event.base.repo.branch }}"
-  GITHUB_BASE_REF: "{{ event.base.ref }}"
-  GITHUB_HEAD_REPO_URL: "{{ event.head.repo.url }}"
-  GITHUB_HEAD_USER: "{{ event.head.user.login }}"
-  GITHUB_HEAD_SHA: "{{ event.head.sha }}"
-  GITHUB_HEAD_BRANCH: "{{ event.head.repo.branch }}"
-  GITHUB_HEAD_REF: "{{ event.head.ref }}"
-  GITHUB_HEAD_USER_EMAIL: "{{ event.head.user.email }}"
+  Environment Variable   | Token Placeholder              | Example Value(s)
+  -----------------------+--------------------------------+-----------------------------------------
+  GITHUB_EVENT           | "{{ event.type }}"             | pull_request.assigned
+                         |                                | pull_request.unassigned
+                         |                                | pull_request.labeled
+                         |                                | pull_request.unlabeled
+                         |                                | pull_request.opened
+                         |                                | pull_request.edited
+                         |                                | pull_request.closed
+                         |                                | pull_request.reopened
+                         |                                |
+  GITHUB_PULL_REQUEST    | "{{ event.pullNumber }}"       | 18
+  GITHUB_BRANCH          | "{{ event.head.repo.branch }}" | master
+                         |                                |
+  GITHUB_BASE_USER       | "{{ event.base.user.login }}"  | johndoe
+  GITHUB_BASE_REPO_NAME  | "{{ event.base.repo.name }}"   | somerepo
+  GITHUB_BASE_REPO_URL   | "{{ event.base.repo.url }}"    | https://github.com/johndoe/somerepo
+  GITHUB_BASE_SHA        | "{{ event.base.sha }}"         | ee6a2fc800cdab6a98bf24b5af1cd34bf36d41ec
+  GITHUB_BASE_REF        | "{{ event.base.ref }}"         | master
+  GITHUB_BASE_BRANCH     | "{{ event.base.repo.branch }}" | master
+                         |                                |
+  GITHUB_HEAD_USER       | "{{ event.head.user.login }}"  | maryscott
+  GITHUB_HEAD_REPO_NAME  | "{{ event.head.repo.name }}"   | somerepo
+  GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
+  GITHUB_HEAD_SHA        | "{{ event.head.sha }}"         | e8f57659c7400e225d2f70f8d17ed11b7f914abb
+  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | bug1394856
+  GITHUB_HEAD_BRANCH     | "{{ event.head.repo.branch }}" | bug1394856
+  GITHUB_HEAD_USER_EMAIL | "{{ event.head.user.email }}"  | mary.scott@buccleuch.co.uk
+```
+
+### Push Metadata
+
+```
+  Environment Variable   | Token Placeholder              | Example Value
+  -----------------------+--------------------------------+-----------------------------------------
+  GITHUB_EVENT           | "{{ event.type }}"             | push
+  GITHUB_BRANCH          | "{{ event.base.repo.branch }}" | bug1394856
+                         |                                |
+  GITHUB_BASE_SHA        | "{{ event.base.sha }}"         | ee6a2fc800cdab6a98bf24b5af1cd34bf36d41ec
+                         |                                |
+  GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
+  GITHUB_HEAD_USER       | "{{ event.head.user.login }}"  | maryscott
+  GITHUB_HEAD_REPO_NAME  | "{{ event.head.repo.name }}"   | somerepo
+  GITHUB_HEAD_SHA        | "{{ event.head.sha }}"         | e8f57659c7400e225d2f70f8d17ed11b7f914abb
+  GITHUB_HEAD_BRANCH     | "{{ event.head.repo.branch }}" | bug1394856
+  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | bug1394856
+  GITHUB_HEAD_USER_EMAIL | "{{ event.head.user.email }}"  | mary.scott@buccleuch.co.uk
+```
+
+### Release Metadata
+
+```
+  Environment Variable   | Token Placeholder              | Example Value
+  -----------------------+--------------------------------+-------------------------------------------------------------------------
+  GITHUB_EVENT           | "{{ event.type }}"             | release
+  GITHUB_BRANCH          | "{{ event.base.repo.branch }}" | master
+                         |                                |
+  GITHUB_HEAD_USER       | "{{ event.head.user.login }}"  | maryscott
+  GITHUB_HEAD_REPO_NAME  | "{{ event.head.repo.name }}"   | somerepo
+  GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
+                         |                                |
+                         | "{{ event.version }}"          | v1.0.3 (tag name)
+                         | "{{ event.name }}"             | null
+                         | "{{ event.release.url }}"      | https://api.github.com/repos/taskcluster/generic-worker/releases/5108386
+                         | "{{ event.prerelease }}"       | false
+                         | "{{ event.draft }}"            | false
+                         | "{{ event.tar }}"              | https://api.github.com/repos/taskcluster/generic-worker/tarball/v7.2.6
+                         | "{{ event.zip }}"              | https://api.github.com/repos/taskcluster/generic-worker/zipball/v7.2.6
 ```
 
 ### Configuring TaskClusterRobot
