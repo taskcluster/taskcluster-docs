@@ -214,15 +214,15 @@ available as environment variables (notably, the release metadata).
   GITHUB_BASE_REPO_NAME  | "{{ event.base.repo.name }}"   | somerepo
   GITHUB_BASE_REPO_URL   | "{{ event.base.repo.url }}"    | https://github.com/johndoe/somerepo
   GITHUB_BASE_SHA        | "{{ event.base.sha }}"         | ee6a2fc800cdab6a98bf24b5af1cd34bf36d41ec
-  GITHUB_BASE_REF        | "{{ event.base.ref }}"         | master
   GITHUB_BASE_BRANCH     | "{{ event.base.repo.branch }}" | master
+  GITHUB_BASE_REF        | "{{ event.base.ref }}"         | refs/heads/master
                          |                                |
   GITHUB_HEAD_USER       | "{{ event.head.user.login }}"  | maryscott
   GITHUB_HEAD_REPO_NAME  | "{{ event.head.repo.name }}"   | somerepo
   GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
   GITHUB_HEAD_SHA        | "{{ event.head.sha }}"         | e8f57659c7400e225d2f70f8d17ed11b7f914abb
-  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | bug1394856
   GITHUB_HEAD_BRANCH     | "{{ event.head.repo.branch }}" | bug1394856
+  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | refs/heads/bug1394856
   GITHUB_HEAD_USER_EMAIL | "{{ event.head.user.email }}"  | mary.scott@buccleuch.co.uk
 ```
 
@@ -234,14 +234,19 @@ available as environment variables (notably, the release metadata).
   GITHUB_EVENT           | "{{ event.type }}"             | push
   GITHUB_BRANCH          | "{{ event.base.repo.branch }}" | bug1394856
                          |                                |
+  GITHUB_BASE_USER       | "{{ event.base.user.login }}"  | maryscott
+  GITHUB_BASE_REPO_NAME  | "{{ event.base.repo.name }}"   | somerepo
+  GITHUB_BASE_REPO_URL   | "{{ event.base.repo.url }}"    | https://github.com/maryscott/somerepo
   GITHUB_BASE_SHA        | "{{ event.base.sha }}"         | ee6a2fc800cdab6a98bf24b5af1cd34bf36d41ec
+  GITHUB_BASE_BRANCH     | "{{ event.base.repo.branch }}" | bug1394856
+  GITHUB_BASE_REF        | "{{ event.base.ref }}"         | refs/heads/bug1394856
                          |                                |
-  GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
   GITHUB_HEAD_USER       | "{{ event.head.user.login }}"  | maryscott
   GITHUB_HEAD_REPO_NAME  | "{{ event.head.repo.name }}"   | somerepo
+  GITHUB_HEAD_REPO_URL   | "{{ event.head.repo.url }}"    | https://github.com/maryscott/somerepo
   GITHUB_HEAD_SHA        | "{{ event.head.sha }}"         | e8f57659c7400e225d2f70f8d17ed11b7f914abb
   GITHUB_HEAD_BRANCH     | "{{ event.head.repo.branch }}" | bug1394856
-  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | bug1394856
+  GITHUB_HEAD_REF        | "{{ event.head.ref }}"         | refs/heads/bug1394856
   GITHUB_HEAD_USER_EMAIL | "{{ event.head.user.email }}"  | mary.scott@buccleuch.co.uk
 ```
 
