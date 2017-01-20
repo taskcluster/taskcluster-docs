@@ -1,6 +1,6 @@
 ---
 title: Libraries
-order: 5
+order: 10
 ---
 
 TaskCluster develops a collection of libraries that support the services we

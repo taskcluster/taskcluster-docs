@@ -1,6 +1,6 @@
 ---
 title: Workers
-order: 4
+order: 9
 ---
 
 TaskCluster develops several worker implementations, documented here.
