@@ -61,32 +61,32 @@ For example, release engineering has built "scriptworker" which can execute task
 
 Workers can run on any host with Internet access - simply install and configure a worker with appropriate credentials.
 Cloud computing platforms are an obvious choice for most task executioni.
-The [AWS provisioner](core/aws-provisioner) provides a mechanism to start Amazon EC2 instances as needed.
+The [AWS provisioner](integrations/aws-provisioner) provides a mechanism to start Amazon EC2 instances as needed.
 
 ### External Integrations
 
-The [taskcluster-github service](core/github) integrates with Github, supporting creation of tasks in response to pushes, pull requests, and so on; and updates status indications in Github to represent the results of those tasks.
+The [taskcluster-github service](integrations/github) integrates with Github, supporting creation of tasks in response to pushes, pull requests, and so on; and updates status indications in Github to represent the results of those tasks.
 
 Within Mozilla, the *mozilla-taskcluster service* monitors pushes to https://hg.mozilla.org and creates tasks for them.
-It does not handle task status, though -- that is the business of the [taskcluster-treeherder](core/treeherder) service, which relays task results to [Treeherder](https://treeherder.mozilla.org).
+It does not handle task status, though -- that is the business of the [taskcluster-treeherder](integrations/treeherder) service, which relays task results to [Treeherder](https://treeherder.mozilla.org).
 
-The [taskcluster-pulse service](core/taskcluster-pulse) provides temporary Pulse credentials for consuming or publishing Pulse messages.
+The [taskcluster-pulse service](integrations/taskcluster-pulse) provides temporary Pulse credentials for consuming or publishing Pulse messages.
 It functions like the auth service in that it allows applications to be configured with TaskCluster credentials only but still have managed access to Pulse.
+
+The [cloud-mirror service](integrations/cloud-mirror) automatically copies task artifacts between cloud-storage regions to ensure that data close to where it is required.
 
 ### Team Operations
 
 These services are useful to the TaskCluster team, but probably not as useful to TaskCluster users!
 
-The [statsum service](core/statsum) handles generic, statstically sound aggregation of system metrics.
-The [stats-collector service](core/stats-collector) performs some very purpose-specific calculations to help the team measure the system against its defined service levels.
-The [diagnostics service](core/diagnostics) service performs end-to-end diagnostic tests of the TaskCluster system to detect errors.
-
-The [cloud-mirror service](core/cloud-mirror) automatically copies task artifacts between cloud-storage regions to ensure that data close to where it is required.
+The [statsum service](operations/statsum) handles generic, statstically sound aggregation of system metrics.
+The [stats-collector service](operations/stats-collector) performs some very purpose-specific calculations to help the team measure the system against its defined service levels.
+The [diagnostics service](operations/diagnostics) service performs end-to-end diagnostic tests of the TaskCluster system to detect errors.
 
 ### Tools Interface
 
 The [tools site](https://tools.taskcluster.net/) provides an extensive UI for interacting with TaskCluser services.
 While the site itself is a static React application, it makes use of several services for its dynamic behavior.
-The [login service](core/login) provides a way for users to get TaskCluster credentials.
+The [login service](integrations/login) provides a way for users to get TaskCluster credentials.
 The [events service](core/events) connects the web browser to Pulse.
 And the [cors-proxy](core/cors-proxy) service enables secure access to external CORS-protected services.

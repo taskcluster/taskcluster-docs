@@ -1,6 +1,6 @@
 ---
 title: Libraries
-order: 5
+order: 10
 ---
 
 # Taskcluster Libraries
