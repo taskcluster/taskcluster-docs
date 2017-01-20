@@ -3,9 +3,6 @@ title: Clients
 order: 3
 ---
 
-Clients
-=======
-
 TaskCluster authentication begins with "clients". Each client has a name
 (`clientId`) and a secret access token. These can be used together to make API
 requests to TaskCluster services.

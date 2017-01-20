@@ -2,8 +2,6 @@
 order: 6
 title: Temporary Credentials
 ---
-Temporary Credentials
-=====================
 
 Any client with a `clientId` and an `accessToken` can issue temporary
 credentials with a subset of its [scopes](scopes). Temporary credentials consist of

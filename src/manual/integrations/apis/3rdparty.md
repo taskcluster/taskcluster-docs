@@ -6,12 +6,12 @@ order: 70
 TaskCluster's authorization mechanism is general and can be used for services not related to TaskCluster itself.
 This is particularly useful for services with a similar audience, which will benefit from users' existing familiarity with TaskCluster.
 
-# Getting Credentials
+## Getting Credentials
 
 You can interact with TaskCluster by redirecting your users to a TaskCluster URL as described below.
 If the user authenticates correctly and grants your service access, they are redirected back to your site with a set of [temporary credentials](temporary-credentials) based on their assigned scopes.
 
-# Guidelines
+## Guidelines
 
 Before jumping in to the technical details, a few words of caution are required.
 When a user clicks "Grant" for your service, they are trusting your service with their credentials.
@@ -32,16 +32,16 @@ The information you may rely on for authorization is contained in the list of sc
 Think carefully about how you handle those credentials, and how you can minimize the handling that you do.
 Beyond that, what plans you have for detecting and handling credential disclosure?
 
-# Approaches
+## Approaches
 
-## Frontend-Only Use
+### Frontend-Only Use
 
 If your application is a frontend-only tool, or only needs to call TaskCluster APIs on behalf of the user, you can perform the Access Grant process, then store the resulting credentials in the JavaScript heap or (to survive reloads) LocalStorage.
 Simply use those credentials along with the TaskCluster client to make calls to TaskCluster APIs.
 
 If you would like to perform additional error-checking, you can use those credentials to call [auth.currentScopes](/reference/platform/auth/reference/api-docs#currentScopes).
 
-## Authorizing With Scopes
+### Authorizing With Scopes
 
 The ideal way for your service to use TaskCluster credentials is to accept TaskCluster authentication on calls to your backend API.
 This is quite simple: call [auth.authenticateHawk](/reference/platform/auth/reference/api-docs#authenticateHawk) from your backend with the appropriate parts of the HTTP request.
@@ -54,7 +54,7 @@ Furthermore, the backend never sees the credentials, just the Hawk signature.
 If you build a user interface around this approach, it is safe to display the clientId to the user so they can recognize the login.
 Just be cautious of the warning above regarding using clientIds for authentication.
 
-## Authenticating With Scopes
+### Authenticating With Scopes
 
 If you need to know *who* the user is, such as to look up associated information in a backend database, do not use the provided clientId.
 Instead, treat the scopes returned from [auth.authenticateHawk](/reference/platform/auth/reference/api-docs#authenticateHawk) as assertions of identity and group membership.
@@ -70,7 +70,7 @@ This is one of the rare cases where you should *not* apply scope expansion; that
 
 See the [tc-login](/reference/core/login) reference documentation for more.
 
-# Don't be a [Confused Deputy](https://en.wikipedia.org/wiki/Confused_deputy_problem)
+## Don't be a [Confused Deputy](https://en.wikipedia.org/wiki/Confused_deputy_problem)
 
 If the service you are building acts on behalf of users, with its own TaskCluster credentials, you must be very careful to avoid allowing malicious users to abuse your privileges through scope escalation.
 Scope escalation is when a user can cause some action for which they do not have the appropriate scopes.
@@ -81,14 +81,14 @@ The user has escalated their access to include those scopes which they did not a
 
 The phrase "confused deputy" refers to the case where a service performs some actions on a user's behalf (as a deputy), but allows scope escalation (confused).
 
-## Don't be a Deputy
+### Don't be a Deputy
 
 The best way to avoid this issue is to not act as a deputy.
 This means using the user's own TaskCluster credentials to create the tasks, rather than using credentials assigned to the service.
 In the example above, ideally the user's credentials would be stored locally in the browser, and the client-side code would call the queue's `createTask` method directly.
 A less optimal solution would involve sending the user's credentials to the backend and using those credentials to call `createTask` on the backend.
 
-## Deputy Tools
+### Deputy Tools
 
 If you must act as a deputy -- for example, running tasks without a browser involved -- TaskCluster provides a tool to prevent confusion.
 
@@ -107,14 +107,14 @@ This better answer does lose the advantage of error-checking: `createDelayedTask
 It's safe to fix this with an approximation to the queue permissions model, as long as the `authorizedScopes` are still enforced.
 The failure modes for this check are acceptable: either `createDelayedTask` refuses to create a delayed task which should be accepted, or it accepts a task which will later fail due to the `authorizedScopes`.
 
-# Access Grant Process
+## Access Grant Process
 
 Your service should redirect the user's browser to `https://login.taskcluster.net/?target=<target>&description=<description>`. Once the user has authenticated, they will be presented with a button to grant access to the target <target> (while <decription> is displayed as markdown).
 
 If user clicks the button to grant access to <target>, the user will be redirected to `<target>?clientId=...&accessToken=...&certificate=...`, so that the <target> URL may obtain the temporary TaskCluster credentials.
 The target URL should take pains to modify the browser location as quickly as possible to prevent disclosing the accessToken.
 
-## Troubleshooting
+### Troubleshooting
 
 If your access checks are not working, the most common error is forgetting to handle the certificate in addition to the clientId and accessToken.
 There is no need to interpret the certificate (please don't!); just treat it as an opaque string.

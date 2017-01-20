@@ -3,9 +3,6 @@ order: 2
 title: Scopes
 ---
 
-Scopes
-======
-
 Authorization
 -------------
 
