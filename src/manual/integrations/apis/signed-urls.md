@@ -2,8 +2,6 @@
 title: Pre-signed URLs
 order: 7
 ---
-Pre-signed Urls
-===============
 
 Hawk allows you to generate a _bewit_ signature for any `GET` request. Including
 this _bewit_ signature in your request will then authenticate and authorize the

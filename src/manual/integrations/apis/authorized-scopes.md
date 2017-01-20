@@ -2,8 +2,6 @@
 title: Authorized Scopes
 order: 5
 ---
-Authorized Scopes
-=================
 
 If you are making API requests on behalf of a less-trusted entity that you only
 know to possess a subset of your [scopes](scopes), you can specify which of

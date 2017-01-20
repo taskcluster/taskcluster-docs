@@ -5,11 +5,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Let's keep duplicate titles hidden */
-#content > h1:not(:first-of-type) {
-  display: none;
-}
-
 #content {
   font-weight: 300;
   font-size: 16px;

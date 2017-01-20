@@ -3,9 +3,6 @@ order: 1
 title: Using the APIs
 ---
 
-Using the APIs
-==============
-
 TaskCluster uses a microservices architecture, with each service exposing a
 small set of API endpoints. Those enpodints, and other details of the
 services, are documented in the [reference component](/reference).
