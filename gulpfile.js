@@ -79,20 +79,24 @@ function manual() {
 
 function reference() {
   return merge(
-    gulp.src(['build/reference/*/references/*.json'], {base: 'build'})
+    gulp.src(['build/reference/*/docs/*', '!build/reference/*/docs/*.md'], {base: 'build'})
       .pipe(raw()),
     merge(
-      gulp.src('src/reference/**/*.md', {base: 'src'}),
-      gulp.src('build/reference/**/*.md', {base: 'build'}).pipe(raw())
+      gulp.src(['build/reference/*/references/*.json'], {base: 'build'})
+        .pipe(raw()),
+      merge(
+        gulp.src('src/reference/**/*.md', {base: 'src'}),
+        gulp.src('build/reference/**/*.md', {base: 'build'}).pipe(raw())
+      )
+      .pipe(frontmatter({property: 'data'}))
+      .pipe(markdown())
+      .pipe(filter.renameIndex())
     )
-    .pipe(frontmatter({property: 'data'}))
-    .pipe(markdown())
-    .pipe(filter.renameIndex())
-  )
-  .pipe(rename({extname: ''}))
-  .pipe(navlinks({rootPath: '/reference'}))
-  .pipe(pug({template: 'layout/layout.pug'}))
-  .pipe(headers.set('Content-Type', 'text/html'));
+    .pipe(rename({extname: ''}))
+    .pipe(navlinks({rootPath: '/reference'}))
+    .pipe(pug({template: 'layout/layout.pug'}))
+    .pipe(headers.set('Content-Type', 'text/html'))
+  );
 }
 
 function assets() {
