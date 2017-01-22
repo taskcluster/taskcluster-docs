@@ -1,6 +1,6 @@
 ---
-order: 6
 title: Temporary Credentials
+order: 26
 ---
 
 Any client with a `clientId` and an `accessToken` can issue temporary

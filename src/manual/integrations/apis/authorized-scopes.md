@@ -1,6 +1,6 @@
 ---
 title: Authorized Scopes
-order: 5
+order: 25
 ---
 
 If you are making API requests on behalf of a less-trusted entity that you only

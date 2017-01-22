@@ -1,6 +1,6 @@
 ---
 title: Roles
-order: 4
+order: 24
 ---
 
 A _role_ consists of a `roleId`, a set of scopes and a description. Each role

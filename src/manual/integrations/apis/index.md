@@ -1,6 +1,6 @@
 ---
-order: 1
 title: Using the APIs
+order: 21
 ---
 
 TaskCluster uses a microservices architecture, with each service exposing a
