@@ -7,6 +7,7 @@ marked:       true
 ejs:          true
 superagent:   true
 docref:       true
+order:        1
 ---
 
 When submitting a task graph to the Task Cluster Queue (see
