@@ -1,6 +1,6 @@
 ---
 title: Clients
-order: 3
+order: 23
 ---
 
 TaskCluster authentication begins with "clients". Each client has a name

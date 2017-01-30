@@ -1,6 +1,6 @@
 ---
 title: Pre-signed URLs
-order: 7
+order: 27
 ---
 
 Hawk allows you to generate a _bewit_ signature for any `GET` request. Including
