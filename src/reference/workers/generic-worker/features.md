@@ -25,7 +25,7 @@ Example:
 }
 ```
 
-# Feature: `chainOfTrust`
+## Feature: `chainOfTrust`
 
 Enabling this feature will mean that the generic worker will publish an
 additional task artifact `public/logs/chainOfTrust.json.asc`. This will be a
