@@ -16,6 +16,13 @@ script.
       openOnFocus: true,
     },
   });
+if !noAnchors
+  script(src='/assets/anchorjs.min.js')
+  script.
+    anchors.options.placement = 'left';
+    // always display links on touch devices; only display them via hover on cursor devices
+    anchors.options.visible = 'touch';
+    anchors.add();
 if interactive
   script(src='/assets/bundle.js')
 if docson || docref
