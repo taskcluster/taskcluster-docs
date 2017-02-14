@@ -1,5 +1,6 @@
 ---
 title: Resources
+noAnchors: true
 ---
 
 ### [<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> Presentations](/presentations)

@@ -22,7 +22,6 @@
     "docker-exec-websocket-server": "^1.0.14",
     "ejs": "^2.5.2",
     "express": "^4.13.4",
-    "grunt-frontmatter": "^1.0.3",
     "gulp": "^3.9.1",
     "gulp-awspublish": "git://github.com/djmitche/gulp-awspublish#noAcl",
     "gulp-clean": "^0.3.2",
