@@ -104,7 +104,7 @@ You can also use the `baseUrl` parameter in the taskcluster-client
 ```js
 var taskcluster = require('taskcluster-client');
 var queue = new taskcluster.Queue({
- baseUrl: 'taskcluster/queue/v1'
+ baseUrl: 'taskcluster/queue'
  });
 
 queue.getTask('<taskId>');
