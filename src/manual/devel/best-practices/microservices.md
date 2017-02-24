@@ -7,9 +7,8 @@ The TaskCluster microservices are all maintained independently, but we share res
 This shared responsibility is easier for everyone if the implementations are similar, avoiding surprises when moving from one service to another.
 This document aims to collect the practices and standards we've agreed on.
 
-Most services do not live up to these standards -- TaskCluster is a work in progress -- but pull requests to bring services up-to-date with one or more points are always appreciated.
-Many of these aren't hard-and-fast rules, either.
-If there's good reason to do otherwise, do so!
+These conventions are strongly encouraged for new services and contributions updating existing services to follow them are always welcome.
+When we have a good reason to not follow the convention for a specific service, we document why.
 
 ## Package Mechanics
 
@@ -21,7 +20,10 @@ Services should be in a Github repository in the `taskcluster` organization, wit
 
 Include all source in the `src/` directory, and all tests in `test/`.
 The babel-compile configuration will compile those to `lib/` and `.test/`, respectively.
+
 Within the `src` directory, the main script should be named `main.js`.
+This file should use `taskcluster-lib-loader` as described below, and should serve as the main entry point to the service.
+This file will be transpiled to `lib/main.js` and should be set as the `main` property in `package.json`.
 
 ### Node
 
@@ -30,7 +32,7 @@ Encode this version both in `package.json` and in any CI configurations such as 
 
 ### Compiling
 
-Use [babel-compile](https://github.com/taskcluster/babel-compile) to compile your application.
+Use [babel-compile](https://github.com/taskcluster/babel-compile) with [babel-preset-taskcluster](https://github.com/taskcluster/babel-preset-taskcluster) to compile your application.
 Its README describes how to set it up generally, but for a TaskCluster service, you will need to install `babel-compile` and `babel-preset-taskcluster`.
 Include the following in your `package.json`:
 
@@ -61,9 +63,12 @@ When beginning development on an existing service, the usual `npm install` will 
 *Important*: npm versions before 3.0 do not deal with devDependencies correctly and will cause failures in deployment that do not appear in local runs or Travis.
 Use a newer version of Node/npm.
 
-When changing a service's dependencies, the easiest approach is to use `npm install --save` to install the package and update `package.json` at the same time.
-Add the modified `package.json` and `npm-shrinkwrap.json` to your commit.
-Pull requests with a modified `package.json` that do not have a corresponding `npm-shrinkwrap.json` diff should be viewed with suspicion!
+When changing a service's dependencies, use the `npm` comands.
+This will update both `package.json` and `npm-shrinkwrap.json` automatically.
+
+ * `npm install --save some-lib`
+ * `npm uninstall --save some-lib`
+ * `npm install --save some-lib@^2.3.0`  (to update an existing dependency's version)
 
 It is the service owner's responsibility to keep dependencies up to date.
 The `npm outdated` command gives a useful overview of available updates.
@@ -76,15 +81,19 @@ In the real world, that probably means a lot less.
 ### Test Setup
 
 Use Mocha to run unit tests, in the `test/` directory.
-Include the following in `mocha.opts`, most critically the `--ui tdd`.
+In order to get useful stacktraces from unit tests, you should `npm install --save source-map-support`.
+Include the following in `mocha.opts`:
 
 ```
 --ui tdd
 --timeout 30s
 --reporter spec
+--require source-map-support/register
 ```
 
 Name the test files `test/*_test.js`, so they will be matched by the `npm test` script given above.
+Because we transpile the tests to different directory than Mocha's default (`.test` instead of `test`), we need to be careful that the bash globbing will match all test files.
+The easiest way to ensure this is to have all test files directly in the `test` directory and not in sub-directories 
 These files should require production code from `../lib/`: `foo = require('../lib/foo')`.
 
 ### Helpers
@@ -146,6 +155,15 @@ suite("things", function() {
 
 This will generate clear output for anyone running the tests without credentials, showing that many tests were not run.
 If they make a pull request, then the full suite will run in automation, and any issues not detected locally will be revealed.
+
+### Configuration
+
+For services which require credentials, it should be possible to supply them in a `user-config.yml` file.
+The `typed-env-config` library makes this easy.
+
+The service repository should have a `user-config-example.yml` which has all the necessary settings filled with an illustrative example value or the string '...'.
+This helps people to know which credentials they need and how to set them up.
+The `user-config.yml` should be included in `.gitignore` to avoid checking in credentials.
 
 ## Taskcluster Libraries
 
@@ -231,7 +249,7 @@ MyEntity.prototype.json = () => {
 
 ### taskcluster-lib-api
 
-The API definition should be in `src/v1.js`:
+The API definition should be in `src/v1.js` or `src/api.js`:
 
 ```js
 var api = new API({

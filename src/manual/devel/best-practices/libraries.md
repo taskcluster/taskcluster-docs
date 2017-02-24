@@ -8,10 +8,16 @@ Some aim to be useful outside of TaskCluster, while others are designed specific
 As such, they share less in common.
 However, we can identify a few best practices.
 
-## Use `files`
+## Repository
+
+Libraries should be in the `taskcluster` github org.
+Those specific to Taskcluster should have the repo prefix `taskcluster-lib-`, while those intended for general use can have arbitrary names.
+
+## Packaging
 
 Use the `files` property in `package.json` to whitelist the files that should be included in the library distribution.
 This avoids packaging unnecessary files into the distribution, and more importantly avoids accidentally picking up files containing credentials!
+Do *not* include a `.npmignore` file.
 
 This is often as simple as
 
@@ -24,6 +30,8 @@ This is often as simple as
 ```
 
 You can check what files are being included with `tar -ztf $(npm pack)`.
+
+If the library is transpiled, be sure to include both the ES6/7 input files and the transpiled output.
 
 ## Part Of The @taskcluster NPM Org
 
