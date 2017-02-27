@@ -34,9 +34,6 @@ The [queue service](platform/queue) is the focus of all task management in Taskc
 It provides API methods for creating new tasks, examining existing tasks, and for executing tasks (used by workers).
 It also provides an extensive set of pulse messages that describe changes in task status.
 
-The [scheduler service](platform/scheduler) is deprecated and should not be used for new services.
-The queue service now contains the functionality to handle task dependencies and the "task graph" that they form.
-
 ## TaskCluster Core
 
 ### Utility Services
