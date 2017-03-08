@@ -33,6 +33,13 @@ You can check what files are being included with `tar -ztf $(npm pack)`.
 
 If the library is transpiled, be sure to include both the ES6/7 input files and the transpiled output.
 
+## Managing Dependencies
+
+We have moved from [npm](https://docs.npmjs.com/cli/npm) to [yarn](https://yarnpkg.com/) for as much as possible. This means that
+you should not `npm install` anything and there is no `npm-shrinkwrap.json`. Generally you'll want `yarn install` and `yarn add` in
+place of `npm install` and `npm install <package>`. Yarn should keep everything in a `yarn.lock` file that is committed to version
+control.
+
 ## Part Of The @taskcluster NPM Org
 
 Ensure that your npm library is part of the @taskcluster team.
