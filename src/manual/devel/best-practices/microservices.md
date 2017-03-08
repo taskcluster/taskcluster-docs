@@ -27,8 +27,11 @@ This file will be transpiled to `lib/main.js` and should be set as the `main` pr
 
 ### Node
 
-Prefer to use the latest stable node version, and corresponding npm version.
+Prefer to use the latest stable node version, and corresponding yarn version. These should both be locked and not specified
+as a range. This means in particular no `^` in front of either version spec.
 Encode this version both in `package.json` and in any CI configurations such as `.taskcluster.yml`.
+
+`package.json` should have the `"engine-strict": true` flag set. Preferably directly above the `engines` stanza.
 
 ### Compiling
 
@@ -52,27 +55,23 @@ In general, the implications of updating these libraries should be clear, and th
 Other dependencies should also be kept up-to-date as much as possible.
 Tools like [Greenkeeper](https://greenkeeper.io/) can be very useful for this purpose.
 
-### Shrinkwrap
+## Managing Dependencies
 
-Dependencies for deployed services are handled with [`npm shrinkwrap`](https://docs.npmjs.com/cli/shrinkwrap).
-This is to ensure that we are deploying a consistent tree of package versions, and that dependency upgrades are controlled and not automatic or surprising.
+We have moved from [npm](https://docs.npmjs.com/cli/npm) to [yarn](https://yarnpkg.com/) for as much as possible. This means that
+you should not `npm install` anything and there is no `npm-shrinkwrap.json`. Generally you'll want `yarn install` and `yarn add` in
+place of `npm install` and `npm install <package>`. Yarn should keep everything in a `yarn.lock` file that is committed to version
+control.
 
-When creating a new service, run `npm shrinkwrap` to generate an `npm-shrinkwrap.json` based on the packages you have installed in your development environment, then check that file into the Git repository.
-When beginning development on an existing service, the usual `npm install` will install the specific versions named in the `npm-shrinkwrap.json`.
+When changing a service's dependencies, use the `yarn` comands.
+This will update both `package.json` and `yarn.lock` automatically.
 
-*Important*: npm versions before 3.0 do not deal with devDependencies correctly and will cause failures in deployment that do not appear in local runs or Travis.
-Use a newer version of Node/npm.
-
-When changing a service's dependencies, use the `npm` comands.
-This will update both `package.json` and `npm-shrinkwrap.json` automatically.
-
- * `npm install --save some-lib`
- * `npm uninstall --save some-lib`
- * `npm install --save some-lib@^2.3.0`  (to update an existing dependency's version)
+ * `yarn add some-lib`
+ * `yarn remove some-lib`
+ * `yarn add some-lib@^2.3.0`  (to update an existing dependency's version)
 
 It is the service owner's responsibility to keep dependencies up to date.
-The `npm outdated` command gives a useful overview of available updates.
-In general, try to keep packages up to date within semver constraints (so, fix things displayed in red in `npm outdated`), but be cautious that the new code you are incorporating into your service is trustworthy.
+The `yarn outdated` command gives a useful overview of available updates.
+In general, try to keep packages up to date within semver constraints (so, fix things displayed in red in `yarn outdated`), but be cautious that the new code you are incorporating into your service is trustworthy.
 In an ideal world, that means a thorough security review.
 In the real world, that probably means a lot less.
 
@@ -128,7 +127,7 @@ lint(paths);
 
 ### Test Requirements
 
-A simple `git clone` .. `npm install` .. `npm test` should run successfully for new contributors.
+A simple `git clone` .. `yarn install` .. `yarn test` should run successfully for new contributors.
 Anything else dramatically increases the difficulty in getting started.
 
 Where possible, try to write tests that do not require any credentials or access to external services.
