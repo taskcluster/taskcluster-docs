@@ -83,7 +83,6 @@ with _only_ the scopes listed in the task (in this case ["a", "b"])
 | Host | Service |
 |---------------------------------|-------------------------------|
 | queue.taskcluster.net           | taskcluster/queue/            |
-| scheduler.taskcluster.net       | taskcluster/scheduler/        |
 | index.taskcluster.net           | taskcluster/index/            |
 | aws-provisioner.taskcluster.net | taskcluster/aws-provisioner/  |
 | secrets.taskcluster.net         | taskcluster/secrets/          |
