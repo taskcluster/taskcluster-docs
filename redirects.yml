@@ -107,4 +107,6 @@
 /reference/core/taskcluster-pulse/references/api: /reference/integrations/taskcluster-pulse/references/api
 /reference/core/taskcluster-pulse/docs: /reference/integrations/taskcluster-pulse/docs
 /reference/core/taskcluster-pulse/docs/usage: /reference/integrations/taskcluster-pulse/docs/usage
-
+/reference/platform/scheduler: /reference/deprecated/scheduler
+/reference/platform/scheduler/api-docs: /reference/deprecated/scheduler/api-docs
+/reference/platform/scheduler/exchanges: /reference/deprecated/scheduler/exchanges
