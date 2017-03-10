@@ -80,7 +80,7 @@ In the real world, that probably means a lot less.
 ### Test Setup
 
 Use Mocha to run unit tests, in the `test/` directory.
-In order to get useful stacktraces from unit tests, you should `npm install --save source-map-support`.
+In order to get useful stacktraces from unit tests, you should `yarn add source-map-support`.
 Include the following in `mocha.opts`:
 
 ```
