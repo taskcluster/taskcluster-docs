@@ -36,6 +36,7 @@ tasks:
     scopes:
         - "auth:aws-s3:read-only:taskcluster-raw-docs/*"
         - "auth:aws-s3:read-write:docs-taskcluster-net/"
+        - "secrets:get:project/taskcluster/tc-docs/mozillians"
     extra:
       github:
         env: true

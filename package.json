@@ -49,7 +49,7 @@
     "streamfilter": "^1.0.5",
     "superagent": "^1.1.0",
     "superagent-promise": "^0.2.0",
-    "taskcluster-client": "^0.22.4",
+    "taskcluster-client": "^2.1.0",
     "through2": "^2.0.1",
     "url-join": "^0.0.1",
     "uuid": "^1.4.1",
