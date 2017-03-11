@@ -1,0 +1,57 @@
+---
+title: People of TaskCluster
+noAnchors: true
+people:
+ # These are mozillians usernames, and only public information appears in
+ # the site. Non-public Mozillians accounts will be hidden entirely. Add new
+ # people at the beginning so that they get top billing!
+ - lteigrob
+ - ayub.mohamed
+ - yannland
+ - t0xicCode
+ - ireneOwl
+ - kt
+ - andreadelrio
+ - anarute
+ - amiyaguchi
+ - chinmaykousik1
+ - akhtar.hammad
+ - reznord
+ - jonasfj
+ - eli
+ - jhford
+ - bstack
+ - helfi
+ - pmoore
+ - garndt
+ - wcosta
+ - dustin
+ - sdeckelmann
+---
+p
+  | TaskCluster is a Mozilla project, and we believe in working in an open, welcoming fashion.
+  | The people listed here have contributed to the TaskCluster project.
+  | Your name&nbsp;
+  a(href="https://wiki.mozilla.org/TaskCluster#Contributing")
+    | could be here, too!
+
+div.people-list
+  for person in people
+    .person
+      .photo-frame
+        a(href=person.url)
+          if person.photo
+            img.photo(src=person.photo['150x150'])
+          else
+            img.photo(src="https://www.gravatar.com/avatar/00000000000000000000000000000000?s=150")
+      a(href=person.url)
+        if person.full_name
+          h2.name #{person.full_name.value}
+        else
+          h2.name #{person.username}
+      ul.contacts
+        if person.ircname && person.ircname.length > 0
+          li IRC: #{person.ircname.value}
+        for acct in person.external_accounts || []
+          if acct.type === 'github'
+            li #{acct.name}: #{acct.identifier}<br/>

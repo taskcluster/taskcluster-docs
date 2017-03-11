@@ -405,3 +405,48 @@ h2 > p {
 .vg { color: #19177C } /* Name.Variable.Global */
 .vi { color: #19177C } /* Name.Variable.Instance */
 .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+/* people page */
+.people-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: top;
+  font-family: 'Open Sans',sans-serif;
+}
+
+.person {
+  padding: 5px;
+  margin: 5px;
+  text-align: center;
+  min-width: 200px;
+}
+
+.person .photo-frame {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+.person .photo-frame img {
+  border-radius: 100%;
+  background-clip: padding-box;
+  border: 3px solid white;
+  box-shadow: 0px 0px 5px rgba(2,2,2,0.2);
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+}
+
+.person h2 {
+  font-size: 17px;
+  font-weight: 200;
+  margin: 5px;
+}
+
+.person ul.contacts {
+  font-size: 11px;
+  list-style: none;
+  padding: 0;
+  margin: 0px 0px;
+}

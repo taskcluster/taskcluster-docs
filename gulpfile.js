@@ -18,6 +18,7 @@ var makeRedirects = require('./lib/make-redirects');
 var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
 var download = require('gulp-download-stream');
+var userlist = require('./lib/userlist');
 
 
 // define streams creating each type of file
@@ -37,6 +38,17 @@ function resources() {
     .src('src/resources.md', {base: 'src'})
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
+    .pipe(filter.renameIndex())
+    .pipe(rename({extname: ''}))
+    .pipe(pug({template: 'layout/layout.pug'}))
+    .pipe(headers.set('Content-Type', 'text/html'))
+}
+
+function people() {
+  return gulp
+    .src('src/people.pug', {base: 'src'})
+    .pipe(frontmatter({property: 'data'}))
+    .pipe(userlist({template: 'layout/people.pug'}))
     .pipe(filter.renameIndex())
     .pipe(rename({extname: ''}))
     .pipe(pug({template: 'layout/layout.pug'}))
@@ -133,6 +145,7 @@ function site() {
   return merge(
     index(),
     resources(),
+    people(),
     error(),
     tutorial(),
     manual(),

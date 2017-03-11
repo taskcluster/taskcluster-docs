@@ -31,3 +31,9 @@ Refer to the [reference documentation](/reference) for the technical details of 
 ### <span class="glyphicon glyphicon-link" aria-hidden="true"></span> Resources
 
 See [resources](/resources) such as presentations, external services, and useful links used by and for TaskCluster.
+
+---
+
+### <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> People
+
+Find out more about the [people](/people) who make TaskCluster, and get involved yourself!
