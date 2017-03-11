@@ -50,7 +50,7 @@ div.people-list
         else
           h2.name #{person.username}
       ul.contacts
-        if person.ircname && person.ircname.length > 0
+        if person.ircname && person.ircname.value.length > 0
           li IRC: #{person.ircname.value}
         for acct in person.external_accounts || []
           if acct.type === 'github'
