@@ -61,5 +61,10 @@
     "browserify": "^10.2.4",
     "uglify-js": "^2.4.23",
     "watchify": "^3.2.3"
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": "7.7.2",
+    "yarn": "0.21.3"
   }
 }
