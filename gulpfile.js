@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
+var url = require('url');
 var markdown = require('gulp-markdown');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
@@ -185,12 +186,26 @@ gulp.task('clean-build', function() {
 // redownload if we want, but I don't want to right now.
 gulp.task('download', ['clean-build'], function() {
   return s3.getPublicFiles('taskcluster-raw-docs').then(function(files) {
+    files = files.map(function(remote) {
+      return {
+        url: remote,
+        file: 'reference' + url.parse(remote).pathname,
+      };
+    });
     download(files)
       .pipe(gunzip())
-      .pipe(rename(function(path) {
-        path.dirname = 'reference';
-      }))
       .pipe(untar())
+      .pipe(rename(function(path) {
+        // This handles a misformatting we introduced into some lib-docs tarballs
+        // if the tarball has everything inside a directory with the name of the
+        // service, we want to strip it out and put it at the root
+        // i.e. references/auth/auth/metadata.json -> references/auth/metadata.json
+        var dname = path.dirname.split('/');
+        if (dname.length > 2 && dname[1] === dname[2]) {
+          dname.splice(2, 1);
+        }
+        path.dirname = dname.join('/');
+      }))
       .pipe(gulp.dest('build'));
   });
 });
