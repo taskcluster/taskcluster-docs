@@ -111,3 +111,5 @@
 /reference/platform/scheduler: /reference/deprecated/scheduler
 /reference/platform/scheduler/api-docs: /reference/deprecated/scheduler/api-docs
 /reference/platform/scheduler/exchanges: /reference/deprecated/scheduler/exchanges
+/reference/core/index: /reference/core/taskcluster-index
+/reference/core/index/api-docs: /reference/core/taskcluster-index/references/api
