@@ -113,3 +113,7 @@
 /reference/platform/scheduler/exchanges: /reference/deprecated/scheduler/exchanges
 /reference/core/index: /reference/core/taskcluster-index
 /reference/core/index/api-docs: /reference/core/taskcluster-index/references/api
+/reference/integrations/github: /reference/integrations/taskcluster-github
+/reference/integrations/github/references/api: /reference/integrations/taskcluster-github/references/api
+/reference/integrations/github/references/events: /reference/integrations/taskcluster-github/references/events
+/reference/integrations/github/docs/usage: /reference/integrations/taskcluster-github/docs/usage
