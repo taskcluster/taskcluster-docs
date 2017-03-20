@@ -9,4 +9,3 @@ docref:       true
 ---
 
 <div data-render-schema='https://schemas.taskcluster.net/taskcluster-treeherder/v1/task-treeherder-config.json'></div>
-

@@ -119,3 +119,6 @@
 /reference/integrations/github/docs/usage: /reference/integrations/taskcluster-github/docs/usage
 /reference/integrations/login: /reference/integrations/taskcluster-login
 /reference/integrations/login/references/api: /reference/integrations/taskcluster-login/references/api
+/reference/integrations/treeherder: /reference/integrations/taskcluster-treeherder
+/reference/integrations/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/exchanges
+/reference/integrations/treeherder/task-treeherder-config: /reference/integrations/taskcluster-treeherder/task-treeherder-config
