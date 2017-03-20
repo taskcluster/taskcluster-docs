@@ -122,3 +122,5 @@
 /reference/integrations/treeherder: /reference/integrations/taskcluster-treeherder
 /reference/integrations/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/exchanges
 /reference/integrations/treeherder/task-treeherder-config: /reference/integrations/taskcluster-treeherder/task-treeherder-config
+/reference/operations/stats-collector: /reference/operations/taskcluster-stats-collector
+/reference/operations/diagnostics: /reference/operations/taskcluster-diagnostics
