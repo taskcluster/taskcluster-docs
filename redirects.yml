@@ -117,3 +117,5 @@
 /reference/integrations/github/references/api: /reference/integrations/taskcluster-github/references/api
 /reference/integrations/github/references/events: /reference/integrations/taskcluster-github/references/events
 /reference/integrations/github/docs/usage: /reference/integrations/taskcluster-github/docs/usage
+/reference/integrations/login: /reference/integrations/taskcluster-login
+/reference/integrations/login/references/api: /reference/integrations/taskcluster-login/references/api
