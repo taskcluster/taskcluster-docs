@@ -133,3 +133,4 @@
 /reference/platform/auth: /reference/platform/taskcluster-auth
 /reference/platform/auth/references/api: /reference/platform/taskcluster-auth/references/api
 /reference/platform/auth/references/events: /reference/platform/taskcluster-auth/references/events
+/reference/core/events: /reference/core/taskcluster-events
