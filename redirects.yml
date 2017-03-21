@@ -130,3 +130,6 @@
 /reference/platform/queue/docs/task-life-cycle: /reference/platform/taskcluster-queue/docs/task-life-cycle
 /reference/platform/queue/docs/task-schema: /reference/platform/taskcluster-queue/docs/task-schema
 /reference/platform/queue/docs/worker-interaction: /reference/platform/taskcluster-queue/docs/worker-interaction
+/reference/platform/auth: /reference/platform/taskcluster-auth
+/reference/platform/auth/references/api: /reference/platform/taskcluster-auth/references/api
+/reference/platform/auth/references/events: /reference/platform/taskcluster-auth/references/events
