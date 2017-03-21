@@ -124,3 +124,9 @@
 /reference/integrations/treeherder/task-treeherder-config: /reference/integrations/taskcluster-treeherder/task-treeherder-config
 /reference/operations/stats-collector: /reference/operations/taskcluster-stats-collector
 /reference/operations/diagnostics: /reference/operations/taskcluster-diagnostics
+/reference/platform/queue: /reference/platform/taskcluster-queue
+/reference/platform/queue/references/api: /reference/platform/taskcluster-queue/references/api
+/reference/platform/queue/references/events: /reference/platform/taskcluster-queue/references/events
+/reference/platform/queue/docs/task-life-cycle: /reference/platform/taskcluster-queue/docs/task-life-cycle
+/reference/platform/queue/docs/task-schema: /reference/platform/taskcluster-queue/docs/task-schema
+/reference/platform/queue/docs/worker-interaction: /reference/platform/taskcluster-queue/docs/worker-interaction
