@@ -47,7 +47,7 @@ Include the following in your `package.json`:
   }
 ```
 
-### Dependencies
+## Managing Dependencies
 
 Try to keep up-to-date with the latest versions of all TaskCluster libraries.
 In general, the implications of updating these libraries should be clear, and the authors are easy to find when things go badly.
@@ -55,7 +55,7 @@ In general, the implications of updating these libraries should be clear, and th
 Other dependencies should also be kept up-to-date as much as possible.
 Tools like [Greenkeeper](https://greenkeeper.io/) can be very useful for this purpose.
 
-## Managing Dependencies
+### Yarn
 
 We have moved from [npm](https://docs.npmjs.com/cli/npm) to [yarn](https://yarnpkg.com/) for as much as possible. This means that
 you should not `npm install` anything and there is no `npm-shrinkwrap.json`. Generally you'll want `yarn install` and `yarn add` in
