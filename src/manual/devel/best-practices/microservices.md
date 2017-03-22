@@ -10,6 +10,14 @@ This document aims to collect the practices and standards we've agreed on.
 These conventions are strongly encouraged for new services and contributions updating existing services to follow them are always welcome.
 When we have a good reason to not follow the convention for a specific service, we document why.
 
+## Naming
+
+The name of the service should begin with "taskcluster", followed by something brief and accurate.
+Use this name as the identifier for the project everywhere -- repository, deployment, logging, monitoring, docs, etc.
+This makes it easy to predict the URL for the project when we're in a hurry.
+
+It's OK to refer to a service more casually in prose, e.g., "the hooks service" instead of "taskcluster-hooks".
+
 ## Package Mechanics
 
 ### Repository
