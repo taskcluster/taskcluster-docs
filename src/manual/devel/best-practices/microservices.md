@@ -164,6 +164,21 @@ The service repository should have a `user-config-example.yml` which has all the
 This helps people to know which credentials they need and how to set them up.
 The `user-config.yml` should be included in `.gitignore` to avoid checking in credentials.
 
+## Deployment
+
+### Verification Steps
+
+Somewhere in the README, describe how to deploy the service, if it's anything more complicated than a Heroku app or pipeline.
+
+In any case, include a short description of how to verify that the service is up and running after a deployment.
+This may be as simple as loading the relevant tools page and seeing content from the service.
+
+### Logging
+
+Connect the service to the TaskCluster papertrail account.
+For Heroku services, follow [the standalone method](http://help.papertrailapp.com/kb/hosting-services/heroku/).
+Name the service in papertrail to match the repository name.
+
 ## Taskcluster Libraries
 
 ### General
