@@ -23,6 +23,7 @@ if !noAnchors
     // always display links on touch devices; only display them via hover on cursor devices
     anchors.options.visible = 'touch';
     anchors.add();
+    anchors.remove('.no-anchor');
 if interactive
   script(src='/assets/bundle.js')
 if docson || docref

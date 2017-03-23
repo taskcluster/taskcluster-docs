@@ -1,17 +1,44 @@
+mixin inlineDocs(children)
+  if children.length > 0
+    .inline-navs
+      |(
+      each child, i in children
+        if child.path == path
+          span.active
+            | #{child.title}
+        else if child.link
+          a(href=child.path)
+            | #{child.title}
+        if i !== children.length - 1
+          ||
+      |)
+
 mixin sidebarList(children)
   each child in children
+    - var inlineChildren = child.children.filter(function(x) {return x.inline;});
+    - var otherChildren = child.children.filter(function(x) {return !x.inline;});
     li
       if child.path == path
         span.active #{child.title}
+        +inlineDocs(inlineChildren)
       else if child.link
         a(href=child.path) #{child.title}
+        +inlineDocs(inlineChildren)
       else
         span #{child.title}
-      if child.children
+        +inlineDocs(inlineChildren)
+      if otherChildren.length > 0
         ul
-          +sidebarList(child.children)
+          +sidebarList(otherChildren)
 
 if nav
-  ul.main-menu.nav.nav-stacked
-    if nav.toc
-      +sidebarList(nav.toc)
+  if nav.toc
+    each toplevel in nav.toc
+      h6.no-anchor
+        if toplevel.link
+          a(href=toplevel.path) #{toplevel.title}
+        else
+          span #{toplevel.title}
+      if toplevel.children
+        ul.main-menu.nav.nav-stacked
+          +sidebarList(toplevel.children)
