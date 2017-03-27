@@ -100,7 +100,7 @@
 /reference/core/hooks/api-docs: /reference/integrations/hooks/api-docs
 /reference/core/statsum: /reference/operations/statsum
 /reference/core/treeherder: /reference/integrations/treeherder
-/reference/core/treeherder/exchanges: /reference/integrations/treeherder/exchanges
+/reference/core/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
 /reference/core/treeherder/task-treeherder-config: /reference/integrations/treeherder/task-treeherder-config
 /reference/core/taskcluster-pulse: /reference/integrations/taskcluster-pulse
 /reference/core/taskcluster-pulse/references: /reference/integrations/taskcluster-pulse/references
@@ -120,7 +120,7 @@
 /reference/integrations/login: /reference/integrations/taskcluster-login
 /reference/integrations/login/references/api: /reference/integrations/taskcluster-login/references/api
 /reference/integrations/treeherder: /reference/integrations/taskcluster-treeherder
-/reference/integrations/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/exchanges
+/reference/integrations/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
 /reference/integrations/treeherder/task-treeherder-config: /reference/integrations/taskcluster-treeherder/task-treeherder-config
 /reference/operations/stats-collector: /reference/operations/taskcluster-stats-collector
 /reference/operations/diagnostics: /reference/operations/taskcluster-diagnostics
@@ -136,3 +136,4 @@
 /reference/core/events: /reference/core/taskcluster-events
 /reference/core/secrets: /reference/core/taskcluster-secrets
 /reference/core/secrets/api-docs: /reference/core/taskcluster-secrets/references/api
+/reference/integrations/taskcluster-treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
