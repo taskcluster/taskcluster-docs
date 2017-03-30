@@ -10,6 +10,14 @@ This document aims to collect the practices and standards we've agreed on.
 These conventions are strongly encouraged for new services and contributions updating existing services to follow them are always welcome.
 When we have a good reason to not follow the convention for a specific service, we document why.
 
+## Naming
+
+The name of the service should begin with "taskcluster", followed by something brief and accurate.
+Use this name as the identifier for the project everywhere -- repository, deployment, logging, monitoring, docs, etc.
+This makes it easy to predict the URL for the project when we're in a hurry.
+
+It's OK to refer to a service more casually in prose, e.g., "the hooks service" instead of "taskcluster-hooks".
+
 ## Package Mechanics
 
 ### Repository
@@ -47,7 +55,7 @@ Include the following in your `package.json`:
   }
 ```
 
-### Dependencies
+## Managing Dependencies
 
 Try to keep up-to-date with the latest versions of all TaskCluster libraries.
 In general, the implications of updating these libraries should be clear, and the authors are easy to find when things go badly.
@@ -55,7 +63,7 @@ In general, the implications of updating these libraries should be clear, and th
 Other dependencies should also be kept up-to-date as much as possible.
 Tools like [Greenkeeper](https://greenkeeper.io/) can be very useful for this purpose.
 
-## Managing Dependencies
+### Yarn
 
 We have moved from [npm](https://docs.npmjs.com/cli/npm) to [yarn](https://yarnpkg.com/) for as much as possible. This means that
 you should not `npm install` anything and there is no `npm-shrinkwrap.json`. Generally you'll want `yarn install` and `yarn add` in
@@ -163,6 +171,21 @@ The `typed-env-config` library makes this easy.
 The service repository should have a `user-config-example.yml` which has all the necessary settings filled with an illustrative example value or the string '...'.
 This helps people to know which credentials they need and how to set them up.
 The `user-config.yml` should be included in `.gitignore` to avoid checking in credentials.
+
+## Deployment
+
+### Verification Steps
+
+Somewhere in the README, describe how to deploy the service, if it's anything more complicated than a Heroku app or pipeline.
+
+In any case, include a short description of how to verify that the service is up and running after a deployment.
+This may be as simple as loading the relevant tools page and seeing content from the service.
+
+### Logging
+
+Connect the service to the TaskCluster papertrail account.
+For Heroku services, follow [the standalone method](http://help.papertrailapp.com/kb/hosting-services/heroku/).
+Name the service in papertrail to match the repository name.
 
 ## Taskcluster Libraries
 
