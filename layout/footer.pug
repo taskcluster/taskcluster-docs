@@ -20,8 +20,13 @@ if !noAnchors
   script(src='/assets/anchorjs.min.js')
   script.
     anchors.options.placement = 'left';
-    // always display links on touch devices; only display them via hover on cursor devices
-    anchors.options.visible = 'touch';
+    // always display links on touch devices; only display them via hover on cursor devices; but
+    // anchorjs fails to detect this in the case where window.ontouchstart exists but is null
+    if (window.ontouchstart === null) {
+        anchors.options.visible = 'hover';
+    } else {
+        anchors.options.visible = 'touch';
+    }
     anchors.add();
     anchors.remove('.no-anchor');
 if interactive
