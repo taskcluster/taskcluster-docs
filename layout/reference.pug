@@ -66,12 +66,15 @@ if entries.some(function(entry) {return entry.type == 'topic-exchange';})
   table.table.table-bordered.table-responsive
     thead
       tr
+        th Name
         th Exchange
         th Summary
     tbody
       each entry in entries.filter(function(entry) { return entry.type === 'topic-exchange'; })
         - var exchange = exchangePrefix + entry.exchange;
         tr
+          td
+            a(href=`#${entry.name}`, title=entry.title)= entry.name
           td
             code
               a(href=`#${entry.name}`, title=entry.title)= exchange
@@ -140,7 +143,7 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
 each entry in entries.filter(function(entry) { return entry.type === 'topic-exchange'; })
   a(name=entry.name)
   hr
-  h2(class=stabilityValue) !{title}
+  h2(class=stabilityValue) !{entry.name}
   dl.dl-horizontal.method-properties
     dt Exchange
     dd
