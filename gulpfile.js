@@ -21,6 +21,11 @@ var raw = require('./lib/raw');
 var download = require('gulp-download-stream');
 var userlist = require('./lib/userlist');
 
+function stripHtml(path) {
+  if (path.extname === '.html') {
+    path.extname = '';
+  }
+}
 
 // define streams creating each type of file
 function index() {
@@ -29,7 +34,7 @@ function index() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
@@ -40,7 +45,7 @@ function resources() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
@@ -51,7 +56,7 @@ function people() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(userlist({template: 'layout/people.pug'}))
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
@@ -62,7 +67,7 @@ function error() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
@@ -73,7 +78,7 @@ function tutorial() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
 }
@@ -84,7 +89,7 @@ function manual() {
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
     .pipe(filter.renameIndex())
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(navlinks({rootPath: '/manual'}))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
@@ -105,7 +110,7 @@ function reference() {
       .pipe(markdown())
       .pipe(filter.renameIndex())
     )
-    .pipe(rename({extname: ''}))
+    .pipe(rename(stripHtml))
     .pipe(navlinks({rootPath: '/reference'}))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
@@ -135,7 +140,8 @@ function presentations() {
       .src('src/presentations/index.md', {base: 'src'})
       .pipe(frontmatter({property: 'data'}))
       .pipe(markdown())
-      .pipe(rename({dirname: 'presentations', basename: '', extname: ''}))
+      .pipe(rename({dirname: 'presentations', basename: ''}))
+      .pipe(rename(stripHtml))
       .pipe(pug({template: 'layout/layout.pug'}))
       .pipe(headers.set('Content-Type', 'text/html'))
   )
