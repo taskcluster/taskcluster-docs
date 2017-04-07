@@ -22,7 +22,7 @@ var download = require('gulp-download-stream');
 var userlist = require('./lib/userlist');
 
 function stripHtml(path) {
-  if (path.extname === '.html') {
+  if (path.extname === '.html' || path.extname === '.json') {
     path.extname = '';
   }
 }
