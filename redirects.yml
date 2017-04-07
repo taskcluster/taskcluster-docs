@@ -132,6 +132,7 @@
 /reference/platform/queue/docs/worker-interaction: /reference/platform/taskcluster-queue/docs/worker-interaction
 /reference/platform/auth: /reference/platform/taskcluster-auth
 /reference/platform/auth/references/api: /reference/platform/taskcluster-auth/references/api
+/reference/platform/auth/reference/api-docs: /reference/platform/taskcluster-auth/references/api
 /reference/platform/auth/references/events: /reference/platform/taskcluster-auth/references/events
 /reference/core/events: /reference/core/taskcluster-events
 /reference/core/secrets: /reference/core/taskcluster-secrets
