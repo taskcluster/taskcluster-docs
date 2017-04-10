@@ -154,7 +154,6 @@ pre.ace_editor {
 
 .docson .property-name, .docson .type-pattern {
   font-family: Source Code Pro, monospace;
-  font-weight: bold;
 }
 
 pre.json-schema {
