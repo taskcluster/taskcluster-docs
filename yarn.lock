@@ -737,6 +737,10 @@ cached-path-relative@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/cached-path-relative/-/cached-path-relative-1.0.0.tgz#d1094c577fbd9a8b8bd43c96af6188aa205d05f4"
 
+call-me-maybe@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/call-me-maybe/-/call-me-maybe-1.0.1.tgz#26d208ea89e37b5cbde60250a15f031c16a4d66b"
+
 camel-case@^1.1.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/camel-case/-/camel-case-1.2.2.tgz#1aca7c4d195359a2ce9955793433c6e5542511f2"
@@ -884,7 +888,7 @@ commander@2.8.x:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@^2.5.0, commander@^2.9.0:
+commander@^2.5.0, commander@^2.7.1, commander@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -1343,6 +1347,10 @@ error-ex@^1.2.0:
   resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.0.tgz#e67b43f3e82c96ea3a584ffee0b9fc3325d802d9"
   dependencies:
     is-arrayish "^0.2.1"
+
+es6-promise@^3.1.2:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
 escape-html@~1.0.3:
   version "1.0.3"
@@ -2407,6 +2415,17 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+json-schema-ref-parser@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/json-schema-ref-parser/-/json-schema-ref-parser-3.1.2.tgz#a38ecb7774f87f32e7eb9723d5921390e76a9a42"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    debug "^2.2.0"
+    es6-promise "^3.1.2"
+    js-yaml "^3.6.0"
+    ono "^2.2.1"
+    z-schema "^3.17.0"
+
 json-schema@0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/json-schema/-/json-schema-0.2.3.tgz#b480c892e59a2f05954ce727bd3f2a4e882f9e13"
@@ -2633,6 +2652,10 @@ lodash.escape@~2.4.1:
     lodash._reunescapedhtml "~2.4.1"
     lodash.keys "~2.4.1"
 
+lodash.get@^4.1.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -2644,6 +2667,10 @@ lodash.isarray@^3.0.0:
 lodash.isempty@^4.2.1:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
+
+lodash.isequal@^4.4.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
 lodash.isobject@~2.4.1:
   version "2.4.1"
@@ -3107,6 +3134,10 @@ once@~1.3.0, once@~1.3.3:
   resolved "https://registry.yarnpkg.com/once/-/once-1.3.3.tgz#b2e261557ce4c314ec8304f3fa82663e4297ca20"
   dependencies:
     wrappy "1"
+
+ono@^2.2.1:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/ono/-/ono-2.2.4.tgz#f6c1d9ea64da07a54863986535da3de67e502696"
 
 open@^0.0.5:
   version "0.0.5"
@@ -4550,6 +4581,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
+validator@^6.0.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-6.3.0.tgz#47ce23ed8d4eaddfa9d4b8ef0071b6cf1078d7c8"
+
 vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
@@ -4778,3 +4813,13 @@ yargs@~3.27.0:
     os-locale "^1.4.0"
     window-size "^0.1.2"
     y18n "^3.2.0"
+
+z-schema@^3.17.0:
+  version "3.18.2"
+  resolved "https://registry.yarnpkg.com/z-schema/-/z-schema-3.18.2.tgz#e422196b5efe60b46adef3c3f2aef2deaa911161"
+  dependencies:
+    lodash.get "^4.1.2"
+    lodash.isequal "^4.4.0"
+    validator "^6.0.0"
+  optionalDependencies:
+    commander "^2.7.1"
