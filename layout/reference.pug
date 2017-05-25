@@ -1,12 +1,212 @@
-//- This is pretty much just the ejs template from src/assets/docref
+mixin normalrow(schema, name, type, requiredList)
+  - var required = requiredList.indexOf(name) !== -1
+  td.shortfield
+    span(class=required ? 'required' : '')= name
+  td.shortfield.lighter
+    -
+      var limits = null;
+      var min = schema.minLength || schema.minItems || schema.minimum;
+      var max = schema.maxLength || schema.maxItems || schema.maximum;
+      if (min || max) {
+        limits = `[${min || 0}:${max || '∞'}]`;
+      }
+    | #{type || schema.type}#{limits}
+    if schema.default
+      br
+      span.small default: #{schema.default}
+  td.shortfield
+    if schema.pattern
+      code.short.schema-pattern= schema.pattern
+    else if schema.format
+      span(class=schema.format)= schema.format
+    else if schema.enum
+      ul.enum
+        each val in schema.enum
+          li
+            code.short.schema-pattern= val
+  td.normaltext !{marked(schema.description || '')}
+
+mixin combination(schema, name, subs, sort)
+  tr.frow
+    +normalrow(schema, name, sort, [])
+  tr.srow
+    td.indent(colspan=4)
+      table.table.table-condensed
+        each sub in subs
+          - sub.type = sub.type || schema.type
+          - sub.format = sub.format || schema.format
+          case schema.type
+            when "object"
+              tr.frow
+                +normalrow(sub, name, 'Object of', [])
+              tr.srow
+                td.indent(colspan=4)
+                  table.table.table-condensed
+                    +schemarow(sub, sub.title, [])
+            default
+              tr
+                +normalrow(sub, sub.title, sub.type, [])
+
+mixin schemarow(schema, name, requiredList)
+  - requiredList = schema.required || requiredList || []
+  - schema.description = schema.description || schema.title
+  case schema.type
+    when "array"
+      tr.frow
+        +normalrow(schema, name, 'Array of', requiredList)
+      tr.srow
+        td.indent(colspan=4)
+          table.table.table-condensed
+            +schemarow(schema.items, schema.items.title, requiredList)
+    when "object"
+      if schema.properties
+        each prop, name in schema.properties
+          if prop.type && prop.type === "object"
+            tr.frow
+              +normalrow(schema, name, 'Object of', requiredList)
+            tr.srow
+              td.indent(colspan=4)
+                table.table.table-condensed
+                  +schemarow(prop, name, requiredList)
+          else
+            +schemarow(prop, name, requiredList)
+        if schema.additionalProperties
+          tr
+            td(colspan=4)
+              Additional properties are permitted...
+      else if schema.additionalProperties
+        +schemarow(schema.additionalProperties, '<string>', requiredList)
+      else if schema.anyOf
+        +combination(schema, schema.title, schema.anyOf, 'Any of')
+      else if schema.allOf
+        +combination(schema, schema.title, schema.allOf, 'All of')
+      else if schema.oneOf
+        +combination(schema, schema.title, schema.oneOf, 'One of')
+      else
+        tr
+          td(colspan=4) Anything ¯\_(ツ)_/¯
+    default
+      if schema.anyOf
+        +combination(schema, name, schema.anyOf, 'Any of')
+      else if schema.allOf
+        +combination(schema, name, schema.allOf, 'All of')
+      else if schema.oneOf
+        +combination(schema, name, schema.oneOf, 'One of')
+      else
+        tr.frow
+          +normalrow(schema, name, null, requiredList)
+
+mixin schemabox(schema)
+  .schemabox.panel.panel-default
+    .panel-heading
+      if schema.title
+        h4.no-anchor
+          | #{schema.title}
+          if schema.id
+            | 
+            small
+              a(href=schema.id, target='_blank', rel='noopener noreferrer')
+                | (source)
+        | !{marked(schema.description || '')}
+    table.table
+      +schemarow(schema)
+
 
 style.
   .method-properties > dt,
   .method-properties > dd {
     padding-top: 5px;
   }
-  .sub-table {
-    margin-left: 6px;
+
+  .schemabox .shortfield {
+    width: 13ex;
+  }
+
+  .schemabox .short:hover {
+    width: initial;
+    white-space: normal;
+    max-width: 40em;
+    max-height: initial;
+    border: 1px solid #444;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .schemabox .short {
+    white-space: nowrap;
+    width: 12ex;
+    min-width: 12ex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    position: absolute;
+  }
+
+  .schemabox .normaltext {
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .schemabox .lighter {
+    color: #666;
+  }
+
+  .schemabox .enum {
+    padding-left: 10px;
+  }
+
+  .schemabox .indent {
+    padding-left: 2em;
+  }
+
+  .schemabox .indent table {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .schemabox > table {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+
+  .schemabox table .frow > td {
+    border-bottom: 0;
+  }
+
+  .schemabox table .srow > td {
+    border-top: 0;
+  }
+
+  .schemabox .required:after {
+    content: '*';
+    vertical-align: super;
+    font-size: 0.7em;
+    color: red;
+    display: inline-block;
+    position: absolute;
+  }
+
+  .schemabox .required:hover:after {
+    content: 'required property';
+    background: #fff;
+    font-size: 0.8em;
+  }
+
+  .schemabox .schema-pattern {
+    font-size: 0.7em !important;
+  }
+
+  .schemabox .date-time {
+    color: green;
+  }
+
+  .schemabox .uri {
+    color: blue;
+  }
+
+  .schemabox .email {
+    color: purple;
+  }
+
+  .schemabox .ipv4, .schemabox .ipv6, .schemabox .hostname {
+    color: orange;
   }
 
 // /************ Title, meta-data and description ************/
@@ -130,10 +330,10 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
   | !{marked(entry.description)}
   if entry.input
     h3 Request Payload
-    div(data-render-schema= entry.input)
+    +schemabox(entry.input)
   if entry.output
     h3 Response
-    div(data-render-schema= entry.output)
+    +schemabox(entry.output)
   br
 
 
@@ -153,7 +353,7 @@ each entry in entries.filter(function(entry) { return entry.type === 'topic-exch
       code "#{entry.name}(routingKeyPattern)"
   | !{marked(entry.description)}
   h3 Routing Key
-  table.table.sub-table
+  table.table
     thead
       tr
         th Index
@@ -193,5 +393,5 @@ each entry in entries.filter(function(entry) { return entry.type === 'topic-exch
               br
   if entry.schema
     h3 Message Payload
-    div(data-render-schema= entry.schema)
+    +schemabox(entry.schema)
   br
