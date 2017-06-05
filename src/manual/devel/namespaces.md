@@ -188,6 +188,7 @@ Worker types are specific to the provisioner ID, but provisioners that provide g
 * `tutorial` - default worker type for the getting-started tutorial in this documentation
 * `github-worker` - default worker type for Github-triggered jobs
 * `hg-worker` - default worker type for Mercurial-triggered jobs
+* `buildbot-bridge` - worker type for tasks to be executed using the Buildbot Bridge
 
 Note that there are many worker types not following this convention, as worker types must be kept around for a long time to run old jobs.
 
@@ -208,7 +209,7 @@ Provisioner IDs are limited to 22 characters.
 We do not subdivide namespaces; instead, they are enumerated here:
 
  * `aws-provisioner-v1` -- the AWS provisioner
- * `buildbot-bridge` -- the AWS provisioner
+ * `buildbot-bridge` -- used by the Buildbot Bridge
  * `scriptworker-prov-v1` -- the scriptworker provisioner
 
 ---
