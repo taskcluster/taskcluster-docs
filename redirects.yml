@@ -19,10 +19,10 @@
 /auth/signed-urls/: /manual/apis/signed-urls
 /auth/temporary-credentials: /manual/apis/temporary-credentials
 /auth/temporary-credentials/: /manual/apis/temporary-credentials
-/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/api-docs
-/aws-provisioner/api-docs/: /reference/integrations/aws-provisioner/api-docs
-/aws-provisioner/events: /reference/integrations/aws-provisioner/exchanges
-/aws-provisioner/events/: /reference/integrations/aws-provisioner/exchanges
+/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/references/api
+/aws-provisioner/api-docs/: /reference/integrations/aws-provisioner/references/api
+/aws-provisioner/events: /reference/integrations/aws-provisioner/references/events
+/aws-provisioner/events/: /reference/integrations/aws-provisioner/references/events
 /aws-provisioner: /manual/execution/aws-provisioner
 /aws-provisioner/: /manual/execution/aws-provisioner
 /devel/conventions: /manual/devel/conventions
@@ -93,8 +93,8 @@
 /reference/core/taskcluster-worker: /reference/workers/taskcluster-worker
 /reference/core/diagnostics: /reference/operations/diagnostics
 /reference/core/aws-provisioner: /reference/integrations/aws-provisioner
-/reference/core/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/api-docs
-/reference/core/aws-provisioner/exchanges: /reference/integrations/aws-provisioner/exchanges
+/reference/core/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/references/api
+/reference/core/aws-provisioner/exchanges: /reference/integrations/aws-provisioner/references/events
 /reference/core/cloud-mirror: /reference/integrations/cloud-mirror
 /reference/core/hooks: /reference/integrations/hooks
 /reference/core/hooks/api-docs: /reference/integrations/hooks/api-docs
@@ -138,3 +138,5 @@
 /reference/core/secrets: /reference/core/taskcluster-secrets
 /reference/core/secrets/api-docs: /reference/core/taskcluster-secrets/references/api
 /reference/integrations/taskcluster-treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
+/reference/integrations/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/references/api
+/reference/integrations/aws-provisioner/exchanges: /reference/integrations/aws-provisioner/references/events
