@@ -6,7 +6,7 @@ followup:
     gecko-task-graph: How is the task-graph generated?
 ---
 
-The docker images used to run Gecko tasks on Linux are defined in [testing/docker](https://dxr.mozilla.org/mozilla-central/source/testing/docker/).
+The docker images used to run Gecko tasks on Linux are defined in [taskcluster/docker](https://dxr.mozilla.org/mozilla-central/source/testing/docker/).
 Each directory represents a different image, and contains a `Dockerfile` describing the image itself.
 These Dockerfiles are a bit more flexible than usual -- see [the Gecko documentation](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/docker-images.html) for details.
 
