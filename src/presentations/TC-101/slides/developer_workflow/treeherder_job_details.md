@@ -3,7 +3,7 @@
 * Inspect Task Link
 * Failure Summary
   * Treeheder regular expression matching
-  * TaskCluster error prefix
+  * Taskcluster error prefix
 * Task Log
 
 <img

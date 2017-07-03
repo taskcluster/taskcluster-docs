@@ -1,7 +1,7 @@
 {
   "name": "taskcluster-docs",
   "version": "1.0.0",
-  "description": "Generator for TaskCluster Documentation",
+  "description": "Generator for Taskcluster Documentation",
   "private": true,
   "main": "main.js",
   "scripts": {

@@ -1,8 +1,8 @@
 ---
-title: TaskCluster Reference
+title: Taskcluster Reference
 ---
 
-This portion of the TaskCluster documentation contains reference material.
+This portion of the Taskcluster documentation contains reference material.
 Consult the [manual](/manual) for the background to this information.
 
 For each service or library, the main page is based on the project's README,

@@ -8,10 +8,10 @@ followup:
     authenticate: Authenticate
 ---
 
-The goal of this interactive tutorial is to show you how to access TaskCluster
+The goal of this interactive tutorial is to show you how to access Taskcluster
 APIs with modern asynchronous Javascript patterns. This page will give a brief
 introduction to modern asynchronous Javascript patterns, and the rest of the
-tutorials are focused on how to use TaskCluster.
+tutorials are focused on how to use Taskcluster.
 
 The first tutorial [Authentication](authenticate) **must** be completed before
 you proceed to the other tutorials, or the examples will not work. The first
@@ -24,9 +24,9 @@ language features.
 
 To keep all of this exciting, the tutorials are designed to run in your browser.
 The skills you learn here can be employed on both servers and static web-sites
-using TaskCluster APIs to display state, listen for events, spawn tasks and many
+using Taskcluster APIs to display state, listen for events, spawn tasks and many
 other things.
 
-Note: the graphical TaskCluster tools on `tools.taskcluster.net` are all
+Note: the graphical Taskcluster tools on `tools.taskcluster.net` are all
 written in client-side JavaScript. In fact, the entire site is a static
 website hosted on a CDN.

@@ -1,4 +1,4 @@
-### Why TaskCluster? (1)
+### Why Taskcluster? (1)
 
 BuildBot / Jenkins controls:
 
@@ -3465,10 +3465,10 @@ BuildBot / Jenkins controls:
 ---
 
 
-### Why TaskCluster (2)
+### Why Taskcluster (2)
 
 
-In TaskCluster your repository owns:
+In Taskcluster your repository owns:
 
  * Triggering of dependent jobs
  * Choice of runtime environment (not setup or scaling)
@@ -6510,7 +6510,7 @@ In TaskCluster your repository owns:
          x="484.21899"
          y="774.68549"
          id="tspan6090-6-9-6-9"
-         style="fill:#ffffff;fill-opacity:1">TaskCluster</tspan></text>
+         style="fill:#ffffff;fill-opacity:1">Taskcluster</tspan></text>
     <text
        x="232.51974"
        y="781.59595"

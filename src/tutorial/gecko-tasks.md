@@ -1,5 +1,5 @@
 ---
-title: Gecko and TaskCluster
+title: Gecko and Taskcluster
 followup:
   links:
     gecko-decision-task: How is the decision task defined?
@@ -17,6 +17,6 @@ When a developer pushes to a Gecko repository, a long chain of events begins:
  * The result of each task is sent to [TreeHerder](https://treeherder.mozilla.org) where developers and sheriffs can track the status of the push.
  * The outputs from each task -- log files, Firefox installers, and so on -- appear attached to each task (viewable in the [Task Inspector](https://tools.taskcluster.net/task-inspector/)) when it completes.
 
-Due to its "self-service" design, very little of this process is actually part of TaskCluster, so we provide only a brief overview and some pointers.
+Due to its "self-service" design, very little of this process is actually part of Taskcluster, so we provide only a brief overview and some pointers.
 
-TaskCluster provides a small bit of glue ([mozilla-taskcluster](/manual/vcs/mozilla-taskcluster)) to create the decision task and some more ([taskcluster-treeherder](/reference/core/treeherder)) to communicate with treeherder, but the task graph itself is defined entirely in-tree.
+Taskcluster provides a small bit of glue ([mozilla-taskcluster](/manual/vcs/mozilla-taskcluster)) to create the decision task and some more ([taskcluster-treeherder](/reference/core/treeherder)) to communicate with treeherder, but the task graph itself is defined entirely in-tree.

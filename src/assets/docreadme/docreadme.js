@@ -1,4 +1,4 @@
-/** Document Reference Utility for TaskCluster */
+/** Document Reference Utility for Taskcluster */
 $(function() {
   $('[data-doc-readme]').each(function() {
     var container = $(this);

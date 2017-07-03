@@ -1,11 +1,11 @@
 ---
-title: Hacking on TaskCluster
+title: Hacking on Taskcluster
 followup:
   links:
-    reviews: Submitting changes of TaskCluster itself for review
+    reviews: Submitting changes of Taskcluster itself for review
 ---
 
-Hacking on TaskCluster is really easy. Head over to the [TaskCluster GitHub
+Hacking on Taskcluster is really easy. Head over to the [Taskcluster GitHub
 page](https://github.com/taskcluster) and dive right in. Fork a project you
 want to contribute to and feel free to make pull requests.
 

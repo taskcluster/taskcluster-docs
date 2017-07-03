@@ -160,7 +160,7 @@
            y="611.55023"
            x="454.323"
            id="tspan5499"
-           sodipodi:role="line">TaskCluster Queue</tspan><tspan
+           sodipodi:role="line">Taskcluster Queue</tspan><tspan
            id="tspan5517"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
            y="632.39404"

@@ -1,6 +1,6 @@
 ### Conclusion
 
- * TaskCluster is a Self-Serve Platform
+ * Taskcluster is a Self-Serve Platform
  * Configuration lives in the source tree
  * Developers can configure tasks
  * Access controlled with scopes
@@ -3032,7 +3032,7 @@
          x="484.21899"
          y="774.68549"
          id="tspan6090-6-9-6-9"
-         style="fill:#ffffff;fill-opacity:1">TaskCluster</tspan></text>
+         style="fill:#ffffff;fill-opacity:1">Taskcluster</tspan></text>
     <text
        x="232.51974"
        y="781.59595"

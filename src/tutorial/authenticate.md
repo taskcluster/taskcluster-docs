@@ -1,5 +1,5 @@
 ---
-title: Authenticating to TaskCluster
+title: Authenticating to Taskcluster
 layout:             default
 class:              markdown
 sequence_diagrams:  true
@@ -9,17 +9,17 @@ followup:
     create-task-via-api: Create a task with createTask
 ---
 
-TaskCluster uses its own kind of "credentials" to
+Taskcluster uses its own kind of "credentials" to
 [authenticate API requests](/manual/apis). These credentials can come from
 a variety of sources, but in this section we will use
-[temporary credentials](/manual/apis/temporary-credentials) issued by the TaskCluster
+[temporary credentials](/manual/apis/temporary-credentials) issued by the Taskcluster
 login service.
 
 If you haven't already, try the "[Hello World](hello-world)" tutorial to make
 sure that you have a username and password recognized by the login service.
 
 In this tutorial we'll show a static web application can obtain temporary
-TaskCluster credentials from the login service, just like the tools site does.
+Taskcluster credentials from the login service, just like the tools site does.
 In the process of doing so, we'll also store credentials in `localStorage` for
 use in the other tutorials.
 
@@ -44,7 +44,7 @@ login.taskcluster.net -> WebApp : "Grant Access"
 
 ---
 
-## Redirect User to TaskCluster Login
+## Redirect User to Taskcluster Login
 
 The first step implemented in the web-application is to redirect to
 `login.taskcluster.net`, when doing so we **must** include `target` and
@@ -88,7 +88,7 @@ if (credentials.clientId && credentials.accessToken) {
     accessToken:  credentials.accessToken,
     certificate:  credentials.certificate
   });
-  console.log("TaskCluster credentials loaded from query string:");
+  console.log("Taskcluster credentials loaded from query string:");
   console.log(credentials);
   console.log("You may now continue to the next step...");
 } else {

@@ -7,7 +7,7 @@ superagent: true
 docref: true
 ---
 
-TaskCluster runs tasks.
+Taskcluster runs tasks.
 It's just as happy to run your new tasks as any of the already-defined tasks!
 All you need to do is add some configuration for your new tasks, then test it out in try.
 The documentation for that process is kept [in-tree](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/how-tos.html), where it can co-evolve with the task-graph generation system.
@@ -28,7 +28,7 @@ The schema for this information is as follows:
 
 ## New Worker Type
 
-If your new job requires compute resources that are not already available via TaskCluster, then some additional work may be required.
+If your new job requires compute resources that are not already available via Taskcluster, then some additional work may be required.
 This will entail defining a new worker type for those compute resources, and then creating those new resources.
 
 For EC2 instances, this is fairly easy: we can specify instance characteristics such as instance type and worker implementation within the AWS provisioner.
