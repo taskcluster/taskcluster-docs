@@ -1,4 +1,4 @@
-### TaskCluster in Numbers
+### Taskcluster in Numbers
 
 _Task pending time last 3 days for `b2gtest` (a common workerType)._
 

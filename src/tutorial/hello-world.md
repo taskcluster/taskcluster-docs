@@ -8,13 +8,13 @@ followup:
     gecko-tasks: I'm a Firefox/Gecko developer - How do my commits get built?
 ---
 
-Let's start by seeing TaskCluster in action.
+Let's start by seeing Taskcluster in action.
 
 ---
 
 ## Signing In
 
-It's very easy to get started with TaskCluster, but we will need to know a little bit about you.
+It's very easy to get started with Taskcluster, but we will need to know a little bit about you.
 We support sign-in by Mozillians, as well as by developers and employees with LDAP credentials.
 If that doesn't sound familiar to you, head over to [Mozillians](https://mozillians.org) and set up a new account for yourself.
 Now you're a Mozillian -- thanks for rocking the free web with us!
@@ -55,7 +55,7 @@ Submit the task, and click the resulting task ID to load the task inspector whil
 
 The fields in the task description are explained in greater detail throughout the rest of this documentation, but briefly:
 
- * `provisionerId` identifies the TaskCluster provisioner responsible for the compute resources that will execute the task.
+ * `provisionerId` identifies the Taskcluster provisioner responsible for the compute resources that will execute the task.
    In this case, it is the [AWS Provisioner](/services/aws-provisioner), which runs its tasks on Amazon EC2 instances using Docker.
  * `workerType` is a parameter specific to the AWS provisioner which identifies the pool of EC2 resources within which the task should be executed.
    Pools may use different EC2 instance types, AMIs, etc.
@@ -76,4 +76,4 @@ You've run your first task!
 
 ### See Also
 
- * ["TaskCluster Hello World" video by mrrrgn and dustin](https://vreplay.mozilla.com/replay/showRecordingExternal.html?key=7AvN2iczQYcI3lY)
+ * ["Taskcluster Hello World" video by mrrrgn and dustin](https://vreplay.mozilla.com/replay/showRecordingExternal.html?key=7AvN2iczQYcI3lY)

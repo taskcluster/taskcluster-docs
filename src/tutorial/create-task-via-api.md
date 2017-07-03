@@ -6,7 +6,7 @@ docson: true
 interactive: true
 followup:
   links:
-    '/reference': API documentation for all TaskCluster services
+    '/reference': API documentation for all Taskcluster services
 ---
 
 This tutorial will show you how to create a task, as well as how to fetch
@@ -100,16 +100,16 @@ custom docker images; notable ones include:
 
  * Install dependencies from package repositories and lock them,
  * Make custom scripts and binaries available in the runtime environment, and
- * Test docker images locally before deploying to TaskCluster.
+ * Test docker images locally before deploying to Taskcluster.
 
 There are many other benefits to docker, but an exhaustive list is beyond the
 scope of this document. If you are not familiar with docker you should play
 around with the official docker
 [getting started guide](http://docs.docker.com/linux/started/). Deploying Linux
-binaries in tasks on TaskCluster is mostly about getting the binaries to run
+binaries in tasks on Taskcluster is mostly about getting the binaries to run
 inside a docker container. For the most part this involves installing
 dependencies and configuring them, so become familiar with docker before you
-start deploying Linux tasks on TaskCluster.
+start deploying Linux tasks on Taskcluster.
 
 For the purpose of this tutorial we'll use the official `ubuntu:15.04` docker
 image. To make it interesting we'll run two commands `ls && du /usr` that should
@@ -252,7 +252,7 @@ console.log("Inspect it at:");
 console.log("https://tools.taskcluster.net/task-inspector/#" + taskId);
 </pre>
 
-Note that it may take a few minutes for this task to execute, as TaskCluster must
+Note that it may take a few minutes for this task to execute, as Taskcluster must
 create a new Amazon EC2 instance to run it.
 
 If you are curious about the `createTask(taskId, payload)` method you can look

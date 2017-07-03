@@ -1,6 +1,6 @@
 ### Common Problems - Tips and Tricks
 
-* All TaskCluster tasks do not appear in Treeherder
+* All Taskcluster tasks do not appear in Treeherder
   * Check Decision task
     * Talk with #taskcluster team if no decision task symbol appears
   * If Decision task fails, but commit didn't alter any job related problems, rebase

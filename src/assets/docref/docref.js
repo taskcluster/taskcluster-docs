@@ -1,4 +1,4 @@
-/** Document Reference Utility for TaskCluster */
+/** Document Reference Utility for Taskcluster */
 
 var _renderLoadError = new EJS({
   url: '/assets/docref/load-error.ejs'

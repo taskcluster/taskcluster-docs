@@ -1,7 +1,7 @@
-# TaskCluster Documentation Site
+# Taskcluster Documentation Site
 
 
-This is the TaskCluster documentation site, hosted at https://docs.taskcluster.net.
+This is the Taskcluster documentation site, hosted at https://docs.taskcluster.net.
 It's a basic static site, generated with some Gulp plugins.
 
 Development Setup
@@ -20,7 +20,7 @@ This is done automatically, but for the record: `npm run deploy` or `yarn deploy
 
 Third-Party Libraries and Tools
 -------------------------------
-The TaskCluster Documentation Site wouldn't have been so awesome without these
+The Taskcluster Documentation Site wouldn't have been so awesome without these
 amazing libraries and tools, upon which it is built.
 
 **Libraries**,

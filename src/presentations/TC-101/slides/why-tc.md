@@ -1,5 +1,5 @@
 
-### Why TaskCluster?
+### Why Taskcluster?
 
 
 Things TC is bringing to the table:
@@ -6515,7 +6515,7 @@ BuildBot / Jenkins controls:
          x="484.21899"
          y="774.68549"
          id="tspan6090-6-9-6-9"
-         style="fill:#ffffff;fill-opacity:1">TaskCluster</tspan></text>
+         style="fill:#ffffff;fill-opacity:1">Taskcluster</tspan></text>
     <text
        x="232.51974"
        y="781.59595"
@@ -6944,7 +6944,7 @@ BuildBot / Jenkins controls:
 
 
 
-In TaskCluster *your repository owns*:
+In Taskcluster *your repository owns*:
 
  * Triggering of dependent jobs
  * Choice of runtime environment (not setup or scaling)
@@ -6957,9 +6957,9 @@ In TaskCluster *your repository owns*:
 
 ---
 
-### Why TaskCluster?
+### Why Taskcluster?
 
-TaskCluster increases transparency and reproducibility for developers.
+Taskcluster increases transparency and reproducibility for developers.
 
  * We moved control over project configuration and runtime environment in-tree.
  * RelEng will still support configs for our core builds and workerTypes.

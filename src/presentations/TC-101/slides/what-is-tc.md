@@ -1,6 +1,6 @@
-### What is TaskCluster?
+### What is Taskcluster?
 
- TaskCluster is a task execution platform.
+ Taskcluster is a task execution platform.
  You can:
 
  * Run any command in a container.

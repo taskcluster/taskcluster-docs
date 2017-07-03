@@ -1,8 +1,8 @@
 ---
-title: TaskCluster Reviews
+title: Taskcluster Reviews
 ---
 
-TaskCluster reviews aim to ensure that code we deploy is maintainable,
+Taskcluster reviews aim to ensure that code we deploy is maintainable,
 understandable, resilient and fast. We’ve developed a review process that
 works really well for us. It is modeled on the general Mozilla review policy.
 Each component, library or service has an owner who is responsible for the

@@ -1,4 +1,4 @@
-### TaskCluster Roadmap
+### Taskcluster Roadmap
 
 Q1:
 
@@ -28,4 +28,4 @@ Q3:
 
 Q4:
 
- * Make TaskCluster redeployable by FOSS users
+ * Make Taskcluster redeployable by FOSS users

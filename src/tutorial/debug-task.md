@@ -2,7 +2,7 @@
 title: Debugging a Task
 ---
 
-TaskCluster has an "interactive" mode with which you can get a terminal and/or
+Taskcluster has an "interactive" mode with which you can get a terminal and/or
 VNC connection to a running task execution environment.
 
 There are two ways to access this mode. The easiest is to navigate to the

@@ -2,7 +2,7 @@
 title: Finding Tasks
 ---
 
-The "table of contents" for TaskCluster tasks is the
+The "table of contents" for Taskcluster tasks is the
 [Index](https://tools.taskcluster.net/index/). When a task completes
 successfully, it is added to the index at an "index route" given by any
 `task.routes` entries that begin with `index.`. (Actually, the Queue just
