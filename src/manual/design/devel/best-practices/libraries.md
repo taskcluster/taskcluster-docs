@@ -56,8 +56,8 @@ This will update the version, create a new git commit, and create a tag.
 So you only need to push to upstream with and without `--tags`:
 
 ```
-git push upsream
-git push upsream --tags
+git push upstream
+git push upstream --tags
 ```
 
 When the Travis job for that push completes, the new version should be deployed.
