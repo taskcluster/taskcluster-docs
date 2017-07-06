@@ -43,11 +43,7 @@ control.
 
 ## Part Of The @taskcluster NPM Org
 
-Ensure that your npm library is part of the @taskcluster team:
-
-```shell
-npm owner add @taskcluster
-```
+Ensure that your npm library is part of the @taskcluster team.
 
 ## Publish On Tag
 
