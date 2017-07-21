@@ -9,4 +9,4 @@ comment", known as RFCs.  These provide an open, transparent decision-making
 process and a way to track ideas from initial proposal through decision and
 implementation.
 
-Taskcluster's RFCs are in the [taskcluster-rfcs repository](https://github.com/taskcluster/taskclutser-rfcs).
+Taskcluster's RFCs are in the [taskcluster-rfcs repository](https://github.com/taskcluster/taskcluster-rfcs).
