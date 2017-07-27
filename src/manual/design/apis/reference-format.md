@@ -25,6 +25,15 @@ AMQP exchanges are documented. This is useful for **automatic generation** of:
 **Note**, these formats are not completely stable and may change over time, or
 merge into one.
 
+## Reference Manifest
+
+All services are linked in http://references.taskcluster.net/manifest.json.
+The file contains links to API references (`api.json`) and to exchange
+references (`exchanges.json`).  When a service provides both, the latter
+generally has an "Events" suffix in the name.
+
+The format of these files is given below.
+
 ## API References
 
 Our API end-points all have a simple URL made up of a `baseUrl + route` where a
