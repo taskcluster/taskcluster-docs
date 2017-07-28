@@ -65,7 +65,7 @@ credentials while debugging.
 ## Secret Setup
 
 Set up a new secret using the [secret
-tool](https://tools.tsakcluster.net/secrets), named after the repository from
+tool](https://tools.taskcluster.net/secrets), named after the repository from
 which the task runs, e.g., `repo:github.com/myblog/myblog.com`. Add the
 credentials:
 
