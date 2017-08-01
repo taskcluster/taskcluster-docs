@@ -11,17 +11,32 @@ the main log of the artifact.
 
 Workers also generally provide a way to specify, in the task description, the
 files and directories that should be uploaded as artifacts after the task
-completes. For Taskcluster-Worker, for example:
+completes. For a worker running
+[Generic-Worker](/reference/workers/generic-worker/docs/payload) or
+[Taskcluster-Worker](https://github.com/taskcluster/taskcluster-worker/blob/master/plugins/artifacts/payloadschema.go), that looks like:
 
 ```yaml
 artifacts:
-  name: public/results
-  path: workspace/results
-  type: directory
+  - name: public/results
+    path: workspace/results
+    type: directory
 ```
 
-This will upload the contents of the `workspace/results` directory as artifacts
-named `public/results/<filename>`.
+Tor a worker running
+[Docker-Worker](/reference/workers/docker-worker/docs/payload), the format is
+slightly different:
+
+```yaml
+artifacts:
+  public/results:
+    path: /home/user/workspace/results
+    type: directory
+```
+
+In either case will upload all files in the `workspace/results` directory as
+artifacts named `public/results/<filename>`. Note that Docker-Worker requires
+an absolute path, while Generic-Worker requires a relative path, and for
+Taskcluster-Worker the path format depends on the engine in use.
 
 It is also possible, although unusual, to create artifacts using the [Queue
 API](https://docs.taskcluster.net/reference/platform/taskcluster-queue/references/api#createArtifact).
