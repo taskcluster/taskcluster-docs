@@ -4,15 +4,7 @@ title: Frontend Applications
 order: 10
 ---
 
-If you are building a frontend application which would like to interact with
-Taskcluster APIs on behalf of users, Taskcluster currently does not provide a
-great experience. The major issue is that Taskcluster does not provide user
-authentication, but just provides a set of Taskcluster credentials.
-
-This situation will change soon, though -- see
-[RFC #9](https://github.com/taskcluster/taskcluster-rfcs/issues/9) for details.
-
-## Guidelines
+# Guidelines
 
 Before jumping in to the technical details, a few words of caution are
 required.  When a user clicks "Grant" for your service, they are trusting your
@@ -40,11 +32,25 @@ real users.  Think carefully about how you handle those credentials, and how
 you can minimize the handling that you do.  Beyond that, what plans you have
 for detecting and handling credential disclosure?
 
-## Getting Credentials
+# Current State
+
+If you are building a frontend application which would like to interact with
+Taskcluster APIs on behalf of users, Taskcluster currently does not provide a
+great experience. The major issue is that Taskcluster does not provide user
+authentication, but just provides a set of Taskcluster credentials.
+
+This situation will change soon, though -- see [Taskcluster-Login
+docs](https://docs.taskcluster.net/reference/integrations/taskcluster-login/docs/)
+for details.  Among other benefits, this new approach will give your
+application much better access to the user's identity.
+
+# Getting Credentials
 
 You can interact with Taskcluster by redirecting your users to a Taskcluster
-URL as described below.  If the user authenticates correctly and grants your
-service access, they are redirected back to your site with a set of [temporary
+URL as described in the [Taskcluster-Login
+docs](https://docs.taskcluster.net/reference/integrations/taskcluster-login).
+If the user authenticates correctly and grants your service access, they are
+redirected back to your site with a set of [temporary
 credentials](temporary-credentials) based on their assigned scopes.
 
 Store the resulting credentials in the JavaScript heap or (to survive
