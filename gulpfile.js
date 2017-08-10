@@ -8,6 +8,7 @@ var data = require('gulp-data');
 var clean = require('gulp-clean');
 var gunzip = require('gulp-gunzip');
 var untar = require('gulp-untar');
+var fileInclude = require('gulp-file-include');
 var virtual_webserver = require('./lib/virtual-webserver');
 var pug = require('./lib/pug');
 var frontmatter = require('gulp-front-matter');
@@ -84,15 +85,20 @@ function tutorial() {
 }
 
 function manual() {
-  return gulp
-    .src('src/manual/**/*.md', {base: 'src'})
-    .pipe(frontmatter({property: 'data'}))
-    .pipe(markdown())
-    .pipe(filter.renameIndex())
-    .pipe(rename(stripHtml))
-    .pipe(navlinks({rootPath: '/manual'}))
-    .pipe(pug({template: 'layout/layout.pug'}))
-    .pipe(headers.set('Content-Type', 'text/html'))
+  return merge(
+    gulp
+      .src('src/manual/**/*.md', {base: 'src'})
+      .pipe(fileInclude())
+      .pipe(frontmatter({property: 'data'}))
+      .pipe(markdown())
+      .pipe(filter.renameIndex())
+      .pipe(rename(stripHtml))
+      .pipe(navlinks({rootPath: '/manual'}))
+      .pipe(pug({template: 'layout/layout.pug'}))
+      .pipe(headers.set('Content-Type', 'text/html')),
+    gulp
+      .src('src/manual/**/*.yml', {base: 'src'})
+  )
 }
 
 function reference() {
