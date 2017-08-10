@@ -98,6 +98,7 @@ function manual() {
       .pipe(headers.set('Content-Type', 'text/html')),
     gulp
       .src('src/manual/**/*.yml', {base: 'src'})
+      .pipe(headers.set('Content-Type', 'text/x-yaml')),
   )
 }
 
