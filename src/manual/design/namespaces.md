@@ -281,6 +281,10 @@ The index provides a nice, dot-separated hierarchy of names. When using these as
    Index for Gecko build jobs, either by revision or for the latest job with the given platform and build.
    These are the responsibility of the release engineering team.
 
+* `gecko.cache.level-<level>.<kind>.v1.<name>.<hash>`, Index for cached objected used by gecko.
+   Where `<level>` is the commit-level 1 through 3, `<kind>` is the kind of object cached (eg. 'toolchains'), and
+   `<name>.<hash>` is a suggested pattern for how to organize cached objects.
+
 * `tc-vcs.v1` -
    Tasks indexed under this prefix represent caches used by the Taskcluster VCS tool to avoid crushing version-control hosts.
    These are the responsibility of the Taskcluster team.
