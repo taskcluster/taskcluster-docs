@@ -143,6 +143,9 @@ Artifact names are, by convention, slash-separated.
 * `private/docker-worker/…` -
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed to everybody with commit-level 1 access, regardless of NDA state.
 
+* `private/interactive/…` - 
+   Artifacts required to access interactive sessions, this prefix is consisteder non-public, but is made available to commit-level 1 users, contributors and community members. 
+
 * `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
