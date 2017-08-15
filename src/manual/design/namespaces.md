@@ -287,3 +287,5 @@ The index provides a nice, dot-separated hierarchy of names. When using these as
 
 * `project.<project>.…` -
   Tasks indexed under this prefix are the domain of the respective project.
+
+* `github.<organization>.<repository>.` prefix for github repository specific index namespaces.
