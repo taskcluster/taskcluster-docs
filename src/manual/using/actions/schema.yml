@@ -165,25 +165,7 @@ properties:
             variables supplied as context.
 
             This allows for dumping `input` and `taskId` into environment
-            variables for the task to be created. The following task template
-            injects `input` and `taskId` as environment variables:
-            ```json
-            {
-              "workerType": "my-worker",
-              "payload": {
-                "created": {"$fromNow": ""},
-                "deadline": {"$fromNow": "1 hour 15 minutes"},
-                "expiration": {"$fromNow": "14 days"},
-                "image": "my-docker-image",
-                "env": {
-                  "TASKID_TRIGGERED_FOR": "${taskId}",
-                  "INPUT_JSON": {"$json": {"$eval": "input"}}
-                },
-                ...
-              },
-              ...
-            }
-            ```
+            variables for the task to be created. 
       additionalProperties: false
       required:
         - title
