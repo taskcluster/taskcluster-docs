@@ -1,9 +1,19 @@
 ---
-title: Actions
+title: Defining User Actions on Existing Tasks
 ---
 
-This section shows how to define an action in-tree such that it shows up
-in supported user interfaces like Treeherder.
+This section shows how to define *actions*. Actions allow users to affect a
+task or task-graph after it has been submitted. Common actions are:
+
+-   Retrigger a task,
+-   Retry specific test cases many times,
+-   Obtain a loaner machine,
+-   Backfill missing tasks,
+
+Actions are defined in-tree, so they are specific to the software being built
+and can be modified through the usual review process.  Taskcluster defines a
+convention -- documented here -- which allows user interfaces to connect users
+to these actions.
 
 At a very high level, the process looks like this:
 

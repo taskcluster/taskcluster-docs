@@ -3,24 +3,17 @@ title: Action Specification
 order: 1
 ---
 
-This document specifies how actions exposed by the *decision task* are
-to be presented and triggered from Treeherder, or similar user
-interfaces.
+This document specifies how actions exposed by the *[decision
+task](/manual/using/task-graph)* are to be presented and triggered from
+Treeherder, or similar user interfaces.
 
-The *decision task* creates an artifact `public/actions.json` to be
-consumed by a user interface such as Treeherder. The
-`public/actions.json` file specifies actions that can be triggered such
-as:
-
--   Retrigger a task,
--   Retry specific test cases many times,
--   Obtain a loaner machine,
--   Backfill missing tasks,
--   ...
+The *decision task* creates an artifact `public/actions.json` to be consumed by
+a user interface such as Treeherder. The `public/actions.json` file specifies
+the available actions.
 
 Through the `public/actions.json` file it is possible expose actions
 defined in-tree such that the actions can be conveniently triggered in
-Treeherder. This has two purposes:
+a user interface tool such as Treeherder. This has two purposes:
 
 1.  Facilitate development of utility actions/tools in-tree, and,
 2.  Strongly decouple build/test configuration from Treeherder.
