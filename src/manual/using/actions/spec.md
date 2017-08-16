@@ -245,7 +245,8 @@ feature does not introduce further expressiveness.
 Formal Specification
 --------------------
 
-The following is the JSON Schema for `actions.json`.
+The JSON Schema for `actions.json` is as follows, also available in raw form
+[here](https://raw.githubusercontent.com/taskcluster/taskcluster-docs/master/src/manual/using/actions/schema.yml).
 
 ```yaml
 @@include('./schema.yml')
