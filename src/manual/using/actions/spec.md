@@ -99,7 +99,7 @@ timestamps and dump input JSON into environment variables:
       }
     }
   ],
-  "variables: {},
+  "variables": {}
 }
 ```
 
@@ -155,7 +155,7 @@ for the task-group.
 
 **Examples**:
 
-```json
+```js
 // Example task definitions (everything but tags eclipsed)
 TaskA = {..., tags: {kind: 'test', platform: 'linux'}}
 TaskB = {..., tags: {kind: 'test', platform: 'windows'}}
@@ -199,7 +199,7 @@ specified with by the action's `schema` property. For example:
         "description": "The thing to do",
         "title": "Thing",
         "default": "something",
-        "type": "string"
+        "type": "string",
         "maxLength": 255
       },
       "task": {
@@ -213,7 +213,7 @@ specified with by the action's `schema` property. For example:
       }
     }
   ],
-  "variables: {},
+  "variables": {}
 }
 ```
 
