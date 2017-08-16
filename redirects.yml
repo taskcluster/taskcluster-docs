@@ -172,3 +172,6 @@
 /manual/devel/best-practices: /manual/design/devel/best-practices
 /manual/devel: /manual/design/devel
 /manual/tasks/decision: /manual/using/task-graph
+/manual/tasks/actions: /manual/using/actions
+/manual/tasks/actions/spec: /manual/using/actions/spec
+/manual/tasks/actions/ui: /manual/using/actions/ui
