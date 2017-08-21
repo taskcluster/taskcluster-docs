@@ -1,12 +1,13 @@
 ---
-layout:       default
-class:        html
-docson:       true
-marked:       true
-ejs:          true
-superagent:   true
-docref:       true
-docreadme:    true
+title: Task-Graph Scheduler
 ---
 
-<div data-doc-readme='https://raw.githubusercontent.com/taskcluster/task-graph-scheduler/master/README.md'></div>
+*NOTE* This service is still running, but is deprecated.
+
+The task-graph scheduler is responsible for scheduling dependent tasks on the
+taskcluster. For documentation please refer to `docs.taskcluster.net`.
+
+Service Owner
+-------------
+
+Service Owner: jonasfj@mozilla.com
