@@ -2,6 +2,7 @@
 
 set -e
 
+yarn global add node-gyp
 yarn install --no-progress
 
 yarn download
