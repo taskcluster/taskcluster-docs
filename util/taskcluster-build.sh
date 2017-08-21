@@ -2,12 +2,12 @@
 
 set -e
 
-npm install --quiet
+yarn install --no-progress
 
-npm run download
+yarn download
 
 if [ "$1" = "pull-request" ]; then
-    npm run check
+    yarn check
     # [C] here avoids matching itself
     if git grep Task[C]luster; then
         echo "Pull Request contains incorrect capitalization of Taskcluster; see above"
@@ -17,5 +17,5 @@ elif [ "$1" = "push" ]; then
     export PUBLISH_BUCKET=docs-taskcluster-net
     export PUBLISH_REGION=us-west-2
     export MOZILLIANS_SECRET=project/taskcluster/tc-docs/mozillians
-    npm run deploy
+    yarn deploy
 fi
