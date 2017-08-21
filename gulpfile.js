@@ -13,6 +13,7 @@ var virtual_webserver = require('./lib/virtual-webserver');
 var pug = require('./lib/pug');
 var frontmatter = require('gulp-front-matter');
 var awspublish = require('gulp-awspublish');
+var parallelize = require('concurrent-transform');
 var headers = require('./lib/headers');
 var filter = require('./lib/filter');
 var navlinks = require('./lib/navlinks');
@@ -182,7 +183,7 @@ gulp.task('publish', function() {
   return s3.makePublisher().then(function(publisher) {
     return site()
       .pipe(s3.setHeaders())
-      .pipe(publisher.publish({}, {noAcl: true}))
+      .pipe(parallelize(publisher.publish({}, {noAcl: true}), 20))
       .pipe(publisher.cache())
       .pipe(awspublish.reporter())
   });
