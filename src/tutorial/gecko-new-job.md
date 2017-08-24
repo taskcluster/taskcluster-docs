@@ -10,7 +10,7 @@ docref: true
 Taskcluster runs tasks.
 It's just as happy to run your new tasks as any of the already-defined tasks!
 All you need to do is add some configuration for your new tasks, then test it out in try.
-The documentation for that process is kept [in-tree](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/how-tos.html), where it can co-evolve with the task-graph generation system.
+The documentation for that process is kept [in-tree](https://firefox-source-docs.mozilla.org/taskcluster/taskcluster/how-tos.html), where it can co-evolve with the task-graph generation system.
 
 ---
 

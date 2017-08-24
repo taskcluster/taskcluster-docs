@@ -8,7 +8,7 @@ followup:
 
 The docker images used to run Gecko tasks on Linux are defined in [taskcluster/docker](https://dxr.mozilla.org/mozilla-central/source/testing/docker/).
 Each directory represents a different image, and contains a `Dockerfile` describing the image itself.
-These Dockerfiles are a bit more flexible than usual -- see [the Gecko documentation](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/docker-images.html) for details.
+These Dockerfiles are a bit more flexible than usual -- see [the Gecko documentation](https://firefox-source-docs.mozilla.org/taskcluster/taskcluster/docker-images.html) for details.
 
 ## Modifying Docker Images
 
