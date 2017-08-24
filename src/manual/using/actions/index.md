@@ -30,4 +30,4 @@ At a very high level, the process looks like this:
     and may create new sub-tasks if necessary (for example, to
     re-trigger a task).
 
-For Gecko developers, there is [documentation](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/action-implementation.html) on how to write action tasks in-tree.
+For Gecko developers, there is [documentation](https://firefox-source-docs.mozilla.org/taskcluster/taskcluster/action-implementation.html) on how to write action tasks in-tree.

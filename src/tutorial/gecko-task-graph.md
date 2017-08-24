@@ -13,7 +13,7 @@ For example, a test task will depend on the build task producing the browser ins
 Task-graph generation occurs entirely "in-tree", in the sense that both the configuration and code are contained in the Gecko source tree.
 This means that it can evolve along with Gecko, and in fact may work differently on different branches!
 
-The task-graph generation process is well-documented in the [Gecko Documentation](http://gecko.readthedocs.io/en/latest/taskcluster/taskcluster/index.html).
+The task-graph generation process is well-documented in the [Gecko Documentation](https://firefox-source-docs.mozilla.org/taskcluster/taskcluster/index.html).
 
 ---
 
