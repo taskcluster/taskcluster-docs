@@ -22,4 +22,5 @@ never sees the credentials, just the Hawk signature.
 
 If you build a user interface around this approach, it is safe to display the
 clientId to the user so they can recognize the login.  Just be cautious of the
-warning in the previous section regarding using `clientId`s for authentication.
+warning in the [previous section](frontend) regarding using `clientId`s for
+authentication.
