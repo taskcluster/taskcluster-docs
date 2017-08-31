@@ -44,6 +44,15 @@ then check whether the user's scopes satisfy
 `['assume:repo:github.com/owner/repo:branch:master']`. Do not filter the
 scopeset for strings beginning with `assume:repo`.
 
+## Certificates
+
+Some kinds of Taskcluster credentials include a `certificate` which looks like
+JSON. Resist the temptation to parse this JSON, as its format may change
+without warning and it may (likely will) be removed altogether at some point.
+
+Design your application to work equally well with Taskcluster credentials of
+form `{clientId, accessToken}` or `{clientId, accessToken, certificate}`.
+
 ## Acting on Behalf of a User
 
 If the service you are building acts on behalf of users, but uses its own
