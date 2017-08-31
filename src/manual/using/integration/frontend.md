@@ -28,6 +28,13 @@ The Taskcluster credentials have a very short expiration, but can be requested
 again when required. Callers should check the expiration before every call to a
 Taskcluster API and refresh when necessary.
 
+## Demo
+
+The
+[taskcluster-oidc-test](https://github.com/taskcluster/taskcluster-oidc-test)
+repository provides an example of a sipmle SPA following this process.  You can
+see it in action at https://taskcluster-oidc-test.herokuapp.com.
+
 ## Details
 
 For more details, see the [Taskcluster-Login
