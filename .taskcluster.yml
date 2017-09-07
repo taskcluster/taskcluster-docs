@@ -18,14 +18,21 @@ tasks:
           - pull_request.synchronize
     payload:
       maxRunTime: 3600
-      image: "node:7.7"
+      image: "node:8.4"
       features:
         taskclusterProxy: true
       command:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone $GITHUB_BASE_REPO_URL && cd taskcluster-docs && git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request && git checkout pull-request && bash util/taskcluster-build.sh pull-request"
+        # We are upgrading yarn to get the fixes for yarnpkg/yarn#3686. Remove after 1.0.0
+        - >-
+            git clone $GITHUB_BASE_REPO_URL &&
+            cd taskcluster-docs &&
+            git fetch origin pull/$GITHUB_PULL_REQUEST/head:pull-request &&
+            git checkout pull-request &&
+            curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --rc && . ~/.bashrc &&
+            bash util/taskcluster-build.sh pull-request
     metadata:
       name: "taskcluster-docs check"
       description: "Run `gulp check` to verify docs well-formedness`"
@@ -47,14 +54,20 @@ tasks:
           - publish-test
     payload:
       maxRunTime: 3600
-      image: "node:7.7"
+      image: "node:8.4"
       features:
         taskclusterProxy: true
       command:
         - "/bin/bash"
         - "--login"
         - "-c"
-        - "git clone $GITHUB_HEAD_REPO_URL && cd taskcluster-docs && git checkout $GITHUB_HEAD_BRANCH && bash util/taskcluster-build.sh push"
+        # We are upgrading yarn to get the fixes for yarnpkg/yarn#3686. Remove after 1.0.0
+        - >-
+            git clone $GITHUB_HEAD_REPO_URL &&
+            cd taskcluster-docs &&
+            git checkout $GITHUB_HEAD_BRANCH &&
+            curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --rc && . ~/.bashrc &&
+            bash util/taskcluster-build.sh push
     metadata:
       name: "taskcluster-docs publish"
       description: "Run `gulp publish` to publish the docs to S3`"
