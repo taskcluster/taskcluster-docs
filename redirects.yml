@@ -175,3 +175,4 @@
 /manual/tasks/actions: /manual/using/actions
 /manual/tasks/actions/spec: /manual/using/actions/spec
 /manual/tasks/actions/ui: /manual/using/actions/ui
+/reference/workers/docker-worker/docs/superseding: /reference/platform/taskcluster-queue/docs/superseding
