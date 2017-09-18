@@ -57,6 +57,9 @@ context entries available:
 `task`:   the task definition of the selected task, `null` if no task is
     selected (this is the case if the action has `context: []`), and,
 
+`ownTaskId`:   the taskId of the action task itself. This is useful for
+    indexing without collisions and other similar needs
+
 `input`:   the input matching the `schema` property, `null` if the action
     doesn't have a `schema` property. See "Action Input" below.
 
