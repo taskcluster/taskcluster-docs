@@ -96,8 +96,6 @@
 /reference/core/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/references/api
 /reference/core/aws-provisioner/exchanges: /reference/integrations/aws-provisioner/references/events
 /reference/core/cloud-mirror: /reference/integrations/cloud-mirror
-/reference/core/hooks: /reference/integrations/hooks
-/reference/core/hooks/api-docs: /reference/integrations/hooks/api-docs
 /reference/core/statsum: /reference/operations/statsum
 /reference/core/treeherder: /reference/integrations/treeherder
 /reference/core/treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
@@ -180,3 +178,6 @@
 /reference/core/github/references/events: /reference/integrations/taskcluster-github/references/events
 /reference/core/github/references/api: /reference/integrations/taskcluster-github/references/api
 /reference/core/hooks: /reference/core/taskcluster-hooks
+/reference/integrations/hooks: /reference/core/taskcluster-hooks
+/reference/core/hooks/api-docs: /reference/core/taskcluster-hooks/references/api
+/reference/integrations/hooks/api-docs: /reference/core/taskcluster-hooks/references/api
