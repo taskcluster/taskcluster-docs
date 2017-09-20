@@ -176,3 +176,6 @@
 /manual/tasks/actions/spec: /manual/using/actions/spec
 /manual/tasks/actions/ui: /manual/using/actions/ui
 /reference/workers/docker-worker/docs/superseding: /reference/platform/taskcluster-queue/docs/superseding
+/reference/core/github/docs/usage: /reference/integrations/taskcluster-github/docs/intro
+/reference/core/github/references/events: /reference/integrations/taskcluster-github/references/events
+/reference/core/github/references/api: /reference/integrations/taskcluster-github/references/api
