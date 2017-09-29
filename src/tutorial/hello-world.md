@@ -26,28 +26,23 @@ Click the "Grant Permission" button, which will return you to the task creator.
 
 What you see in the text box is a bare-bones task description, looking something like this (the details may evolve as features are added):
 
-```json
-{
-  "provisionerId": "aws-provisioner-v1",
-    "workerType": "tutorial",
-    "created": "2016-09-16T21:20:34.867Z",
-    "deadline": "2016-09-16T22:20:34.867Z",
-    "payload": {
-      "image": "ubuntu:13.10",
-      "command": [
-        "/bin/bash",
-      "-c",
-      "echo 'hello World'"
-      ],
-      "maxRunTime": 600
-    },
-    "metadata": {
-      "name": "Example Task",
-      "description": "Markdown description of **what** this task does",
-      "owner": "name@example.com",
-      "source": "http://tools.taskcluster.net/task-creator/"
-    }
-}
+```yaml
+provisionerId: aws-provisioner-v1
+workerType: tutorial
+created: '2017-09-27T15:24:45.442Z'
+deadline: '2017-09-27T18:24:45.443Z'
+payload:
+  image: 'ubuntu:13.10'
+  command:
+    - /bin/bash
+    - '-c'
+    - for ((i=1;i<=600;i++)); do echo $i; sleep 1; done
+  maxRunTime: 600
+metadata:
+  name: Example Task
+  description: Markdown description of **what** this task does
+  owner: name@example.com
+  source: 'https://tools.taskcluster.net/task-creator/'
 ```
 
 Happily, this is already set up to print "hello world"!
