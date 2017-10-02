@@ -144,7 +144,10 @@ Artifact names are, by convention, slash-separated.
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed to everybody with commit-level 1 access, regardless of NDA state.
 
 * `private/interactive/…` - 
-   Artifacts required to access interactive sessions, this prefix is consisteder non-public, but is made available to commit-level 1 users, contributors and community members. 
+   Artifacts required to access interactive sessions, this prefix is considered non-public, but is made available to commit-level 1 users, contributors and community members. 
+
+* `repo/<host>/<path>/…` - 
+   Artifacts private to a specific repository, sub-scopes can be delegated through repository specific patterns.
 
 * `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
