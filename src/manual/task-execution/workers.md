@@ -18,6 +18,9 @@ Each individual worker is identified by a `<workerGroup>/<workerId>` pair,
 identified in the task run information.  This information can be useful to
 identify misbehaving workers by examining the runs of failed tasks.
 
+You can drill down to a list of currently-running workers, arranged by
+provisioner worker type, at https://tools.taskcluster.net/provisioners.
+
 ## Claiming Tasks
 
 Workers signal their availability for new work by calling the Queue's

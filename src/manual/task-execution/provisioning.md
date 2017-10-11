@@ -24,6 +24,9 @@ parallel) against cost (from idle workers).
 Worker types are scoped within a `provisionerId`, allowing each provisioner its
 own "namespace" of managed workers.
 
+The current set of provisioner IDs is visible at
+https://tools.taskcluster.net/provisioners.
+
 ## AWS Provisioner
 
 The Taskcluster team provides a provisioner instance, running the AWS
