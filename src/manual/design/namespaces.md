@@ -194,12 +194,8 @@ For other worker types, anything goes.
 
 ## Provisioner IDs
 
-Provisioner IDs are limited to 22 characters.
-We do not subdivide namespaces; instead, they are enumerated here:
-
- * `aws-provisioner-v1` -- the AWS provisioner
- * `buildbot-bridge` -- the AWS provisioner
- * `scriptworker-prov-v1` -- the scriptworker provisioner
+Provisioner IDs are limited to 22 characters, and are registered with the Queue.
+The list of provisioners can be retrieved from [https://queue.taskcluster.net/v1/provisioners](https://queue.taskcluster.net/v1/provisioners).
 
 ---
 
