@@ -181,9 +181,16 @@ gulp.task('webserver', function() {
 
 gulp.task('publish', function() {
   return s3.makePublisher().then(function(publisher) {
+    var publishOptions = {
+      // don't try to set x-amz-acl, as we don't have permission
+      noAcl: true,
+      // force writing all files if PUBLISH_FORCE is set (this avoids
+      // caching issues in gulp-awspublish around header-only changes)
+      force: !!process.env['PUBLISH_FORCE']
+    };
     return site()
       .pipe(s3.setHeaders())
-      .pipe(parallelize(publisher.publish({}, {noAcl: true}), 20))
+      .pipe(parallelize(publisher.publish({}, publishOptions), 20))
       .pipe(publisher.cache())
       .pipe(awspublish.reporter())
   });
