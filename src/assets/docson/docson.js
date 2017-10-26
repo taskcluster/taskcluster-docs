@@ -18,7 +18,7 @@ var docson = docson || {};
 
 docson.templateBaseUrl="templates";
 
-define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib/traverse"], function(handlebars, highlight, jsonpointer, marked) {
+define(["lib/jquery", "lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib/traverse"], function(jquery, handlebars, highlight, jsonpointer, marked) {
 
     var ready = $.Deferred();
     var boxTemplate;
@@ -45,6 +45,7 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
         delete schema.root;
         delete schema.__boxId;
         delete schema.__name;
+        delete schema.__ref;
         return JSON.stringify(schema, null, 2);
     });
 
@@ -72,7 +73,7 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
     });
 
     Handlebars.registerHelper('contains', function(arr, item, options) {;
-        if(arr && arr.indexOf(item) != -1) {
+        if(arr && arr instanceof Array && arr.indexOf(item) != -1) {
             return options.fn(this);
         }
     });
@@ -111,7 +112,7 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
     });
 
     var sub = function(schema) {
-        return schema.type == "array" || schema.allOf || schema.anyOf || schema.oneOf || schema.not || schema.additionalProperties;
+        return schema.type == "array" || schema.allOf || schema.anyOf || schema.oneOf || schema.not;
     }
 
     Handlebars.registerHelper('sub', function(schema, options) {
@@ -157,6 +158,12 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
     Handlebars.registerHelper('complex', function(schema, options) {
         if(!simpleSchema(schema) && !schema.$ref || schema.properties) {
             return withType(schema, options);
+        }
+    });
+
+    Handlebars.registerHelper('enum', function(schema) {
+        if(schema.enum) {
+            return (schema.enum.length > 1) ? "enum": "constant";
         }
     });
 
@@ -257,7 +264,10 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
 
     function renderSchema(schema) {
         if(stack.indexOf(schema) == -1) { // avoid recursion
-            return new Handlebars.SafeString(boxTemplate(schema));
+            stack.push(schema);
+            var ret = new Handlebars.SafeString(boxTemplate(schema));
+            stack.pop();
+            return ret;
         } else {
             return new Handlebars.SafeString(boxTemplate({"description": "_circular reference_"}));
         }
@@ -268,12 +278,18 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
             var target = resolveRef(schema.$ref);
             if(target) {
                 target.__name = refName(schema.$ref);
+                target.__ref = schema.$ref.replace("#", "");
+            }
+            var result;
+            if(target) {
+                result = options.fn(target);
+            } else {
+                result = new Handlebars.SafeString("<span class='signature-type-ref'>"+schema.$ref+"</span>");
             }
             if(target) {
-                return options.fn(target);
-            } else {
-                return new Handlebars.SafeString("<span class='signature-type-ref'>"+schema.$ref+"</span>");
+                delete target.__ref;
             }
+            return result;
         }
     });
 
@@ -305,8 +321,9 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
         });
     };
 
-    docson.doc = function(element, schema, ref) {
+    docson.doc = function(element, schema, ref, baseUrl) {
         var d = $.Deferred();
+        if(baseUrl === undefined) baseUrl='';
         init();
         ready.done(function() {
             if(typeof element == "string") {
@@ -319,35 +336,8 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
             var refsPromise = $.Deferred().resolve().promise();
             var refs = {};
 
-            traverse(schema).forEach(function(item) {
-                // Fix Swagger weird generation for array.
-                if(item && item.$ref == "array") {
-                    delete item.$ref;
-                    item.type ="array";
-                }
 
-                // Fetch external schema
-                if(this.key === "$ref") {
-                    if((/^https?:\/\//).test(item)) {
-                        var segments = item.split("#");
-                        var p = $.get(fixUrlProtocol(segments[0])).then(function(content) {
-                            if(typeof content != "object") {
-                                try {
-                                    content = JSON.parse(content);
-                                } catch(e) {
-                                    console.error("Unable to parse "+segments[0], e);
-                                }
-                            }
-                            if(content) {
-                                refs[item] = content;
-                            }
-                        });
-                        refsPromise = p.then(refsPromise)
-                    }
-                }
-            });
-
-            refsPromise.done(function() {
+            var renderBox = function() {
                 stack.push(refs);
                 var target = schema;
                 if(ref) {
@@ -355,8 +345,8 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
                     target = jsonpointer.get(schema, ref);
                     stack.push( schema );
                 }
-
                 target.root = true;
+                target.__ref = "<root>";
                 var html = boxTemplate(target);
 
                 if(ref) {
@@ -381,6 +371,31 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
                         highlight.highlightSchema(schemaElement);
                     });
                 }
+                element.find(".box-title").each(function() {
+                   var ref = $(this).attr("ref");
+                   if(ref) {
+                       if(window.location.href.indexOf("docson/index.html") > -1) {
+                           $(this).find(".box-name").css("cursor", "pointer").attr("title", "Open in new window")
+                           .hover(
+                               function(){ $(this).addClass('link') },
+                               function(){ $(this).removeClass('link') })
+                           .click(function() {
+                                var url = window.location.href+"$$expand";
+                                if(ref !=="<root>") {
+                                   url = url.replace(/(docson\/index.html#[^\$]*).*/, "$1$"+ref+"$$expand");
+                                }
+                                var w;
+                                function receiveMessage(event) {
+                                   if (event.data.id && event.data.id == "docson" && event.data.action == "ready") {
+                                       w.postMessage({ id: "docson", action: "load", definitions: schema, type: event.data.url.split("$")[1], expand: true}, "*");
+                                   }
+                                }
+                                window.addEventListener("message", receiveMessage, false);
+                                w = window.open(url, "_blank");
+                           });
+                       }
+                   }
+                });
                 element.find(".box").mouseenter(function() {
                     $(this).children(".source-button").fadeIn(300);
                     $(this).children(".box-body").children(".expand-button").fadeIn(300);
@@ -397,17 +412,17 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
                     resized();
                 });
                 element.find(".expand-button").click(function() {
-                    if(this.expanded) {
-                        $(this).html(" + ").attr("title", "Expand all");
+                    if($(this).attr("expanded")) {
+                        $(this).parent().parent().find(".expand-button").html(" + ").attr("title", "Expand all");
                         $(this).parent().parent().find(".signature-type-expandable").removeClass("signature-type-expanded");
                         $(this).parent().parent().find(".box-container").hide( resizeHandler ? 0 : 300);
-                        this.expanded=false;
+                        $(this).parent().parent().find(".expand-button").removeAttr("expanded");
                         resized();
                     } else {
-                        $(this).html(" - ").attr("title", "Collapse all");
+                        $(this).parent().parent().find(".expand-button").html(" - ").attr("title", "Collapse all");
                         $(this).parent().parent().find(".signature-type-expandable").addClass("signature-type-expanded");
                         $(this).parent().parent().find(".box-container").show(resizeHandler ? 0 : 300);
-                        this.expanded=true;
+                        $(this).parent().parent().find(".expand-button").attr("expanded", true);
                         resized();
                     }
                 });
@@ -416,7 +431,78 @@ define(["lib/handlebars", "lib/highlight", "lib/jsonpointer", "lib/marked", "lib
                     $(this).parent().children(".source").toggle();
                     resized();
                 });
-            });
+            };
+
+            var resolveRefsReentrant = function(schema){
+                traverse(schema).forEach(function(item) {
+                    // Fix Swagger weird generation for array.
+                    if(item && item.$ref == "array") {
+                        delete item.$ref;
+                        item.type ="array";
+                    }
+
+                    // Fetch external schema
+                    if(this.key === "$ref") {
+                        var external = false;
+                        //Local meaning local to this server, but not in this file.
+                        var local = false;
+                        if((/^https?:\/\//).test(item)) {
+                            external = true;
+                        }
+                        else if((/^[^#]/).test(item)) {
+                            local = true;
+                        } else if(item.indexOf('#') > 0) {
+                            //Internal reference
+                            //Turning relative refs to absolute ones
+                            external = true;
+                            item = baseUrl + item;
+                            this.update(item);
+                        }
+                        if(external){
+                            //External reference, fetch it.
+                            var segments = item.split("#");
+                            refs[item] = null;
+                            var p = $.get(segments[0]).then(function(content) {
+                                if(typeof content != "object") {
+                                    try {
+                                        content = JSON.parse(content);
+                                    } catch(e) {
+                                        console.error("Unable to parse "+segments[0], e);
+                                    }
+                                }
+                                if(content) {
+                                    refs[item] = content;
+                                    renderBox();
+                                    resolveRefsReentrant(content); 
+                                }
+                            });
+                        }
+                        else if(local) {
+                            //Local to this server, fetch relative
+                            var segments = item.split("#");
+                            refs[item] = null;
+                            var p = $.get(baseUrl + segments[0]).then(function(content) {
+                                if(typeof content != "object") {
+                                    try {
+                                        content = JSON.parse(content);
+                                    } catch(e) {
+                                        console.error("Unable to parse "+segments[0], e);
+                                    }
+                                }
+                                if(content) {
+                                    refs[item] = content;
+                                    renderBox();
+                                    resolveRefsReentrant(content);
+                                }
+                            });
+                        }
+                    }
+                });
+            };
+            
+            resolveRefsReentrant(schema);
+            renderBox();
+            
             d.resolve();
         })
         return d.promise();
