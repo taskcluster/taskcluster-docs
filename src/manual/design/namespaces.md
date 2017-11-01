@@ -200,6 +200,7 @@ We do not subdivide namespaces; instead, they are enumerated here:
  * `aws-provisioner-v1` -- the AWS provisioner
  * `buildbot-bridge` -- the AWS provisioner
  * `scriptworker-prov-v1` -- the scriptworker provisioner
+ * `proj-<name>` -- pattern for projects with custom hardware workers.
 
 ---
 
