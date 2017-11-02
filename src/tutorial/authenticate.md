@@ -2,122 +2,54 @@
 title: Authenticating to Taskcluster
 layout:             default
 class:              markdown
-sequence_diagrams:  true
-interactive:        true
 followup:
   links:
     create-task-via-api: Create a task with createTask
 ---
 
-Taskcluster uses its own kind of "credentials" to
-[authenticate API requests](/manual/apis). These credentials can come from
-a variety of sources, but in this section we will use
-[temporary credentials](/manual/apis/temporary-credentials) issued by the Taskcluster
-login service.
+Taskcluster uses its own kind of "credentials" to [authenticate API
+requests](/manual/design/apis). These credentials can come from a variety of
+sources, but in this section we will create a client manually, using the Tools
+site.
 
 If you haven't already, try the "[Hello World](hello-world)" tutorial to make
-sure that you have a username and password recognized by the login service.
+sure that you can sign in to the tools site.
 
-In this tutorial we'll show a static web application can obtain temporary
-Taskcluster credentials from the login service, just like the tools site does.
-In the process of doing so, we'll also store credentials in `localStorage` for
-use in the other tutorials.
+Open the [client manager](https://tools.taskcluster.net/auth/clients/) and create a new client:
 
-The authentication flow involves redirecting to `login.taskcluster.net`, where
-the user agrees to login and authenticates against some external
-_source of authority_ (Persona, LDAP, GitHub). Once authenticated,
-`login.taskcluster.net` will show a "Grant Access" button, which redirects the
-user back to the web-application with temporary credentials in the URL's query string.
-The flow may be illustrated as follows.
+ * Add `tutorial` to the end of the clientId
+ * Set the expiration date to tomorrow, and check "Automatically delete this client when it expires"
+ * Add the scope `queue:create-task:aws-provisioner-v1/tutorial`.
 
-<div class="sequence-diagram-hand">
-participant WebApp
-participant login.taskcluster.net
-participant Source of Authority
+When you create the client, the site will give you an accessToken.  Copy that
+and set it in your shell session, along with the clientId you chose.  Sometihng
+like this:
 
-WebApp -> login.taskcluster.net : Click Login
-login.taskcluster.net -> Source of Authority : Login
-Note over Source of Authority : User Authenticates
-Source of Authority --> login.taskcluster.net : Logged In
-login.taskcluster.net -> WebApp : "Grant Access"
-</div>
+```
+export TASKCLUSTER_CLIENT_ID=email/you@yourdomain.com/tutorial
+export TASKCLUSTER_ACCESS_TOKEN=9dTvVYdzMxAb6qnMPccfQhSzfrMZ1WQ46DgsL_I75S-w
+```
 
----
+## Alternative Process
 
-## Redirect User to Taskcluster Login
+The [taskcluster-cli](https://github.com/taskcluster/taskcluster-cli) project
+provides a tool that can do all of the above for you.
 
-The first step implemented in the web-application is to redirect to
-`login.taskcluster.net`, when doing so we **must** include `target` and
-`description` in our query string. `login.taskcluster.net` will offer a
-"Grant Access" button only when these query string parameters are defined.
+```
+$ eval `taskcluster signin --scope queue:create-task:aws-provisioner-v1/tutorial`
+Starting
+Listening for a callback on: http://localhost:37885
+Opening URL: https://tools.taskcluster.net/auth/clients/new?name=cli&description=Temporary+client+for+use+on+the+command+line&scope=*&expires=1d&callback_url=http%3A%2F%2Flocalhost%3A37885
+Credentials output as environment variables
+```
 
-<pre data-plugin="interactive-example">
-let querystring = require('querystring');
+You can test the results with the same tool:
 
-// Redirect
-window.location = "https://login.taskcluster.net?" + querystring.stringify({
-  // Target to redirect back to, in this case we want to back to the tutorial
-  target:       window.location.href,
-  // Description to explain to the user why we want his credentials
-  description:  "Tutorial needs credentials to do things, we're not evil :)"
-});
-</pre>
-
-When you click "Run Code" on the example above, you'll be redirected to
-`login.taskcluster.net`, there you must authenticate and click the
-"Grant Access" button to be redirect back to this tutorial for the next step.
-
-## Reading Temporary Credentials
-
-If you arrived back on this page by clicking the "Grant Access" button on
-`login.taskcluster.net`, you should now have a set of temporary credentials
-in the query string for this page. We shall now parse them and store them
-`localStorage`, so they can be loaded in later tutorials.
-
-<pre data-plugin="interactive-example">
-let querystring = require('querystring');
-
-// Parse query string
-let credentials = querystring.parse(window.location.search.substr(1));
-
-// If we have credentials, we store them
-if (credentials.clientId && credentials.accessToken) {
-  // Store credentials in localStorage for later tutorials
-  localStorage.credentials = JSON.stringify({
-    clientId:     credentials.clientId,
-    accessToken:  credentials.accessToken,
-    certificate:  credentials.certificate
-  });
-  console.log("Taskcluster credentials loaded from query string:");
-  console.log(credentials);
-  console.log("You may now continue to the next step...");
-} else {
-  console.log("Missing credentials in query string!");
-  console.log("Please, start from top of this page...");
+```
+$ ./taskcluster api auth currentScopes
+{
+    "scopes": [
+        "queue:create-task:aws-provisioner-v1/tutorial"
+    ]
 }
-</pre>
-
-If you successfully managed to store temporary credentials in `localStorage`
-using the example code above, you should now be ready to run all of the other
-tutorials that require credentials. Please, be aware that eventually your
-credentials will expire and you'll have to come back here and authenticate
-again. Anyways, for now you should be able to execute an operation that
-requires authentication, as in the example below.
-
-<pre data-plugin="interactive-example">
-let taskcluster = require('taskcluster-client');
-
-// Create queue client object with temporary credentials
-let queue = new taskcluster.Queue({
-  credentials: JSON.parse(localStorage.credentials)
-});
-
-// Query for number of pending tutorial tasks
-let result = await queue.pendingTasks('aws-provisioner-v1', 'tutorial');
-
-// Print result
-console.log(result);
-</pre>
-
-Don't worry if the number of pending tasks is zero; that is the case most of
-the time, as we aim to process tasks as soon as they arrive.
+```
