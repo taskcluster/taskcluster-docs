@@ -28,11 +28,10 @@ Services should be in a Github repository in the `taskcluster` organization, wit
 ### Source Layout
 
 Include all source in the `src/` directory, and all tests in `test/`.
-The babel-compile configuration will compile those to `lib/` and `.test/`, respectively.
 
 Within the `src` directory, the main script should be named `main.js`.
 This file should use `taskcluster-lib-loader` as described below, and should serve as the main entry point to the service.
-This file will be transpiled to `lib/main.js` and should be set as the `main` property in `package.json`.
+This file should be set as the `main` property in `package.json`.
 
 ### Node
 
@@ -42,20 +41,9 @@ Encode this version both in `package.json` and in any CI configurations such as 
 
 `package.json` should have the `"engine-strict": true` flag set. Preferably directly above the `engines` stanza.
 
-### Compiling
+We now try to have all of our services using node 8 or later. This allows us to run directly with the ECMAScript 2017 features
+without needing any compilation. For the time being, our libraries will still be compiled to support old services or other users.
 
-Use [babel-compile](https://github.com/taskcluster/babel-compile) with [babel-preset-taskcluster](https://github.com/taskcluster/babel-preset-taskcluster) to compile your application.
-Its README describes how to set it up generally, but for a Taskcluster service, you will need to install `babel-compile` and `babel-preset-taskcluster`.
-Include the following in your `package.json`:
-
-```js
-  "scripts": {
-    "compile": "babel-compile -p taskcluster src:lib test:.test",
-    "pretest": "npm run compile",
-    "test": "mocha .test/lint.js .test/*_test.js",
-    "install": "npm run compile",
-  }
-```
 
 ## Managing Dependencies
 
@@ -63,7 +51,6 @@ Try to keep up-to-date with the latest versions of all Taskcluster libraries.
 In general, the implications of updating these libraries should be clear, and the authors are easy to find when things go badly.
 
 Other dependencies should also be kept up-to-date as much as possible.
-Tools like [Greenkeeper](https://greenkeeper.io/) can be very useful for this purpose.
 
 ### Yarn
 
@@ -90,20 +77,17 @@ In the real world, that probably means a lot less.
 ### Test Setup
 
 Use Mocha to run unit tests, in the `test/` directory.
-In order to get useful stacktraces from unit tests, you should `yarn add source-map-support`.
 Include the following in `mocha.opts`:
 
 ```
 --ui tdd
 --timeout 30s
 --reporter spec
---require source-map-support/register
 ```
 
-Name the test files `test/*_test.js`, so they will be matched by the `npm test` script given above.
-Because we transpile the tests to different directory than Mocha's default (`.test` instead of `test`), we need to be careful that the bash globbing will match all test files.
-The easiest way to ensure this is to have all test files directly in the `test` directory and not in sub-directories
-These files should require production code from `../lib/`: `foo = require('../lib/foo')`.
+Name the test files `test/*_test.js`, so they will be matched by the `npm test` script given below.
+We always have all test files directly in the `test` directory and not in sub-directories
+These files should require production code from `../src/`: `foo = require('../src/foo')`.
 
 ### Helpers
 
@@ -111,28 +95,23 @@ Include any shared test-specific code in `test/helpers.js`.
 
 ### ESLint
 
-Use [eslint-config-taskcluster](https://github.com/taskcluster/eslint-config-taskcluster) and [eslint-plugin-taskcluster](https://github.com/taskcluster/eslint-plugin-taskcluster) along with `mocha-eslint` to check for lint.
+Use [eslint-config-taskcluster](https://github.com/taskcluster/eslint-config-taskcluster) to check for lint.
 
-To do so, install `eslint`, `babel-eslint`, `mocha-eslint`, `eslint-config-taskcluster`, and `eslint-plugin-taskcluster`.
-Add the following to the `scripts` section of `package.json`: `"test": "mocha .test/lint.js .test/*_test.js"`.
+To do so, install `eslint-config-taskcluster` and make a scripts section of the package.json that is similar to
 
-Create `.eslintrc` in the root of the repository with
+```json
+"scripts": {
+  "test": "mocha test/*_test.js",
+  "lint": "eslint src/*.js test/*.js",
+  "pretest": "yarn lint"
+},
+```
+
+and create `.eslintrc` in the root of the repository with
 ```js
 {
   "extends": "eslint-config-taskcluster"
 }
-```
-
-And the following in `test/lint.js`:
-```js
-var lint = require('mocha-eslint');
-
-var paths = [
-  'src/*.js',
-  'test/*.js',
-];
-
-lint(paths);
 ```
 
 ### Test Requirements
