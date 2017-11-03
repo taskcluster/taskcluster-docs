@@ -25,24 +25,12 @@ amazing libraries and tools, upon which it is built.
 
 **Libraries**,
 
- * `d3.v3.min.js` from [d3js](http://d3js.org/) licensed under the
-    [BSD License](http://opensource.org/licenses/BSD-3-Clause),
- * `dagre-d3.min.js` from [dagre-d3](https://github.com/cpettitt/dagre-d3)
-   licensed under the MIT License,
  * `ejs_production.js` from [EJS](http://embeddedjs.com/) is licensed under the
    MIT License,
- * `highlight.css` from [Pygments](http://pygments.org/) is licensed under the
-   BSD license,
  * `jquery.min.js` from [jQuery](https://jquery.org) is licensed under the MIT
    license,
- * `jsonform.js` from [JSONForm](https://github.com/joshfire/jsonform) is
-   licensed under the MIT license,
  * `marked.js` from [marked](https://github.com/chjj/marked) is licensed under
    the MIT license,
- * `moment.min.js` from [momentjs](http://momentjs.com/) is licensed under the
-   MIT license,
- * `prism.js` and `prism.css` from [PRISM](http://prismjs.com/) is licensed
-   under the MIT license.
  * `raphael-min.js` from [Raphael](http://raphaeljs.com/) is licensed under
    the MIT license.
  * `sequence-diagram-min.js` from [JS Sequence Diagrams]
@@ -52,12 +40,6 @@ amazing libraries and tools, upon which it is built.
    [superagent](https://github.com/visionmedia/superagent),
    [superagent-promise](https://github.com/lightsofapollo/superagent-promise)
    and [promise](https://github.com/then/promise) all licensed under MIT.
- * `term.js` from [term.js](https://github.com/chjj/term.js/) is licensed
-   under the MIT license.
- * `underscore-min.js` from [underscore.js](http://underscorejs.org/) is
-   licensed under the MIT license.
- * Files in `ace/` are from [Ace](http://ace.c9.io/) is licensed under the
-   BSD license.
  * Files in `bootstrap/` from [Bootstrap](http://getbootstrap.com/) is licensed
    under the MIT license.
  * Files in `bootstrap-select/` from [bootstrap-select]
@@ -65,9 +47,6 @@ amazing libraries and tools, upon which it is built.
    MIT license.
  * Files in `docson/` from [Docson](https://github.com/lbovet/docson) is
    licensed under the Apache License, Version 2.
- * Files in `JSONFormatter/` by [Redsandro and Vladimir Bodurov]
-   (https://gist.github.com/Redsandro/5473335) is licensed under the MIT
-   license.
  * `promise.js` is from [es6-promises by Jake Archibald]
    (https://github.com/jakearchibald/es6-promise) is licensed under the MIT
    license.
