@@ -6,7 +6,7 @@ followup:
     tutorial/hello-world: I want to run a task manually in Taskcluster.
     tutorial/gecko-tasks: I'm a Firefox/Gecko developer and I want to change builds or tests.
     tutorial/debug-task: A task is failing and I want to debug it.
-    tutorial/interactive: I want to work with the Taskcluster APIs.
+    tutorial/apis: I want to work with the Taskcluster APIs.
     tutorial/hack-tc: I want to hack on Taskcluster itself.
 ---
 
@@ -21,8 +21,6 @@ information.
 
 If you want a more comprehensive description of Taskcluster's design and
 operation, see the manual portion of this documentation.
-
-_How do you want to use Taskcluster?_
 
 ## Patches Welcome!
 

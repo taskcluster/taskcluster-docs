@@ -181,3 +181,4 @@
 /reference/integrations/hooks: /reference/core/taskcluster-hooks
 /reference/core/hooks/api-docs: /reference/core/taskcluster-hooks/references/api
 /reference/integrations/hooks/api-docs: /reference/core/taskcluster-hooks/references/api
+/tutorial/interactive: /tutorial/apis

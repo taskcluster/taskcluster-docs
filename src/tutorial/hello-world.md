@@ -4,7 +4,7 @@ followup:
   subtext: Digging Deeper
   links:
     finding-tasks: I want to look at some real tasks
-    interactive: I want to know how the tools site works
+    apis: I want to know how to call Taskcluster APIs
     gecko-tasks: I'm a Firefox/Gecko developer - How do my commits get built?
 ---
 
