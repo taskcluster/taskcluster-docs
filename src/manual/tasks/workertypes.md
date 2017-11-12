@@ -20,3 +20,6 @@ The format of a task's `payload` property is specific to the worker that will
 execute it, so defining a task requires knowledge of worker type's
 configuration. If given a task with an inappropriate payload, a worker will
 resolve the task with the reason `malformed-payload`.
+
+You can explore the available worker types (after selecting a `provisionerId`)
+at https://tools.taskcluster.net/provisioners.
