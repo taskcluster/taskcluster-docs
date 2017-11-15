@@ -47,7 +47,7 @@ Message Footer
 
    When a commit is explained, focus on the *why* and *what*. Details
    about *how* a change was made can be explored simply by taking a
-   look at the code. If the code being commited necessitates extra
+   look at the code. If the code being committed necessitates extra
    explanation, then this is best handled with source comments.
 
 * Bullet points are okay to use
