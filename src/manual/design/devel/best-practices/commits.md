@@ -73,4 +73,5 @@ Closes #112
 ```
 
 ## Recommended Readings
+* [Sequences of Commits](http://hassanali.me/2017/11/20/sequences-of-commits)
 * [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
