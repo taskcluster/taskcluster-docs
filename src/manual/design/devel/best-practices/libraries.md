@@ -41,15 +41,14 @@ you should not `npm install` anything and there is no `npm-shrinkwrap.json`. Gen
 place of `npm install` and `npm install <package>`. Yarn should keep everything in a `yarn.lock` file that is committed to version
 control.
 
-## Part Of The @taskcluster NPM Org
-
-Ensure that your npm library is part of the @taskcluster team.
-
 ## Publish On Tag
 
 Set up libraries to publish on a tag using [Travis-CI](https://docs.travis-ci.com/user/deployment/npm/).
 The appropriate API token is for the 'taskcluster-bot' user, and the the token itself is available in the password store.
 Use email `taskcluster-accounts@mozilla.com`.
+
+You will also need to ensure that `taskcluster-bot` is in the list of collaborators for the library.
+You can do this via the NPM website.
 
 To publish, run `npm version patch` (or `minor` or `major` depending on the semver changes).
 This will update the version, create a new git commit, and create a tag.
