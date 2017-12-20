@@ -51,7 +51,9 @@ The `start` and `expiry` properties are the validity start and expiration of the
 certificate, respectively. Both `start` and `expiry` are in milliseconds since
 UNIX epoch, and these cannot be more than 31 days apart. Notice that it is
 allowed to issue temporary credentials that take effect in the future, useful
-for delegating access to scheduled tasks.
+for delegating access to scheduled tasks. The auth service tolerates up to five
+minutes clock skew between client and server, so temporary credentials should
+not apply any clock skew adjustment themselves.
 
 The `seed` property is a 44 character string of random characters. It used for
 construction of the `accessToken`, as detailed later.
