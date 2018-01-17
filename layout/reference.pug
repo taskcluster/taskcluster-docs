@@ -111,6 +111,35 @@ mixin schemabox(schema)
     table.table
       +schemarow(schema)
 
+mixin scopeBox(scopes)
+  if typeof scopes === 'string'
+    .label.label-success !{scopes.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
+  if scopes.if && scopes.then
+    span if&nbsp;
+      .label.label-info #{scopes.if}
+    .sub-scope-box
+      +scopeBox(scopes.then)
+  else if scopes.for && scopes.each && scopes.in
+    span for&nbsp;
+      .label.label-info #{scopes.for}
+    span &nbsp;in&nbsp;
+      .label.label-info #{scopes.in}
+    .sub-scope-box
+      +scopeBox(scopes.each)
+  else if scopes.AllOf || scopes.AnyOf
+    - var operator = Object.keys(scopes)[0]
+    span= scopes.AllOf ? 'All Of' : 'Any Of'
+    .sub-scope-box
+      each scope, index in scopes[operator]
+        +scopeBox(scope)
+        if index != scopes[operator].length - 1
+          <br />
+
+style.
+  .sub-scope-box {
+    border-left: 2px solid #777;
+    padding-left: 4px;
+  }
 
 style.
   .method-properties > dt,
@@ -300,15 +329,19 @@ each entry in entries.filter(function(entry) { return entry.type === 'function';
       code !{route}
     if entry.scopes
       dt Scopes
-      dd
-        each scopeset, index in entry.scopes
-          each scope, index in scopeset
-            div.label.label-success !{scope.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
-            if index != scopeset.length - 1
-              <br />
-          if index != entry.scopes.length - 1
-            .strike
-              span or
+      if Array.isArray(entry.scopes)
+        dd
+          each scopeset, index in entry.scopes
+            each scope, index in scopeset
+              div.label.label-success !{scope.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
+              if index != scopeset.length - 1
+                <br />
+            if index != entry.scopes.length - 1
+              .strike
+                span or
+      else
+        dd.scope-box
+          +scopeBox(entry.scopes)
     dt Signature
     - var args = entry.args.slice();
     if entry.input
