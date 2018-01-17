@@ -113,32 +113,41 @@ mixin schemabox(schema)
 
 mixin scopeBox(scopes)
   if typeof scopes === 'string'
-    .label.label-success !{scopes.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
+    span.scope-itself.bg-success !{scopes.replace(/[<]/g, '&lt;').replace(/[>]/g, '&gt;')}
   if scopes.if && scopes.then
-    span if&nbsp;
-      .label.label-info #{scopes.if}
+    span.boxtop if&nbsp; <strong>#{scopes.if}</strong>
     .sub-scope-box
       +scopeBox(scopes.then)
   else if scopes.for && scopes.each && scopes.in
-    span for&nbsp;
-      .label.label-info #{scopes.for}
-    span &nbsp;in&nbsp;
-      .label.label-info #{scopes.in}
+    span.boxtop for each&nbsp; <strong>#{scopes.for}</strong>
+    span.boxtop &nbsp;in&nbsp; <strong>#{scopes.in}</strong>
     .sub-scope-box
       +scopeBox(scopes.each)
   else if scopes.AllOf || scopes.AnyOf
     - var operator = Object.keys(scopes)[0]
-    span= scopes.AllOf ? 'All Of' : 'Any Of'
+    span.boxtop= scopes.AllOf ? 'all of' : 'any of'
     .sub-scope-box
       each scope, index in scopes[operator]
         +scopeBox(scope)
-        if index != scopes[operator].length - 1
+        if index < scopes[operator].length - 1
+          span.small= scopes.AllOf ? ' and' : ' or'
           <br />
 
 style.
   .sub-scope-box {
-    border-left: 2px solid #777;
-    padding-left: 4px;
+    border-left: 1px solid #888;
+    padding: 2px 10px;
+  }
+
+  .boxtop {
+    background-color: #888;
+    border-bottom: 1px solid #888;
+    color: #fff;
+    padding: 1px 3px;
+  }
+
+  .scope-itself {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   }
 
 style.
