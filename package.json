@@ -59,7 +59,7 @@
   "devDependencies": {},
   "engine-strict": true,
   "engines": {
-    "node": "^8.4.0",
+    "node": "^9.4.0",
     "yarn": "^1.0.0"
   }
 }
