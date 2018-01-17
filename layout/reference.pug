@@ -146,6 +146,17 @@ style.
     padding: 1px 3px;
   }
 
+  .boxtop:hover {
+      background-color: #555;
+      border-bottom: 1px solid #555;
+  }
+  .boxtop:hover + .sub-scope-box {
+      border-left: 1px solid #555;
+  }
+  .boxtop:hover + .sub-scope-box > .small {
+      font-weight: bold;
+  }
+
   .scope-itself {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   }
