@@ -307,6 +307,7 @@ here is the full code we wrote in order to make this happen:
           link.innerText = 'Call Taskcluster API';
         }
       });
+    }
     </script>
   </body>
 </html>
