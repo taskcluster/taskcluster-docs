@@ -63,7 +63,7 @@ mixin schemarow(schema, name, requiredList)
         each prop, name in schema.properties
           if prop.type && prop.type === "object"
             tr.frow
-              +normalrow(schema, name, 'Object of', requiredList)
+              +normalrow(prop, name, 'Object of', requiredList)
             tr.srow
               td.indent(colspan=4)
                 table.table.table-condensed
