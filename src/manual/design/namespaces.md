@@ -152,6 +152,16 @@ Artifact names are, by convention, slash-separated.
 * `project/<project>/…` -
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
+* `login-identity/<identity>/…`
+   Artifact names with this prefix are the responsibility of the user with the given [login indentity](/reference/core/login).
+   This namespace enables tasks to persist data that is only readable by a single user (typically the user that submitted it), such as loaner credentials.
+
+Note, highly confidential data should not be stored in unencrpyted taskcluster
+artifacts, since they are only protected by a single (fallible) system. If
+highly sensitive data needs to be persisted, it is recommended to encrypt data
+using the public key of a key-pair whose private key has been highly secured,
+in order that at least two independent systems protect the data.
+
 ---
 
 ## Hooks
