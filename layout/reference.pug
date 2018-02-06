@@ -118,6 +118,10 @@ mixin scopeBox(scopes)
     span.boxtop if&nbsp; <strong>#{scopes.if}</strong>
     .sub-scope-box
       +scopeBox(scopes.then)
+    if scopes.else
+      span.boxtop else
+      .sub-scope-box
+        +scopeBox(scopes.else)
   else if scopes.for && scopes.each && scopes.in
     span.boxtop for each&nbsp; <strong>#{scopes.for}</strong>
     span.boxtop &nbsp;in&nbsp; <strong>#{scopes.in}</strong>
