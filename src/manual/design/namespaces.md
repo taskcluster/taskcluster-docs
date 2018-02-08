@@ -222,6 +222,7 @@ We do not subdivide namespaces; instead, they are enumerated here:
  * `tc-diagnostics` -- the Taskcluster diagnostics tool
  * `taskcluster-github` -- the Taskcluster Github integration
  * `gecko-level-<level>` -- Gecko tasks
+ * `canary-harvester` -- Used by [canary harvester](https://github.com/mozilla/canary-harvester) [hooks](/reference/core/taskcluster-hooks)
 
 ---
 
