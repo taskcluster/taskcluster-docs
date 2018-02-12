@@ -1,8 +1,6 @@
 ---
 title: Creating a task via API
 layout: default
-class: markdown
-docson: true
 followup:
   links:
     monitor-task-status: Monitor a Task's Status

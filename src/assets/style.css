@@ -135,27 +135,6 @@ pre.ace_editor {
   margin: 0 0;
 }
 
-.docson {
-  font-family: inherit;
-}
-
-.docson .box-header {
-  font-family: 'Montserrat';
-  background: whitesmoke;
-}
-
-.docson .box {
-  width: 100%;
-}
-
-.docson .desc p {
-  margin-top: 5px;
-}
-
-.docson .property-name, .docson .type-pattern {
-  font-family: Source Code Pro, monospace;
-}
-
 pre.json-schema {
   background: none;
   border: none;

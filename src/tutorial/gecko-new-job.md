@@ -1,6 +1,5 @@
 ---
 title: Adding a new job
-docson: true
 marked: true
 ejs: true
 superagent: true

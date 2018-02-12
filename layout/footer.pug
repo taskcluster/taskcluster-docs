@@ -29,36 +29,13 @@ if !noAnchors
     }
     anchors.add();
     anchors.remove('.no-anchor');
-if docson || docref
+if docref
   script.
     // Make sure the URL's protocol is `https`.  Lots of schema and refernce
     // URLs are hard-coded as http, but that will cause mixed-content warnings.
     var fixUrlProtocol = function(url) {
       return url.replace(/^http:/, 'https:');
     }
-if docson
-  // JSON Schema Documentation
-  script(src='/assets/docson/lib/require.js')
-  script.
-      require.config({baseUrl: "/assets/docson/"});
-      require(["docson"], function(docson) {
-        docson.templateBaseUrl = "/assets/docson/templates";
-        window.renderSchemas = function() {
-          $('[data-render-schema]').each(function() {
-            var el = $(this);
-            if (el.data('has-rendered')) {
-              return;
-            }
-            el.data('has-rendered', true);
-            var schema = el.data('render-schema');
-            $.get(fixUrlProtocol(schema), function(data) {
-              docson.doc(el, data);
-            });
-          });
-        };
-
-        window.renderSchemas();
-      });
 if sequence_diagrams
   script(src='/assets/raphael-min.js')
   script(src='/assets/underscore-min.js')

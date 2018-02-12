@@ -2,7 +2,6 @@
 title: Monitor task status via API
 layout: default
 class: markdown
-docson: true
 followup:
   links:
     download-task-artifacts: Download task artifacts via API

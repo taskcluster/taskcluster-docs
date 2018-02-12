@@ -2,7 +2,6 @@
 title: Download task artifacts via API
 layout: default
 class: markdown
-docson: true
 followup:
   links:
     '/reference': API documentation for all Taskcluster services

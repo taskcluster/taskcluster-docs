@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
 var url = require('url');
-var markdown = require('gulp-markdown');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
 var data = require('gulp-data');
@@ -14,13 +13,14 @@ var pug = require('./lib/pug');
 var frontmatter = require('gulp-front-matter');
 var awspublish = require('gulp-awspublish');
 var parallelize = require('concurrent-transform');
+var download = require('gulp-download-stream');
 var headers = require('./lib/headers');
 var filter = require('./lib/filter');
 var navlinks = require('./lib/navlinks');
 var makeRedirects = require('./lib/make-redirects');
+var markdown = require('./lib/markdown');
 var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
-var download = require('gulp-download-stream');
 var userlist = require('./lib/userlist');
 
 function stripHtml(path) {

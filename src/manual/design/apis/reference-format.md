@@ -2,7 +2,6 @@
 filename: design/apis/reference-format.md
 title: Reference Formats
 order: 40
-docson: true
 ---
 
 Most Taskcluster services make heavy use of JSON schemas for validation of

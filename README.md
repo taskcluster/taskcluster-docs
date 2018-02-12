@@ -45,8 +45,6 @@ amazing libraries and tools, upon which it is built.
  * Files in `bootstrap-select/` from [bootstrap-select]
    (https://github.com/silviomoreto/bootstrap-select) is licensed under the
    MIT license.
- * Files in `docson/` from [Docson](https://github.com/lbovet/docson) is
-   licensed under the Apache License, Version 2.
  * `promise.js` is from [es6-promises by Jake Archibald]
    (https://github.com/jakearchibald/es6-promise) is licensed under the MIT
    license.
