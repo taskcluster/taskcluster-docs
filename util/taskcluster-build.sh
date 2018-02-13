@@ -8,7 +8,7 @@ yarn install --no-progress
 yarn download
 
 if [ "$1" = "pull-request" ]; then
-    yarn check
+    yarn run check
     # [C] here avoids matching itself
     if git grep Task[C]luster; then
         echo "Pull Request contains incorrect capitalization of Taskcluster; see above"
