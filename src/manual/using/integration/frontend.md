@@ -96,7 +96,7 @@ const status = document.getElementById('status');
 const auth = new auth0.WebAuth({
   domain: 'auth.mozilla.auth0.com',
   responseType: 'token id_token',
-  scope: 'full-user-credentials openid profile',
+  scope: 'taskcluster-credentials openid profile',
   clientID: '<YOUR AUTH0 CLIENT ID>',
   audience: '<YOUR AUTH0 CLIENT AUDIENCE>',
   // This redirect URI is configured with your auth0 client.
@@ -233,7 +233,7 @@ here is the full code we wrote in order to make this happen:
     const auth = new auth0.WebAuth({
       domain: 'auth.mozilla.auth0.com',
       responseType: 'token id_token',
-      scope: 'full-user-credentials openid profile',
+      scope: 'taskcluster-credentials openid profile',
       clientID: '<YOUR AUTH0 CLIENT ID>',
       audience: '<YOUR AUTH0 CLIENT AUDIENCE>',
       // This redirect URI is configured with your auth0 client.
