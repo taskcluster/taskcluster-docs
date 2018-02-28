@@ -131,7 +131,7 @@ mixin combination(schema, name, subs, sort)
           case sub.type
             when "object"
               tr.frow
-                +normalrow(sub, name, 'Object of', [])
+                +normalrow(sub, sub.title, 'Object of', [])
               tr.srow
                 td.indent(colspan=4)
                   table.table.table-condensed
@@ -142,52 +142,42 @@ mixin combination(schema, name, subs, sort)
 
 mixin schemarow(schema, name, requiredList)
   - requiredList = schema.required || requiredList || []
-  - schema.description = schema.description || schema.title
-  case schema.type
-    when "array"
-      tr.frow
-        +normalrow(schema, name, 'Array of', requiredList)
-      tr.srow
-        td.indent(colspan=4)
-          table.table.table-condensed
-            +schemarow(schema.items, schema.items.title, requiredList)
-    when "object"
-      if schema.properties
-        each prop, name in schema.properties
-          if prop.type && prop.type === "object"
-            tr.frow
-              +normalrow(prop, name, 'Object of', requiredList)
-            tr.srow
-              td.indent(colspan=4)
-                table.table.table-condensed
-                  +schemarow(prop, name, requiredList)
-          else
-            +schemarow(prop, name, requiredList)
-        if schema.additionalProperties
-          tr
-            td(colspan=4)
-              Additional properties are permitted...
-      else if schema.additionalProperties
-        +schemarow(schema.additionalProperties, '<string>', requiredList)
-      else if schema.anyOf
-        +combination(schema, schema.title, schema.anyOf, 'Any of')
-      else if schema.allOf
-        +combination(schema, schema.title, schema.allOf, 'All of')
-      else if schema.oneOf
-        +combination(schema, schema.title, schema.oneOf, 'One of')
-      else
-        tr
-          td(colspan=4) Anything ¯\_(ツ)_/¯
-    default
-      if schema.anyOf
-        +combination(schema, name, schema.anyOf, 'Any of')
-      else if schema.allOf
-        +combination(schema, name, schema.allOf, 'All of')
-      else if schema.oneOf
-        +combination(schema, name, schema.oneOf, 'One of')
-      else
+  if schema.items
+    tr.frow
+      +normalrow(schema, name, 'Array of', requiredList)
+    tr.srow
+      td.indent(colspan=4)
+        table.table.table-condensed
+          +schemarow(schema.items, schema.items.title, requiredList)
+  else if schema.properties
+    each prop, name in schema.properties
+      if prop.type && prop.type === "object"
         tr.frow
-          +normalrow(schema, name, null, requiredList)
+          +normalrow(prop, name, 'Object of', requiredList)
+        tr.srow
+          td.indent(colspan=4)
+            table.table.table-condensed
+              +schemarow(prop, name, requiredList)
+      else
+        +schemarow(prop, name, requiredList)
+    if schema.additionalProperties
+      tr
+        td(colspan=4)
+          | <em>Additional properties are permitted</em>
+  else if schema.additionalProperties
+    +schemarow(schema.additionalProperties, '<string>', requiredList)
+  else if schema.anyOf
+    +combination(schema, schema.title || name, schema.anyOf, 'Any of')
+  else if schema.allOf
+    +combination(schema, schema.title || name, schema.allOf, 'All of')
+  else if schema.oneOf
+    +combination(schema, schema.title || name, schema.oneOf, 'One of')
+  else if schema.type === "object"
+    tr
+      td(colspan=4) Anything ¯\_(ツ)_/¯
+  else
+    tr.frow
+      +normalrow(schema, name, null, requiredList)
 
 mixin schemabox(schema)
   .schemabox.panel.panel-default
