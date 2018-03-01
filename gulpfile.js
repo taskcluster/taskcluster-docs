@@ -14,11 +14,12 @@ var frontmatter = require('gulp-front-matter');
 var awspublish = require('gulp-awspublish');
 var parallelize = require('concurrent-transform');
 var download = require('gulp-download-stream');
+var markdown = require('gulp-markdown');
 var headers = require('./lib/headers');
 var filter = require('./lib/filter');
 var navlinks = require('./lib/navlinks');
 var makeRedirects = require('./lib/make-redirects');
-var markdown = require('./lib/markdown');
+var renderSchemas = require('./lib/render-schemas');
 var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
 var userlist = require('./lib/userlist');
@@ -35,6 +36,7 @@ function index() {
     .src('src/index.md', {base: 'src'})
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
+    .pipe(renderSchemas())
     .pipe(filter.renameIndex())
     .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
@@ -46,6 +48,7 @@ function resources() {
     .src('src/resources.md', {base: 'src'})
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
+    .pipe(renderSchemas())
     .pipe(filter.renameIndex())
     .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
@@ -68,6 +71,7 @@ function error() {
     .src('src/error.md', {base: 'src'})
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
+    .pipe(renderSchemas())
     .pipe(filter.renameIndex())
     .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
@@ -79,6 +83,7 @@ function tutorial() {
     .src('src/tutorial/**/*.md', {base: 'src'})
     .pipe(frontmatter({property: 'data'}))
     .pipe(markdown())
+    .pipe(renderSchemas())
     .pipe(filter.renameIndex())
     .pipe(rename(stripHtml))
     .pipe(pug({template: 'layout/layout.pug'}))
@@ -92,6 +97,7 @@ function manual() {
       .pipe(fileInclude())
       .pipe(frontmatter({property: 'data'}))
       .pipe(markdown())
+      .pipe(renderSchemas())
       .pipe(filter.renameIndex())
       .pipe(rename(stripHtml))
       .pipe(navlinks({rootPath: '/manual'}))
@@ -119,6 +125,7 @@ function reference() {
       .pipe(filter.renameIndex())
     )
     .pipe(rename(stripHtml))
+    .pipe(renderSchemas())
     .pipe(navlinks({rootPath: '/reference'}))
     .pipe(pug({template: 'layout/layout.pug'}))
     .pipe(headers.set('Content-Type', 'text/html'))
@@ -148,6 +155,7 @@ function presentations() {
       .src('src/presentations/index.md', {base: 'src'})
       .pipe(frontmatter({property: 'data'}))
       .pipe(markdown())
+      .pipe(renderSchemas())
       .pipe(rename({dirname: 'presentations', basename: ''}))
       .pipe(rename(stripHtml))
       .pipe(pug({template: 'layout/layout.pug'}))
