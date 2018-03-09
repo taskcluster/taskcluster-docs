@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -e
+set -ex
 
 yarn global add node-gyp
 yarn install --no-progress
