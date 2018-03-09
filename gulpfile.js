@@ -199,7 +199,7 @@ gulp.task('publish', function() {
     return site()
       .pipe(s3.setHeaders())
       .pipe(parallelize(publisher.publish({}, publishOptions), 20))
-      .pipe(publisher.cache())
+      .pipe(publisher.sync())
       .pipe(awspublish.reporter())
   });
 });
