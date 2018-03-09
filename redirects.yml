@@ -138,6 +138,7 @@
 /reference/integrations/taskcluster-treeherder/exchanges: /reference/integrations/taskcluster-treeherder/references/events
 /reference/integrations/aws-provisioner/api-docs: /reference/integrations/aws-provisioner/references/api
 /reference/integrations/aws-provisioner/exchanges: /reference/integrations/aws-provisioner/references/events
+/reference/workers/generic-worker/payload: /reference/workers/generic-worker/docs/payload
 /manual/tasks/aws-provisioner: /manual/task-execution/provisioning
 /manual/tasks/queue: /manual/task-execution/queues
 /manual/tasks/worker-interaction: /reference/platform/taskcluster-queue/docs/worker-interaction
