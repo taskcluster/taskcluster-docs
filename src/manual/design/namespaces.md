@@ -48,6 +48,12 @@ Client names describe the entity making an API call.
 They are used for logging and auditing, but not for access control -- all access control is performed with scopes.
 Client IDs have the following forms:
 
+ * `static/*`, Clients with names prefixed `static/` are statically configured in the taskcluster deployment.
+   They cannot be created, modified or deleted at runtime. These are used for bootstrapping services and creating
+   initial clients and roles.
+ 
+ * `static/taskcluster/*`, Clients with the prefix `static/taskcluster/` are reserved for taskcluster services.
+ 
  * `mozilla-ldap/<email>` -
    Clients with this name belong to users who have been authenticated against the Mozilla LDAP database.
    These are temporary credentials issued by [Taskcluster-Login](https://github.com/taskcluster/taskcluster-login).
