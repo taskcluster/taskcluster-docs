@@ -28,6 +28,7 @@ Services should be in a Github repository in the `taskcluster` organization, wit
 ### Source Layout
 
 Include all source in the `src/` directory, and all tests in `test/`.
+See [testing](testing) for more information on testing.
 
 Within the `src` directory, the main script should be named `main.js`.
 This file should use `taskcluster-lib-loader` as described below, and should serve as the main entry point to the service.
@@ -71,87 +72,6 @@ The `yarn outdated` command gives a useful overview of available updates.
 In general, try to keep packages up to date within semver constraints (so, fix things displayed in red in `yarn outdated`), but be cautious that the new code you are incorporating into your service is trustworthy.
 In an ideal world, that means a thorough security review.
 In the real world, that probably means a lot less.
-
-## Testing
-
-### Test Setup
-
-Use Mocha to run unit tests, in the `test/` directory.
-Include the following in `mocha.opts`:
-
-```
---ui tdd
---timeout 30s
---reporter spec
-```
-
-Name the test files `test/*_test.js`, so they will be matched by the `npm test` script given below.
-We always have all test files directly in the `test` directory and not in sub-directories
-These files should require production code from `../src/`: `foo = require('../src/foo')`.
-
-### Helpers
-
-Include any shared test-specific code in `test/helpers.js`.
-
-### ESLint
-
-Use [eslint-config-taskcluster](https://github.com/taskcluster/eslint-config-taskcluster) to check for lint.
-
-To do so, install `eslint-config-taskcluster` and make a scripts section of the package.json that is similar to
-
-```json
-"scripts": {
-  "test": "mocha test/*_test.js",
-  "lint": "eslint src/*.js test/*.js",
-  "pretest": "yarn lint"
-},
-```
-
-and create `.eslintrc` in the root of the repository with
-```js
-{
-  "extends": "eslint-config-taskcluster"
-}
-```
-
-### Test Requirements
-
-A simple `git clone` .. `yarn install` .. `yarn test` should run successfully for new contributors.
-Anything else dramatically increases the difficulty in getting started.
-
-Where possible, try to write tests that do not require any credentials or access to external services.
-Liberal use of fakes, mocks, stubs, etc. allows most application logic to be tested in isolation.
-Note that `taskcluster-lib-loader` allows dependency injection by means of overwrites:
-
-```js
-let server = await load('server', {
-  profile: 'test',
-  dependency1: fakeDep1,
-  dependency2: fakeDep2,
-});
-```
-
-For tests that must have credentials, check for the presence of credentials and mark the suite as pending if they are not available:
-
-```js
-suite("things", function() {
-  if (!helper.haveRealCredentials) {
-    this.pending = true;
-  }
-});
-```
-
-This will generate clear output for anyone running the tests without credentials, showing that many tests were not run.
-If they make a pull request, then the full suite will run in automation, and any issues not detected locally will be revealed.
-
-### Configuration
-
-For services which require credentials, it should be possible to supply them in a `user-config.yml` file.
-The `typed-env-config` library makes this easy.
-
-The service repository should have a `user-config-example.yml` which has all the necessary settings filled with an illustrative example value or the string '...'.
-This helps people to know which credentials they need and how to set them up.
-The `user-config.yml` should be included in `.gitignore` to avoid checking in credentials.
 
 ## Deployment
 
