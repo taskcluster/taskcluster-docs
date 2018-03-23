@@ -147,6 +147,18 @@ secrets.mockSuite('spawning EC2 instances', [], function(mock) {
 });
 ```
 
+### Available Mock Implementations
+
+The following is a partial list of useful mock implementations.
+
+* `fakeauth` in `taskcluster-lib-testing` provides a fake implementation of the Auth service for testing services that define APIs.
+* The `Entity` class in `azure-entities` can take an `inMemory: true` option to store data locally without requiring Azure credentials.
+* The `aws-mock-s3` package provides good support for mocking the `S3` component of the AWS SDK.
+* The `nock` package is useful for intercepting HTTP requests very low in the node HTTP client implementation, and is especially helpful when mocking other TC services.
+  For example, `fakeauth` uses `nock`.
+
+Development of new, general-purpose mocks is encouraged!
+
 ## Test Output
 
 In the default configuration, where possible, tests should output only the pass/fail status of each test case (Mocha's default output).
