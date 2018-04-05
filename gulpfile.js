@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var path = require('path');
 var url = require('url');
+var child_process = require('child_process');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
 var data = require('gulp-data');
@@ -8,13 +9,13 @@ var clean = require('gulp-clean');
 var gunzip = require('gulp-gunzip');
 var untar = require('gulp-untar');
 var fileInclude = require('gulp-file-include');
-var virtual_webserver = require('./lib/virtual-webserver');
 var pug = require('./lib/pug');
 var frontmatter = require('gulp-front-matter');
 var awspublish = require('gulp-awspublish');
 var parallelize = require('concurrent-transform');
 var download = require('gulp-download-stream');
 var markdown = require('gulp-markdown');
+var log = require('fancy-log');
 var headers = require('./lib/headers');
 var filter = require('./lib/filter');
 var navlinks = require('./lib/navlinks');
@@ -23,6 +24,7 @@ var renderSchemas = require('./lib/render-schemas');
 var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
 var userlist = require('./lib/userlist');
+var static = require('./lib/static');
 
 function stripHtml(path) {
   if (path.extname === '.html' || path.extname === '.json') {
@@ -111,14 +113,14 @@ function manual() {
 
 function reference() {
   return merge(
-    gulp.src(['build/reference/*/docs/*', '!build/reference/*/docs/*.md'], {base: 'build'})
+    gulp.src(['raw/reference/*/docs/*', '!raw/reference/*/docs/*.md'], {base: 'raw'})
       .pipe(raw()),
     merge(
-      gulp.src(['build/reference/*/references/*.json'], {base: 'build'})
+      gulp.src(['raw/reference/*/references/*.json'], {base: 'raw'})
         .pipe(raw()),
       merge(
         gulp.src('src/reference/**/*.md', {base: 'src'}),
-        gulp.src('build/reference/**/*.md', {base: 'build'}).pipe(raw())
+        gulp.src('raw/reference/**/*.md', {base: 'raw'}).pipe(raw())
       )
       .pipe(frontmatter({property: 'data'}))
       .pipe(markdown())
@@ -183,10 +185,6 @@ gulp.task('check', function() {
   return site();
 });
 
-gulp.task('webserver', function() {
-  return site().pipe(virtual_webserver({debug: true}));
-});
-
 gulp.task('publish', function() {
   return s3.makePublisher().then(function(publisher) {
     var publishOptions = {
@@ -204,8 +202,31 @@ gulp.task('publish', function() {
   });
 });
 
-gulp.task('clean-build', function() {
-  return gulp.src('build', {read: false})
+// build a static version of the site in static/
+gulp.task('build-static', function() {
+  return site()
+    .pipe(static.createNginxConfig())
+    .pipe(static.setFilenames())
+    .pipe(gulp.dest('static'));
+});
+
+// run nginx as a webserver, similar to how this is deployed in production
+gulp.task('webserver', ['build-static'], function() {
+  const staticDir = path.join(__dirname, 'static');
+  const port = 8000;
+  const command = [
+    `docker run -p ${port}:80 --rm`,
+    `-v ${staticDir}/nginx-site.conf:/etc/nginx/conf.d/default.conf:ro`,
+    `-v ${staticDir}/app/:/app:ro`,
+    'nginx:alpine',
+  ].join(' ');
+  log(`starting nginx webserver on port ${port}:`);
+  log(`${command}`);
+  child_process.spawnSync(command, {shell: true, stdio: 'inherit'});
+});
+
+gulp.task('clean-raw', function() {
+  return gulp.src('raw', {read: false})
     .pipe(clean());
 });
 
@@ -213,7 +234,7 @@ gulp.task('clean-build', function() {
 // every time during development. I'm sure we can come up
 // with some way to do modified times and intelligently
 // redownload if we want, but I don't want to right now.
-gulp.task('download', ['clean-build'], function() {
+gulp.task('download', ['clean-raw'], function() {
   return s3.getPublicFiles('taskcluster-raw-docs').then(function(files) {
     files = files.map(function(remote) {
       return {
@@ -235,7 +256,7 @@ gulp.task('download', ['clean-build'], function() {
         }
         path.dirname = dname.join('/');
       }))
-      .pipe(gulp.dest('build'));
+      .pipe(gulp.dest('raw'));
   });
 });
 

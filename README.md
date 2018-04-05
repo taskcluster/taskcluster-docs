@@ -13,8 +13,19 @@ Development Setup
   4. Run the webserver: `npm start` or `yarn start`.
     * Note that it does not auto-reload on change.
 
-Publishing
+Deployment
 ----------
+
+This site is deployed using Nginx, serving static content. Build the static
+content with `gulp build-static`, or if you want to run the webserver right
+away, use `gulp webserver`.
+
+Note that we still support the "old way" as well, so much of the site is
+designed around producing objects to upload to S3, and then reverse-engineered
+into static files for Nginx.
+
+Publishing (Old Way)
+--------------------
 
 This is done automatically, but for the record: `npm run deploy` or `yarn deploy`.
 
