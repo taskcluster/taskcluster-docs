@@ -10,9 +10,6 @@ nav.navbar.navbar-default
         img(src="/assets/taskcluster.svg")
         | TASKCLUSTER <span class="bullet">&bullet;</span> DOCS
     #navbar.collapse.navbar-collapse
-      form.navbar-form.navbar-right
-        .form-group
-          input#docs-search.form-control.input-sm(type="text", placeholder="Search", autocomplete="off", name="query")
       ul.nav.navbar-nav.navbar-right
         - var sections = { tutorial : 'Tutorial', manual: 'Manual', reference: 'Reference', resources: 'Resources' }
         for section, p in sections
