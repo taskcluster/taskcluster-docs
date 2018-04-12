@@ -9,12 +9,6 @@ View videos, screencasts, and slides given about Taskcluster.
 
 ---
 
-### [<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Blog](http://planet.mozilla.org/taskcluster)
-
-The official blog, with articles syndicated from various authors related to Taskcluster.
-
----
-
 ### [<span class="glyphicon glyphicon-random" aria-hidden="true"></span> GitHub](https://github.com/taskcluster)
 
 Taskcluster's code and repositories. If you are looking to contribute to our open-source codebase, this is a good place to start.
