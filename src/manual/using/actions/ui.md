@@ -21,11 +21,16 @@ Every user interface should support the following:
     auto-generated from the action's JSON-schema. If the action has no
     schema, this step should be skipped. The user's input should be
     validated against the schema.
--   For `action.kind = 'task'`, rendering the template using the
-    JSON-e library, using the variables described in action-spec.
+
+For `action.kind = 'task'`:
+
+-   Rendering the template using the JSON-e library, using the JSON-e
+    context described in action-spec.
 -   Calling `Queue.createTask` with the resulting task, using the
     user's Taskcluster credentials. See the next section for some
     important security-related concerns.
+
+User interfaces should ignore actions with unrecognized kinds.
 
 Creating Tasks
 --------------

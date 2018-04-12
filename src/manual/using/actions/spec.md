@@ -22,84 +22,15 @@ For details on how define custom actions in-tree, refer to
 the in-tree actions section. This document merely
 specifies how `actions.json` shall be interpreted.
 
-Actions
--------
+## actions.json
 
-The content of `actions.json` is a list of actions (and variables, to be
-described later). Each action has a `kind` describing how a user
-interface should trigger it. There is currently only one kind defined:
-`task`.
+The content of `actions.json` is a list of actions and some variables, to be
+described later.
 
-An action with `kind: 'task'` specifies a task that the user interface
-should create. That is, when the action is triggered, the user interface
-calls the Taskcluster API to create a new task, with the content of that
-task determined from `actions.json`.
+Each action has a `kind` describing how a user interface should trigger it.
+The kind-specific properties are described later.
 
-The task created by the action may be useful in its own right (for
-example, running a test with additional debugging), or it may simplify
-trigger in-tree scripts that create new tasks. The latter form is called
-an *action task*, and is similar to a decision task. This allows in-tree
-scripts to execute complicated actions such as backfilling.
-
-Actions of the `'task'` *kind* **must** have a `task` property. This
-property specifies the task template to be parameterized and created in
-order to trigger the action.
-
-The template is parameterized using
-[JSON-e](https://github.com/taskcluster/json-e), with the following
-context entries available:
-
-`taskGroupId`:   the `taskGroupId` of task-group this is triggered from,
-
-`taskId`:   the `taskId` of the selected task, `null` if no task is selected
-    (this is the case if the action has `context: []`),
-
-`task`:   the task definition of the selected task, `null` if no task is
-    selected (this is the case if the action has `context: []`), and,
-
-`ownTaskId`:   the `taskId` of the action task itself. This is useful for
-    indexing without collisions and other similar needs
-
-`input`:   the input matching the `schema` property, `null` if the action
-    doesn't have a `schema` property. See "Action Input" below.
-
-`<key>`:   Any `<key>` defined in the `variables` property may also be
-    referenced. See "Variables" below.
-
-The following **example** demonstrates how a task template can specify
-timestamps and dump input JSON into environment variables:
-
-```json
-{
-  "version": 1,
-  "actions": [
-    {
-      "kind": "task",
-      "name": "thing",
-      "title": "Do A Thing",
-      "description": "Do something",
-      "task": {
-        "workerType": "my-worker",
-        "payload": {
-          "created": {"$fromNow": ""},
-          "deadline": {"$fromNow": "1 hour 15 minutes"},
-          "expiration": {"$fromNow": "14 days"},
-          "image": "my-docker-image",
-          "env": {
-            "TASKID_TRIGGERED_FOR": "${taskId}",
-            "INPUT_JSON": {"$json": {"$eval": "input"}}
-          },
-          ...
-        },
-        ...
-      }
-    }
-  ],
-  "variables": {}
-}
-```
-
-### Metadata
+### Action Metadata
 
 Each action entry must define a `name`, `title` and `description`.
 furthermore, the list of actions should be sorted by the order in which
@@ -122,7 +53,7 @@ short and concise. Ideally, you'll want to avoid duplicates.
 
 The `description` property contains a human readable string describing
 the action, such as what it does, how it does it, what it is useful for.
-This string is to be render as **markdown**, allowing for bullet points,
+This string is to be rendered as **markdown**, allowing for bullet points,
 links and other simple formatting to explain what the action does.
 
 ### Action Context
@@ -228,8 +159,15 @@ When writing schemas it is strongly encouraged that the JSON schema
 is assumed that consumers will render these `description` properties as
 markdown.
 
-Variables
----------
+In practice it's encourage that consumers employ a facility that can generate
+HTML forms from JSON schemas. However, if certain schemas are particularly
+complicated or common, consumers may also hand-write a user-interface for
+collecting the input. In this case the consumer **must** do a deep comparison
+between the schema given in the action, and the schema for which a custom
+user-interface have been written, and fall-back to an auto-generated form if
+the schema doesn't match.
+
+### Variables
 
 The `public/actions.json` artifact has a `variables` property that is a
 mapping from variable names to JSON values to be used as constants.
@@ -238,8 +176,98 @@ they may overshadow builtin variables. This is mainly useful to
 deduplicate commonly used values, in order to reduce template size. This
 feature does not introduce further expressiveness.
 
-Formal Specification
---------------------
+### JSON-e Context
+
+Most kinds use [JSON-e](https://github.com/taskcluster/json-e) to render
+templates.  The context for that rendering contains:
+
+`taskGroupId`:   the `taskGroupId` of task-group this is triggered from,
+
+`taskId`:   the `taskId` of the selected task, `null` if no task is selected
+    (this is the case if the action has `context: []`),
+
+`task`:   the task definition of the selected task, `null` if no task is
+    selected (this is the case if the action has `context: []`), and,
+
+`ownTaskId`:   the `taskId` of the action task itself. This is useful for
+    indexing without collisions and other similar needs
+
+`input`:   the input matching the `schema` property, `null` if the action
+    doesn't have a `schema` property. See "Action Input" below.
+
+`<key>`:   Any `<key>` defined in the `variables` property may also be
+    referenced. See "Variables" below.
+
+Do not confuse the JSON-e context (used to render a template) with the action
+context (used to control which actions apply to which tasks).
+
+The following **example** demonstrates how a task template can specify
+timestamps and dump input JSON into environment variables:
+
+```json
+{
+  "version": 1,
+  "actions": [
+    {
+      "kind": "task",
+      "name": "thing",
+      "title": "Do A Thing",
+      "description": "Do something",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "thing": {
+            "description": "The thing to do",
+            "type": "string",
+            "maxLength": 255,
+            "default": "something"
+          }
+        }
+      },
+      "task": {
+        "workerType": "my-worker",
+        "payload": {
+          "created": {"$fromNow": ""},
+          "deadline": {"$fromNow": "1 hour 15 minutes"},
+          "expiration": {"$fromNow": "14 days"},
+          "image": "my-docker-image",
+          "env": {
+            "TASKID_TRIGGERED_FOR": "${taskId}",
+            "REVISION": "${revision}",
+            "THING_TO_DO": {"$eval": "input.thing"}
+          },
+          ...
+        },
+        ...
+      }
+    }
+  ],
+  "variables": {
+    "revision": "123abc"
+  }
+}
+```
+
+## Kinds
+
+### "task" kind
+
+An action with `kind: 'task'` specifies a task that the user interface
+should create. That is, when the action is triggered, the user interface
+calls the Taskcluster API to create a new task, with the content of that
+task determined from `actions.json`.
+
+The task created by the action may be useful in its own right (for
+example, running a test with additional debugging), or it may simplify
+trigger in-tree scripts that create new tasks. The latter form is called
+an *action task*, and is similar to a decision task. This allows in-tree
+scripts to execute complicated actions such as backfilling.
+
+Actions of the `'task'` *kind* **must** have a `task` property. This
+property specifies the task template to be parameterized and created in
+order to trigger the action.
+
+## Formal Specification
 
 The JSON Schema for `actions.json` is as follows, also available in raw form
 [here](https://raw.githubusercontent.com/taskcluster/taskcluster-docs/master/src/manual/using/actions/schema.yml).
