@@ -30,24 +30,42 @@ For `action.kind = 'task'`:
     user's Taskcluster credentials. See the next section for some
     important security-related concerns.
 
+For `action.kind = 'hook'`:
+
+-   Rendering the hookPayload using JSON-e with the context describe
+    in the specification.
+-   Calling `Hooks.triggerHook` with the resulting hook identiifers
+    and payload.
+
 User interfaces should ignore actions with unrecognized kinds.
 
-Creating Tasks
---------------
+Security Concerns
+-----------------
 
-When executing an action, a UI must ensure that the user is authorized
-to perform the action, and that the user is not being "tricked" into
-executing an unexpected action.
+When executing an action, a UI must ensure that the user is authorized to
+perform the action, and that the user is not being "tricked" into executing an
+unexpected action. The `actions.json` artifact should be treated as untrusted
+content!
 
 To accomplish the first, the UI should create tasks with the user's
 Taskcluster credentials. Do not use credentials configured as part of
 the service itself!
 
-To accomplish the second, use the decision tasks' `scopes` property as
-the
+### "task" Actions
+
+To accomplish the second for "task" actions, use the decision tasks' `scopes`
+property as the
 [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
-for the `Queue.createTask` call. This prevents action tasks from doing
-anything the original decision task couldn't do.
+for the `Queue.createTask` call. This prevents action tasks from doing anything
+the original decision task couldn't do.
+
+### "hook" Actions
+
+Hook actions have no such luxury, as they are intended to do things the
+decision task couldn't do.
+
+Instead, the user interface should require the user to confirm each action,
+displaying the hookGroupId, hookId, and hookPayload.
 
 Specialized Behavior
 --------------------
@@ -90,3 +108,20 @@ no need to do a deep comparison of the schema. This approach allows
 in-tree changes that introduce backward-compatible changes to the
 schema, without breaking support in user interfaces. Of course, if the
 changes are not backward-compatible, breakage will ensue.
+
+#### Skipping Confirmation
+
+A user interface that specializes for an action may skip the user-confirmation
+process for hook actions if any of
+
+* it can whitelist specific hooks -- for example, a retrigger action might
+  always use a hook with a specific name or pattern;
+
+* it can determine that the `actions.json` is trusted -- for example, if the
+  task is definitively associated with a commit to a trusted repository; or
+
+* it can limit the scopes available using
+  [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
+  based on some other definiitve information about the task -- for example,
+  actions on a task not created from a Github "master" branch might use
+  authorizedScopes to limit access to only pull-request-related actions.
