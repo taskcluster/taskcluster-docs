@@ -1,6 +1,6 @@
 ---
 title: User Interface Considerations
-order: 2
+order: 30
 ---
 
 The actions system decouples in-tree changes from user interface changes
@@ -67,6 +67,13 @@ decision task couldn't do.
 Instead, the user interface should require the user to confirm each action,
 displaying the hookGroupId, hookId, and hookPayload.
 
+Furthermore, hook implementations should be designed to guard against malicious
+input, which could be triggered by phishing an unsuspecting administrator to
+trigger a hook action from a low privileged task with bad intend, causing an
+evil hookPayload. The hook's `triggerSchema` can be one layer of such a guard,
+but the hook implementation itself should perform additional checks wherever
+possible.
+
 Specialized Behavior
 --------------------
 
@@ -122,6 +129,6 @@ process for hook actions if any of
 
 * it can limit the scopes available using
   [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
-  based on some other definiitve information about the task -- for example,
+  based on some other definitive information about the task -- for example,
   actions on a task not created from a Github "master" branch might use
   authorizedScopes to limit access to only pull-request-related actions.

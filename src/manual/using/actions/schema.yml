@@ -10,6 +10,46 @@ description: |
   defined by `public/actions.json`. A _consumer_ might be Treeherder.
   The _end-user_ is a developer who is inspecting the results, and wishes to
   trigger actions.
+definitions:
+  name:
+    type: string
+    maxLength: 255
+    description: |
+      The name of this action.  This is used by user interfaces to
+      identify the action.
+  title:
+    type: string
+    maxLength: 255
+    description: |
+      Title text to be displayed on the button or link triggering the action.
+  description:
+    type: string
+    maxLength: 4096
+    description: |
+      Human readable description of the action in markdown. This
+      can be displayed in a tooltip, popup and/or dialog when triggering
+      the action.
+  context:
+    type: array
+    default: []
+    items:
+      type: object
+      additionalProperties:
+        type: string
+        maxLength: 4096
+      title: tag-set
+      description: |
+        A set of key-value pairs specifying a _tag-set_.
+    description: |
+      The `context` property determines in what context the action is
+      relevant. Thus, what context the action should be presented to the
+      end-user.
+  schema:
+    $ref: http://json-schema.org/schema
+    description: |
+      JSON schema for user input to the action.  If this property is omitted,
+      then the input is `null`.
+
 type: object
 properties:
   version:
@@ -25,116 +65,71 @@ properties:
     description: |
       List of actions that can be triggered.
     items:
-      allOf:
-        # Properties common to all actions
-        - type: object
-          properties:
-            name:
-              type: string
-              maxLength: 255
-              description: |
-                The name of this action.  This is used by user interfaces to
-                identify the action.
-            title:
-              type: string
-              maxLength: 255
-              description: |
-                Title text to be displayed on the button or link triggering the action.
-            description:
-              type: string
-              maxLength: 4096
-              description: |
-                Human readable description of the action in markdown. This
-                can be displayed in a tooltip, popup and/or dialog when triggering
-                the action.
-            kind:
-              enum:
-                - task
-                - hook
-              description: |
-                Specifies the kind of action this is.
-            context:
-              type: array
-              default: []
-              items:
-                type: object
-                additionalProperties:
-                  type: string
-                  maxLength: 4096
-                title: tag-set
-                description: |
-                  A set of key-value pairs specifying a _tag-set_.
-              description: |
-                The `context` property determines in what context the action is
-                relevant. Thus, what context the action should be presented to the
-                end-user.
-            schema:
-              $ref: http://json-schema.org/schema
-              description: |
-                JSON schema for user input to the action.  If this property is omitted,
-                then the input is `null`.
-          additionalProperties: true
-          required:
-            - title
-            - description
-            - kind
+      anyOf:
+      - type: object
+        properties:
+          kind: {enum: [task]}
+          name: {$ref: '#/definitions/name'}
+          title: {$ref: '#/definitions/title'}
+          description: {$ref: '#/definitions/description'}
+          context: {$ref: '#/definitions/context'}
+          schema: {$ref: '#/definitions/schema'}
+          task:
+            type: object
+            title: Task Template
+            description: |
+              Task template for triggering the action.
 
-        # Properties specific to each kind
-        - anyOf:
-          - type: object
-            properties:
-              kind: task
-              task:
-                type: object
-                title: Task Template
-                description: |
-                  Task template for triggering the action.
+              When an action have been selected in the appropriate context and
+              input satisfying the `schema` (if any) has been collected. The
+              action is triggered by parameterizing the task template given in
+              this property, and creating the resulting task.
 
-                  When an action have been selected in the appropriate context and
-                  input satisfying the `schema` (if any) has been collected. The
-                  action is triggered by parameterizing the task template given in
-                  this property, and creating the resulting task.
+              The template is an object that is parameterized using
+              [JSON-e](https://github.com/taskcluster/json-e), with the context
+              described in the documentation.
+        additionalProperties: false
+        required:
+          - kind
+          - title
+          - description
+          - task
+      - type: object
+        properties:
+          kind: {enum: [hook]}
+          name: {$ref: '#/definitions/name'}
+          title: {$ref: '#/definitions/title'}
+          description: {$ref: '#/definitions/description'}
+          context: {$ref: '#/definitions/context'}
+          schema: {$ref: '#/definitions/schema'}
+          hookGroupId:
+            type: string
+            title: Hook Group ID
+            description: The `hookGroupId` of the hook to trigger to run this action
+          hookId:
+            type: string
+            title: Hook ID
+            description: The `hookId` of the hook to trigger to run this action
+          hookPayload:
+            type: object
+            title: Hook Payload Template
+            description: |
+              JSON-e template that renders to the payload for `hooks.triggerHook`.
 
-                  The template is an object that is parameterized using
-                  [JSON-e](https://github.com/taskcluster/json-e), with the context
-                  described in the documentation.
-            additionalProperties: false
-            required:
-              - title
-              - description
-              - kind
-              - task
-          - type: object
-            properties:
-              kind: hook
-              hookGroupId:
-                type: string
-                title: Hook Group ID
-                description: The `hookGroupId` of the hook to trigger to run this action
-              hookId:
-                type: string
-                title: Hook ID
-                description: The `hookId` of the hook to trigger to run this action
-              hookPayload:
-                type: object
-                title: Hook Payload Template
-                description: |
-                  JSON-e template that renders to the payload for `hooks.triggerHook`.
-
-                  The template is an object that is parameterized using
-                  [JSON-e](https://github.com/taskcluster/json-e), with the
-                  context described in the documentation. The output of this
-                  rendering is provided as the payload to `hooks.triggerHook`
-                  (where it becomes the context for another JSON-e rendering
-                  step - don't get the two confused!)
-            additionalProperties: false
-            required:
-              - title
-              - description
-              - kind
-              - hookGroupId
-              - hookId
-              - hookPayload
+              The template is an object that is parameterized using
+              [JSON-e](https://github.com/taskcluster/json-e), with the
+              context described in the documentation. The output of this
+              rendering is provided as the payload to `hooks.triggerHook`
+              (where it becomes the context for another JSON-e rendering
+              step - don't get the two confused!)
+        additionalProperties: false
+        required:
+          - kind
+          - title
+          - description
+          - hookGroupId
+          - hookId
+          - hookPayload
 
 additionalProperties: false
 required:
