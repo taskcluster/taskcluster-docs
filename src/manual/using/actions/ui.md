@@ -32,7 +32,9 @@ For `action.kind = 'task'`:
 
 For `action.kind = 'hook'`:
 
--   Rendering the hookPayload using JSON-e with the context describe
+-   Displaying the `hookGroupId` and `hookId` in the input form,
+    if one is used.
+-   Rendering the hookPayload using JSON-e with the context described
     in the specification.
 -   Calling `Hooks.triggerHook` with the resulting hook identiifers
     and payload.
@@ -61,18 +63,31 @@ the original decision task couldn't do.
 
 ### "hook" Actions
 
-Hook actions have no such luxury, as they are intended to do things the
-decision task couldn't do.
+Hook actions are a bit different, as they are intended to allow actions the
+decision task does not have scopes to perform. For example, while many
+developers may be able to push to the master branch of a repository (and thus
+create a decision task), a "release" action might be limited to only a few
+project members.
 
-Instead, the user interface should require the user to confirm each action,
-displaying the hookGroupId, hookId, and hookPayload.
+For an action that will trigger a hook `<hookGroupId>/<hookId>`, the user
+interface must verify that the decision task's scopes satisfy
+`in-tree:hook-action:<hookGroupId>/<hookId>`. While a decision task does not
+itself exercise this scope, the check serves to verify that the repository for
+which the decision task was made had this `in-tree:action-hook:..` scope, and
+thus that the hook was designed to be triggered for that repository.
 
-Furthermore, hook implementations should be designed to guard against malicious
-input, which could be triggered by phishing an unsuspecting administrator to
-trigger a hook action from a low privileged task with bad intend, causing an
-evil hookPayload. The hook's `triggerSchema` can be one layer of such a guard,
-but the hook implementation itself should perform additional checks wherever
-possible.
+The check can be carried out by fetching the decision task, passing
+`task.scopes` the Auth service's `expandScopes` API method, and then using
+[taskcluster-lib-scopes](https://github.com/taskcluster/taskcluster-lib-scopes)'
+`satisfiesExpression`:
+
+```javascript
+const expandedScopes = await auth.expandScopes(task.scopes);
+if (satisfiesExpression(
+  expandedScopes, `in-tree:hook-action:${action.hookGroupId}/${action.hookId}`)) {
+  // call triggerHook
+}
+```
 
 Specialized Behavior
 --------------------
