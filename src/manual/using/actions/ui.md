@@ -1,6 +1,6 @@
 ---
 title: User Interface Considerations
-order: 2
+order: 30
 ---
 
 The actions system decouples in-tree changes from user interface changes
@@ -21,28 +21,73 @@ Every user interface should support the following:
     auto-generated from the action's JSON-schema. If the action has no
     schema, this step should be skipped. The user's input should be
     validated against the schema.
--   For `action.kind = 'task'`, rendering the template using the
-    JSON-e library, using the variables described in action-spec.
+
+For `action.kind = 'task'`:
+
+-   Rendering the template using the JSON-e library, using the JSON-e
+    context described in action-spec.
 -   Calling `Queue.createTask` with the resulting task, using the
     user's Taskcluster credentials. See the next section for some
     important security-related concerns.
 
-Creating Tasks
---------------
+For `action.kind = 'hook'`:
 
-When executing an action, a UI must ensure that the user is authorized
-to perform the action, and that the user is not being "tricked" into
-executing an unexpected action.
+-   Displaying the `hookGroupId` and `hookId` in the input form,
+    if one is used.
+-   Rendering the hookPayload using JSON-e with the context described
+    in the specification.
+-   Calling `Hooks.triggerHook` with the resulting hook identiifers
+    and payload.
+
+User interfaces should ignore actions with unrecognized kinds.
+
+Security Concerns
+-----------------
+
+When executing an action, a UI must ensure that the user is authorized to
+perform the action, and that the user is not being "tricked" into executing an
+unexpected action. The `actions.json` artifact should be treated as untrusted
+content!
 
 To accomplish the first, the UI should create tasks with the user's
 Taskcluster credentials. Do not use credentials configured as part of
 the service itself!
 
-To accomplish the second, use the decision tasks' `scopes` property as
-the
+### "task" Actions
+
+To accomplish the second for "task" actions, use the decision tasks' `scopes`
+property as the
 [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
-for the `Queue.createTask` call. This prevents action tasks from doing
-anything the original decision task couldn't do.
+for the `Queue.createTask` call. This prevents action tasks from doing anything
+the original decision task couldn't do.
+
+### "hook" Actions
+
+Hook actions are a bit different, as they are intended to allow actions the
+decision task does not have scopes to perform. For example, while many
+developers may be able to push to the master branch of a repository (and thus
+create a decision task), a "release" action might be limited to only a few
+project members.
+
+For an action that will trigger a hook `<hookGroupId>/<hookId>`, the user
+interface must verify that the decision task's scopes satisfy
+`in-tree:hook-action:<hookGroupId>/<hookId>`. While a decision task does not
+itself exercise this scope, the check serves to verify that the repository for
+which the decision task was made had this `in-tree:action-hook:..` scope, and
+thus that the hook was designed to be triggered for that repository.
+
+The check can be carried out by fetching the decision task, passing
+`task.scopes` the Auth service's `expandScopes` API method, and then using
+[taskcluster-lib-scopes](https://github.com/taskcluster/taskcluster-lib-scopes)'
+`satisfiesExpression`:
+
+```javascript
+const expandedScopes = await auth.expandScopes(task.scopes);
+if (satisfiesExpression(
+  expandedScopes, `in-tree:hook-action:${action.hookGroupId}/${action.hookId}`)) {
+  // call triggerHook
+}
+```
 
 Specialized Behavior
 --------------------
@@ -85,3 +130,20 @@ no need to do a deep comparison of the schema. This approach allows
 in-tree changes that introduce backward-compatible changes to the
 schema, without breaking support in user interfaces. Of course, if the
 changes are not backward-compatible, breakage will ensue.
+
+#### Skipping Confirmation
+
+A user interface that specializes for an action may skip the user-confirmation
+process for hook actions if any of
+
+* it can whitelist specific hooks -- for example, a retrigger action might
+  always use a hook with a specific name or pattern;
+
+* it can determine that the `actions.json` is trusted -- for example, if the
+  task is definitively associated with a commit to a trusted repository; or
+
+* it can limit the scopes available using
+  [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
+  based on some other definitive information about the task -- for example,
+  actions on a task not created from a Github "master" branch might use
+  authorizedScopes to limit access to only pull-request-related actions.
