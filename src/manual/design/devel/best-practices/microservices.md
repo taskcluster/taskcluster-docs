@@ -45,7 +45,6 @@ Encode this version both in `package.json` and in any CI configurations such as 
 We now try to have all of our services using node 8 or later. This allows us to run directly with the ECMAScript 2017 features
 without needing any compilation. For the time being, our libraries will still be compiled to support old services or other users.
 
-
 ## Managing Dependencies
 
 Try to keep up-to-date with the latest versions of all Taskcluster libraries.
@@ -74,6 +73,16 @@ In an ideal world, that means a thorough security review.
 In the real world, that probably means a lot less.
 
 ## Deployment
+
+### Git Version
+
+The build process should place a file named `.git-version` in the root of the
+application directory containing the full Git revision from which the
+application was built. This information can then be used for error reporting,
+etc.
+
+To accmplish this, the `scripts` section of `package.json` should contain
+`"heroku-prebuild": "echo $SOURCE_VERSION > .git-version"`.
 
 ### Verification Steps
 
