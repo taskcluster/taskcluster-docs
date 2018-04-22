@@ -46,7 +46,7 @@ Team members and dedicated contributors will want to know how to set up a full s
 Include a section in the README describing how to find or generate credentials for each service.
 
 For Taskcluster credentials, include the necessary credentials in a role named `project:taskcluster:tests:<projectName>` (e.g., `project:taskcluster:tests:taskcluster-queue`).
-Then instruct users to run `eval $(taskcluster-cli signin --scopes assume:project:taskcluster:tests:$PROJECT)` to get the scopes to run the tests, noting that they must themselves have the given role or this won't work.
+Then instruct users to run `eval $(taskcluster-cli signin --scope assume:project:taskcluster:tests:$PROJECT)` to get the scopes to run the tests, noting that they must themselves have the given role or this won't work.
 
 # Writing Tests
 
