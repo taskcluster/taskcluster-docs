@@ -274,8 +274,8 @@ via the `hooks.triggerHook` API method when the action is executed.
 
 The hook is specified in the `hookId` and `hookGroupId` properties.
 
-The payload of the hook is given by the `hookPayload` property, which
-is rendered using JSON-e with the context described above.
+The payload of the `triggerHook` method is given by the `hookPayload` property,
+which is rendered using JSON-e with the context described above.
 
 Note that the result of rendering `hookPayload` becomes the context for another
 JSON-e rendering performed by the hooks service.  Do not confuse the two
