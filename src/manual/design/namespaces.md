@@ -121,8 +121,8 @@ Both are listed here:
    See [administration](/manual/using/administration) for more information.
 
 * `project-grants:<project>/<grantName>` -
-   Roles on this form is used to grant additional scopes to a project, without
-   creating a role the project admin can modify.
+   Roles on this form is used to grant additional scopes to the administrators of a project,
+   without creating a role the project administrators can modify.
 
 * `repo:<host>/<path>:branch:<branch>`,
   `repo:<host>/<path>:pull-request` -
