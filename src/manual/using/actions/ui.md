@@ -82,7 +82,7 @@ The check can be carried out by fetching the decision task, passing
 `satisfiesExpression`:
 
 ```javascript
-const expansion = await auth.expandScopes(task.scopes);
+const expansion = await auth.expandScopes({scopes: task.scopes});
 if (satisfiesExpression(
   expansion.scopes, `in-tree:hook-action:${action.hookGroupId}/${action.hookId}`)) {
   // call triggerHook
