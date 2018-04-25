@@ -73,7 +73,7 @@ For an action that will trigger a hook `<hookGroupId>/<hookId>`, the user
 interface must verify that the decision task's scopes satisfy
 `in-tree:hook-action:<hookGroupId>/<hookId>`. While a decision task does not
 itself exercise this scope, the check serves to verify that the repository for
-which the decision task was made had this `in-tree:action-hook:..` scope, and
+which the decision task was made had this `in-tree:hook-action:..` scope, and
 thus that the hook was designed to be triggered for that repository.
 
 The check can be carried out by fetching the decision task, passing
