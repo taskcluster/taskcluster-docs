@@ -25,7 +25,7 @@ Every user interface should support the following:
 For `action.kind = 'task'`:
 
 -   Rendering the template using the JSON-e library, using the JSON-e
-    context described in action-spec.
+    context described in the specification.
 -   Calling `Queue.createTask` with the resulting task, using the
     user's Taskcluster credentials. See the next section for some
     important security-related concerns.
@@ -34,7 +34,7 @@ For `action.kind = 'hook'`:
 
 -   Displaying the `hookGroupId` and `hookId` in the input form,
     if one is used.
--   Rendering the hookPayload using JSON-e with the context described
+-   Rendering the `hookPayload` using JSON-e with the context described
     in the specification.
 -   Calling `Hooks.triggerHook` with the resulting hook identiifers
     and payload.
