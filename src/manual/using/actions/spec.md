@@ -181,16 +181,20 @@ feature does not introduce further expressiveness.
 Most kinds use [JSON-e](https://github.com/taskcluster/json-e) to render
 templates.  The context for that rendering contains:
 
-`taskGroupId`:   the `taskGroupId` of task-group this is triggered from,
+`taskGroupId`:   the `taskGroupId` of task-group this is triggered from
 
 `taskId`:   the `taskId` of the selected task, `null` if no task is selected
-    (this is the case if the action has `context: []`),
+    (this is the case if the action has `context: []`).
 
-`task`:   the task definition of the selected task, `null` if no task is
-    selected (this is the case if the action has `context: []`), and,
+`task`:   (`kind == 'task'` only) the task definition of the selected task,
+    or `null` if no task is selected (this is the case if the action has `context:
+    []`). For `kind == 'hook'`, the temptation to rely on this unstrusted information
+    would be too great -- fetch the `taskId` from the Queue instead.
 
-`ownTaskId`:   the `taskId` of the action task itself. This is useful for
-    indexing without collisions and other similar needs
+`ownTaskId`:   (`kind == 'task'` only) the `taskId` of the action task itself.
+    This is useful for indexing without collisions and other similar needs; for
+    `kind == 'hook'`, use the `taskId` provided by [the hooks
+    service](https://docs.taskcluster.net/reference/core/taskcluster-hooks/docs/firing-hooks).
 
 `input`:   the input matching the `schema` property, `null` if the action
     doesn't have a `schema` property. See "Action Input" below.
