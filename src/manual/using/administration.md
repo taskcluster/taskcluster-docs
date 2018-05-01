@@ -18,6 +18,7 @@ this role comes great power:
  * Manage the scope namespace `project:<project>:*`
  * Manage private artifacts beginning with `project/<project>/`
  * Manage secrets beginning with `project/<project>/`
+ * Assume roles `project-grants:<project>/*`
 
 Some other actions require help from the Taskcluster team; we are working on
 making administration more self-serve, but we are not there yet. File a bug in

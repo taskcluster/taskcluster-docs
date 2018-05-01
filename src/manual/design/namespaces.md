@@ -21,9 +21,10 @@ request](https://github.com/taskcluster/taskcluster-docs).
 Most work at Mozilla falls into "projects", and these provide a nice
 organizational boundary for controlling access.  We use a consistent name for
 each project in the various namespaces below -- something simple and without
-punctuation.  The known projects can be seen in the [roles
-tool](https://tools.taskcluster.net/auth/roles/), with the prefix
-`project-admin`.
+punctuation.  The known projects can be seen by looking for scopes containing
+`project-admin:` using the [scope-explorer](https://tools.taskcluster.net/auth/scopes).
+
+To obtain a project file a _service request_ with your taskcluster administrator.
 
 ---
 
@@ -51,9 +52,9 @@ Client IDs have the following forms:
  * `static/*`, Clients with names prefixed `static/` are statically configured in the taskcluster deployment.
    They cannot be created, modified or deleted at runtime. These are used for bootstrapping services and creating
    initial clients and roles.
- 
+
  * `static/taskcluster/*`, Clients with the prefix `static/taskcluster/` are reserved for taskcluster services.
- 
+
  * `mozilla-ldap/<email>` -
    Clients with this name belong to users who have been authenticated against the Mozilla LDAP database.
    These are temporary credentials issued by [Taskcluster-Login](https://github.com/taskcluster/taskcluster-login).
@@ -119,6 +120,10 @@ Both are listed here:
    This role is then be assumed by the appropriate groups.
    See [administration](/manual/using/administration) for more information.
 
+* `project-grants:<project>/<grantName>` -
+   Roles on this form is used to grant additional scopes to the administrators of a project,
+   without creating a role the project administrators can modify.
+
 * `repo:<host>/<path>:branch:<branch>`,
   `repo:<host>/<path>:pull-request` -
    Roles of this form represent scopes available to version-control pushes and pull requests.
@@ -149,10 +154,10 @@ Artifact names are, by convention, slash-separated.
 * `private/docker-worker/…` -
    Artifact names with this prefix are considered non-public, but access to them is otherwise quite broadly allowed to everybody with commit-level 1 access, regardless of NDA state.
 
-* `private/interactive/…` - 
-   Artifacts required to access interactive sessions, this prefix is considered non-public, but is made available to commit-level 1 users, contributors and community members. 
+* `private/interactive/…` -
+   Artifacts required to access interactive sessions, this prefix is considered non-public, but is made available to commit-level 1 users, contributors and community members.
 
-* `repo/<host>/<path>/…` - 
+* `repo/<host>/<path>/…` -
    Artifacts private to a specific repository, sub-scopes can be delegated through repository specific patterns.
 
 * `project/<project>/…` -
