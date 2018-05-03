@@ -93,31 +93,35 @@ style.
 
 mixin normalrow(schema, name, type, requiredList)
   - var required = requiredList.indexOf(name) !== -1
-  td.shortfield
-    span(class=required ? 'required' : '')= name
-  td.shortfield.lighter
-    -
-      var limits = null;
-      var min = schema.minLength || schema.minItems || schema.minimum;
-      var max = schema.maxLength || schema.maxItems || schema.maximum;
-      if (min || max) {
-        limits = `[${min || 0}:${max || '∞'}]`;
-      }
-    | #{type || schema.type}#{limits}
-    if schema.default
-      br
-      span.small default: #{schema.default}
-  td.shortfield
-    if schema.pattern
-      code.short.schema-pattern= schema.pattern
-    else if schema.format
-      span(class=schema.format)= schema.format
-    else if schema.enum
-      ul.enum
-        each val in schema.enum
-          li
-            code.short.schema-pattern= val
-  td.normaltext !{marked(schema.description || '')}
+  if schema.$ref
+    td(colspan=4)
+      Cirular $ref: #{schema.$ref} (follow 'source' link above to view)
+  else
+    td.shortfield
+      span(class=required ? 'required' : '')= name
+    td.shortfield.lighter
+      -
+        var limits = null;
+        var min = schema.minLength || schema.minItems || schema.minimum;
+        var max = schema.maxLength || schema.maxItems || schema.maximum;
+        if (min || max) {
+          limits = `[${min || 0}:${max || '∞'}]`;
+        }
+      | #{type || schema.type}#{limits}
+      if schema.default
+        br
+        span.small default: #{schema.default}
+    td.shortfield
+      if schema.pattern
+        code.short.schema-pattern= schema.pattern
+      else if schema.format
+        span(class=schema.format)= schema.format
+      else if schema.enum
+        ul.enum
+          each val in schema.enum
+            li
+              code.short.schema-pattern= val
+    td.normaltext !{marked(schema.description || '')}
 
 mixin combination(schema, name, subs, sort)
   tr.frow
