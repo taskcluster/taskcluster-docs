@@ -2,14 +2,46 @@
 title: Debugging a Task
 ---
 
+Tasks which run in Docker can often be debugged locally, and any task can be
+debugged through Taskcluster.
+
+For failures that appear to originate within the task itself, consider
+debugging locally. For failures that appear to come from Taskcluster's
+features, debug with Taskcluster.
+
+## Debugging locally
+
+You can run a task on any computer with Docker installed.
+
+First, navigate to your task in the [task
+inspector](https://tools.taskcluster.net/groups) and select the "task
+details" tab.
+
+If the `payload` section of the task details specifies any
+[features](https://docs.taskcluster.net/reference/workers/docker-worker/docs/features)
+or
+[capabilities](https://docs.taskcluster.net/reference/workers/docker-worker/docs/payload),
+additional setup may be needed in order to successfully run the task locally.
+
+Find the `image` section of the task details. If the image ID is a string, you
+can run the image locally with `docker run --rm --ti your-image-string bash
+-li`.
+
+If the image is configured in another way, consult your project's
+documentation for troubleshooting instructions.
+
+## Debugging with Taskcluster
+
 Taskcluster has an "interactive" mode with which you can get a terminal and/or
 VNC connection to a running task execution environment.
 
-There are two ways to access this mode. The easiest is to navigate to the
-failing task in the [task inspector](https://tools.taskcluster.net/task-inspector/)
-and click "One-Click Loaner". Generally speaking, if you had permission to create
-the task by pushing to version control, you can re-create it as a loaner. You will
-need to be signed in, of course!
+There are two ways to access this mode. The easiest is to enter the task's ID
+in the [task inspector](https://tools.taskcluster.net/groups). Under
+"actions", select "create interactive task". If you have permission to create
+tasks directly (rather than by pushing to a version-control server) then you
+can use this option. Some projects also provide
+[actions](https://docs.taskcluster.net/manual/using/actions) to create
+interactive tasks. You will need to be signed in, of course!
 
 Once the new task starts, click the big "shell" button, and there you are.
 
