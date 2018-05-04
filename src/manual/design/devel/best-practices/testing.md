@@ -135,17 +135,11 @@ Some external dependencies are too expensive or complex to test against.
 For example, the AWS EC2 APIs are difficult to use in testing, and problems with tests could easily become very expensive.
 In such cases, it's OK to only test against mocks.
 
-In this case, use something like the following in your test suite, to indicate that real tests are not defined (note that these tests will always be skipped -- even with `$NO_TEST_SKIP` set):
+In this case, use something like the following in your test suite, using (mock) to indicate that these are against a mock.
+There are no tests against any "real" service, so there's nothing to skip.
 
 ```javascript
-secrets.mockSuite('spawning EC2 instances', [], function(mock) {
-  // testing instance spawning against the real EC2 service could be very expensive,
-  // so we never do it.
-  if (!mock) {
-    suiteSetup(function() {
-      this.skip();
-    }
-  }
+suite('spawning EC2 instances (mock)', function() {
   // ...
 });
 ```
