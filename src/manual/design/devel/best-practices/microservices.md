@@ -11,28 +11,7 @@ This document aims to collect the practices and standards we've agreed on.
 These conventions are strongly encouraged for new services and contributions updating existing services to follow them are always welcome.
 When we have a good reason to not follow the convention for a specific service, we document why.
 
-## Naming
-
-The name of the service should begin with "taskcluster", followed by something brief and accurate.
-Use this name as the identifier for the project everywhere -- repository, deployment, logging, monitoring, docs, etc.
-This makes it easy to predict the URL for the project when we're in a hurry.
-
-It's OK to refer to a service more casually in prose, e.g., "the hooks service" instead of "taskcluster-hooks".
-
 ## Package Mechanics
-
-### Repository
-
-Services should be in a Github repository in the `taskcluster` organization, with the repo name having the prefix `taskcluster-`.
-
-### Source Layout
-
-Include all source in the `src/` directory, and all tests in `test/`.
-See [testing](testing) for more information on testing.
-
-Within the `src` directory, the main script should be named `main.js`.
-This file should use `taskcluster-lib-loader` as described below, and should serve as the main entry point to the service.
-This file should be set as the `main` property in `package.json`.
 
 ### Node
 
@@ -102,86 +81,17 @@ Name the service in papertrail to match the repository name.
 ### General
 
 Do not use `taskcluster-base`.
-Instead, depend directly on the `taskcluster-lib-*` libraries the service requires.
+Instead, depend directly on the libraries the service requires.
 
 The following sections describe best practices for specific platform libraries.
 
 ### taskcluster-lib-loader
 
-The main entry-point for the service should be `src/main.js`, which should use [taskcluster-lib-loader](https://github.com/taskcluster/taskcluster-lib-loader) and have the following initialization code:
-
-```js
-// If this file is executed launch component from first argument
-if (!module.parent) {
-  load(process.argv[2], {
-    process: process.argv[2],
-    profile: process.env.NODE_ENV,
-  }).catch(err => {
-    console.log(err.stack);
-    process.exit(1);
-  });
-}
-
-// Export load for tests
-module.exports = load;
-```
-
-Entries in `Procfile`, then, look like `web: node lib/main.js server`.
-The web service should always be the component named `server`.
-All services, including those run from the Heroku scheduler, should start like this, via `lib/main.js`.
-
-### azure-entities
-
-Each Azure table should be defined in `src/data.js` using a cascade of `configure` calls, one for each version:
-
-```js
-var MyEntity = Entity.configure({
-  version: 1,
-}).configure({
-  version: 2,
-  migrate: function(item) {
-    // ...
-  },
-}).configure({
-  version: 3,
-  migrate: function(item) {
-    // ...
-  },
-});
-```
-
-The result is a `MyEntity` class that can be setup with additional configuration in a loader component, in `src/main.js`:
-
-```js
-{
-  MyEntity: {
-    requires: ['cfg', 'process', 'monitor'],
-    setup: ({cfg, process, monitor}) => {
-      return data.MyEntity.setup(_.defaults({
-        table:        cfg.app.hookTable,
-        monitor:      monitor.prefix(cfg.app.hookTable.toLowerCase()),
-        component:    cfg.app.component,
-        process,
-      }, cfg.azureTable, cfg.taskcluster));
-    },
-  },
-}
-```
-
-In `src/data.js`, it is common to add utility methods for the entity type.
-For entities which can be fetched via an API, a `json` method is common:
-
-```js
-MyEntity.prototype.json = () => {
-  return {
-    foo: this.foo,
-  };
-};
-```
+The main entry-point for the service should be a file called `main.js`, which should use [taskcluster-lib-loader](https://github.com/taskcluster/taskcluster-lib-loader) for loading components.
 
 ### taskcluster-lib-api
 
-The API definition should be in `src/v1.js` or `src/api.js`:
+The API definition should be in a file called `v1.js` or `api.js`:
 
 ```js
 var api = new API({
@@ -198,7 +108,7 @@ api.declare({
 // ...
 ```
 
-This is then imported and set up in `src/main.js`:
+This is then imported and set up in `main.js`:
 
 ```js
 {
