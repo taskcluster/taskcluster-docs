@@ -91,6 +91,9 @@ Most roles are defined by some kind of automatic usage in a Taskcluster service.
 However, some are defined by convention.
 Both are listed here:
 
+* `everybody` -
+   This role is granted to anyone who authenticates via the login service.
+
 * `hook-id:<hookGroupId>/<hookId>` -
    Roles of this form give the scopes used to create tasks on behalf of hooks.
 
@@ -103,14 +106,11 @@ Both are listed here:
    Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
 
 * `mozilla-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozilla LDAP user (email) via the login service.
+   Roles of this form represent the scopes available to the given Mozilla LDAP user via the login service.
    Note that we prefer to grant scopes to LDAP groups, rather than individual users, although this is not always practical.
 
 * `mozillians-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozillians group via the login service.
-
-* `mozillians-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozillians user via the login service.
 
 * `project:<project>:…` -
    Roles of this form are controlled by the corresponding project.
