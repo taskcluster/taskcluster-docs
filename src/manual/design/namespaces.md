@@ -105,10 +105,6 @@ Both are listed here:
 * `mozilla-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
 
-* `mozilla-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozilla LDAP user via the login service.
-   Note that we prefer to grant scopes to LDAP groups, rather than individual users, although this is not always practical.
-
 * `mozillians-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozillians group via the login service.
 
@@ -164,7 +160,7 @@ Artifact names are, by convention, slash-separated.
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
 * `login-identity/<identity>/…`
-   Artifact names with this prefix are the responsibility of the user with the given [login indentity](/reference/core/login).
+   Artifact names with this prefix are the responsibility of the user with the given [login identity](/reference/core/login).
    This namespace enables tasks to persist data that is only readable by a single user (typically the user that submitted it), such as loaner credentials.
 
 Note, highly confidential data should not be stored in unencrpyted taskcluster
