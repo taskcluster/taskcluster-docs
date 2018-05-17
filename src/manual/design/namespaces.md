@@ -91,6 +91,9 @@ Most roles are defined by some kind of automatic usage in a Taskcluster service.
 However, some are defined by convention.
 Both are listed here:
 
+* `everybody` -
+   This role is granted to anyone who authenticates via the login service.
+
 * `hook-id:<hookGroupId>/<hookId>` -
    Roles of this form give the scopes used to create tasks on behalf of hooks.
 
@@ -102,15 +105,8 @@ Both are listed here:
 * `mozilla-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozilla LDAP group via the login service.
 
-* `mozilla-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozilla LDAP user (email) via the login service.
-   Note that we prefer to grant scopes to LDAP groups, rather than individual users, although this is not always practical.
-
 * `mozillians-group:<groupName>` -
    Roles of this form represent the scopes available to members of the given Mozillians group via the login service.
-
-* `mozillians-user:<userName>` -
-   Roles of this form represent the scopes available to the given Mozillians user via the login service.
 
 * `project:<project>:…` -
    Roles of this form are controlled by the corresponding project.
@@ -164,7 +160,7 @@ Artifact names are, by convention, slash-separated.
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
 * `login-identity/<identity>/…`
-   Artifact names with this prefix are the responsibility of the user with the given [login indentity](/reference/core/login).
+   Artifact names with this prefix are the responsibility of the user with the given [login identity](/reference/core/login).
    This namespace enables tasks to persist data that is only readable by a single user (typically the user that submitted it), such as loaner credentials.
 
 Note, highly confidential data should not be stored in unencrpyted taskcluster
