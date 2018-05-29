@@ -129,12 +129,6 @@ pre.ace_editor {
   font-size: 14px;
 }
 
-[data-doc-ref] .label {
-  font-size: 12px;
-  display: inline-block;
-  margin: 0 0;
-}
-
 pre.json-schema {
   background: none;
   border: none;

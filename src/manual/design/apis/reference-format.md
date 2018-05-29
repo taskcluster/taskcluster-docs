@@ -43,7 +43,7 @@ before it is accepted, and output is validated before it is returned.
 This makes it easy to describe the API end-points in JSON with references to
 JSON schema files. The reference format looks as follows:
 
-<div data-render-schema="http://schemas.taskcluster.net/base/v1/api-reference.json">
+<div data-render-schema="taskcluster:/schemas/base/v1/api-reference.json">
 </div>
 
 The JSON schema for the API reference format is
@@ -55,7 +55,7 @@ validated prior to publication.
 Each service which sends Pulse messages has its exchanges and messages defined
 in a reference document with the following format.
 
-<div data-render-schema="http://schemas.taskcluster.net/base/v1/exchanges-reference.json">
+<div data-render-schema="taskcluster:/schemas/base/v1/exchanges-reference.json">
 </div>
 
 The JSON schema for the exchanges reference format is published at
