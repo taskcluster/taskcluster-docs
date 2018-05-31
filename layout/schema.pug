@@ -189,10 +189,10 @@ mixin schemabox(schema)
       if schema.title
         h4.no-anchor
           | #{schema.title}
-          if schema.id
+          if schema.$id || schema.id
             | 
             small
-              a(href=schema.id, target='_blank', rel='noopener noreferrer')
+              a(href=schema.$id || schema.id, target='_blank', rel='noopener noreferrer')
                 | (source)
         | !{marked(schema.description || '')}
     table.table

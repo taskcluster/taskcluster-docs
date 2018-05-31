@@ -17,13 +17,6 @@ if !noAnchors
     }
     anchors.add();
     anchors.remove('.no-anchor');
-if docref
-  script.
-    // Make sure the URL's protocol is `https`.  Lots of schema and refernce
-    // URLs are hard-coded as http, but that will cause mixed-content warnings.
-    var fixUrlProtocol = function(url) {
-      return url.replace(/^http:/, 'https:');
-    }
 if sequence_diagrams
   script(src='/assets/raphael-min.js')
   script(src='/assets/underscore-min.js')
