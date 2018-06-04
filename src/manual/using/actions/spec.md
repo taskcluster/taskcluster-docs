@@ -40,6 +40,17 @@ The `name` is used by user interfaces to identify the action. For
 example, a retrigger button might look for an action with
 name = "retrigger".
 
+Taskcluster UI has default implementations for some actions, but if a
+decision task has a better implementation then it can override the
+default by using the same action name. The default actions hold the following names:
+
+| Action | name |
+| --- | --- |
+| Schedule Task | `schedule` |
+| Retrigger Task | `retrigger` |
+| Cancel Task | `cancel` |
+| Purge Worker Cache | `purge` |
+
 Action names must be unique for a given task, or for a taskgroup, but
 the same name may be used for actions applying to disjoint sets of
 tasks. For example, it may be helpful to define different "retrigger"
