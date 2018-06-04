@@ -47,7 +47,7 @@ let task = {
     name:             "Tutorial **Example** Task",
     description:      "Task create from _interactive_ tutorials",
     owner:            'nobody@taskcluster.net',
-    source:           "https://docs.taskcluster.net/tutorial/create-task-via-api",
+    source:           "https://tc.example.com/docs/tutorial/create-task-via-api",
   },
   payload:            payload,
 };

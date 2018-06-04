@@ -13,7 +13,7 @@ simple: add the integration to the Github organization and repository
 We recommend using [The quickstart
 tool](https://tools.taskcluster.net/quickstart/) to get started.  For more
 in-depth documentation, [the reference
-pages](https://docs.taskcluster.net/reference/integrations/taskcluster-github)
+pages](/reference/integrations/taskcluster-github)
 provide detailed information.
 
 ## Task Security

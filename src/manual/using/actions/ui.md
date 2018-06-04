@@ -57,7 +57,7 @@ the service itself!
 
 To accomplish the second for "task" actions, use the decision tasks' `scopes`
 property as the
-[authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
+[authorizedScopes](/manual/design/apis/hawk/authorized-scopes)
 for the `Queue.createTask` call. This prevents action tasks from doing anything
 the original decision task couldn't do.
 
@@ -143,7 +143,7 @@ process for hook actions if any of
   task is definitively associated with a commit to a trusted repository; or
 
 * it can limit the scopes available using
-  [authorizedScopes](https://docs.taskcluster.net/manual/design/apis/hawk/authorized-scopes)
+  [authorizedScopes](/manual/design/apis/hawk/authorized-scopes)
   based on some other definitive information about the task -- for example,
   actions on a task not created from a Github "master" branch might use
   authorizedScopes to limit access to only pull-request-related actions.

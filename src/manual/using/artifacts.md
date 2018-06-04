@@ -39,7 +39,7 @@ an absolute path, while Generic-Worker requires a relative path, and for
 Taskcluster-Worker the path format depends on the engine in use.
 
 It is also possible, although unusual, to create artifacts using the [Queue
-API](https://docs.taskcluster.net/reference/platform/taskcluster-queue/references/api#createArtifact).
+API](/reference/platform/taskcluster-queue/references/api#createArtifact).
 
 ## Passing Artifacts Between Tasks
 
@@ -50,10 +50,10 @@ application, with task B running tests on the built product.
 In this case, task B should list task A in its `dependencies` property so that
 it does not begin until that task is complete. It should then download the
 resulting artifact on task A using a URL to the
-[Queue.getLatestArtifact](https://docs.taskcluster.net/reference/platform/taskcluster-queue/references/api#getLatestArtifact)
+[Queue.getLatestArtifact](/reference/platform/taskcluster-queue/references/api#getLatestArtifact)
 endpoint. That will generally look like this:
 
-    https://queue.taskcluster.net/v1/task/URFDBjl5RtSNz_NJEH3hlw/artifacts/public/build.zip
+    https://tc.example.com/queue/v1/task/URFDBjl5RtSNz_NJEH3hlw/artifacts/public/build.zip
 
 where `URFDBjl5RtSNz_NJEH3hlw` is the taskId assigned to task A. This URL can
 be calculated before the task runs - for example, by a decision task.  The URL
