@@ -1,5 +1,5 @@
 $schema: http://json-schema.org/draft-04/schema#
-id: https://docs.taskcluster.net/manual/tasks/actions/schema.yml
+id: https://r.taskcluster.net/docs/manual/tasks/actions/schema.yml
 title: Schema for Exposing Actions
 description: |
   This document specifies the schema for the `public/actions.json` used by

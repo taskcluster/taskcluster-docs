@@ -1,7 +1,7 @@
 # Taskcluster Documentation Site
 
 
-This is the Taskcluster documentation site, hosted at https://docs.taskcluster.net.
+This is the Taskcluster documentation site, hosted at the `/docs` path of a Taskcluster deployment.
 It's a basic static site, generated with some Gulp plugins.
 
 Development Setup
