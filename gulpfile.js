@@ -25,6 +25,7 @@ var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
 var userlist = require('./lib/userlist');
 var static = require('./lib/static');
+var absurls = require('./lib/absurls');
 
 function stripHtml(path) {
   if (path.extname === '.html' || path.extname === '.json') {
@@ -207,6 +208,7 @@ gulp.task('build-static', function() {
   return site()
     .pipe(static.createNginxConfig())
     .pipe(static.setFilenames())
+    .pipe(absurls.rewriteAbsoluteUrls())
     .pipe(gulp.dest('static'));
 });
 
