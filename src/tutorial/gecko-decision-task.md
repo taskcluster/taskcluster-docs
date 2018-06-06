@@ -6,7 +6,7 @@ followup:
 ---
 
 Upon detecting a push to a supported Mercurial repository, Taskcluster reads [`.taskcluster.yml`](https://dxr.mozilla.org/mozilla-central/source/.taskcluster.yml) from the root directory of the repository, in the revision just pushed.
-It parses this file, substituting a number of variables based on the push, and submits the resulting task to the [Taskcluster queue](/manual/tasks/queue).
+It parses this file, substituting a number of variables based on the push, and submits the resulting task to the [Taskcluster queue](/docs/manual/tasks/queue).
 This task is the "decision task", which will in turn create all of the tasks for the push.
 
 The scopes available to the decision task are limited by the repository's role.

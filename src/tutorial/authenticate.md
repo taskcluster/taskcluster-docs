@@ -8,7 +8,7 @@ followup:
 ---
 
 Taskcluster uses its own kind of "credentials" to [authenticate API
-requests](/manual/design/apis). These credentials can come from a variety of
+requests](/docs/manual/design/apis). These credentials can come from a variety of
 sources, but in this section we will create a client manually, using the Tools
 site.
 

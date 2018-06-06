@@ -4,14 +4,14 @@ title: Queues
 order: 10
 ---
 
-The [queue service](/reference/platform/queue), hosted at
+The [queue service](/docs/reference/platform/queue), hosted at
 **`queue.taskcluster.net`**, is the centralized coordinator that is responsible
 for accepting tasks, managing their state, and assigning them to workers that
 claim them. It also manages the artifacts and runs attached to tasks.
 
 The queue service maintains the task queues. Task queues are named, with the
 names having the form `<provisionerId>/<workerType>` (more on provisioners in a
-[later chapter](/manual/task-execution/provisioning)). Tasks are handled in
+[later chapter](/docs/manual/task-execution/provisioning)). Tasks are handled in
 FIFO order (except for tasks of different priority), so that tasks added
 earliest will be executed first.
 

@@ -7,7 +7,7 @@ order: 90
 Most of the tools site is dedicated to what can be considered "administrative"
 tasks.
 
-The [namespaces document](/manual/design/namespaces) describes "projects".
+The [namespaces document](/docs/manual/design/namespaces) describes "projects".
 Project administrators are those with the `project-admin:<project>` role. With
 this role comes great power:
 

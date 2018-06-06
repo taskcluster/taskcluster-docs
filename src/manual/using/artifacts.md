@@ -12,7 +12,7 @@ the main log of the artifact.
 Workers also generally provide a way to specify, in the task description, the
 files and directories that should be uploaded as artifacts after the task
 completes. For a worker running
-[Generic-Worker](/reference/workers/generic-worker/docs/payload) or
+[Generic-Worker](/docs/reference/workers/generic-worker/docs/payload) or
 [Taskcluster-Worker](https://github.com/taskcluster/taskcluster-worker/blob/master/plugins/artifacts/payloadschema.go), that looks like:
 
 ```yaml
@@ -23,7 +23,7 @@ artifacts:
 ```
 
 Tor a worker running
-[Docker-Worker](/reference/workers/docker-worker/docs/payload), the format is
+[Docker-Worker](/docs/reference/workers/docker-worker/docs/payload), the format is
 slightly different:
 
 ```yaml
@@ -58,7 +58,7 @@ endpoint. That will generally look like this:
 where `URFDBjl5RtSNz_NJEH3hlw` is the taskId assigned to task A. This URL can
 be calculated before the task runs - for example, by a decision task.  The URL
 comes with all the cautions about client robustness in the
-[Artifacts](/manual/tasks/artifacts) section, above.
+[Artifacts](/docs/manual/tasks/artifacts) section, above.
 
 ## Finding the Latest Build
 

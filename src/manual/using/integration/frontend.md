@@ -22,7 +22,7 @@ controlling access to resources based on the user identity.
 With a few extra parameters to the login process, this process will produce an
 access token which can also be exchanged for Taskcluster credentials as they
 are needed, by making an API call to the [login
-service](/reference/integrations/taskcluster-login).
+service](/docs/reference/integrations/taskcluster-login).
 
 The Taskcluster credentials have a very short expiration, but can be requested
 again when required. Callers should check the expiration before every call to a
@@ -316,5 +316,5 @@ here is the full code we wrote in order to make this happen:
 ## Details
 
 For more details, see the [Taskcluster-Login
-Reference](/reference/integrations/taskcluster-login/docs/getting-user-creds).
+Reference](/docs/reference/integrations/taskcluster-login/docs/getting-user-creds).
 

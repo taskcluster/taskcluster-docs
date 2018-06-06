@@ -26,7 +26,7 @@ The Taskcluster team provides some useful libraries and related API methods, but
 
 ## Taskcluster Platform
 
-The [authentication service](platform/auth) provides methods for other Taskcluster services to authenticate API requests, so it implements most of the functionality in ["Using the APIs"](/manual/integrations/apis).
+The [authentication service](platform/auth) provides methods for other Taskcluster services to authenticate API requests, so it implements most of the functionality in ["Using the APIs"](/docs/manual/integrations/apis).
 It also provides functionality to get short-term credentials for other services such as Amazon S3 or Azure SAS.
 This functionality allows users and services to be provisioned with a simple set of Taskcluster credentials and dynamically acquire all of the other access from those credentials.
 

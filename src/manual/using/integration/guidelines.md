@@ -34,7 +34,7 @@ information returned from the OIDC provider (Auth0) is more appropriate.
 For a backend application using Taskcluster authentication, the information you
 may rely on for authorization is contained in the list of scopes returned from
 the
-[`auth.authenticateHawk`](/reference/platform/auth/reference/api-docs#authenticateHawk)
+[`auth.authenticateHawk`](/docs/reference/platform/auth/reference/api-docs#authenticateHawk)
 method.
 
 The only valid operation on a scopeset is to ask whether it satisfies another

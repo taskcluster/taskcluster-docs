@@ -4,7 +4,7 @@ order: 20
 ---
 
 This document specifies how actions exposed by the *[decision
-task](/manual/using/task-graph)* are to be presented and triggered from
+task](/docs/manual/using/task-graph)* are to be presented and triggered from
 Treeherder, or similar user interfaces.
 
 The *decision task* creates an artifact `public/actions.json` to be consumed by

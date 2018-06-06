@@ -25,11 +25,21 @@ var s3 = require('./lib/s3');
 var raw = require('./lib/raw');
 var userlist = require('./lib/userlist');
 var static = require('./lib/static');
+var through = require('through2');
 
 function stripHtml(path) {
   if (path.extname === '.html' || path.extname === '.json') {
     path.extname = '';
   }
+}
+
+/**
+ * Prepend all paths with docs/; note that lambda takes care of redirecting
+ * /foo to /docs/foo in the s3 version of this site.
+ */
+function prependDocs(path) {
+  path.dirname = 'docs/' + path.dirname;
+  return path;
 }
 
 // define streams creating each type of file
@@ -178,7 +188,7 @@ function site() {
     assets(),
     presentations(),
     redirects()
-  )
+  ).pipe(rename(prependDocs))
 }
 
 gulp.task('check', function() {

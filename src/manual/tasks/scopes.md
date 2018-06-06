@@ -5,7 +5,7 @@ order: 60
 ---
 
 Taskcluster permissions are represented by "scopes", covered in more detail in
-[the design section](/manual/design/apis/hawk/scopes). For this section, it
+[the design section](/docs/manual/design/apis/hawk/scopes). For this section, it
 is enough to know that a scope is a permission to perform a particular action.
 
 A task has a set of scopes that determine what the task can do.  These scopes

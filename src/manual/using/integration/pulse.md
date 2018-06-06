@@ -4,7 +4,7 @@ title: Pulse Integrations
 order: 40
 ---
 
-[Pulse](/manual/design/apis/pulse) provides a great arms-length integration
+[Pulse](/docs/manual/design/apis/pulse) provides a great arms-length integration
 point for connecting other services to Taskcluster. Taskcluster already sends a
 great many messages as tasks are executed, and the `task.routes` property
 allows you to add additional, custom messages.

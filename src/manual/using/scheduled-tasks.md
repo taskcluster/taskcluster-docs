@@ -8,7 +8,7 @@ It is common to build a project on a nightly basis, or to "refresh" some output
 periodically. For example, this documentation site is regenerated several times
 per hour, combining documentation from all of the Taskcluster repositories.
 
-The [Hooks service](/reference/core/taskcluster-hooks) is responsible for creating
+The [Hooks service](/docs/reference/core/taskcluster-hooks) is responsible for creating
 pre-defined tasks in response to external events.  At the moment, it only
 supports creating tasks at particular times, but this is exactly the
 functionality we need. For this site, a hook is configured to
@@ -19,7 +19,7 @@ scopes.
 ## Using Hooks
 
 Hooks are named with a `hookGroupId` and a `hookId`. The group IDs follow a
-pattern given in the [namespaces document](/manual/design/namespaces). The
+pattern given in the [namespaces document](/docs/manual/design/namespaces). The
 `hookId` is arbitrary, although it is a good idea to think carefully about the
 names and use long, hierarchical names.
 
@@ -32,7 +32,7 @@ role must include all of the scopes required to create the task, including
 The scopes actually used by the hook's task are, of course, defined in
 `task.scopes`, which must be satisfied by the hook's role. These need not
 include `queue:create-task:<provisionerId>/<workerType>` unless the task will
-be creating more tasks (for example, a [decision task](/manual/using/task-graph)).
+be creating more tasks (for example, a [decision task](/docs/manual/using/task-graph)).
 
 For the documentation repository, the hook is named `taskcluster/docs-update`.
 The task has scopes
@@ -67,6 +67,6 @@ and run that script. Then any modifications to the cache-refresh process can be
 handled using your usual development processes, instead of an update in the
 hooks API.
 
-For more complex purposes, invoke a [decision task](/manual/using/task-graph)
+For more complex purposes, invoke a [decision task](/docs/manual/using/task-graph)
 thad runs within a source checkout and draws the details of what to achieve out
 of that source checkout.

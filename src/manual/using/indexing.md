@@ -10,11 +10,11 @@ link to tasks from pull requests and commits, and services like Treeherder
 gather and link to tasks for specific projects, but neither of these solutions
 is especially flexible.
 
-The [Index service](/reference/core/index) stores references to completed tasks
+The [Index service](/docs/reference/core/index) stores references to completed tasks
 in a hierarchical naming structure, similar to a directory tree. Careful naming
 allows a more flexible approach. For example, if one of the hierarchy levels is
 the revision ID from version control, then it is simple to find a task given a
 revision ID.
 
-See the [namespaces document](/manual/design/namespaces) for more detail on
+See the [namespaces document](/docs/manual/design/namespaces) for more detail on
 index path names.

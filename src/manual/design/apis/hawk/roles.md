@@ -10,7 +10,7 @@ constitutes a simple _expansion rule_ that says if you have the scope
 `roleId`. Roles can refer to other roles in the same way.
 
 See [the taskcluster-auth
-docs](/reference/platform/taskcluster-auth/docs/roles) for more detailed
+docs](/docs/reference/platform/taskcluster-auth/docs/roles) for more detailed
 information on roles and role expansion.
 
 ## In Practice
@@ -22,7 +22,7 @@ In practice, roles are used in a few ways within Taskcluster:
  * As a way to configure scopes for Taskcluster resources like hooks or worker types
  * As a scope allowing the bearer to "assume" the named role.
 
-See the [namespaces](/manual/design/namespaces) document for more information.
+See the [namespaces](/docs/manual/design/namespaces) document for more information.
 
 The set of defined roles is visible in the [Roles
 tool](http://tools.taskcluster.net/auth/roles/). This interface helpfully

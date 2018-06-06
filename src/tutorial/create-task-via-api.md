@@ -16,7 +16,7 @@ routes message.
 ## Constructing a Task Definition
 
 To create a task we must construct a _task definition_, the API [reference
-documentation](/reference/platform/taskcluster-queue/references/api) for the
+documentation](/docs/reference/platform/taskcluster-queue/references/api) for the
 Queue service specifies a JSON schema for the `queue.createTask` method.  The
 payload for that method is:
 
@@ -27,7 +27,7 @@ As evident from the schema there are a few _required_ properties, such as:
 The rest of the properties are optional and defaults should be documented.  It
 should, however, be noted that default values may change over time, so it is
 recommended provide those you rely on. More information about these fields and
-on tasks in general are available in the [manual](/manual).
+on tasks in general are available in the [manual](/docs/manual).
 
 All tasks have a `workerType` and `provisionerId` which together uniquely
 identify the pool of workers you are submitting you task to. In practice the
@@ -243,7 +243,7 @@ Note that it may take a few minutes for this task to execute, as Taskcluster mus
 create a new Amazon EC2 instance to run it.
 
 If you are curious about the `createTask(taskId, payload)` method you can look
-it up in the [API docs](/reference/platform/queue/reference/api-docs/) for the Queue. You should notice that
+it up in the [API docs](/docs/reference/platform/queue/reference/api-docs/) for the Queue. You should notice that
 the API docs lists a `Signature` property, like
 `Signature: createTask(taskId, payload) : result`. These signatures are used to
 call methods in automatically generated client libraries. This allows for
