@@ -6,12 +6,12 @@ nav.navbar.navbar-default
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href="/")
-        img(src="/assets/taskcluster.svg")
+      a.navbar-brand(href="/docs/")
+        img(src="/docs/assets/taskcluster.svg")
         | TASKCLUSTER <span class="bullet">&bullet;</span> DOCS
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
         - var sections = { tutorial : 'Tutorial', manual: 'Manual', reference: 'Reference', resources: 'Resources' }
         for section, p in sections
           li(class= (p === path.split('/')[1]) && 'active')
-            a(href= "/" + p)= section
+            a(href="/docs/" + p)= section

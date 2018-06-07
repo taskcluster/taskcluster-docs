@@ -42,4 +42,4 @@ Even if those administrative users should avoid using your service with such pow
 Other credentials may have no matching scope, but still possess the scopes to authorize the bearer to perform an operation.
 Basically, scopes do not communicate information -- they only allow satisfaction checks.
 
-The appropriate way to determine a user's identity (as described in [Third Party Integration](/manual/integrations/apis/3rdparty)) is to find an email from some less trustworthy source such as the clientId, and then *verify* that email against the scopes, by asking "is `assume:mozilla-user:<email>` satisfied?"
+The appropriate way to determine a user's identity (as described in [Third Party Integration](/docs/manual/integrations/apis/3rdparty)) is to find an email from some less trustworthy source such as the clientId, and then *verify* that email against the scopes, by asking "is `assume:mozilla-user:<email>` satisfied?"

@@ -12,28 +12,28 @@ Taskcluster is the task execution framework that supports Mozilla's continuous i
 
 ### <span class="glyphicon glyphicon-road" aria-hidden="true"></span> Tutorial
 
-Follow the [tutorial](/tutorial) to learn about Taskcluster, focusing on the parts most relevant to you.
+Follow the [tutorial](/docs/tutorial) to learn about Taskcluster, focusing on the parts most relevant to you.
 
 ---
 
 ### <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Manual
 
-[Read the manual](/manual) for a more comprehensive description of Taskcluster's design and operation.
+[Read the manual](/docs/manual) for a more comprehensive description of Taskcluster's design and operation.
 
 ---
 
 ### <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Reference
 
-Refer to the [reference documentation](/reference) for the technical details of each component.
+Refer to the [reference documentation](/docs/reference) for the technical details of each component.
 
 ---
 
 ### <span class="glyphicon glyphicon-link" aria-hidden="true"></span> Resources
 
-See [resources](/resources) such as presentations, external services, and useful links used by and for Taskcluster.
+See [resources](/docs/resources) such as presentations, external services, and useful links used by and for Taskcluster.
 
 ---
 
 ### <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> People
 
-Find out more about the [people](/people) who make Taskcluster, and get involved yourself!
+Find out more about the [people](/docs/people) who make Taskcluster, and get involved yourself!

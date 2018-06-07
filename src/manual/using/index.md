@@ -5,7 +5,7 @@ order: 50
 ---
 
 There's so much more of Taskcluster to explore! The details are all in the
-[reference](/reference), but it's not always clear where to start to solve a
+[reference](/docs/reference), but it's not always clear where to start to solve a
 particular problem.
 
 This section addresses a series of common use cases, sketching recommended

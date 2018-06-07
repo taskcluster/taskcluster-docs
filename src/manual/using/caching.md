@@ -24,7 +24,7 @@ As such, caches aren't terribly useful on shared workerTypes such as `github-wor
 
 The configuration of caches differs substantially between worker implementations.
 
-Docker-worker configures caches in the [`cache` property of its payload](/reference/workers/docker-worker/docs/caches).
+Docker-worker configures caches in the [`cache` property of its payload](/docs/reference/workers/docker-worker/docs/caches).
 
 Generic-worker uses the [`mounts` property](https://docs.taskcluster.net/reference/workers/generic-worker/docs/payload).
 Note that generic-worker has the capability to pre-fill a cache before task execution begins, and to mount such caches read-only.

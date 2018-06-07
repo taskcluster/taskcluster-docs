@@ -59,7 +59,7 @@ developed by release engineering to run release-related scripts in a limited,
 secure context.
 
 The Taskcluster-provided worker implementations, including their payload
-formats, are described in the [workers reference](/reference/workers).
+formats, are described in the [workers reference](/docs/reference/workers).
 
 The protocol for interacting with the Queue service is described in
 [Queue-Worker

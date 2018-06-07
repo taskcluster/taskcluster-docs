@@ -8,7 +8,7 @@ This chapter focuses on Taskcluster's core concept: tasks.
 
 At the highest level, Taskcluster executes tasks. New tasks are added to one of
 several queues, and workers consume tasks from those queues and execute them.
-In the process, services send [Pulse](/manual/design/apis/pulse) messages
+In the process, services send [Pulse](/docs/manual/design/apis/pulse) messages
 about task status, and attach the results of the task -- including logs and
 output artifacts -- to the task itself.
 
@@ -16,7 +16,7 @@ A task is described by a task definition, which is a simple data structure
 usually encoded in JSON or YAML.  Each task has a unique `taskId`, assigned
 randomly by the caller when the task is created.  The full schema for the task
 definition is given in [the reference
-documentation](/reference/platform/taskcluster-queue/docs/task-schema), but a
+documentation](/docs/reference/platform/taskcluster-queue/docs/task-schema), but a
 simple task might look like this:
 
 ```yaml
@@ -38,4 +38,4 @@ You can use the [task creator](https://tools.taskcluster.net/task-creator) to
 experiment with creating tasks.
 
 The next few sections describe the many powerful features of tasks, while the
-[next chapter](/manual/task-execution) covers their execution by workers.
+[next chapter](/docs/manual/task-execution) covers their execution by workers.

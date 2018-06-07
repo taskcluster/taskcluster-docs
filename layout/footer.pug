@@ -2,10 +2,10 @@ footer
   | &copy; #{new Date().getFullYear()} Taskcluster
 
 // jQuery and Bootstrap Javascript
-script(src='/assets/jquery.min.js')
-script(src='/assets/bootstrap/js/bootstrap.min.js')
+script(src='/docs/assets/jquery.min.js')
+script(src='/docs/assets/bootstrap/js/bootstrap.min.js')
 if !noAnchors
-  script(src='/assets/anchorjs.min.js')
+  script(src='/docs/assets/anchorjs.min.js')
   script.
     anchors.options.placement = 'left';
     // always display links on touch devices; only display them via hover on cursor devices; but
@@ -18,22 +18,22 @@ if !noAnchors
     anchors.add();
     anchors.remove('.no-anchor');
 if sequence_diagrams
-  script(src='/assets/raphael-min.js')
-  script(src='/assets/underscore-min.js')
-  script(src='/assets/sequence-diagram-min.js')
+  script(src='/docs/assets/raphael-min.js')
+  script(src='/docs/assets/underscore-min.js')
+  script(src='/docs/assets/sequence-diagram-min.js')
   script.
     $(".sequence-diagram-hand").sequenceDiagram({theme: 'hand'});
     $(".sequence-diagram-simple").sequenceDiagram({theme: 'simple'});
 if ejs
-  script(src='/assets/ejs_production.js')
+  script(src='/docs/assets/ejs_production.js')
 if marked
-  script(src='/assets/marked.js')
+  script(src='/docs/assets/marked.js')
 if superagent
-  script(src='/assets/superagent-promise.js')
+  script(src='/docs/assets/superagent-promise.js')
 if docref
-  script(src='/assets/docref/docref.js')
+  script(src='/docs/assets/docref/docref.js')
 if slugid
-  script(src='/assets/slugid-browserify.js')
+  script(src='/docs/assets/slugid-browserify.js')
 // Google Analytics
 script.
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

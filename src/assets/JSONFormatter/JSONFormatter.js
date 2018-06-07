@@ -42,8 +42,8 @@ jQuery.fn.jsonFormat = function(src, params) {
 		config : {
 			TAB : '  ',
 			depth: false,
-			ImgCollapsed : "/assets/JSONFormatter/Plus.png",
-			ImgExpanded : "/assets/JSONFormatter/Minus.png",
+			ImgCollapsed : "/docs/assets/JSONFormatter/Plus.png",
+			ImgExpanded : "/docs/assets/JSONFormatter/Minus.png",
 			QuoteKeys : false,
 			IsCollapsible : true,
 			_dateObj : new Date(),

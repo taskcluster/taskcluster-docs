@@ -13,17 +13,17 @@ case of a Github pull request. It's all too easy to accidentally or maliciously
 output a secret to the task logs, and such a disclosure is unlikely to be
 noticed quickly.
 
-The [Secrets service](/reference/core/secrets) provides a simple way to store
+The [Secrets service](/docs/reference/core/secrets) provides a simple way to store
 JSON-formatted secrets in a secure fashion. Access to secrets can be controlled
-by [scopes](/manual/design/apis/hawk/scopes).
+by [scopes](/docs/manual/design/apis/hawk/scopes).
 
 The most common approach is to use the Tools site to create secrets named
-according to the [namespaces document](/manual/design/namespaces), then read
+according to the [namespaces document](/docs/manual/design/namespaces), then read
 those secrets in tasks via the taskcluster proxy. Access to the secrets is
 granted by adding a scope to the repository's role.
 
 For example, generating this documentation site requires access to the
-Mozillians API to download information for the [people](/people) page, and that
+Mozillians API to download information for the [people](/docs/people) page, and that
 API key is stored in a secret named `project/taskcluster/tc-docs/mozillians`.
 The task definition in `.taskcluster.yml` has a scope to read this secret and
 enables the docker-worker taskclusterProxy feature:

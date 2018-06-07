@@ -8,7 +8,7 @@ provides a few tools that can help.
 
 ## Priorities
 
-Task [priorities](/manual/tasks/priority) are useful to ensure that the most
+Task [priorities](/docs/manual/tasks/priority) are useful to ensure that the most
 important tasks are executed first.  When the capacity issues are transient,
 this can be helpful.  However, it can cause starvation of lower-priority tasks
 if higher-priority tasks consume all of the limited resources.
@@ -17,7 +17,7 @@ if higher-priority tasks consume all of the limited resources.
 
 Sometimes tasks are not useful after a given time has passed. For example, the
 results of a test run are probably not useful more than 12 hours after the
-push.  Setting appropriate task [deadlines](/manual/tasks/times) can help to
+push.  Setting appropriate task [deadlines](/docs/manual/tasks/times) can help to
 remove such useless tasks from the backlog if they are not executed earlier.
 
 ## Superseding
@@ -34,5 +34,5 @@ When superseding is possible, the worker marks older tasks as "supserseded"
 while performing the newest task.
 
 See the [queue
-reference](/reference/platform/taskcluster-queue/docs/superseding) for the
+reference](/docs/reference/platform/taskcluster-queue/docs/superseding) for the
 technical details of the supserseding convention.

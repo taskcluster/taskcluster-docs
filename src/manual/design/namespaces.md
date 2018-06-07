@@ -114,7 +114,7 @@ Both are listed here:
 * `project-admin:<project>` -
    Roles of this form represent the scopes accorded to administrators of the given project.
    This role is then be assumed by the appropriate groups.
-   See [administration](/manual/using/administration) for more information.
+   See [administration](/docs/manual/using/administration) for more information.
 
 * `project-grants:<project>/<grantName>` -
    Roles on this form is used to grant additional scopes to the administrators of a project,
@@ -160,7 +160,7 @@ Artifact names are, by convention, slash-separated.
    Artifact names with this prefix are the responsibility of the project, which may have further namespace conventions.
 
 * `login-identity/<identity>/…`
-   Artifact names with this prefix are the responsibility of the user with the given [login identity](/reference/core/login).
+   Artifact names with this prefix are the responsibility of the user with the given [login identity](/docs/reference/core/login).
    This namespace enables tasks to persist data that is only readable by a single user (typically the user that submitted it), such as loaner credentials.
 
 Note, highly confidential data should not be stored in unencrpyted taskcluster
@@ -229,7 +229,7 @@ We do not subdivide namespaces; instead, they are enumerated here:
  * `tc-diagnostics` -- the Taskcluster diagnostics tool
  * `taskcluster-github` -- the Taskcluster Github integration
  * `gecko-level-<level>` -- Gecko tasks
- * `canary-harvester` -- Used by [canary harvester](https://github.com/mozilla/canary-harvester) [hooks](/reference/core/taskcluster-hooks)
+ * `canary-harvester` -- Used by [canary harvester](https://github.com/mozilla/canary-harvester) [hooks](/docs/reference/core/taskcluster-hooks)
 
 ---
 

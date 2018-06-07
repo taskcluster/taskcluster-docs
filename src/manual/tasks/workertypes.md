@@ -13,7 +13,7 @@ both identifiers. Thus `gcp-provisioner/persona-build` and
 despite sharing the same `workerType` identifier.
 
 Workers of the same worker type all consume tasks from a single queue, as
-[described later](/manual/task-execution/queues), and as such are
+[described later](/docs/manual/task-execution/queues), and as such are
 interchangeable and have identical configurations.
 
 The format of a task's `payload` property is specific to the worker that will
