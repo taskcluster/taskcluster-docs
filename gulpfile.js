@@ -14,7 +14,9 @@ var frontmatter = require('gulp-front-matter');
 var awspublish = require('gulp-awspublish');
 var parallelize = require('concurrent-transform');
 var download = require('gulp-download-stream');
-var markdown = require('gulp-markdown');
+var md = require('gulp-markdown');
+var wrap = require('gulp-wrap');
+var lazypipe = require('lazypipe');
 var log = require('fancy-log');
 var headers = require('./lib/headers');
 var filter = require('./lib/filter');
@@ -32,6 +34,8 @@ function stripHtml(path) {
     path.extname = '';
   }
 }
+
+const markdown = lazypipe().pipe(md).pipe(wrap, '<div class="markdown"><%= contents %></div>');
 
 /**
  * Prepend all paths with docs/; note that lambda takes care of redirecting
