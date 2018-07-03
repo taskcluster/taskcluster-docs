@@ -49,7 +49,8 @@ default by using the same action name. The default actions hold the following na
 | Schedule Task | `schedule` |
 | Retrigger Task | `retrigger` |
 | Cancel Task | `cancel` |
-| Purge Worker Cache | `purge` |
+| Purge Worker Cache | `purge-cache` |
+| Create an Interactive Task | `create-interactive` |
 
 Action names must be unique for a given task, or for a taskgroup, but
 the same name may be used for actions applying to disjoint sets of
