@@ -299,9 +299,6 @@ operations!
 
 ## Formal Specification
 
-The JSON Schema for `actions.json` is as follows, also available in raw form
-[here](https://raw.githubusercontent.com/taskcluster/taskcluster-docs/master/src/manual/using/actions/schema.yml).
-
-```yaml
-@@include('./schema.yml')
-```
+The JSON Schema for `actions.json` is available from the
+`taskcluster-references` repository in [this
+directory](https://github.com/taskcluster/taskcluster-references/tree/master/schemas).
