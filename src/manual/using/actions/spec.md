@@ -32,9 +32,9 @@ The kind-specific properties are described later.
 
 ### Action Metadata
 
-Each action entry must define a `name`, `title` and `description`.
-furthermore, the list of actions should be sorted by the order in which
-actions should appear in a menu.
+Each action entry must define a `name`, `title` and `description`.  The order
+of the array of actions is significant: actions should be displayed in this
+order, and when multiple actions apply, the first takes precedence (see below).
 
 The `name` is used by user interfaces to identify the action. For
 example, a retrigger button might look for an action with
@@ -57,7 +57,8 @@ the same name may be used for actions applying to disjoint sets of
 tasks. For example, it may be helpful to define different "retrigger"
 actions for build tasks \[{jobKind: 'build'}\] and test tasks
 \[{jobKind: 'test'}\], and in this case only one such action would apply
-to any given task.
+to any given task. If multiple actions with the same `name` match a task,
+the first action in the array should be used.
 
 The `title` is a human readable string intended to be used as label on
 the button, link or menu entry that triggers the action. This should be
