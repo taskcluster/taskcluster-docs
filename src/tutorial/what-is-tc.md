@@ -30,9 +30,8 @@ These include
 
 ## Is it Mozilla-specific?
 
-In principle, no, Taskcluster could be useful to any organization with needs similar to Mozilla's.
+In principle, no, Taskcluster could be useful to any organization with complex CI problems to solve.
 While we have built some Mozilla-specific integrations, the platform and many of the core services could be re-used without change in another organization.
 
-However, the platform is not presently designed to be easily redeployed.
-While it is by no means impossible to set up a second instance of Taskcluster outside of Mozilla, neither is it a turnkey installation.
-We hope to address this soon, once we have demonstrated the usefulness of the platform.
+We are working hard to make it easy to create a Taskcluster deployment for your own organization.
+This poses some interesting technical and operational challenges!
