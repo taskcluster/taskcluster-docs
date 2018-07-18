@@ -46,5 +46,5 @@ The remainder of the manual describes the Taskcluster platform in depth.  The
 revolves -- tasks.  The [Task Execution chapter](/docs/manual/task-execution)
 describes how these tasks are executed.  The next chapter, [System
 Design](/docs/manual/system-design), provides the details you will need to interact
-with Taskcluster. Finally, [Using Taskcluster](/docs/manual/using/) presents a
+with Taskcluster. Finally, [Using Taskcluster](/docs/manual/using) presents a
 collection of common use cases and approaches to satisfy them.
