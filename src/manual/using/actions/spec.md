@@ -207,7 +207,7 @@ templates.  The context for that rendering contains:
 `ownTaskId`:   (`kind == 'task'` only) the `taskId` of the action task itself.
     This is useful for indexing without collisions and other similar needs; for
     `kind == 'hook'`, use the `taskId` provided by [the hooks
-    service](https://docs.taskcluster.net/reference/core/taskcluster-hooks/docs/firing-hooks).
+    service](/docs/reference/core/taskcluster-hooks/docs/firing-hooks).
 
 `input`:   the input matching the `schema` property, `null` if the action
     doesn't have a `schema` property. See "Action Input" below.

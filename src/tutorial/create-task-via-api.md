@@ -63,7 +63,7 @@ let task = {
     // Fill in your email
     owner:            'nobody@taskcluster.net',
     // Location of task source for tihs task
-    source:           "https://docs.taskcluster.net/tutorial/create-task-via-api",
+    source:           "https://taskcluster.example.com/docs/tutorial/create-task-via-api",
   },
   payload:            payload,
 
@@ -94,7 +94,7 @@ The `tutorial` workerType is a deployment of `docker-worker`, this worker
 requires a `task.payload` that specifies which _docker image_ to load, which
 command to run and a maximum allowed runtime. You can find detailed
 documentation in the [reference
-section](https://docs.taskcluster.net/reference/workers/docker-worker/payload).
+section](/docs/reference/workers/docker-worker/payload).
 
 <div data-render-schema="taskcluster:/schemas/docker-worker/v1/payload.json"></div>
 
@@ -213,7 +213,7 @@ let task = {
     // Fill in your email
     owner:            'nobody@taskcluster.net',
     // Location of task source for tihs task
-    source:           "https://docs.taskcluster.net/tutorial/create-task-via-api",
+    source:           "https://taskcluster.example.com/docs/tutorial/create-task-via-api",
   },
   payload:            payload,
 

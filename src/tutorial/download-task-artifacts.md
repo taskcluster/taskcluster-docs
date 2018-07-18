@@ -4,7 +4,7 @@ layout: default
 class: markdown
 followup:
   links:
-    '/reference': API documentation for all Taskcluster services
+    '/docs/reference': API documentation for all Taskcluster services
 ---
 
 Once the task is resolved, we can list artifacts from

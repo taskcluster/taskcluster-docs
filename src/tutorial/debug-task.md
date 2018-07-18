@@ -18,9 +18,9 @@ inspector](https://tools.taskcluster.net/groups) and select the "task
 details" tab.
 
 If the `payload` section of the task details specifies any
-[features](https://docs.taskcluster.net/reference/workers/docker-worker/docs/features)
+[features](/docs/reference/workers/docker-worker/docs/features)
 or
-[capabilities](https://docs.taskcluster.net/reference/workers/docker-worker/docs/payload),
+[capabilities](/docs/reference/workers/docker-worker/docs/payload),
 additional setup may be needed in order to successfully run the task locally.
 
 Find the `image` section of the task details. If the image ID is a string, you
@@ -40,7 +40,7 @@ in the [task inspector](https://tools.taskcluster.net/groups). Under
 "actions", select "create interactive task". If you have permission to create
 tasks directly (rather than by pushing to a version-control server) then you
 can use this option. Some projects also provide
-[actions](https://docs.taskcluster.net/manual/using/actions) to create
+[actions](/docs/manual/using/actions) to create
 interactive tasks. You will need to be signed in, of course!
 
 Once the new task starts, click the big "shell" button, and there you are.
