@@ -19,4 +19,4 @@ When a developer pushes to a Gecko repository, a long chain of events begins:
 
 Due to its "self-service" design, very little of this process is actually part of Taskcluster, so we provide only a brief overview and some pointers.
 
-Taskcluster provides a small bit of glue ([mozilla-taskcluster](/docs/manual/vcs/mozilla-taskcluster)) to create the decision task and some more ([taskcluster-treeherder](/reference/core/treeherder)) to communicate with treeherder, but the task graph itself is defined entirely in-tree.
+Taskcluster provides a small bit of glue ([mozilla-taskcluster](/docs/manual/vcs/mozilla-taskcluster)) to create the decision task and some more ([taskcluster-treeherder](/docs/reference/core/treeherder)) to communicate with treeherder, but the task graph itself is defined entirely in-tree.

@@ -63,7 +63,7 @@ formats, are described in the [workers reference](/docs/reference/workers).
 
 The protocol for interacting with the Queue service is described in
 [Queue-Worker
-Interaction](https://docs.taskcluster.net/reference/platform/taskcluster-queue/docs/worker-interaction).
+Interaction](/docs/reference/platform/taskcluster-queue/docs/worker-interaction).
 
 ## Worker Scopes
 
