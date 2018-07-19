@@ -286,17 +286,25 @@ order to trigger the action.
 
 ### "hook" kind
 
-An action with `kind: 'hook'` specifies a hook that should be triggered
-via the `hooks.triggerHook` API method when the action is executed.
+An action with `kind: 'hook'` specifies a hook that should be triggered via the
+[`hooks.triggerHook`](/docs/reference/core/taskcluster-hooks/references/api#triggerHook)
+API method when the action is executed.  The hook is specified in the `hookId`
+and `hookGroupId` properties.
 
-The hook is specified in the `hookId` and `hookGroupId` properties.
+An advantage of the hooks service is that it can create tasks that have scopes
+which the user calling `triggerHook` does not have - a kind of privilege
+escalation. In this case, it means that the user initiating an action need not
+have the scopes required to actually execute the action task. The
+`hooks:trigger-hook:<hookGroupId>/<hookId>` scope can limit which users can
+initiate the action, and the hook's task template and `payloadSchema` together
+limit what the resulting task does.
 
-The payload of the `triggerHook` method is given by the `hookPayload` property,
+The payload of the `triggerHook` call is given by the `hookPayload` property,
 which is rendered using JSON-e with the context described above.
 
-Note that the result of rendering `hookPayload` becomes the context for another
-JSON-e rendering performed by the hooks service.  Do not confuse the two
-operations!
+Note that the result of rendering `hookPayload` becomes the *context* for
+another JSON-e rendering performed by the hooks service.  Do not confuse the
+two operations!
 
 ## Formal Specification
 
