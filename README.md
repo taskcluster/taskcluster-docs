@@ -47,10 +47,6 @@ amazing libraries and tools, upon which it is built.
  * `sequence-diagram-min.js` from [JS Sequence Diagrams]
    (https://github.com/bramp/js-sequence-diagrams) is licensed under the
    Simplified BSD License.
- * `superagent-promise.js` is a [browserify](http://browserify.org/) bundle of
-   [superagent](https://github.com/visionmedia/superagent),
-   [superagent-promise](https://github.com/lightsofapollo/superagent-promise)
-   and [promise](https://github.com/then/promise) all licensed under MIT.
  * Files in `bootstrap/` from [Bootstrap](http://getbootstrap.com/) is licensed
    under the MIT license.
  * Files in `bootstrap-select/` from [bootstrap-select]
