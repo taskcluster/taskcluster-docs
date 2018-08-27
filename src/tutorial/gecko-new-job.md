@@ -2,7 +2,6 @@
 title: Adding a new job
 marked: true
 ejs: true
-superagent: true
 ---
 
 Taskcluster runs tasks.
