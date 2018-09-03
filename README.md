@@ -24,6 +24,13 @@ Note that we still support the "old way" as well, so much of the site is
 designed around producing objects to upload to S3, and then reverse-engineered
 into static files for Nginx.
 
+Reporting Issues
+----------------
+
+Please report issues in [Bugzilla](https://bugzilla.mozilla.org) in
+the [Taskcluster :: Documentation](https://bugzilla.mozilla.org/enter_bug.cgi?assigned_to=nobody%40mozilla.org&bug_file_loc=http%3A%2F%2F&bug_ignored=0&bug_severity=normal&bug_status=NEW&cf_fx_iteration=---&cf_fx_points=---&component=Documentation&contenttypemethod=autodetect&contenttypeselection=text%2Fplain&defined_groups=1&flag_type-37=X&flag_type-4=X&flag_type-607=X&flag_type-787=X&flag_type-800=X&flag_type-803=X&form_name=enter_bug&maketemplate=Remember%20values%20as%20bookmarkable%20template&op_sys=Unspecified&priority=--&product=Taskcluster&rep_platform=Unspecified&target_milestone=---&version=unspecified)
+component.
+
 Publishing (Old Way)
 --------------------
 
