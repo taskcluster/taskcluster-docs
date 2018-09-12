@@ -58,7 +58,7 @@ Publishers:
 
 Exchanges:
 
-* MUST be named exchange/<clientId>/<name>
+* MUST be named `exchange/<clientId>/<name>`
 * MUST be topic exchanges
 * MUST be durable
 
@@ -78,7 +78,7 @@ Subscribers:
 
 Queues:
 
-* MUST be named queue/<clientId>/<name>
+* MUST be named `queue/<clientId>/<name>`
 * MAY have a limited length
 * MUST not grow unbounded
 
