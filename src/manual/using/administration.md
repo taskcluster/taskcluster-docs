@@ -36,3 +36,15 @@ into the source, and minimizing what must be configured via administrative
 changes. In particular, try to keep hooks simple: check out the source and
 invoke a script. Any more complexity may become difficult to manage in the
 administrative UI.
+
+# Access control management rules
+
+Projects of various size and level of support make use Taskcluster and are managed in very different ways. The general rules below explain the responsibilities of various teams in managing access controls.
+
+## Small projects (experiments, young products, etc.)
+
+Small projects are self-serve and the developers are responsible for managing their own configuration, secrets, etc. They are often hosted on GitHub and need to be initially created by a member of the Taskcluster team before being handed off to the developers. The following rules apply:
+
+* Developers are autonomous and responsible for managing access controls, scopes and permissions securely.
+* Taskcluster team provides administrative support to bootstrap the project
+* Release engineering is not involved until the project "graduate" and is moved to their purview
