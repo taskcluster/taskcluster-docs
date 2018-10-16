@@ -41,10 +41,19 @@ administrative UI.
 
 Projects of various size and level of support make use Taskcluster and are managed in very different ways. The general rules below explain the responsibilities of various teams in managing access controls.
 
-## Small projects (experiments, young products, etc.)
+## Unmanaged projects (experiments, young products, etc.)
 
-Small projects are self-serve and the developers are responsible for managing their own configuration, secrets, etc. They are often hosted on GitHub and need to be initially created by a member of the Taskcluster team before being handed off to the developers. The following rules apply:
+Unmanaged projects are self-serve and the developers are responsible for managing their own configuration, secrets, etc. They are often hosted on GitHub and need to be initially created by a member of the Taskcluster team before being handed off to the developers. The following rules apply:
 
 * Developers are autonomous and responsible for managing access controls, scopes and permissions securely.
 * Taskcluster team provides administrative support to bootstrap the project
 * Release engineering is not involved until the project "graduate" and is moved to their purview
+
+## Managed projects (core products, etc.)
+
+* Taskcluster team manages the taskcluster service. It has permissions to create new projects and delegates permissions to
+    - Developers for unmanaged projects
+    - Release engineering team for managed projects
+* Taskcluster team drops its privileges to managed projects once they are handed over to release engineering. At this point, making a change to a managed project requires releng sign off.
+* Release engineering is responsible for reviewing and approving all permission changes to managed projects.
+* Release engineering is responsible for maintaining tooling to manage, review and audit the scopes on projects it is responble for.
