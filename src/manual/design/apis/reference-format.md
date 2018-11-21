@@ -29,7 +29,7 @@ All services are linked in a reference manifest, available at
 
 The schema for this manifest is as follows:
 
-<div data-render-schema="taskcluster:/schemas/common/manifest-v2.json">
+<div data-render-schema="/schemas/common/manifest-v2.json">
 </div>
 
 ## API References
@@ -53,7 +53,7 @@ server responses may change by adding additional properties.
 
 The API reference format has the following format:
 
-<div data-render-schema="taskcluster:/schemas/common/api-reference-v0.json">
+<div data-render-schema="/schemas/common/api-reference-v0.json">
 </div>
 
 ## AMQP Exchange References
@@ -61,7 +61,7 @@ The API reference format has the following format:
 Each service which sends Pulse messages has its exchanges and messages defined
 in a reference document with the following format.
 
-<div data-render-schema="taskcluster:/schemas/common/exchanges-reference-v0.json">
+<div data-render-schema="/schemas/common/exchanges-reference-v0.json">
 </div>
 
 Messages are validated on the server prior to publication.
