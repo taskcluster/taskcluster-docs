@@ -178,7 +178,7 @@ ul.main-menu ul {
 
 ul.main-menu a, ul.main-menu span {
   display: inline-block;
-  color: #999;
+  color: #444;
   border-left: 3px inset transparent;
 }
 
@@ -207,7 +207,7 @@ ul.main-menu .inline-navs .active {
 
 ul.main-menu .inline-navs a, ul.main-menu .inline-navs span {
   display: inline-block;
-  color: #999;
+  color: #555;
   border-left: none;
   padding-left: 1px;
   padding-right: 1px;
