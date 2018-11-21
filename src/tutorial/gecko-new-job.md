@@ -19,7 +19,7 @@ If your new job isn't in TreeHerder, it's like it never happened.
 Gecko tasks carry a number of fields in `task.extra.treeherder` that describe how the task should be represented in TreeHerder.
 The schema for this information is as follows:
 
-<div data-render-schema='taskcluster:/schemas/taskcluster-treeherder/v1/task-treeherder-config.json'></div>
+<div data-render-schema='taskcluster:/schemas/treeherder/v1/task-treeherder-config.json'></div>
 
 ---
 
